@@ -850,14 +850,12 @@ function inc_bldg_ticks(thingToTick) {
 					thingToTick.lvl++;
 					thingToTick.ticksToFinish -= thingToTick.ticksToFinishTotal[0];
 					thingToTick.ticksToFinishTotal.shift();
-					clearTimeout(player.timer);
-					player.timer = setTimeout(function() {load_player(player.league, true, ((currUI===show_town)?true:false));}, (player.gameClockFactor * 1000));
+					thingToTick.update = true; //set update flag
 				} else if(thingToTick.ticksToFinish >= thingToTick.ticksToFinishTotal[0] && thingToTick.deconstruct) {
 					thingToTick.deconstruct = false;
 					thingToTick.lvl = 0;
 					thingToTick.lot = -1;
-					clearTimeout(player.timer);
-					player.timer = setTimeout(function() {load_player(player.league, true, ((currUI===show_town)?true:false));}, (player.gameClockFactor * 1000));
+					thingToTick.update = true;
 				} else if(thingToTick.lvlUps < 1) {
 					BUI.build();
 					clearInterval(thingToTick.bldgTicker);
@@ -872,8 +870,7 @@ function inc_ppl_ticks(thingToTick) {
 					thingToTick.numLeftToBuild--;
 					thingToTick.ticksLeft -= thingToTick.ticksPerPerson;
 					thingToTick.peopleInside++;
-					clearTimeout(player.timer);
-					player.timer = setTimeout(function() {load_player(player.league, true, false);}, (player.gameClockFactor * 1000));
+					thingToTick.update = true;
 				}
 				else if(thingToTick.numLeftToBuild < 1) clearInterval(thingToTick.pplTicker);
 			}, 1000);
