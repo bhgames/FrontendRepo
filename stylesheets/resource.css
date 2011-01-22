@@ -1,0 +1,99 @@
+/************************************************************************************************************************************************
+ * CSS code for the resource display areas
+************************************************************************************************************************************************/
+#resourcebar {
+	position: absolute;
+	top: 90px;
+	left: 175px;
+	width: 822px;
+	height: 83px;
+	background: url(../AIFrames/AI-Frames-Res.png) no-repeat 0 0;
+	font-size: 14px;
+	}
+#resourcebar li {
+	position: relative;
+	top: 21px;
+	left: 43px;
+	float: left;
+	display: inline;
+	padding-top: 6px;
+	width: 130px;
+	height: 26px;
+	margin: 0 2px;
+	background:  no-repeat left top;
+	font-size: 14px;
+	}
+#steel {
+	padding-left: 20px;
+	background-image: url(../AIFrames/icons/MetalIcon.png) !important;
+	}
+#wood {
+	padding-left: 40px;
+	background-image: url(../AIFrames/icons/TimberIcon.png) !important;
+	}
+#synth {
+	padding-left: 30px;
+	background-image: url(../AIFrames/icons/PlasticIcon.png) !important;
+	}
+#food {
+	padding-left: 20px;
+	background-image: url(../AIFrames/icons/FoodIcon.png) !important;
+	}
+	
+#menu {
+	position: absolute;
+	top: 2px;
+	right: 2px;
+	padding-top: 20px;
+	height: 59px;
+	width: 152px;
+	background: url(../AIFrames/buttons/Menu-Button.png) no-repeat 0 0;
+	filter:opacity(50);
+	opacity: .5;
+	text-align: center;
+	font-size: 26px;
+	cursor: pointer;
+	z-index: 100;
+	}
+#menu:hover {
+	filter:opacity(100);
+	opacity: 1;
+	}
+#menu:active, #menu.open {
+	background-position: 0 -79px;
+	}
+#dropdown_menu {
+	position: absolute; 
+	top: 16px;
+	left: 15px;
+	display: none;
+	padding: 5px;
+	width: 782px;
+	height: 15px;
+	z-index: 105;
+	font-size: 16px;
+	}
+#dropdown_menu .darkFrameBody {
+	height: 8px;
+	}
+#dropdown_menu .darkFrameB {
+	margin-right: 0px;
+	}
+#dropdown_menu li {
+	position: relative;
+	right: 15px;
+	margin-left: 10px;
+	list-style: none;
+	float: right;
+	font-size: 16px;
+	}
+#dropdown_menu a {
+	text-decoration: none;
+	}
+#dropdown_menu a:hover {
+	text-decoration: underline;
+	}
+
+#dropdown_menu a:visited {
+	color: #FFFFFF;
+	}

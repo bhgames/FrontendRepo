@@ -1,0 +1,3 @@
+
+function CC_UI(bldgInfo){$("#CC_tabs a").click(function(){if(!$(this).hasClass("open")){$(this).addClass("open").siblings("a.open").removeClass("open");if($(this).is("#CC_activityTab")){$("#CC_window").html(BUI.CC.aTab);$("#CC_raidList").html(function(){var HTML="";$.each(player.raids,function(i,v){HTML+="<div class='activeRaid "+(i%2==0?" resWhite":" resBlack")+"'><div class='destTown'>"+v.defendingTown
++"</div><div id='originTown'>"+v.attackingTown;});});}}});$("#CC_activityTab").click();}

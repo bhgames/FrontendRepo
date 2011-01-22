@@ -1,0 +1,20 @@
+#Ref_effectBox {
+	position: absolute;
+	top: 150px;
+	left: 250px;
+	color: #FFF;
+	font-size: 18px;
+	}
+#Ref_effectBox .darkFrameBody {
+	width: 230px;
+	}
+#Ref_typePic {
+	float: left;
+	padding-right: 5px;
+	border-right: 1px solid #FFF;
+	margin-right: 5px;
+	}
+#Ref_effect {
+	font-size: 24px;
+	text-align: right;
+	}

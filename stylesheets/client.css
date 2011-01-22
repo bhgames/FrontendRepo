@@ -1,0 +1,491 @@
+/*
+ * Client Display CSS
+ * 
+ * Writen by: Chris Hall
+*/
+/************************************************************************************************************************************************
+ * Misc Page CSS
+************************************************************************************************************************************************/
+@font-face {
+	font-family: BankGothic;
+	src: url(/BankGothic.eot);
+	src: local("Bank Gothic"), local("BankGothic Lt BT"), local("BankGothicBTLight"), url(/BankGothic.ttf) format("truetype");
+	}
+body {
+	background: #000; 
+	color: #FFF;
+	margin: 0;
+	padding: 0;
+	font-family: BankGothic, Verdana, Geneva, Arial, Helvetica, sans-serif;
+	}
+a:link, a:visited  {
+	color: #FFFFFF;
+	}
+ul, li {
+	margin: 0;
+	padding: 0;
+	}
+#preload {
+	visibility: hidden;
+	}
+#header {
+	position: relative;
+	width: 100%;
+	margin: 0 auto;
+	z-index: 2;
+	}
+#header img {
+	width: 100%;
+	}
+#content {
+	position: absolute;
+	top: 1%;
+	width: 100%;
+	padding-top: 100px;
+	background: #000000 url(../AIFrames/screen.png) no-repeat 50% 0;
+	z-index: 1;
+	}
+#client input[type="text"], #client input[type="email"], #client input[type="number"], #client select {
+	color: #FFFFFF;
+	background: transparent;
+	border: 1px solid #FFFFFF;
+	}
+#client select {
+	background: #000000;
+	}
+.lightFrameBody input {
+	color: #000000 !important;
+	border-color: #000000 !important;
+	}
+
+#client {
+	position: relative;
+	width: 1000px;
+	height: 700px;
+	margin: 0px auto;
+	font-size: 14px;
+	}
+#surveyLink {
+	position: absolute;
+	top: 100px;
+	left: 60%;
+	z-index: 100;
+	}
+/************************************************************************************************************************************************
+ * Client Viewer CSS
+************************************************************************************************************************************************/
+#clientview {
+	position: absolute;
+	top: 132px;
+	left: 174px;
+	height: 569px;
+	width: 823px;
+	overflow: hidden;
+	}
+.loading {
+	background: url(../AIFrames/loading.gif) no-repeat center center;
+	}
+.amber {
+	background: url(../AIFrames/AI-Frame-Amber.png) no-repeat center top;
+	}
+.blue {
+	background: url(../AIFrames/AI-Frame-Blue-80o.png) no-repeat center top;
+	}
+.rose {
+	background: url(../AIFrames/AI-Frame-Rose.png) no-repeat center top;
+	}
+.violet {
+	background: url(../AIFrames/AI-Frame-Violet.png) no-repeat center top;
+	}
+#window {
+	position: absolute;
+	top: 21px;
+	left: 21px;
+	display: none;
+	height: 527px;
+	width: 781px;
+	color: #000;
+	}
+#window.amber, #window.blue, #window.rose, #window.violet {
+	overflow: visible !important;
+	background-position: center -21px !important;
+	}
+/*Tutorial Popup*/	
+.tutorial {
+	position: absolute;
+	z-index: 1000;
+	}
+#tutorial_box {
+	padding: 5px 80px 5px 5px;
+	background: url("../AIFrames/Content Frame Elements/Dark-body.png");
+	border: 1px solid #FFF;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	}
+#tutorial_next {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	padding: 2px;
+	border: 1px solid white;
+	cursor: pointer;
+	}
+#tutorial_next:hover {
+	border-style: outset;
+	}
+#tutorial_next:active {
+	border-style: inset;
+	}
+.dirup, .dirleft, .dirdown, .dirright {
+	height: 50px;
+	width: 50px;
+	background: url("../AIFrames/Content Frame Elements/arrowSheet.png") no-repeat 0 0;
+	}
+.dirleft {
+	background-position: -150px 0;
+	}
+.dirdown {
+	background-position: -100px 0;
+	}
+.dirright {
+	background-position: -50px 0;
+	}
+/************************************************************************************************************************************************
+ * Console Output & Chatbox CSS
+************************************************************************************************************************************************/
+#console_box, #chat_box {
+	position: absolute;
+	left: 0px;
+	top: 182px;
+	display: none;
+	z-index: 1000;
+	}
+#console_box  {
+	font-size: 16px;
+	}
+#console_box .popFrameBody {
+	height: 210px;
+	}
+#console_titlebar, #chat_titlebar {
+	width: 100%;
+	height: 30px;
+	border-bottom: 1px groove #FFFFFF;
+	cursor: move;
+	font-size: 20px;
+	}
+#console_close, #chat_close {
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	display: block;
+	height: 33px;
+	width: 28px;
+	background: url("../AIFrames/Content Frame Elements/close.png") no-repeat 0 0;
+	}
+#console_output {
+	color: #FFFFFF;
+	width: 200px;
+	height: 148px;
+	margin: 5px;
+	overflow: auto;
+	}
+.output {
+	display: inline-block;
+	width: 100%;
+	padding-bottom: 2px;
+	border-top: 1px solid #FFFFFF;
+	white-space: pre-wrap;
+	}
+.error {
+	color: #FF0000;
+	}
+#output_clear {
+	position: absolute;
+	bottom: 22px;
+	right: 27px;
+	display: block;
+	height: 20px;
+	width: 20px;
+	background: url(../../images/client/menus/Clear-button.png) no-repeat 0 0;
+	}
+#output_clear:active{
+	background-position: -20px 0;
+	}
+#console_expandBox {
+	position: absolute;
+	bottom: 20px;
+	left: 25px;
+	}
+/************************************************************************************************************************************************
+ * Custom Popup CSS
+************************************************************************************************************************************************/
+#AIW_alertBox {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	height: 100%;
+	width: 100%;
+	}
+#AIW_alertMod {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	background-color: #000000;
+	filter:alpha(opacity=50);
+	opacity: .50;
+	z-index: 1000;
+	}
+#AIW_alert {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	display:none;
+	max-width: 500px;
+	margin: -75px -200px;
+	z-index: 1002;
+	}
+#AIW_alert .popFrameBody {
+	padding-bottom: 20px;
+	}
+#AIW_alertTitlebar {
+	font-size: 1.25em;
+	margin-left: 5px;
+	border-bottom: 1px groove #FFFFFF;
+	cursor: move;
+	font-size: 24px;
+	}
+#AIW_alertMess {
+	min-height: 75px;
+	min-width: 300px;
+	margin: 0 0 5px;
+	padding: 5px;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	} 
+.alertButton {
+	float: right;
+	height: 25px; 
+	width: 59px;
+	padding-top: 5px;
+	border: 1px solid #FFFFFF;
+	margin-right: 15px;
+	text-align: center;
+	cursor: pointer;
+	font-size: 18px;
+	}
+.alertButton:hover {
+	border-style: outset;
+	}
+.alertButton:active {
+	border-style: inset;
+	}
+/************************************************************************************************************************************************
+ * Text Frame CSS
+************************************************************************************************************************************************/
+/*
+ * White Frame
+ */
+.textFramed {
+	padding: 5px 5px 1px;
+	border: 1px solid #FFF;
+	border-bottom: none;
+	}
+.textFrameB{
+	height: 16px;
+	background: url(../AIFrames/TextFrame/Bottom.png) repeat-x center bottom;
+	margin: 0px 16px;
+	}
+.textFrameBL{
+	background: url(../AIFrames/TextFrame/LowLeftCorner.png) no-repeat left bottom;
+	}
+.textFrameBR{
+	background: url(../AIFrames/TextFrame/LowRightCorner.png) no-repeat right bottom;
+	}
+/*
+ * Black Frame
+ */
+.blackFramed {
+	padding: 5px 5px 0;
+	margin-bottom: -5px;
+	border: 1px solid #000;
+	border-bottom: none;
+	}
+.blackFrameB{
+	height: 16px;
+	background: url(../AIFrames/TextFrame/Bottom-black.png) repeat-x center bottom;
+	margin: 0px 16px;
+	}
+.blackFrameBL{
+	background: url(../AIFrames/TextFrame/LowLeftCorner-black.png) no-repeat left bottom;
+	}
+.blackFrameBR{
+	background: url(../AIFrames/TextFrame/LowRightCorner-black.png) no-repeat right bottom;
+	}
+/************************************************************************************************************************************************
+ * Light Frame CSS
+************************************************************************************************************************************************/
+.lightFrameBody {
+	padding: 5px 5px 0;
+	background: url("../AIFrames/Content Frame Elements/Light-body.png") repeat center center;
+	color: #000;
+	}
+.lightFrameB {
+	height: 20px;
+	background: url("../AIFrames/Content Frame Elements/Light-BottomTile.png") repeat-x center bottom;
+	margin: 0px 13px;
+	}
+.lightFrameBL {
+	background: url("../AIFrames/Content Frame Elements/Light-Left-Lowcorner.png") no-repeat left bottom;
+	}
+.lightFrameBR {
+	background: url("../AIFrames/Content Frame Elements/Light-Right-Lowcorner.png") no-repeat right bottom;
+	}
+.lightButton:active  .lightFrameBody {
+	background: url("../../light/AIFrames/Content Frame Elements/Dark-body.png");
+	color: #FFF;
+	}
+.lightButton:active  .lightFrameB  {
+	background-image: url("../../light/AIFrames/Content Frame Elements/Dark-BottomTile.png");
+	}
+.lightButton:active  .lightFrameBL  {
+	background-image: url("../../light/AIFrames/Content Frame Elements/Dark-Left-Lowcorner.png");
+	}
+.lightButton:active  .lightFrameBR  {
+	background-image: url("../../light/AIFrames/Content Frame Elements/Dark-Right-Lowcorner.png");
+	}
+/************************************************************************************************************************************************
+ * Dark Frame CSS
+************************************************************************************************************************************************/
+.darkFrameBody {
+	padding: 5px 5px 0;
+	background: url("../AIFrames/Content Frame Elements/Dark-body.png") repeat center center;
+	color: #FFF;
+	}
+.darkFrameB {
+	height: 20px;
+	background: url("../AIFrames/Content Frame Elements/Dark-BottomTile.png") repeat-x center bottom;
+	margin: 0px 13px;
+	}
+.darkFrameBL {
+	background: url("../AIFrames/Content Frame Elements/Dark-Left-Lowcorner.png") no-repeat left bottom;
+	}
+.darkFrameBR {
+	background: url("../AIFrames/Content Frame Elements/Dark-Right-Lowcorner.png") no-repeat right bottom;
+	}
+/************************************************************************************************************************************************
+ * Popup Frame CSS
+************************************************************************************************************************************************/
+.popFrameBody {
+	padding: 22px 5px 0px;
+	margin: 0px 10px;
+	background: url("../AIFrames/Content Frame Elements/Dark-body.png") repeat center center;
+	}
+.popFrameTop {
+	background: url("../AIFrames/Content Frame Elements/toptile.png") repeat-x left top;
+	}
+.popFrameLeft {
+	background: url("../AIFrames/Content Frame Elements/sidetile.png") repeat-y left top;
+	}
+.popFrameRight {
+	background: url("../AIFrames/Content Frame Elements/sidetile.png") repeat-y right top;
+	}
+.popFrameB {
+	height: 35px;
+	background: url("../AIFrames/Content Frame Elements/bottomtile.png") repeat-x center bottom;
+	margin: 0px 28px;
+	}
+.popFrameBL {
+	background: url("../AIFrames/Content Frame Elements/bottomleftcorner.png") no-repeat left bottom;
+	}
+.popFrameBR {
+	background: url("../AIFrames/Content Frame Elements/bottomrightcorner.png") no-repeat right bottom;
+	}
+/************************************************************************************************************************************************
+ * jScrollPane CSS
+************************************************************************************************************************************************/
+.jspContainer {
+	overflow: hidden;
+	position: relative;
+}
+.jspPane {
+	position: absolute;
+}
+.jspVerticalBar {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 16px;
+	height: 100%;
+	background: transparent;
+}
+.jspHorizontalBar {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 16px;
+	background: transparent;
+}
+.jspVerticalBar *,
+.jspHorizontalBar * {
+	margin: 0;
+	padding: 0;
+}
+.jspCap {
+	display: none;
+}
+.jspHorizontalBar .jspCap {
+	float: left;
+}
+.jspTrack {
+	background: transparent;
+	position: relative;
+}
+.jspDrag {
+	background: transparent;
+	border: 1px solid #FFFFFF;
+	position: relative;
+	top: 0;
+	left: 0;
+	width: 9px;
+	margin-left: 3px;
+	cursor: pointer;
+}
+.jspHorizontalBar .jspTrack,
+.jspHorizontalBar .jspDrag {
+	float: left;
+	height: 100%;
+}
+
+.jspArrow {
+	background: transparent;
+	text-indent: -20000px;
+	display: block;
+	cursor: pointer;
+}
+.jspArrowUp {
+	background: url(../AIFrames/TextFrame/UpScrollArrow.png) no-repeat center center;
+	}
+.jspArrowDown {
+	background: url(../AIFrames/TextFrame/DownScrollArrow.png) no-repeat center center;
+	}
+.jspArrow.jspDisabled{
+	cursor: default;
+}
+.jspVerticalBar .jspArrow {
+	height: 16px;
+}
+.jspHorizontalBar .jspArrow {
+	width: 16px;
+	float: left;
+	height: 100%;
+}
+.jspVerticalBar .jspArrow:focus {
+	outline: none;
+}
+.jspCorner {
+	float: left;
+	height: 100%;
+}
+/* Yuk! CSS Hack for IE6 3 pixel bug :( */
+* html .jspCorner {
+	margin: 0 -3px 0 0;
+}

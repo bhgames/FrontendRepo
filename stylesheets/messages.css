@@ -1,0 +1,351 @@
+/**************************************************************************************************************\
+*********************************************** Messages CSS Code **********************************************
+\**************************************************************************************************************/
+#Mess_outerBox {
+	width: 770px;
+	margin: 5px 0 0 5px;
+	}
+#Mess_outerBox .darkFrameBody {
+	height: 490px;
+	}
+#mess_newMess {
+	position: absolute;
+	top: 5px;
+	right: 35px;
+	display: block;
+	width: 151px;
+	height: 41px;
+	background: url(../AIFrames/buttons/New-Mess.png) no-repeat 0 -41px;
+	}
+#mess_newMess:hover {
+	background-position: 0 0;
+	}
+#mess_newMess:active {
+	background-position: 0 -82px;
+	}
+#mess_notepad {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	display: block;
+	width: 25px;
+	height: 25px;
+	background: url(../../images/client/menus/message_notepad.png) no-repeat 50% 50%;
+	}
+#mess_inbox {
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	display: block;
+	width: 151px;
+	height: 41px;
+	background: url(../AIFrames/buttons/Inbox-Mess.png) no-repeat 0 -41px;
+	}
+#mess_inbox:hover {
+	background-position: 0 0;
+	}
+#mess_inbox:active {
+	background-position: 0 -82px;
+	}
+#mess_window {
+	position: absolute;
+	top: 45px;
+	left: 0px;
+	height: 447px;
+	width: 765px;
+	padding: 5px;
+	overflow: auto;
+	color: #FFF;
+	}
+#mess_innerbox{
+	height: 407px;
+	overflow: auto;
+	}
+#mess_addNav{
+	position: absolute;
+	bottom: 0px;
+	right: 15px;
+	}
+#mess_addMessNav {
+	margin-top: 5px;
+	}
+#mess_addNav a, #mess_addMessNav a {
+	float: right;
+	margin: 0 2px;
+	}
+#mess_markRead {
+	clear: both;
+	}
+#mess_reportMess { /*needs button*/
+	display: inline-block;
+	height: 25px;
+	width: 25px;
+	float: left !important;
+	background: url(../../images/client/menus/report-button.png) no-repeat 0 0;
+	}
+#mess_reportMess:hover {
+	background-position: -25px 0;
+	}
+#mess_reportMess:active {
+	background-position: -50px 0;
+	}
+#mess_replyMess {
+	display: inline-block;
+	height: 41px;
+	width: 151px;
+	background: url(../AIFrames/buttons/Reply-Mess.png) no-repeat 0 -41px;
+	}
+#mess_replyMess:hover {
+	background-position: 0 0;
+	}
+#mess_replyMess:active {
+	background-position: 0 -82px;
+	}
+#mess_deleteMess, .deleteMess, #mess_deleteConvo { /*need button*/
+	display: inline-block;
+	height: 25px;
+	width: 25px;
+	background: url(../../images/client/menus/delete_message-button.png) no-repeat 0 0;
+	float: right;
+	}
+#mess_deleteMess:hover, .deleteMess:hover, #mess_deleteConvo:hover {
+	background-position: -25px 0;
+	}
+#mess_deleteMess:active, .deleteMess:active, #mess_deleteConvo:active {
+	background-position: -50px 0;
+	}
+#mess_recipBox, #mess_subjectBox {
+	padding: 5px;
+	margin-left: 25px;
+	background: url(../../images/client/menus/message_bar-o.png) no-repeat 0 0;
+	}
+#mess_recipBox label, #mess_subjectBox label {
+	display: inline-block;
+	width: 66px;
+	text-align: right;
+	}
+#mess_recip, #mess_subject {
+	background: transparent !important;
+	font-family: Verdana, sans-serif;
+	height: 20px;
+	width: 600px;
+	border: none !important;
+	color: #FFFFFF;
+	}
+#Mess_newMessBox {
+	margin-left: 25px;
+	}
+#mess_bodyText {
+	position: relative;
+	top: -5px;
+	font-family: Verdana, sans-serif;
+	width: 685px;
+	height: 280px;
+	color: #FFFFFF;
+	overflow: auto;
+	border: none;
+	background: url(../../images/client/menus/message_text-underline.png) scroll 0 2px;
+	}
+.quickReply #mess_bodyText {
+	height: 150px;
+	}
+#mess_sendMess {
+	display: block;
+	margin-top: 5px;
+	margin-left: 25px;
+	width: 159px;
+	height: 41px;
+	background: url(../AIFrames/buttons/Send-Mess.png) no-repeat 0 -41px;
+	}
+#mess_sendMess:hover {
+	background-position: 0 0;
+	}
+#mess_sendMess:active {
+	background-position: 0 -82px;
+	}
+#mess_replyTo {
+	margin: 10px;
+	margin-top: 30px;
+	}
+#mess_groups {
+	display: block;
+	width: 151px;
+	height: 41px;
+	position: absolute;
+	top: 5px;
+	left: 156px;
+	background: url(../AIFrames/buttons/Groups-Mess.png) no-repeat 0 -41px;
+	}
+#mess_groups:hover {
+	background-position: 0 0;
+	}
+#mess_groups:active {
+	background-position: 0 -82px;
+	}
+#mess_groupSelect {
+	min-width: 150px;
+	background: transparent !important;
+	}
+#mess_groupName {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	width: 150px;
+	}
+#mess_groupPlayers {
+	position: absolute;
+	top: 35px;
+	right: 5px;
+	height: 68px;
+	width: 300px;
+	color: #FFFFFF;
+	background: transparent;
+	border: 1px solid #FFFFFF;
+	}
+#mess_newGroup,#mess_saveGroup,#mess_loadGroup,#mess_deleteGroup {
+	position: absolute;
+	left: 7px;
+	display: block;
+	width: 93px;
+	}
+#mess_newGroup {
+	top: 180px;
+	height: 27px;
+	background: url(../AIFrames/buttons/New-UTCC.png) no-repeat 0 -27px;
+	}
+#mess_loadGroup {
+	top: 207px;
+	height: 26px;
+	background: url(../AIFrames/buttons/Load-UTCC.png) no-repeat 0 -26px;
+	}
+#mess_loadGroup:hover {
+	background-position: 0 0;
+	}
+#mess_loadGroup:active {
+	background-position: 0 -52px;
+	}
+#mess_deleteGroup {
+	top: 233px;
+	height: 27px;
+	background: url(../AIFrames/buttons/Del-UTCC.png) no-repeat 0 -27px;
+	}
+#mess_deleteGroup:hover, #mess_newGroup:hover {
+	background-position: 0 0;
+	}
+#mess_deleteGroup:active, #mess_newGroup:active {
+	background-position: 0 -54px;
+	}
+#mess_saveGroup {
+	top: 260px;
+	height: 32px;
+	background: url(../AIFrames/buttons/Save-UTCC.png) no-repeat 0 -32px;
+	}
+#mess_saveGroup:hover {
+	background-position: 0 0;
+	}
+#mess_saveGroup:active {
+	background-position: 0 -64px;
+	}
+.messSender, .messSubject {
+	padding: 5px 10px;
+	margin-bottom: 10px;
+	height: 20px;
+	width: 680px;
+	background: url(../../images/client/menus/message_bar-o.png) no-repeat 0 0;
+	overflow: hidden;
+	}
+.fromSelf .messSender, .fromSelf .messSubject {
+	background: url(../../images/client/menus/message_bar-b.png) no-repeat 0 0;
+	}
+.messBody {
+	padding: 5px;
+	width: 690px;
+	min-height: 260px;
+	white-space: pre-wrap;
+	background: url(../../images/client/menus/message_box-o_center.png) repeat-y 0 50%;
+	}
+.convoMessage .messBody, .messBody.quickReply {
+	min-height: 75px;
+	}
+.fromSelf .messBody {
+	background: url(../../images/client/menus/message_box-b_center.png) repeat-y 0 50%;
+	}
+.messBodyTop {
+	padding-top: 14px;
+	background: url(../../images/client/menus/message_box-o_top.png) no-repeat 0 0;
+	}
+.fromSelf .messBodyTop {
+	background: url(../../images/client/menus/message_box-b_top.png) no-repeat 0 0;
+	}
+.messBodyBottom {
+	padding-bottom: 12px;
+	background: url(../../images/client/menus/message_box-o_bottom.png) no-repeat 0 100%;
+	}
+.fromSelf .messBodyBottom {
+	background: url(../../images/client/menus/message_box-b_bottom.png) no-repeat 0 100%;
+	}
+.messBodyGrad {
+	background: url(../../images/client/menus/message_box-gradient.png) no-repeat 0 0;
+	}
+.convoMessage {
+	margin: 10px;
+	}
+.messGroup {
+	border: 1px solid #AAAAAA;
+	height: 25px;
+	overflow: hidden;
+	}
+.messGroup.open {
+	height: auto;
+	}
+.messGroup > span {
+	position: relative;
+	top: -5px;
+	}
+.messExpand {
+	display: inline-block;
+	height: 21px;
+	width: 21px;
+	margin-left: 2px;
+	margin-top: 2px;
+	background: url(../../images/client/menus/More-less_messages.png) no-repeat 0 0;
+	}
+.open .messExpand {
+	background: url(../../images/client/menus/More-less_messages.png) no-repeat 0 -21px;
+	}
+.groupSelect, .messSelect {
+	float: right;
+	}
+.viewConvo, #mess_showConvo {
+	height: 20px;
+	width: 20px;
+	float: right;
+	background: url(../../images/client/menus/View_Convo-button.png) no-repeat 0 0;
+	}
+.viewConvo:hover, #mess_showConvo:hover {
+	background: url(../../images/client/menus/View_Convo-button.png) no-repeat 0 -20px;
+	}
+.messages li {
+	list-style: none;
+	margin-left: 25px;
+	}
+.message {
+	display: inline-block;
+	width: 500px;
+	border-right: 1px groove #AAAAAA;
+	color: #FFFFFF;
+	}
+.message.read {
+	color: #AAAAAA;
+	}
+.message:active {
+	color: #FFFFFF;
+	}
+.names {
+	display: inline-block;
+	width: 210px;
+	max-height: 44px;
+	border-right: 1px groove #AAAAAA;
+	color: #AAAAAA;
+	overflow: hidden;
+	}

@@ -1,0 +1,96 @@
+/************************************************************************************************************************************************
+ * Login menu CSS code
+************************************************************************************************************************************************/
+form#login, form#signUp {
+	position:relative;
+	height: 100%;
+	width: 100%;
+	}
+#login input, #signUp input {
+	position: absolute;
+	color: #FFFFFF;
+	background-color: #000000;
+	border: 2px inset #FFFFFF;
+	}
+#UN {
+	top: 200px;
+	left: 150px;
+	}
+#Pass {
+	top: 250px;
+	left: 150px;
+	}
+#register {
+	position: absolute;
+	top: 297px;
+	left: 200px;
+	font-size: 12px;
+	}
+#submit {
+	top: 295px;
+	left: 300px;
+	position: absolute;
+	}
+#ufail {
+	position: absolute;
+	color: red;
+	top: 225px;
+	left: 400px;
+	}
+#signUp_box {
+	position: absolute;
+	top: 200px;
+	left: 150px;
+	display: none;
+	background-color: #000000;
+	height: 130px;
+	width: 345px;
+	border: 2px outset #AAAAAA;
+	}
+a#cancelPopup {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	display: block;
+	width: 20px;
+	height: 20px;
+	background: url("../../images/client/buildings/Cancel-button.png") no-repeat 0 0;
+	z-index: 3;
+	}	
+a:active#cancelPopup{
+	background: url("../../images/client/buildings/Cancel-button.png") no-repeat 0 -20px;
+	}
+#newUN {
+	top: 5px;
+	left: 5px;
+	}
+#newPass{
+	top: 35px;
+	left: 5px;
+	}
+#confPass_text {
+	position: absolute;
+	top: 20px;
+	left: 185px;
+	font-size: 12px;
+	}
+#confPass{
+	top: 35px;
+	left: 180px;
+	}
+#authCode{
+	top: 65px;
+	left: 5px;
+	}
+#signUp_button{
+	position: absolute;
+	top: 95px;
+	right: 5px;
+	width: 80px;
+	}
+#popfail {
+	position: absolute;
+	color: red;
+	top: 95px;
+	left: 5px;
+	}

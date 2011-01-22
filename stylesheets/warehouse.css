@@ -1,0 +1,33 @@
+/* *********************************************************************
+ * Warehouse CSS
+***********************************************************************/
+#Ware_resTotals {
+	position: absolute;
+	top: 200px;
+	left: 100px;
+	width: 400px;
+	text-align: center;
+	}
+#Ware_resDesc {
+	display: block;
+	text-align: left !important;
+	}
+#Ware_resPerc {
+	position: absolute;
+	top: 35px;
+	left: 170px;
+	color: #FFFFFF;
+	font-size: 20px;
+	text-shadow: 1px 1px 1px #000000;
+	}
+#Ware_resPercBarBox {
+	background: url(../../images/client/menus/Mine_Fillbox.png) no-repeat 0 0;
+	width: 410px;
+	height: 42px;
+	}
+#Ware_resPercBar {
+	background: url(../../images/client/menus/Mine_Fillbar.png) no-repeat left center;
+	margin-left: 6px;
+	padding-top: 10px;
+	height: 32px;
+	}

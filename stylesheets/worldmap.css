@@ -1,0 +1,229 @@
+/* ***********************************************************************************************************************************************
+ * Map CSS Code 
+ ************************************************************************************************************************************************/
+#mapbox {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 524px;
+	width: 781px;
+	overflow: hidden;
+	z-index: 0;
+	background: no-repeat bottom right;
+	}
+.town {
+	position: absolute;
+	height: 36px;
+	width: 65px;
+	background: no-repeat center center;
+	z-index: 1;
+	cursor: crosshair;
+	}
+.type1 {
+	background-image: url(../AIFrames/WM/town1.png);
+	}
+.type2 {
+	background-image: url(../AIFrames/WM/town2.png);
+	}
+.playerTown.type1 {
+	background-image: url(../AIFrames/WM/playerTown1.png);
+	}
+.playerTown.type2 {
+	background-image: url(../AIFrames/WM/playerTown2.png);
+	}
+/*.idTown {
+	background-image: url(../AIFrames/WM/idTown.png);
+	}
+	}*/
+.inc {
+	height: 100%;
+	width: 100%;
+	background: no-repeat center top;
+	}
+.missionF .inc {
+	background-image: url(../AIFrames/WM/incoming.png);
+	}
+.playerTown.missionF .inc {
+	background-image: url(../AIFrames/WM/incoming-player.png);
+	}
+.missionE .inc {
+	background-image: url(../AIFrames/WM/incoming-hostile.png);
+	}
+#towninfo {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	color: #FFF;
+	z-index: 3;
+	}
+#towninfo  .darkFrameBody {
+	height: 500px;
+	width: 168px;
+	}
+#towninfo .darkFrameB {
+	margin-right: 0px;
+	}
+#towninfo ul {
+	padding-left: 10px;
+	}
+.mods {
+	text-align: right;
+	padding-right: 20px;
+	}
+#townMenuPopup {
+	position: absolute;
+	height: 0px;
+	width: 0px;
+	z-index: 2;
+	filter:opacity(0);
+	opacity: 0;
+	}
+#townMenuPopup a, #townMenuPopup span {
+	display: block;
+	}
+#townMenu_content {
+	position: absolute;
+	display: inline-block;
+	}
+#townMenuPopup li {
+	list-style: none;
+	}
+#townMenuPopup ul {
+	margin: 0;
+	padding: 0;
+	}
+#ownerText {
+	border-bottom: 1px solid #FFFFFF;
+	color: #FFF;
+	}
+#townIndex {
+	display: none !important;
+	}
+#mapHelpButton {
+	position: absolute;
+	top: 0px;
+	right: 25px;
+	z-index: 100;
+	}
+#mapTileSwitcher {
+	position: absolute;
+	display: none;
+	z-index: 101;
+	}
+#mapTileSwitcher {
+	top: 0px;
+	right: 0px;
+	}
+#mapTileSwitcher .lightFrameBody {
+	position: relative;
+	padding: 13px 0;
+}
+#mapTileSwitchButton {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	height: 26px;
+	width: 25px;
+	background: url(../AIFrames/WM/buttons/gridbutton.png) no-repeat left top;
+	z-index: 102;
+	}
+#mapTileSwitchButton.active {
+	background-image: url(../AIFrames/WM/buttons/gridbuttonon.png);
+	}
+.tileDir {
+	position: absolute;
+	cursor: pointer;
+	}
+#mapTileUp, #mapTileDown {
+	left: 50%;
+	height: 10px;
+	width: 100px;
+	margin-left: -50px;
+	}
+#mapTileLeft, #mapTileRight {
+	top: 50%;
+	height: 100px;
+	width: 10px;
+	margin-top: -50px;
+	}
+#mapTileUp {
+	top: 5px;
+	background: url(../AIFrames/WM/tilenavarrow-up.png) no-repeat center center;
+	}
+#mapTileDown {
+	bottom: 0px;
+	background: url(../AIFrames/WM/tilenavarrow-down.png) no-repeat center center;
+	}
+#mapTileLeft {
+	left: 5px;
+	background: url(../AIFrames/WM/tilenavarrow-left.png) no-repeat center center;
+	}
+#mapTileRight {
+	right: 5px;
+	background: url(../AIFrames/WM/tilenavarrow-right.png) no-repeat center center;
+	}
+#mapTileDisplay {
+	position: relative;
+	height: 105px;
+	width: 120px;
+	margin: 20px;
+	overflow: hidden;
+	}
+#tileBox {
+	position: absolute;
+	}
+.maptile {
+	position: absolute;
+	height: 28px;
+	width: 38px;
+	padding-top: 5px;
+	background: no-repeat top left;
+	border: 1px solid #000;
+	text-align: center;
+	font-size: 12px;
+	}
+.maptile.active {
+	border-color: #FFF;
+	}
+.maptile.grass {
+	background-image: url(/light/AIFrames/WM/grassTile.png);
+	}
+.maptile.rock {
+	background-image: url(/light/AIFrames/WM/rockTile.png);
+	}
+.maptile.sand {
+	background-image: url(/light/AIFrames/WM/sandTile.png);
+	color: #000;
+	}
+#coordsY {
+	position: absolute;
+	bottom: 20px;
+	left: 178px;
+	padding: 189px 0px 0px;
+	border-left: 1px solid #FFF;
+	color: #FFF;
+	}
+#coordsY div {
+	height: 25px;
+	width: 35px;
+	padding-top: 10px;
+	border-top: 1px solid #FFF;
+	text-align: center;
+	}
+#coordsX {
+	position: absolute;
+	bottom: 0;
+	right: -13px;
+	color: #FFF;
+	}
+#coordsX .darkFrameB {
+	padding-left: 17px;
+	border-left: 1px solid #FFF;
+	margin-left: 0px;
+	}
+#coordsX div div {
+	display: inline-block;
+	width: 64px;
+	border-right: 1px solid #FFF;
+	text-align: center;
+	}

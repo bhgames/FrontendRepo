@@ -1,0 +1,13 @@
+#RY_effectBox {
+	position: absolute;
+	top: 150px;
+	left: 220px;
+	height: 50px;
+	padding: 5px;
+	border: 1px solid #FFF;
+	font-size: 16px;
+	}
+#RY_percentage {
+	font-size: 30px;
+	text-align: center;
+	}

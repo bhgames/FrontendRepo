@@ -1,0 +1,366 @@
+/************************************************************************************************************************************************
+ * Town view CSS Code
+************************************************************************************************************************************************/
+/*******************************************************************
+ ** Building CSS
+*******************************************************************/
+#townview {
+	height: 100%;
+	width: 100%;
+	}
+#townback, #townview {
+	position: absolute;
+	top: 0;
+	left: 0;
+	}
+.bldg {
+	position: absolute;
+	}
+.bldg img {
+	position: absolute;
+	right: 0px;
+	bottom: 0px;
+	display: block;
+	min-height: 33px;
+	min-width: 55px;
+	cursor: pointer;
+	}
+img.lvlImage  {
+	bottom: -8px;
+	right: -11px;
+	z-index: -1;
+	}
+.notMine img.lvlImage  {
+	bottom: -4px;
+	right: -5px;
+	z-index: -1;
+	}
+.emptylot, .buildlot {
+	background: no-repeat left bottom;
+	}
+.emptylot img {
+	background: url(../AIFrames/buildings/HoverOverTile.png) no-repeat left bottom;
+	} 
+.locked, .locked img  {
+	display: none;
+	}
+#pos0, #pos1, #pos2, #pos3 {
+	z-index: 4;
+	}
+#pos0 img:hover, #pos1 img:hover, #pos2 img:hover, #pos3 img:hover {
+	}
+#pos0 {
+	top: 138px;
+	left: 388px;
+	background: transparent !important;
+	z-index: 1;
+	}
+#pos1 {
+	top: 190px;
+	left: 290px;
+	background: transparent !important;
+	z-index: 1;
+	}
+#pos2 {
+	top: 138px;
+	left: 514px;
+	background: transparent !important;
+	z-index: 1;
+	}
+#pos3 {
+	top: 190px;
+	left: 610px;
+	background: transparent !important;
+	z-index: 1;
+	}
+#pos4{
+	top: 172px;
+	left: 419px;
+	z-index: 2;
+	}
+#pos5{
+	top: 283px;
+	left: 327px;
+	z-index: 2;
+	}
+#pos6{
+	top: 338px;
+	left: 421px;
+	z-index: 4;
+	}
+#pos7{
+	top: 283px;
+	left: 510px;
+	z-index: 2;
+	}
+#pos8{
+	top: 254px;
+	left: 421px;
+	z-index: 3;
+	}
+#pos9{
+	top: 285px;
+	left: 210px;
+	z-index: 2;
+	}
+#pos10{
+	top: 320px;
+	left: 145px;
+	z-index: 2;
+	}
+#pos11{
+	top: 360px;
+	left: 207px;
+	z-index: 3;
+	}
+#pos12{
+	top: 400px;
+	left: 268px;
+	z-index: 2;
+	}
+#pos13{
+	top: 436px;
+	left: 330px;
+	z-index: 2;
+	}
+#pos14{
+	top: 315px;
+	left: 625px;
+	z-index: 2;
+	}
+#pos15{
+	top: 353px;
+	left: 689px;
+	z-index: 3;
+	}
+#pos16{
+	top: 392px;
+	left: 627px;
+	z-index: 2;
+	}
+#pos17{
+	top: 433px;
+	left: 566px;
+	z-index: 2;
+	}
+#pos18{
+	top: 468px;
+	left: 505px;
+	z-index: 2;
+	}
+/*******************************************************************
+ ** Build Building Menu CSS
+*******************************************************************/
+#town_buildBldgMenu {
+	position: absolute;
+	top: 0px;
+	left: -200px;
+	color: #FFF;
+	z-index: 100;
+	}
+#town_buildBldgMenu .darkFrameB {
+	margin-left: 0px;
+	}
+#town_buildBldgList {
+	height: 480px;
+	width: 150px;
+	overflow: auto;
+	}
+#town_buildBldgList li{
+	position: relative;
+	list-style: none;
+	border-bottom: 1px solid #FFFFFF;
+	min-height: 50px;
+	margin-left: 5px;
+	}
+.bldgPic {
+	display: block;
+	}
+a.buildBldgButton {
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+	display: block;
+	height: 25px;
+	width: 75px;
+	background: url("../../images/client/buildings/Build_Ppl-button.png") no-repeat 0 0;
+	}
+a:hover.buildBldgButton {
+	background-position: 0 -25px;
+	}
+a:active.buildBldgButton {
+	background-position: 0 -50px;
+	}
+#town_buildBldgPopup {
+	position: absolute;
+	top: 100px;
+	left: 250px;
+	display: none;
+	color: #FFF;
+	z-index: 100;
+	}
+#town_buildBldgPopup .popFrameBody {
+	height: 190px;
+	width: 300px;
+	}
+#town_error {
+	position: absolute;
+	top: 180px;
+	left: 20px;
+	color: red;
+	}
+#town_cancelPopup {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	display: block;
+	width: 28px;
+	height: 33px;
+	background: url("../AIFrames/Content Frame Elements/close.png") no-repeat 0 0;
+	}	
+#town_bldgRes {
+	position: absolute;
+	top: 25px;
+	left: 100px;
+	display: block;
+	height: 70px;
+	width: 180px;
+	text-align: right;
+	}
+#town_bldgResMetal, #town_bldgResManMade, #town_bldgResTimber, #town_bldgResFood  {
+	display:block;
+	float: left;
+	width: 50px;
+	height: 25px;
+	padding: 5px 5px 0px 30px;
+	border: 1px solid #FFFFFF;
+	}
+#town_bldgResMetal, #town_bldgResManMade {
+	clear: left;
+	}
+#town_bldgResMetal {
+	background: url(../AIFrames/icons/MetalIcon.png) no-repeat 2px 2px;
+	}
+#town_bldgResManMade {
+	background: url(../AIFrames/icons/PlasticIcon.png) no-repeat 2px 2px;
+	}
+#town_bldgResTimber {
+	background: url(../AIFrames/icons/TimberIcon.png) no-repeat 2px 2px;
+	}
+#town_bldgResFood {
+	background: url(../AIFrames/icons/FoodIcon.png) no-repeat 2px 2px;
+	}
+#town_bldgPic {
+	max-height: 80px;
+	}
+#town_bldgDesc {
+	position: absolute;
+	top: 100px;
+	height: 80px;
+	width: 300px;
+	overflow: auto;
+	}
+#town_buildBldg {
+	position: absolute;
+	bottom: 20px;
+	right: 5px;
+	}
+/************************************************************************************************************************************************
+ * Town list CSS Code
+************************************************************************************************************************************************/
+#townlist {
+	position: absolute;
+	top: 11px;
+	left: 21px;
+	display: none;
+	max-height: 500px;
+	z-index: 10;	
+	}
+#townlist, #list ul {
+	margin:0px;
+	padding: 0px;
+	}
+#list {
+	padding: 0px 10px 10px;
+	display: block;
+	position: relative;
+	}
+#list a {
+	color: #FFFFFF;
+	text-decoration: none;
+	}
+#list li {
+	width: 140px;
+	height: 35px;
+	margin-top: 10px;
+	padding-top: 5px;
+	display: block;
+	float: left;
+	background: url(../../images/client/client-dropdown_town_background.png) no-repeat top right;
+	position: relative;
+	}
+#list a:hover {
+	text-decoration: underline;
+	}
+#list span {
+	display: none;
+	}
+.firstcol {
+	clear: left;
+	}
+.noShow {
+	display: none;
+	}
+/************************************************************************************************************************************************
+ * Building Server CSS Code
+************************************************************************************************************************************************/
+#town_bldgBldgsPopup {
+	position: absolute;
+	bottom: 3px;
+	left: 200px;
+	z-index: 3;
+	color: #FFF;
+	cursor: default;
+	}
+#town_bldgBldgsBar {
+	display: none;
+	height: 20px;
+	width: 400px;
+	background: url("../AIFrames/Content Frame Elements/BldgServerBar.png") no-repeat top left;
+	font-size: 20px;
+	text-align: center;
+	}
+#town_bldgBldgsList {
+	display: none;
+	max-height: 300px;
+	padding-bottom: 15px;
+	border: 1px solid #CCC;
+	border-width: 0 1px;
+	}
+#town_bldgBldgsList ul {
+	padding-bottom: 5px;
+	}
+#town_bldgBldgsList li {
+	width: 100%;
+	margin: 2px 0;
+	list-style: none;
+	}
+.flexbox #town_bldgBldgsList ul {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-box-pack: start;
+	-webkit-box-align: start;
+
+	display: -moz-box;
+	-moz-box-orient: vertical;
+	-moz-box-pack: start;
+	-moz-box-align: start;
+	
+	display: box;
+	box-orient: vertical;
+	box-pack: start;
+	box-align: start;
+	}
+#town_warehouseBar {
+	display: none;
+	}

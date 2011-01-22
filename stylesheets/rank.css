@@ -1,0 +1,79 @@
+/************************************************************************************************************************************************
+ * CSS code for Rank view
+************************************************************************************************************************************************/
+#Rank_outerbox {
+	padding: 5px;
+	color: #FFF;
+	}
+#Rank_tabBar div {
+	display: inline-block;
+	height: 25px;
+	width: 25px;
+	}
+#Rank_playerTab {
+	background: url(../AIFrames/buttons/playerrank.png) no-repeat center center;
+	}
+#Rank_leagueTab {
+	background: url(../AIFrames/buttons/leaguerank.png) no-repeat center center;
+	}
+#Rank_BHMTab {
+	background: url(../AIFrames/buttons/battlehardrank.png) no-repeat center center;
+	}
+#Rank_ranks ol {
+	height: 450px;
+	width: 750px; 
+	padding-left: 10px;
+	overflow: auto;
+	}
+#Rank_key {
+	position: relative;
+	left: -10px;
+	font-size: 14px;
+	}
+.pNameKey, .lNameKey, .bNameKey {
+	margin-left: 15px;
+	}
+.lTagKey {
+	margin-left: 175px;
+	}
+.pRank, .lRank, .bRank {
+	position: relative;
+	height: 22px;
+	padding-top: 3px;
+	border-bottom: 1px solid #FFFFFF;
+	}
+.topBor {
+	border-top: 1px solid #FFFFFF;
+	}
+.player {
+	font-weight: bold;
+	}
+.pName, .lName, .bName {
+	position: absolute;
+	left: 30px;
+	}
+.lName {
+	left: 35px;
+	}
+.BHM, .noBHM {
+	display: inline-block;
+	height: 25px;
+	width: 25px;
+	margin-right: 5px;
+	float: left;
+	}
+.BHM {
+	background: url(../AIFrames/buttons/battlehardrank.png) no-repeat center center;
+	}
+.lTag {
+	position: absolute;
+	left: 300px;
+	}
+.pCSL, .lCSL, .pCSLKey, .lCSLKey {
+	width: 98px;
+	float: right;
+	}
+.bBPKey, .bBP {
+	width: 120px;
+	float: right;
+	}

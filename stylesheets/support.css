@@ -1,0 +1,44 @@
+#support_outerbox {
+	padding: 5px;
+	color: #FFF;
+	}
+#support_outerbox > .darkFrameBody {
+	height: 480px;
+	}
+#support_outerbox label {
+	font-size: 14px;
+	}
+#support_error {
+	height: 14px;
+	color: red;
+	}
+#support_error.success {
+	color: limeGreen;
+	}
+#support_description {
+	display: block;
+	width: 745px;
+	height: 240px;
+	background: transparent;
+	color: #FFFFFF;
+	}
+#support_submit {
+	height: 41px;
+	width: 159px;
+	background: url(../AIFrames/buttons/Send-Mess.png) no-repeat 0 -41px;
+	}
+#support_submit:hover {
+	background-position: 0 0;
+	}
+#support_submit:active {
+	background-position: 0 -82px;
+	}
+#support_help {
+	position: absolute;
+	top: 80px;
+	right: 15px;
+	margin: 0px;
+	}
+#support_notes {
+	font: 10px Verdana, Geneva, Arial, Helvetica, sans-serif;
+	}

@@ -1,0 +1,39 @@
+/*************************************************************************************************************************************************
+ * Raid list CSS Code 
+ ************************************************************************************************************************************************/
+#attacklist {
+	position: absolute;
+	top: 21px;
+	left: 21px;
+	z-index: 20;
+	}
+#attacklist .popFrameBody {
+	max-height: 450px;
+	}
+#incomming_attacks, #outgoing_attacks {
+	display: table-cell;
+	padding: 5px;
+	border: 1px solid #FFFFFF;
+	}
+#attacklist li {
+	width: 100%;
+	list-style: none;
+	}
+.raidID {
+	display: none;
+	}
+.raidETA {
+	text-align: right;
+	}
+.recall {
+	position: relative;
+	top: 5px;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	margin-right: 5px;
+	background: url("../../images/client/buildings/Cancel-button.png") no-repeat 0 0;
+	}
+:active.recall {
+	background: url("../../images/client/buildings/Cancel-button.png") no-repeat 0 -20px;;
+	}

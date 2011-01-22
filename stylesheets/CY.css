@@ -1,0 +1,65 @@
+/* *********************************************************************
+ * Construction Yard CSS
+***********************************************************************/
+#CY_queues {
+	position: absolute;
+	top: 5px;
+	left: 4px;
+	color: #000000;
+	}
+#CY_queues .lightFrameBody {
+	height: 290px;
+	}
+#CY_buildQueue, #CY_deconQueue {
+	display: block;
+	float: left;
+	height: 295px;
+	width: 380px;
+	border: 1px solid #000000;
+	overflow: auto;
+	text-align: center;
+	}
+#CY_deconQueue {
+	margin-left: -1px;
+	}
+#CY_queues li {
+	list-style: none;
+	text-align: left;
+	}
+.bldgTicksToFinish, .bldgName, .cancelButton {
+	display: inline;
+	margin: 0px 5px;
+	}
+.bldgID, .bldgListID {
+	display: none;
+	}
+.bldgTicksToFinish {
+	position: relative;
+	top: 10px;
+	float: right;
+	}
+.cancelButton a {
+	position: relative;
+	top: 5px;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	background: url("../../images/client/buildings/Cancel-button.png") no-repeat 0 0;
+	}
+.cancelButton a:active{
+	background: url("../../images/client/buildings/Cancel-button.png") no-repeat 0 -20px;
+	}
+.noCancel a {
+	background: transparent !important;
+	cursor: default;
+	}
+#CY_instaBuild {
+	top: 10px;
+	right: 375px;
+	background-color: #000000;
+	z-index: 1;
+	}
+#CY_ultraBuild {
+	top: -180px;
+	left: 180px;
+	}

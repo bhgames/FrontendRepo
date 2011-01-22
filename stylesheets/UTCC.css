@@ -1,0 +1,215 @@
+/***********************************************************************
+ * Unit Template Ccreation Center CSS
+***********************************************************************/
+#UTCC_darkFrame {
+	position: relative;
+	margin: 5px;
+	}
+#UTCC_darkFrame .darkFrameBody {
+	height: 495px;
+	}
+#UTCC_AUinfo {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	width: 265px;
+	}
+#UTCC_AUname {
+	position: relative;
+	left: 25px;
+	}
+#UTCC_AUgraphic {
+	position: relative;
+	left: 28px;
+	}
+#UTCC_AUstatBox {
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	}
+#UTCC_AUstatBox .lightFrameBody {
+	width: 330px;
+	}
+#UTCC_AUstatBox input {
+	width: 40px;
+	}
+#UTCC_AUweapStats, #UTCC_AUstats{
+	display: inline-block;
+	text-align: right;
+	color: #000000;
+	}
+#UTCC_AUFP, #UTCC_AUAmmo, #UTCC_AUAccu {
+	display: block;
+	height: 20px;
+	margin: 0;
+	}
+
+#UTCC_AUcargo {
+	position: absolute;
+	top: 20px;
+	right: 10px;
+	text-align: right;
+	}
+#UTCC_AUPoints {
+	color: #000000;
+	text-align: right;
+	margin-right: 25px;
+	font-size: 16px;
+	}
+.tooMany {
+	color: red;
+	}
+
+#UTCC_unitInfoBox {
+	position: absolute;
+	bottom: 10px;
+	left: 5px;
+	}
+#UTCC_AUweapImages {
+	width: 300px;
+	height: 210px;
+	padding: 10px 15px;
+	}
+#UTCC_AUweapImages img.active {
+	height: 98px;
+	width: 98px;
+	border: 2px ridge #AAAAAA;
+	}
+#UTCC_unitDescBox {
+	height: 100px;
+	width: 330px;
+	overflow: auto;
+	}
+#UTCC_AUpic {
+	float: left;
+	height: 100px;
+	width: 100px;
+	}
+#UTCC_RankPic {
+	float: left;
+	height: 25px;
+	width: 25px;
+	}
+#UTCC_AUnameInput {
+	width: 150px;
+	}
+#UTCC_weapons {
+	position: absolute;
+	right: 5px;
+	bottom: 153px;
+	}
+#UTCC_unitDesc {
+	display: inline;
+	}
+#UTCC_fail {
+	position: absolute;
+	bottom: 380px;
+	left: 5px;
+	color: white;
+	}
+#UTCC_weaponInfo {
+	width: 250px;
+	height: 130px;
+	}
+#UTCC_AUweapInfoStats {
+	display: block;
+	}
+#UTCC_AUweapInfoStats div {
+	color: #000000;
+	background: url("../AIFrames/Content Frame Elements/Light-body.png") repeat;
+	}
+#UTCC_AUweapInfoStats img {
+	vertical-align: middle;
+	}
+#UTCC_AUweapFP, #UTCC_AUweapAmmo, #UTCC_AUweapAccu, #UTCC_AUweapPoints {
+	display: inline-block;
+	height: 20px;
+	margin: 1px;
+	}
+#UTCC_weaponImage {
+	float: left;
+	}
+#UTCC_appWeapon {
+	position: absolute;
+	top: 260px;
+	left: 375px;
+	display: inline-block;
+	height: 49px;
+	width: 93px;
+	background: url(../AIFrames/buttons/Assign-UTCC.png) no-repeat 0 -49px;
+	}
+#UTCC_appWeapon.clear {
+	background-image: url(../AIFrames/buttons/Clear-UTCC.png);
+	}
+#UTCC_appWeapon:hover {
+	background-position: 0 0;
+	}
+#UTCC_appWeapon:active {
+	background-position: 0 -98px;
+	}
+#UTCC_AUsave-load {
+	position: absolute;
+	bottom: 0px;
+	right: 105px;
+	display: block;
+	height: 150px;
+	}
+#UTCC_AUsave-load a {
+	position: absolute;
+	right: -98px;
+	display: block;
+	width: 93px;
+	}
+#UTCC_AUlist {
+	min-width: 150px;
+	}
+#UTCC_newAU {
+	top: 5px;
+	height: 27px;
+	background: url(../AIFrames/buttons/New-UTCC.png) no-repeat 0 -27px;
+	}
+#UTCC_newAU:hover {
+	background-position: 0 0;
+	}
+#UTCC_newAU:active {
+	background-position: 0 -54px;
+	}
+#UTCC_loadAU {
+	top: 32px;
+	height: 26px;
+	background: url(../AIFrames/buttons/Load-UTCC.png) no-repeat 0 -26px;
+	}
+#UTCC_loadAU:hover {
+	background-position: 0 0;
+	}
+#UTCC_loadAU:active {
+	background-position: 0 -52px;
+	}
+#UTCC_deleteAU {
+	top: 58px;
+	height: 27px;
+	background: url(../AIFrames/buttons/Del-UTCC.png) no-repeat 0 -27px;
+	}
+#UTCC_deleteAU:hover {
+	background-position: 0 0;
+	}
+#UTCC_deleteAU:active {
+	background-position: 0 -54px;
+	}
+#UTCC_saveAU {
+	top: 85px;
+	height: 32px;
+	background: url(../AIFrames/buttons/Save-UTCC.png) no-repeat 0 -32px;
+	}
+#UTCC_saveAU:hover {
+	background-position: 0 0;
+	}
+#UTCC_saveAU:active {
+	background-position: 0 -64px;
+	}
+.noSave {
+	background-position: 0 -64px !important;
+	filter:opacity(50);
+	opacity: 0.5;
+	cursor: default;
+	}
