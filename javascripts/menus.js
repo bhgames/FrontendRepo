@@ -2,8 +2,10 @@
 							   Functions for the Account Settings Menu
 \***********************************************************************************************************/
 function build_ASM() {
+	console.log(currUI);
 	ASM.oldUI = currUI;
 	currUI = build_ASM;
+	console.log(ASM.oldUI);
 	
 	$("#accountPreferences").html(ASM.HTML);
 	$("#ASM_window").html(ASM.acct);
