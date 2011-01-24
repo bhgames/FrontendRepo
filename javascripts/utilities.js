@@ -855,7 +855,7 @@ function inc_bldg_ticks(thingToTick) {
 					thingToTick.deconstruct = false;
 					thingToTick.lvl = 0;
 					thingToTick.lot = -1;
-					thingToTick.update = true;
+					thingToTick.update = true; //set update flag
 				} else if(thingToTick.lvlUps < 1) {
 					BUI.build();
 					clearInterval(thingToTick.bldgTicker);
@@ -882,8 +882,7 @@ function inc_queue_ticks(thingToTick) {
 				if(thingToTick.currTicks >= thingToTick.ticksPerUnit && thingToTick.AUnumber > 0) {  //if a unit has finished
 					thingToTick.AUNumber--;
 					thingToTick.currTicks -= thingToTick.ticksPerUnit;
-					clearTimeout(player.timer);
-					player.timer = setTimeout(function() {load_player(player.league, true, ((currUI===draw_bldg_UI&&BUI.active.name[0] == "Arms Factory")?true:false));}, (player.gameClockFactor * 1000));
+					thingToTick.update = true;
 				} else if(thingToTick.AUnumber<1) clearInterval(thingToTick.queueTicker);
 			}, 1000);
 }
@@ -900,18 +899,12 @@ function tick_raids(thingToTick) {
 							if(!getSRs) {
 								$.each(player.towns,function(j,w) {
 									if(w.townName == v.attackingTown || w.townName == v.defendingTown) {
-										getSRs = true;
+										SR.update = true;
 										return false;
 									}
 								});
 							}
-							clearTimeout(thingToTick.updateTimeout);
-							thingToTick.updateTimeout = setTimeout(function() {
-																		get_raids(true);
-																		if(getSRs) get_SRs();
-																		load_player(player.league,true,((currUI===draw_bldg_UI&&BUI.active.name[0] == "Headquarters")?true:false));
-																		get_map();
-																	}, (player.gameClockFactor * 1000));
+							thingToTick.update = true;
 						}
 					});
 				} else {
@@ -930,8 +923,7 @@ function tick_trades(thingToTick) {
 								if(v.currTicks == 0 && !v.stockMarketTrade) {
 									thingToTick[i].currTicks = thingToTick[i].intervalTime;
 									thingToTick[i].timesDone++;
-									clearTimeout(thingToTick.update);
-									thingToTick.update = setTimeout(function() {get_all_trades();}, (player.gameClockFactor * 1000));
+									thingToTick.update = true;
 								}
 							}
 						} else if(v.ticksToHit != "Updating") {
@@ -941,8 +933,7 @@ function tick_trades(thingToTick) {
 									thingToTick[i].ticksToHit = thingToTick[i].totalTicks;
 									thingToTick[i].tradeOver = true;
 								}
-								clearTimeout(thingToTick.update);
-								thingToTick.update = setTimeout(function() {get_all_trades();}, (player.gameClockFactor * 1000));
+								thingToTick.update = true;
 							}
 						}
 					});
