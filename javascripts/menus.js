@@ -59,6 +59,7 @@ function build_ASM() {
 		var getPath = "/AIWars/GodGenerator?reqtype=command&command=";
 		$(".townNameInput").each(function(i,v) {
 			if($(v).val() != player.towns[i].townName) {
+				player.towns[i].townName = $(v).val();
 				getPath += player.command + ".renameTown(" + player.towns[i].townID + "," + $(v).val() + ");";
 			}
 		});
