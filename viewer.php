@@ -69,6 +69,9 @@
 					<div id='console_expandBox'>
 						<input type='checkbox' id='console_expand' /><label for='console_expand'> Expand</label>
 					</div>
+					<div id='console_stopBox'>
+						<input type='checkbox' id='console_stop' /><label for='console_stop'> Freeze Output</label>
+					</div>
 					<a href='javascript:;' id='output_clear'></a>
 				</div>
 			</div></div></div>
