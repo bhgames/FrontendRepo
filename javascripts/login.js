@@ -289,6 +289,7 @@ function load_player(type, reloadTown, reloadUI) {
 						player.curtown = player.towns[0];
 					}
 					
+					get_messages(true);
 					build_raid_list();
 					BUI.build();
 					set_tickers();	

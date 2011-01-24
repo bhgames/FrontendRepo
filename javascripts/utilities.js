@@ -899,10 +899,13 @@ function tick_raids(thingToTick) {
 							if(!getSRs) {
 								$.each(player.towns,function(j,w) {
 									if(w.townName == v.attackingTown || w.townName == v.defendingTown) {
-										SR.update = true;
+										SR.update = getSRs = true;
 										return false;
 									}
 								});
+							}
+							if(!getMap) {
+								if(v.type.match(/invasion|debris/)) map.update = getMap = true;
 							}
 							thingToTick.update = true;
 						}

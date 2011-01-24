@@ -10,6 +10,9 @@ function draw_bldg_UI() {
 	BUI.queue = {};
 	BUI.bldgQueue = {};
 	var bldgInfo = $.grep(player.curtown.bldg, get_bldg)[0];
+	
+	if(bldgInfo.update) load_player(player.league,true,true); //if an update is queued, update the player object, and reload the current UI
+	
 	display_output(false,"Connected!");
 	display_output(false,"Collecting Building data...");
 	$("#window").html(BUI.head);
