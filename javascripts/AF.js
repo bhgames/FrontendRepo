@@ -1,4 +1,12 @@
 function AF_UI(bldgInfo) {
+	//do update check
+	$.each(bldgInfo.Queue, function(i,v) {
+		if(v.update) {
+			load_player(player.league,true,true);
+			return false;
+		}
+	});
+	
 	var getEffect = new make_AJAX();
 	getEffect.callback = function(response) {
 		$("#BUI_extras").text(response);

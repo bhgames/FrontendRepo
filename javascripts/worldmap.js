@@ -98,6 +98,9 @@ function build_map() {
 	$("#window").html(map.origHTML);
 	map.box.id = $("#mapbox");
 	
+	//do update checks
+	if(map.update) get_map();
+	
 	var x = player.curtown.x;
 	var y = player.curtown.y;
 	if(map.focus) {
