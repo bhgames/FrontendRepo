@@ -1,6 +1,23 @@
 function show_town() {
 	currUI = show_town;	//set current UI function to be called by the tickers
 	$("#window").contents().unbind();
+	//do update check
+	$.each(player.curtown.bldg, function(i,v) {
+		if(v.update) {
+			load_player(player.league,true,true);
+			return false;
+		} else {
+			var noUpdate = true;
+			$.each(v.Queue, function(j,w) {
+				if(w.update) {
+					load_player(player.league,true,true);
+					noUpdate = false;
+					return false;
+				}
+			});
+			return noUpdate;
+		}
+	});
 	get_buildable();
 	$("#cityname").html(function() { 
 								if(player.curtown.townID == player.capitaltid) {
@@ -316,7 +333,6 @@ function town_list() {
 		player.curtown = $.grep(player.towns, function(v) { //set curtown to the selected town
 				return (that.siblings("span").text() == v.townID);
 			})[0]; //we don't want an array since we only have one object.
-		map.HTML = map.origHTML;
 		$("#townlist").fadeOut();
 		$("body").unbind('click');
 		that.unbind('click');
@@ -351,6 +367,9 @@ function update_bldg_timers() {
 			var ticksTotal = 0;
 			$(".bldgListID").each(function(i,v){
 				$.each(BUI.CY.bldgServer, function(ind, x) {
+					//do update check
+					if(x.update) load_player(player.league, true,true);
+					
 					if($(v).text() == x.lotNum) { //we found the building in bldgServer
 						var ticks;
 						if(x.lvlUps > 1) {	//if we have multiple level ups, we have to determine which one is last

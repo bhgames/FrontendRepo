@@ -240,8 +240,13 @@ function HQ_UI(bldgInfo) {
 				getCSinfo.callback = function(response) {
 					$("#HQ_armySizeTotal span").text(response);
 					$("#HQ_window").fadeIn(100);
-					$("#HQ_scrollBox").jScrollPane({showArrows:true,hideFocus:true});
+					if($("#HQ_scrollBox").data('jsp')) $("#HQ_scrollBox").data('jsp').reinitialise();
+					else $("#HQ_scrollBox").jScrollPane({showArrows:true,hideFocus:true});
 				};
+				setTimeout(function() {
+								$("#HQ_window").fadeIn(100);
+								if(!$("#HQ_scrollBox").data('jsp')) $("#HQ_scrollBox").jScrollPane({showArrows:true,hideFocus:true});
+							},3000);
 				getCSinfo.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command + ".getCS(" + player.curtown.townID + ");");
 				
 				$("#HQ_CSL span").text(player.curtown.CSL);

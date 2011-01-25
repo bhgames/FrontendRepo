@@ -721,6 +721,10 @@ function set_bottom_links() {
 		do_fade(build_league_UI,"amber",$(this));
 	});
 	$("#IO").unbind('click').click(function() {
+		if(SR.update) {
+			get_raids(true);
+			get_SRs();
+		}
 		$("#attacklist").animate({"opacity":"toggle","height":"toggle"},"fast");
 	});
 	$("#CS").unbind('click').click(function() {
@@ -981,14 +985,21 @@ function tick_research(thingToTick) {
 }
 
 function tick_res(thingToTick) {
+	var time = 9999999;
+	$.each(thingToTick.resInc, function(i,v) {
+		if(v > 0) {
+			if(time > 1/v) time = 1/v;
+		}
+	});
+	if(time < 0.2) time = 0.2;
 	return setInterval(function() {
 				$.each(thingToTick.res, function(i, v) {
 					if(v >= thingToTick.resCaps[i]) {
 						thingToTick.res[i] = thingToTick.resCaps[i];
 					} else {
-						thingToTick.res[i] += (thingToTick.resInc[i]/5);
+						thingToTick.res[i] += (thingToTick.resInc[i]*time);
 					}
 				});
 				display_res();
-			}, 200);
+			}, time*1000);
 }

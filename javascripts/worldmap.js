@@ -15,72 +15,76 @@ var map = {};
 /**************************************************************************************************************\
 *************************************************Map Functions**************************************************
 \**************************************************************************************************************/
-
+var gettingMap = false;
 function get_map() {
 	try {
-		display_output(false,"Loading Worldmap...");
-		var mapget = new make_AJAX();
-		
-		mapget.callback = function(response) {
-			map = $.parseJSON(response);
-			if(map.towns.length < 1) {
-				display_output(true,"Error Loading Worldmap!",true);
-				display_output(false,"Retrying...");
-				throw "No Towns";
-			}
-			var maxX = 0;
-			var maxY = 0;
-			$.each(map.tiles, function(i, v) {
-				if(Math.abs(v.centerx) > maxX) maxX = Math.abs(v.centerx);
-				if(Math.abs(v.centery) > maxY) maxY = Math.abs(v.centery);
-			});
-			map.tilesWide = 0;
-			var j = 0;
-			var temp = [];
-			for(var y = maxY;y >= (-maxY);y -= 9) {
-				temp[j] = [];
-				for(var x = (-maxX);x <= maxX;x += 9) {
-					$.each(map.tiles, function(i, v) {
-						if(v.centerx == x && v.centery == y) {
-							temp[j].push(v);
-							return false;
-						}
-					});
-				}
-				if(temp[j].length>map.tilesWide) map.tilesWide = temp[j].length
-				j++;
-			}
-			map.tiles = temp;
-			map.x = 0;
-			map.y = 0;
+		if(!gettingMap) {
+			gettingMap = true;
+			display_output(false,"Loading Worldmap...");
+			var mapget = new make_AJAX();
 			
-			map.origHTML = "<div id='townMenuPopup'>\
-							</div>\
-							<div id='mapHelpButton' class='pplHelp'></div>\
-							<div id='mapTileSwitchBox'>\
-								<div id='mapTileSwitchButton'></div>\
-								<div id='mapTileSwitcher'>\
-									<div class='lightFrameBody'>\
-										<div id='mapTileUp' class='tileDir'></div>\
-										<div id='mapTileDown' class='tileDir'></div>\
-										<div id='mapTileLeft' class='tileDir'></div>\
-										<div id='mapTileRight' class='tileDir'></div>\
-										<div id='mapTileDisplay'></div>\
-									</div>\
-									<div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>\
+			mapget.callback = function(response) {
+				map = $.parseJSON(response);
+				if(map.towns.length < 1) {
+					display_output(true,"Error Loading Worldmap!",true);
+					display_output(false,"Retrying...");
+					throw "No Towns";
+				}
+				var maxX = 0;
+				var maxY = 0;
+				$.each(map.tiles, function(i, v) {
+					if(Math.abs(v.centerx) > maxX) maxX = Math.abs(v.centerx);
+					if(Math.abs(v.centery) > maxY) maxY = Math.abs(v.centery);
+				});
+				map.tilesWide = 0;
+				var j = 0;
+				var temp = [];
+				for(var y = maxY;y >= (-maxY);y -= 9) {
+					temp[j] = [];
+					for(var x = (-maxX);x <= maxX;x += 9) {
+						$.each(map.tiles, function(i, v) {
+							if(v.centerx == x && v.centery == y) {
+								temp[j].push(v);
+								return false;
+							}
+						});
+					}
+					if(temp[j].length>map.tilesWide) map.tilesWide = temp[j].length
+					j++;
+				}
+				map.tiles = temp;
+				map.x = 0;
+				map.y = 0;
+				
+				map.origHTML = "<div id='townMenuPopup'>\
 								</div>\
-							</div>\
-							<div id='mapbox'></div>";
-			map.box = {};
-						
-			$("#wm").unbind('click').click(function() {
-				map.focus = false;
-				do_fade(build_map, "amber");
-			});
-			display_output(false,"Worldmap Loaded!");
-		};
-		
-		mapget.get("/AIWars/GodGenerator?reqtype=world_map&league="+player.league);
+								<div id='mapHelpButton' class='pplHelp'></div>\
+								<div id='mapTileSwitchBox'>\
+									<div id='mapTileSwitchButton'></div>\
+									<div id='mapTileSwitcher'>\
+										<div class='lightFrameBody'>\
+											<div id='mapTileUp' class='tileDir'></div>\
+											<div id='mapTileDown' class='tileDir'></div>\
+											<div id='mapTileLeft' class='tileDir'></div>\
+											<div id='mapTileRight' class='tileDir'></div>\
+											<div id='mapTileDisplay'></div>\
+										</div>\
+										<div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>\
+									</div>\
+								</div>\
+								<div id='mapbox'></div>";
+				map.box = {};
+							
+				$("#wm").unbind('click').click(function() {
+					map.focus = false;
+					do_fade(build_map, "amber");
+				});
+				gettingMap = false;
+				display_output(false,"Worldmap Loaded!");
+			};
+			
+			mapget.get("/AIWars/GodGenerator?reqtype=world_map&league="+player.league);
+		}
 	} catch(e) {
 		display_output(true,"Error loading World Map!",true);
 		display_output(true,e);

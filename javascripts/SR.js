@@ -10,7 +10,9 @@ function get_SRs() {
 			display_output(false,"Loading Status Reports...");
 			SRget.callback = function(response) {
 				SR.reports = $.parseJSON(response);
-				if(SR.reports != null) {
+				SR.update = false;
+				gettingSRs = false;
+				if(SR.reports) {
 					SR.reports.reverse();
 					check_for_unread();
 				}
@@ -18,7 +20,6 @@ function get_SRs() {
 					do_fade(build_SR_menu, "amber");
 				});
 				display_output(false,"Status Reports Loaded!");
-				gettingSRs = false;
 			};
 			
 			SRget.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command + ".getUserSR();");
@@ -34,6 +35,12 @@ function get_SRs() {
 function build_SR_menu() {
 	currUI = build_SR_menu;	//set current UI function to be called by the tickers
 	$("#window").contents().unbind();
+	//do update checks
+	if(SR.update) {
+		get_SRs();
+		get_raids(true);
+	}
+	
 	$("#window").html(SR.HTML);
 	SR.api = $("#SR_window").css("display","none").jScrollPane({showArrows:true,hideFocus:true}).data('jsp');
 	$("#SR_mainTabs a, #SR_secondaryTabs a").die('click').live('click',function() {

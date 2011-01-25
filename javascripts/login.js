@@ -235,6 +235,19 @@ function load_player(type, reloadTown, reloadUI) {
 		playerget.callback = function(response) {
 			if(!response.match(/invalid/i)) { //if the user entered a valid UN and Pass
 				try {
+					//update checks
+					if(player.raids.update && !SR.update) {
+						get_raids(true);
+					}
+					if(SR.update) {
+						get_SRs();
+						get_raids(true);
+					}
+					if(map.update) {
+						map.update = false;
+						get_map();
+					}					
+					
 					$.extend(player, $.parseJSON(response));
 					
 					if(!player.towns) throw "No Towns";
@@ -288,20 +301,8 @@ function load_player(type, reloadTown, reloadUI) {
 					} else {
 						player.curtown = player.towns[0];
 					}
-					//update checks
-					if(SR.update) {
-						SR.update = false;
-						get_SRs();
-					}
-					if(map.update) {
-						map.update = false;
-						get_map();
-					}
-					if(player.raids.update) {
-						player.raids.update = false;
-						get_raids(true);
-					}
 					
+					get_ranks(true);
 					get_messages(true);
 					build_raid_list();
 					BUI.build();

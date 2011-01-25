@@ -1,10 +1,7 @@
-/*
-TODO:
-	Add type checking to interval and number inputs
-	Add code that automatically sets the current tab to the trade tab when it's selected from the world map
-	add code that automatically fills in the current X Y of the town selected from the world map
-*/
 function TC_UI(bldgInfo) {
+	//do update checks
+	if(player.curtown.activeTrades.update || player.curtown.tradeSchedules.update) get_all_trades();
+	
 	var trTotal = 0;
 	var trTotalCap = 0;
 	$.each(player.curtown.bldg, function(i, v) {
