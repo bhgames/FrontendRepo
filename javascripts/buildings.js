@@ -11,7 +11,13 @@ function draw_bldg_UI() {
 	BUI.bldgQueue = {};
 	var bldgInfo = $.grep(player.curtown.bldg, get_bldg)[0];
 	
+	//do update checks for this building
 	if(bldgInfo.update) load_player(player.league,true,true); //if an update is queued, update the player object, and reload the current UI
+	else {
+		$.each(bldgInfo.Queue, function(i,v) {
+			if(v.update) load_player(player.league,true,true);
+		});
+	}
 	
 	display_output(false,"Connected!");
 	display_output(false,"Collecting Building data...");

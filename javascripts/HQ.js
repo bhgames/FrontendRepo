@@ -2,6 +2,19 @@
 	Write code that checks for active sieges/glassings when a new one is sent.  If one already exists at the target town, send as a resupply of that campaign
 */
 function HQ_UI(bldgInfo) {
+	//do update checks
+	if(SR.update) {
+		get_raids(true);
+		get_SRs();
+	}
+	$.each(player.curtown.bldg, function(i,v) {
+		if(v.type == "Arms Factory") {
+			$.each(v.Queue, function(j,w) {
+				if(w.update) load_player(player.league, true, true);
+			});
+		}
+	});
+	
 	$("#BUI_extras").text(BUI.HQ.numRaidsOut + " of " + bldgInfo.lvl + " mission slots used.");
 	$("#CS").addClass("open").mouseover();
 	$("#HQ_sendMission").unbind("click").click(function() {

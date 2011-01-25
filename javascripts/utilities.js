@@ -890,24 +890,25 @@ function inc_queue_ticks(thingToTick) {
 function tick_raids(thingToTick) {
 	return setInterval(function() {
 				if(thingToTick.length > 0) {
-					var getSRs = false, getMap = false;
 					$.each(thingToTick, function(i, v) {
-						if(v.eta > 0 && v.eta != "updating") {
-							thingToTick[i].eta--;
-						} else if(v.eta != "updating") {
-							thingToTick[i].eta = "updating";
-							if(!getSRs) {
-								$.each(player.towns,function(j,w) {
-									if(w.townName == v.attackingTown || w.townName == v.defendingTown) {
-										SR.update = getSRs = true;
-										return false;
-									}
-								});
+						if(v.eta) {
+							if(v.eta > 0 && v.eta != "updating") {
+								thingToTick[i].eta--;
+							} else if(v.eta != "updating") {
+								thingToTick[i].eta = "updating";
+								if(!SR.update) {
+									$.each(player.towns,function(j,w) {
+										if(w.townName == v.attackingTown || w.townName == v.defendingTown) {
+											SR.update = true;
+											return false;
+										}
+									});
+								}
+								if(!map.update) {
+									if(v.type.match(/invasion|debris/)) map.update = true;
+								}
+								thingToTick.update = true;
 							}
-							if(!getMap) {
-								if(v.type.match(/invasion|debris/)) map.update = getMap = true;
-							}
-							thingToTick.update = true;
 						}
 					});
 				} else {
@@ -920,7 +921,7 @@ function tick_trades(thingToTick) {
 	return setInterval(function() {
 				if(thingToTick.length > 0) {
 					$.each(thingToTick, function(i, v) {
-						if(typeof(v.currTicks) != "undefined") {
+						if(v.currTicks) {
 							if(v.currTicks != "Updating" && v.timesDone >= v.timesToDo && v.destTown!="") {
 								thingToTick[i].currTicks--;
 								if(v.currTicks == 0 && !v.stockMarketTrade) {

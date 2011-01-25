@@ -288,6 +288,19 @@ function load_player(type, reloadTown, reloadUI) {
 					} else {
 						player.curtown = player.towns[0];
 					}
+					//update checks
+					if(SR.update) {
+						SR.update = false;
+						get_SRs();
+					}
+					if(map.update) {
+						map.update = false;
+						get_map();
+					}
+					if(player.raids.update) {
+						player.raids.update = false;
+						get_raids(true);
+					}
 					
 					get_messages(true);
 					build_raid_list();
