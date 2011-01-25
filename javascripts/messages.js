@@ -50,9 +50,9 @@ function build_message_UI() {
 			$.each(v, function(j,w){
 				if(!w.read){unreadInGroup=true;return false;}
 			});
-			HTML += "<div class='messGroup'><a href='javascript:;' class='messExpand'></a><span>" + v[0].subject +(unreadInGroup?" *NEW*":"") + "</span><input type='checkbox' class='groupSelect' /><a href='javascript:;' class='viewConvo'></a><div class='messages'><ul>";
+			HTML += "<div class='messGroup'><a href='javascript:;' class='messExpand'></a><span>" + v[0].subject.replace(/<u44>/ig,",").replace(/<u3B>/g,";").replace(/</g,"&lt;").replace(/>/g,"&gt;") +(unreadInGroup?" *NEW*":"") + "</span><input type='checkbox' class='groupSelect' /><a href='javascript:;' class='viewConvo'></a><div class='messages'><ul>";
 			$.each(v, function(j, w) {
-				HTML += "<li><a href='javascript:;' class='message" + ((w.read)?" read":"") + "'>" + w.subject.replace(/<u44>/ig,",") + "</a><span class='names'> " + ((w.usernameFrom == player.username)?"To: " + w.usernameTo:"From: " + w.usernameFrom) + "</span><input type='checkbox' class='messSelect' /></li>";
+				HTML += "<li><a href='javascript:;' class='message" + ((w.read)?" read":"") + "'>" + w.subject.replace(/<u44>/ig,",").replace(/<u3B>/g,";").replace(/</g,"&lt;").replace(/>/g,"&gt;") + "</a><span class='names'> " + ((w.usernameFrom == player.username)?"To: " + w.usernameTo:"From: " + w.usernameFrom) + "</span><input type='checkbox' class='messSelect' /></li>";
 			});
 			HTML += "</ul></div></div>";
 		});
@@ -294,8 +294,8 @@ function build_message_UI() {
 		$.each(messages.messages[messages.currGroup], function(i, v) {
 			if(!v.read) {getPath += player.command + ".markReadMessage(" + v.messageID + ");";v.read=true;}
 			HTML += "<div class='convoMessage" + ((v.usernameFrom == player.username)?" fromSelf'":"'") + "><a href='javascript:;' class='deleteMess' title='Delete Message'></a><div class='messSender'>" 
-					+ v.usernameFrom + "</div><div class='messSubject'>" + v.subject.replace(/<u44>/ig,",") + "</div><div class='messBodyBox'><div class='messBodyGrad'><div class='messBodyTop'><div class='messBodyBottom'><div class='messBody'>" 
-					+ v.body.replace(/<u44>/ig,",");
+					+ v.usernameFrom + "</div><div class='messSubject'>" + v.subject.replace(/<u44>/ig,",").replace(/<u3B>/g,";").replace(/</g,"&lt;").replace(/>/g,"&gt;") + "</div><div class='messBodyBox'><div class='messBodyGrad'><div class='messBodyTop'><div class='messBodyBottom'><div class='messBody'>" 
+					+ v.body.replace(/<u44>/ig,",").replace(/<u3B>/g,";").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 			if(messages.curr.msgtype == 1 && i==0) {
 				HTML += "\n\nClick <a href='javascript:;' class='confirmTrade'>here</a> to accept this trade request.";
 			} else if(messages.curr.msgtype ==3 && i==0) {
@@ -334,10 +334,10 @@ function build_message_UI() {
 		$.each(participants, function(i,v) {
 			if(v == player.username) {participants.splice(i, 1); return false;}
 		});
-		var HTML = "<h2 id='mess_header'>" + messages.curr.subject.replace(/<u44>/ig,",") + "</h2><a href='javascript:;' id='mess_showConvo'></a><div id='mess_box'" 
+		var HTML = "<h2 id='mess_header'>" + messages.curr.subject.replace(/<u44>/ig,",").replace(/<u3B>/g,";").replace(/</g,"&lt;").replace(/>/g,"&gt;") + "</h2><a href='javascript:;' id='mess_showConvo'></a><div id='mess_box'" 
 					+ ((messages.curr.usernameFrom == player.username)?" class='fromSelf'":"") + "><div class='messSender'>" 
 					+ participants + "</div><div class='messBodyBox'><div class='messBodyGrad'><div class='messBodyTop'><div class='messBodyBottom'><div class='messBody'>" 
-					+ messages.curr.body.replace(/<u44>/ig,",");
+					+ messages.curr.body.replace(/<u44>/ig,",").replace(/<u3B>/g,";").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 		if(messages.curr.msgtype == 1) {
 			HTML += "\n\nClick <a href='javascript:;' id='mess_confirmTrade'>here</a> to accept this trade request.";
 		} else if(messages.curr.msgtype == 3) {
@@ -458,8 +458,8 @@ function build_message_UI() {
 			if(response.match(/true/i)) {
 				display_output(false,"Message Sent!");
 				if(that.hasClass("quickReply") && message.oMID != 0) {
-					$("#mess_convo").append("<div class='convoMessage newMess fromSelf' style='display: none'><div class='messSender'>" + player.username + "</div><div class='messSubject'>" + message.subject.replace(/<u44>/ig,",") 
-					+ "</div><div class='messBodyBox'><div class='messBodyGrad'><div class='messBodyTop'><div class='messBodyBottom'><div class='messBody'>" + message.body.replace(/<u44>/ig,",") + "</div></div></div></div></div></div>");
+					$("#mess_convo").append("<div class='convoMessage newMess fromSelf' style='display: none'><div class='messSender'>" + player.username + "</div><div class='messSubject'>" + message.subject.replace(/<u44>/ig,",").replace(/<u3B>/g,";")
+					+ "</div><div class='messBodyBox'><div class='messBodyGrad'><div class='messBodyTop'><div class='messBodyBottom'><div class='messBody'>" + message.body.replace(/<u44>/ig,",").replace(/<u3B>/g,";") + "</div></div></div></div></div></div>");
 					$(".newMess").animate({'opacity':'toggle','height':'toggle'},'normal').removeClass("newMess");
 					$("#mess_bodyText").val("");
 					messages.api.reinitialise();
@@ -472,7 +472,7 @@ function build_message_UI() {
 				display_output(true,error,true);
 			}
 		};
-		postMess.post("/AIWars/GodGenerator","reqtype=command&command=" + player.command + ".sendMessage([" + encodeURI(message.to) + "]," + encodeURIComponent(message.body.replace(/,/g, "<u44>").replace(/"/g,'\\"')) + "," + encodeURIComponent(message.subject.replace(/,/g, "<u44>").replace(/"/g,'\\"')) + "," + message.oMID + ");");
+		postMess.post("/AIWars/GodGenerator","reqtype=command&command=" + player.command + ".sendMessage([" + encodeURI(message.to) + "]," + encodeURIComponent(message.body.replace(/,/g, "<u44>").replace(/"/g,'\\"').replace(/;/g,"<u3B>")) + "," + encodeURIComponent(message.subject.replace(/,/g, "<u44>").replace(/"/g,'\\"').replace(/;/g,"<u3B>")) + "," + message.oMID + ");");
 	});
 	
 	$("#mess_confirmTrade, .confirmTrade").die("click").live("click",function(){

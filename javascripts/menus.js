@@ -2,10 +2,10 @@
 							   Functions for the Account Settings Menu
 \***********************************************************************************************************/
 function build_ASM() {
-	console.log(currUI);
+	log(currUI);
 	ASM.oldUI = currUI;
 	currUI = build_ASM;
-	console.log(ASM.oldUI);
+	log(ASM.oldUI);
 	
 	$("#accountPreferences").html(ASM.HTML);
 	$("#ASM_window").html(ASM.acct);
@@ -62,6 +62,13 @@ function build_ASM() {
 		$(".townNameInput").each(function(i,v) {
 			if($(v).val() != player.towns[i].townName) {
 				player.towns[i].townName = $(v).val();
+				$("#cityname").html(function() { 
+										if(player.curtown.townID == player.capitaltid) {
+											return "&#171;" + player.curtown.townName + "&#187;";
+										} else {
+											return player.curtown.townName;
+										}
+									});
 				getPath += player.command + ".renameTown(" + player.towns[i].townID + "," + $(v).val() + ");";
 			}
 		});
