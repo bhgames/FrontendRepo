@@ -327,7 +327,7 @@ function build_message_UI() {
 		var messGroup = that.parent().parent().parent().index(".messages");
 		var messInd = that.parent().parent().children("li").index(that.parent());
 		
-		messages.curr = messages[messGroup][messInd];
+		messages.curr = messages.messages[messGroup][messInd];
 		messages.currGroup = messGroup;
 		
 		var participants = messages.curr.usernameTo.concat(messages.curr.usernameFrom);
