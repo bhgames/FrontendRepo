@@ -15,7 +15,7 @@ function get_messages(async,mess, UG) {
 				var temp2 = messages.currGroup;
 			}
 			var reload = messages.reload;
-			messages = $.parseJSON(mess).reverse();
+			messages.messages = $.parseJSON(mess).reverse();
 			display_output(false,"Messages Loaded!");
 			messages.UG = $.parseJSON(UG);
 			display_output(false,"User Groups Loaded!");
@@ -45,7 +45,7 @@ function build_message_UI() {
 	display_output(false,"Connecting to DMS Servers...");
 	$("#mess_inbox").unbind('click').click(function() {
 		var HTML = "<div id='mess_innerbox'>";
-		$.each(messages, function(i, v) {
+		$.each(messages.messages, function(i, v) {
 			var unreadInGroup = false;
 			$.each(v, function(j,w){
 				if(!w.read){unreadInGroup=true;return false;}
@@ -113,7 +113,7 @@ function build_message_UI() {
 		display_output(false,"Marking Messages Read...");
 		$(".groupSelect").each(function(i, v) {
 			if(v.checked) {
-				$.each(messages[i], function(j, w) {
+				$.each(messages.messages[i], function(j, w) {
 					getPath += player.command + ".markReadMessage(" + w.messageID + ");";
 					w.read = true;
 				});
@@ -121,8 +121,8 @@ function build_message_UI() {
 			} else {
 				$(v).siblings(".messages").find(".messSelect").each(function(j, w) {
 					if(w.checked) {
-						getPath += player.command + ".markReadMessage(" + messages[i][j].messageID + ");";
-						messages[i][j].read = true;
+						getPath += player.command + ".markReadMessage(" + messages.messages[i][j].messageID + ");";
+						messages.messages[i][j].read = true;
 						$(w).siblings("a").addClass("read");
 					}
 				});
@@ -147,7 +147,7 @@ function build_message_UI() {
 			var elementGroup = [];
 			$(".groupSelect").each(function(i, v) {
 				if(v.checked) {
-					$.each(messages[i], function(j, w) {
+					$.each(messages.messages[i], function(j, w) {
 						getPath += player.command + ".markDeletedMessage(" + w.messageID + ");";
 					});
 					deletedGroup.push(i);
@@ -157,7 +157,7 @@ function build_message_UI() {
 					var element = [];
 					$(v).siblings(".messages").find(".messSelect").each(function(j, w) {
 						if(w.checked) {
-							getPath += player.command + ".markDeletedMessage(" + messages[i][j].messageID + ");";
+							getPath += player.command + ".markDeletedMessage(" + messages.messages[i][j].messageID + ");";
 							element.push($(w));
 							deleted.push(j);
 						}
@@ -169,7 +169,7 @@ function build_message_UI() {
 				}
 			});
 			$.each(deletedGroup,function(i,v){
-				messages.splice(v-i,1);
+				messages.messages.splice(v-i,1);
 				elementGroup[i].parent().remove();
 			});
 		} catch(e) {
@@ -273,7 +273,7 @@ function build_message_UI() {
 	$(".viewConvo, #mess_showConvo").die('click').live('click',function() {
 		if($(this).is(".viewConvo")) {
 			messages.currGroup = $(this).index(".viewConvo");
-			messages.curr = messages[messages.currGroup][0];
+			messages.curr = messages.messages[messages.currGroup][0];
 		}
 		var participants = messages.curr.usernameTo.concat(messages.curr.usernameFrom);
 		$.each(participants, function(i,v) {
@@ -291,7 +291,7 @@ function build_message_UI() {
 		}
 		HTML += "</h2><div id='mess_convo'>";
 		var getPath = "/AIWars/GodGenerator?reqtype=command&command=";
-		$.each(messages[messages.currGroup], function(i, v) {
+		$.each(messages.messages[messages.currGroup], function(i, v) {
 			if(!v.read) {getPath += player.command + ".markReadMessage(" + v.messageID + ");";v.read=true;}
 			HTML += "<div class='convoMessage" + ((v.usernameFrom == player.username)?" fromSelf'":"'") + "><a href='javascript:;' class='deleteMess' title='Delete Message'></a><div class='messSender'>" 
 					+ v.usernameFrom + "</div><div class='messSubject'>" + v.subject.replace(/<u44>/ig,",") + "</div><div class='messBodyBox'><div class='messBodyGrad'><div class='messBodyTop'><div class='messBodyBottom'><div class='messBody'>" 
@@ -382,10 +382,10 @@ function build_message_UI() {
 	$("#mess_deleteConvo").die('click').live('click',function() {
 		var getPath = "/AIWars/GodGenerator?reqtype=command&command=";
 		display_output(false,"Deleting Messages...");
-		$.each(messages[messages.currGroup], function(j, w) {
+		$.each(messages.messages[messages.currGroup], function(j, w) {
 			getPath += player.command + ".markDeletedMessage(" + w.messageID + ");";
 		});
-		messages.splice(messages.currGroup, 1);
+		messages.messages.splice(messages.currGroup, 1);
 		messages.currGroup = 0;
 		var convoDel = new make_AJAX();
 		convoDel.callback = function() {

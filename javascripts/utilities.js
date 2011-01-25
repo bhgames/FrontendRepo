@@ -617,14 +617,14 @@ function check_for_unread() {
 				}, 251);
 			} else {
 				clearInterval(SR.flashTimer);
-				$("#sr .flicker").fadeOut();
+				$("#sr .flicker").stop(true).fadeOut();
 			}
 		}
 	} catch(e) {}
 	
 	try {
 		var unreadMessages = false;
-		$.each(messages, function(i,v) {
+		$.each(messages.messages, function(i,v) {
 			$.each(v, function(j, w) {
 				if(!w.read) {
 					unreadMessages = true;
@@ -639,7 +639,7 @@ function check_for_unread() {
 			}, 251);
 		} else {
 			clearInterval(messages.flashTimer);
-			$("#mailbox .flicker").fadeOut();
+			$("#mailbox .flicker").stop(true).fadeOut();
 		}
 	} catch(e) {}
 }
