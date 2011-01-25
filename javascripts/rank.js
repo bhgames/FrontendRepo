@@ -64,34 +64,41 @@ function draw_rank_UI() {
 	currUI = draw_rank_UI;
 	
 	$("#window").html(ranks.HTML).fadeIn();
+	$("#Rank_ranks ol").jScrollPane({showArrows:true,hideFocus:true});
 	
 	$("#Rank_playerTab").unbind("click").click(function(){
-		$("#Rank_ranks ol").html(function(){
+		var api = $("#Rank_ranks ol").data('jsp');
+		api.getContentPane().html(function(){
 			var HTML = "<div id='Rank_key'><span class='pRankKey'>Rank</span><span class='pNameKey'>Username</span><span class='pCSLKey'>Average CSL</span></div>";
 			$.each(ranks.player,function(i,v){
 				HTML += "<div class='pRank"+((v.username == player.username)?" player":"")+((i==0)?" topBor":"")+"'>"+(i+1)+".<span class='pName'><span class='"+((v.battlehardMode)?"BHM":"noBHM")+"'></span>"+v.username+"</span><span class='pCSL'>"+v.averageCSL+"</span></div>";
 			});
 			return HTML;
 		});
+		api.reinitialise();
 	}).click();
 	
 	$("#Rank_leagueTab").unbind("click").click(function(){
-		$("#Rank_ranks ol").html(function(){
+		var api = $("#Rank_ranks ol").data('jsp');
+		api.getContentPane().html(function(){
 			var HTML = "<div id='Rank_key'><span class='lRankKey'>Rank</span><span class='lNameKey'>League Name</span><span class='lTagKey'>Tag</span><span class='lCSLKey'>Sum CSL</span></div>";
 			$.each(ranks.league,function(i,v){
 				HTML += "<div class='lRank"+((player.league)?((v.leagueLetters == player.username)?" player":""):((v.leagueLetters == player.TPR.league)?" player":""))+((i==0)?" topBor":"")+"'>"+(i+1)+".<span class='lName'><span class='"+((v.battlehardMode)?"BHM":"noBHM")+"'></span>"+v.leagueName+"</span><span class='lTag'>"+v.leagueLetters+"</span><span class='lCSL'>"+v.averageCSL+"</span></div>";
 			});
 			return HTML;
 		});
+		api.reinitialise();
 	});
 	
 	$("#Rank_BHMTab").unbind("click").click(function(){
-		$("#Rank_ranks ol").html(function(){
+		var api = $("#Rank_ranks ol").data('jsp');
+		api.getContentPane().html(function(){
 			var HTML = "<div id='Rank_key'><span class='bRankKey'>Rank</span><span class='bNameKey'>Username</span><span class='bBPKey'>Total BP Earned</span></div>";
 			$.each(ranks.BHM,function(i,v){
 				HTML += "<div class='bRank"+((v.username == player.username)?" player":"")+((i==0)?" topBor":"")+"'>"+(i+1)+".<span class='bName'>"+((v.battlehardMode)?"<span class='BHM'></span>":"")+v.username+"</span><span class='bBP'>"+v.BP+"</span></div>";
 			});
 			return HTML;
 		});
+		api.reinitialise();
 	});
 }

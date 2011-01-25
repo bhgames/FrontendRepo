@@ -47,7 +47,7 @@ function draw_premium_UI() {
 											display_output(true,error);
 										}
 									};
-					goBMH.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".goBHM();");
+					goBHM.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".goBHM();");
 				});
 	});
 	/*
@@ -133,14 +133,13 @@ function draw_premium_UI() {
 							var which = $(that).siblings(".name").text();
 							display_output(false,"Purchase code: " + which);
 							var useBP = new make_AJAX();
-							useBP.callback = function() {
-												var success = useBP.responseText.split(";")[0];
-												if(success.match(/true/)) {
+							useBP.callback = function(response) {
+												if(response.match(/true/)) {
 													display_output(false,"Success!");
 													load_player(player.league,true,true);
 												} else {
-													if(success.indexOf(":")>=0) success = success.split(":")[1];
-													display_output(true,success,true);
+													if(response.indexOf(":")>=0) response = response.split(":")[1];
+													display_output(true,response,true);
 												}
 											}
 							useBP.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".useBP("+which+");");
@@ -209,24 +208,21 @@ function set_premium_timers() {
 								time = player.research.premiumTimer;
 								break;
 							case 1:
-								time = player.research.revTimer;
-								break;
-							case 2:
 								time = player.research.mineTimer;
 								break;
-							case 3:
+							case 2:
 								time = player.research.mmTimer;
 								break;
-							case 4:
+							case 3:
 								time = player.research.timberTimer;
 								break;
-							case 5:
+							case 4:
 								time = player.research.fTimer;
 								break;
-							case 6:
+							case 5:
 								time = player.research.ubTimer;
 								break;
-							case 7:
+							case 6:
 								time = player.research.feroTimer;
 								break;
 						}

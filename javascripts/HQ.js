@@ -93,7 +93,7 @@ function HQ_UI(bldgInfo) {
 				
 				$('#HQ_targetX').val(BUI.HQ.x);
 				$('#HQ_targetY').val(BUI.HQ.y);
-				
+				BUI.HQ.selectedIndex = 0;
 				$("#HQ_missionDesc").html(BUI.HQ.missionDesc[0]).jScrollPane({showArrows:true,hideFocus:true});
 				
 				$(this).fadeIn(100);

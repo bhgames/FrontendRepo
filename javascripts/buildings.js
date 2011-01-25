@@ -345,7 +345,7 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 					break;
 				case "Headquarters":
 					$('#HQ_outgoingMissions .raidETA').each(function(i, v) {
-						if($(this).siblings(".raidID").text() != player.curtown.outgoingRaids[i].rid.toString()) $(this).parent().remove();
+						//if(parseInt($(this).siblings(".raidID").text()) != player.curtown.outgoingRaids[i].rid) $(this).parent().remove();
 						if(player.curtown.outgoingRaids[i].eta != "updating") {
 							$(this).html(function() {
 								var time = player.curtown.outgoingRaids[i].eta;
@@ -360,7 +360,7 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 						}
 					});
 					$('#HQ_incomingMissions .raidETA').each(function(i, v) {
-						if($(this).siblings(".raidID").text() != player.curtown.incomingRaids[i].rid.toString()) $(this).parent().remove();
+						//if(parseInt($(this).siblings(".raidID").text()) != player.curtown.incomingRaids[i].rid) $(this).parent().remove();
 						if(player.curtown.incomingRaids[i].eta != "updating") {
 							$(this).html(function() {
 								var time = player.curtown.incomingRaids[i].eta;

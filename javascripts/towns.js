@@ -310,7 +310,7 @@ function town_list() {
 		} else {
 			HTML += "<li>";
 		}
-		HTML += "<a href='javascript:;'>" + x.townName + "</a><span>" + x.townID + "</span></li>";
+		HTML += "<a href='javascript:;'>" + (x.townID == player.capitaltid ? "&#171;" + x.townName + "&#187;": x.townName) + "</a><span>" + x.townID + "</span></li>";
 	});
 	
 	HTML += "</ul>\

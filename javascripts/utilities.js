@@ -100,7 +100,9 @@ function display_output(error, message, show) { //error is a boolean denoting if
 	if(show) {
 		show_output_window();
 	}
-	$("#console_output").append("<br/><span class='output" + ((error)?" error":"") + "'>" + message + "</span>").scrollTop(10000000);
+	$("#console_output").append("<br/><span class='output" + ((error)?" error":"") + "'>" + message + "</span>")
+	
+	if(!$("#console_stop").is(":checked")) $("#console_output").scrollTop(10000000);
 }
 
 function display_message(title, message, callback) { //callback is a function  and, if set, converts the message from an alert to a confirm
@@ -615,14 +617,14 @@ function check_for_unread() {
 				}, 251);
 			} else {
 				clearInterval(SR.flashTimer);
-				$("#sr .flicker").fadeOut();
+				$("#sr .flicker").stop(true).fadeOut();
 			}
 		}
 	} catch(e) {}
 	
 	try {
 		var unreadMessages = false;
-		$.each(messages, function(i,v) {
+		$.each(messages.messages, function(i,v) {
 			$.each(v, function(j, w) {
 				if(!w.read) {
 					unreadMessages = true;
@@ -637,7 +639,7 @@ function check_for_unread() {
 			}, 251);
 		} else {
 			clearInterval(messages.flashTimer);
-			$("#mailbox .flicker").fadeOut();
+			$("#mailbox .flicker").stop(true).fadeOut();
 		}
 	} catch(e) {}
 }

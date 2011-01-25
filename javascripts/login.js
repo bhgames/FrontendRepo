@@ -139,7 +139,8 @@ function load_client(type, reloadTown, reloadUI) {
 							set_tickers();	
 							display_res();
 							
-							if(player.research.premiumTimer==0) $("body").addClass("notBH");
+							if(player.research.premiumTimer==0 && player.research.bp==0) $("body").addClass("notBH");
+							else $("body").removeClass("notBH");
 							
 							$("#cityname").html(function() { 
 								if(player.curtown.townID == player.capitaltid) {
@@ -309,6 +310,9 @@ function load_player(type, reloadTown, reloadUI) {
 					set_tickers();	
 					display_res();
 					set_bottom_links();
+					
+					if(player.research.premiumTimer==0 && player.research.bp==0) $("body").addClass("notBH");
+					else $("body").removeClass("notBH");
 					
 					if(reloadUI) {
 						currUI();

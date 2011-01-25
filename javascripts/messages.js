@@ -15,7 +15,7 @@ function get_messages(async,mess, UG) {
 				var temp2 = messages.currGroup;
 			}
 			var reload = messages.reload;
-			messages = $.parseJSON(mess).reverse();
+			messages.messages = $.parseJSON(mess).reverse();
 			display_output(false,"Messages Loaded!");
 			messages.UG = $.parseJSON(UG);
 			display_output(false,"User Groups Loaded!");
@@ -45,14 +45,14 @@ function build_message_UI() {
 	display_output(false,"Connecting to DMS Servers...");
 	$("#mess_inbox").unbind('click').click(function() {
 		var HTML = "<div id='mess_innerbox'>";
-		$.each(messages, function(i, v) {
+		$.each(messages.messages, function(i, v) {
 			var unreadInGroup = false;
 			$.each(v, function(j,w){
 				if(!w.read){unreadInGroup=true;return false;}
 			});
-			HTML += "<div class='messGroup'><a href='javascript:;' class='messExpand'></a><span>" + v[0].subject +(unreadInGroup?" *NEW*":"") + "</span><input type='checkbox' class='groupSelect' /><a href='javascript:;' class='viewConvo'></a><div class='messages'><ul>";
+			HTML += "<div class='messGroup'><a href='javascript:;' class='messExpand'></a><span>" + v[0].subject.replace(/<u44>/ig,",").replace(/<u3B>/g,";").replace(/</g,"&lt;").replace(/>/g,"&gt;") +(unreadInGroup?" *NEW*":"") + "</span><input type='checkbox' class='groupSelect' /><a href='javascript:;' class='viewConvo'></a><div class='messages'><ul>";
 			$.each(v, function(j, w) {
-				HTML += "<li><a href='javascript:;' class='message" + ((w.read)?" read":"") + "'>" + w.subject.replace(/<u44>/ig,",") + "</a><span class='names'> " + ((w.usernameFrom == player.username)?"To: " + w.usernameTo:"From: " + w.usernameFrom) + "</span><input type='checkbox' class='messSelect' /></li>";
+				HTML += "<li><a href='javascript:;' class='message" + ((w.read)?" read":"") + "'>" + w.subject.replace(/<u44>/ig,",").replace(/<u3B>/g,";").replace(/</g,"&lt;").replace(/>/g,"&gt;") + "</a><span class='names'> " + ((w.usernameFrom == player.username)?"To: " + w.usernameTo:"From: " + w.usernameFrom) + "</span><input type='checkbox' class='messSelect' /></li>";
 			});
 			HTML += "</ul></div></div>";
 		});
@@ -113,7 +113,7 @@ function build_message_UI() {
 		display_output(false,"Marking Messages Read...");
 		$(".groupSelect").each(function(i, v) {
 			if(v.checked) {
-				$.each(messages[i], function(j, w) {
+				$.each(messages.messages[i], function(j, w) {
 					getPath += player.command + ".markReadMessage(" + w.messageID + ");";
 					w.read = true;
 				});
@@ -121,8 +121,8 @@ function build_message_UI() {
 			} else {
 				$(v).siblings(".messages").find(".messSelect").each(function(j, w) {
 					if(w.checked) {
-						getPath += player.command + ".markReadMessage(" + messages[i][j].messageID + ");";
-						messages[i][j].read = true;
+						getPath += player.command + ".markReadMessage(" + messages.messages[i][j].messageID + ");";
+						messages.messages[i][j].read = true;
 						$(w).siblings("a").addClass("read");
 					}
 				});
@@ -147,7 +147,7 @@ function build_message_UI() {
 			var elementGroup = [];
 			$(".groupSelect").each(function(i, v) {
 				if(v.checked) {
-					$.each(messages[i], function(j, w) {
+					$.each(messages.messages[i], function(j, w) {
 						getPath += player.command + ".markDeletedMessage(" + w.messageID + ");";
 					});
 					deletedGroup.push(i);
@@ -157,7 +157,7 @@ function build_message_UI() {
 					var element = [];
 					$(v).siblings(".messages").find(".messSelect").each(function(j, w) {
 						if(w.checked) {
-							getPath += player.command + ".markDeletedMessage(" + messages[i][j].messageID + ");";
+							getPath += player.command + ".markDeletedMessage(" + messages.messages[i][j].messageID + ");";
 							element.push($(w));
 							deleted.push(j);
 						}
@@ -169,7 +169,7 @@ function build_message_UI() {
 				}
 			});
 			$.each(deletedGroup,function(i,v){
-				messages.splice(v-i,1);
+				messages.messages.splice(v-i,1);
 				elementGroup[i].parent().remove();
 			});
 		} catch(e) {
@@ -273,7 +273,7 @@ function build_message_UI() {
 	$(".viewConvo, #mess_showConvo").die('click').live('click',function() {
 		if($(this).is(".viewConvo")) {
 			messages.currGroup = $(this).index(".viewConvo");
-			messages.curr = messages[messages.currGroup][0];
+			messages.curr = messages.messages[messages.currGroup][0];
 		}
 		var participants = messages.curr.usernameTo.concat(messages.curr.usernameFrom);
 		$.each(participants, function(i,v) {
@@ -291,11 +291,11 @@ function build_message_UI() {
 		}
 		HTML += "</h2><div id='mess_convo'>";
 		var getPath = "/AIWars/GodGenerator?reqtype=command&command=";
-		$.each(messages[messages.currGroup], function(i, v) {
+		$.each(messages.messages[messages.currGroup], function(i, v) {
 			if(!v.read) {getPath += player.command + ".markReadMessage(" + v.messageID + ");";v.read=true;}
 			HTML += "<div class='convoMessage" + ((v.usernameFrom == player.username)?" fromSelf'":"'") + "><a href='javascript:;' class='deleteMess' title='Delete Message'></a><div class='messSender'>" 
-					+ v.usernameFrom + "</div><div class='messSubject'>" + v.subject.replace(/<u44>/ig,",") + "</div><div class='messBodyBox'><div class='messBodyGrad'><div class='messBodyTop'><div class='messBodyBottom'><div class='messBody'>" 
-					+ v.body.replace(/<u44>/ig,",");
+					+ v.usernameFrom + "</div><div class='messSubject'>" + v.subject.replace(/<u44>/ig,",").replace(/<u3B>/g,";").replace(/</g,"&lt;").replace(/>/g,"&gt;") + "</div><div class='messBodyBox'><div class='messBodyGrad'><div class='messBodyTop'><div class='messBodyBottom'><div class='messBody'>" 
+					+ v.body.replace(/<u44>/ig,",").replace(/<u3B>/g,";").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 			if(messages.curr.msgtype == 1 && i==0) {
 				HTML += "\n\nClick <a href='javascript:;' class='confirmTrade'>here</a> to accept this trade request.";
 			} else if(messages.curr.msgtype ==3 && i==0) {
@@ -327,17 +327,17 @@ function build_message_UI() {
 		var messGroup = that.parent().parent().parent().index(".messages");
 		var messInd = that.parent().parent().children("li").index(that.parent());
 		
-		messages.curr = messages[messGroup][messInd];
+		messages.curr = messages.messages[messGroup][messInd];
 		messages.currGroup = messGroup;
 		
 		var participants = messages.curr.usernameTo.concat(messages.curr.usernameFrom);
 		$.each(participants, function(i,v) {
 			if(v == player.username) {participants.splice(i, 1); return false;}
 		});
-		var HTML = "<h2 id='mess_header'>" + messages.curr.subject.replace(/<u44>/ig,",") + "</h2><a href='javascript:;' id='mess_showConvo'></a><div id='mess_box'" 
+		var HTML = "<h2 id='mess_header'>" + messages.curr.subject.replace(/<u44>/ig,",").replace(/<u3B>/g,";").replace(/</g,"&lt;").replace(/>/g,"&gt;") + "</h2><a href='javascript:;' id='mess_showConvo'></a><div id='mess_box'" 
 					+ ((messages.curr.usernameFrom == player.username)?" class='fromSelf'":"") + "><div class='messSender'>" 
 					+ participants + "</div><div class='messBodyBox'><div class='messBodyGrad'><div class='messBodyTop'><div class='messBodyBottom'><div class='messBody'>" 
-					+ messages.curr.body.replace(/<u44>/ig,",");
+					+ messages.curr.body.replace(/<u44>/ig,",").replace(/<u3B>/g,";").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 		if(messages.curr.msgtype == 1) {
 			HTML += "\n\nClick <a href='javascript:;' id='mess_confirmTrade'>here</a> to accept this trade request.";
 		} else if(messages.curr.msgtype == 3) {
@@ -382,10 +382,10 @@ function build_message_UI() {
 	$("#mess_deleteConvo").die('click').live('click',function() {
 		var getPath = "/AIWars/GodGenerator?reqtype=command&command=";
 		display_output(false,"Deleting Messages...");
-		$.each(messages[messages.currGroup], function(j, w) {
+		$.each(messages.messages[messages.currGroup], function(j, w) {
 			getPath += player.command + ".markDeletedMessage(" + w.messageID + ");";
 		});
-		messages.splice(messages.currGroup, 1);
+		messages.messages.splice(messages.currGroup, 1);
 		messages.currGroup = 0;
 		var convoDel = new make_AJAX();
 		convoDel.callback = function() {
@@ -458,8 +458,8 @@ function build_message_UI() {
 			if(response.match(/true/i)) {
 				display_output(false,"Message Sent!");
 				if(that.hasClass("quickReply") && message.oMID != 0) {
-					$("#mess_convo").append("<div class='convoMessage newMess fromSelf' style='display: none'><div class='messSender'>" + player.username + "</div><div class='messSubject'>" + message.subject.replace(/<u44>/ig,",") 
-					+ "</div><div class='messBodyBox'><div class='messBodyGrad'><div class='messBodyTop'><div class='messBodyBottom'><div class='messBody'>" + message.body.replace(/<u44>/ig,",") + "</div></div></div></div></div></div>");
+					$("#mess_convo").append("<div class='convoMessage newMess fromSelf' style='display: none'><div class='messSender'>" + player.username + "</div><div class='messSubject'>" + message.subject.replace(/<u44>/ig,",").replace(/<u3B>/g,";")
+					+ "</div><div class='messBodyBox'><div class='messBodyGrad'><div class='messBodyTop'><div class='messBodyBottom'><div class='messBody'>" + message.body.replace(/<u44>/ig,",").replace(/<u3B>/g,";") + "</div></div></div></div></div></div>");
 					$(".newMess").animate({'opacity':'toggle','height':'toggle'},'normal').removeClass("newMess");
 					$("#mess_bodyText").val("");
 					messages.api.reinitialise();
@@ -472,7 +472,7 @@ function build_message_UI() {
 				display_output(true,error,true);
 			}
 		};
-		postMess.post("/AIWars/GodGenerator","reqtype=command&command=" + player.command + ".sendMessage([" + encodeURI(message.to) + "]," + encodeURIComponent(message.body.replace(/,/g, "<u44>").replace(/"/g,'\\"')) + "," + encodeURIComponent(message.subject.replace(/,/g, "<u44>").replace(/"/g,'\\"')) + "," + message.oMID + ");");
+		postMess.post("/AIWars/GodGenerator","reqtype=command&command=" + player.command + ".sendMessage([" + encodeURI(message.to) + "]," + encodeURIComponent(message.body.replace(/,/g, "<u44>").replace(/"/g,'\\"').replace(/;/g,"<u3B>")) + "," + encodeURIComponent(message.subject.replace(/,/g, "<u44>").replace(/"/g,'\\"').replace(/;/g,"<u3B>")) + "," + message.oMID + ");");
 	});
 	
 	$("#mess_confirmTrade, .confirmTrade").die("click").live("click",function(){
