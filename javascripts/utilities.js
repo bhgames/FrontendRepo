@@ -603,22 +603,21 @@ function get_achievements(async,achieves) {
 
 function check_for_unread() {
 	try {
-		if(!gettingSRs) {
-			var unreadReports = false;
-			$.each(SR.reports, function(i, v) {
-				if(!v.read) {
-					unreadReports = true;
-					return false;
-				}
-			});
-			if(unreadReports) {
-				SR.flashTimer = setInterval(function() {
-					$("#sr .flicker").animate({"opacity":"toggle"},250);
-				}, 251);
-			} else {
-				clearInterval(SR.flashTimer);
-				$("#sr .flicker").stop(true).fadeOut();
+		var unreadReports = false;
+		$.each(SR.reports, function(i, v) {
+			if(!v.read) {
+				unreadReports = true;
+				return false;
 			}
+		});
+		if(unreadReports) {
+			clearInterval(SR.flashTimer);
+			SR.flashTimer = setInterval(function() {
+				$("#sr .flicker").animate({"opacity":"toggle"},250);
+			}, 251);
+		} else {
+			clearInterval(SR.flashTimer);
+			$("#sr .flicker").stop(true).fadeOut();
 		}
 	} catch(e) {}
 	
@@ -634,6 +633,7 @@ function check_for_unread() {
 			return !unreadMessages;
 		});
 		if(unreadMessages) {
+			clearInterval(messages.flashTimer);
 			messages.flashTimer = setInterval(function() {
 				$("#mailbox .flicker").animate({"opacity":"toggle"},250);
 			}, 251);
@@ -647,6 +647,7 @@ function check_for_unread() {
 function set_tickers() {
 	try {
 		display_output(false,"Starting tickers...");
+		check_all_for_updates();
 		player.research.scholTicks *= player.gameClockFactor;
 		player.research.scholTicksTotal *= player.gameClockFactor;
 		player.research.feroTimer *= player.gameClockFactor;
@@ -715,6 +716,53 @@ function set_tickers() {
 		clear_all_timers();
 		set_tickers();
 	}
+}
+
+function clear_all_timers() {
+	display_output(false,"Clearing tickers...");
+		clearInterval(updateTimer);
+		
+		clearTimeout(player.timer);
+		
+		clearInterval(player.townUpdate);
+		
+		clearInterval(BUI.active.timer);
+		
+		clearInterval(player.research.ticker);
+		
+		clearInterval(player.raids.raidTicker);
+		
+		try {
+			clearInterval(player.curtown.incomingRaids.displayTimer);
+		}
+		catch(e) {}
+		try {
+			clearInterval(player.curtown.outgoingRaids.displayTimer);
+		}
+		catch(e) {}
+		
+		$.each(player.towns, function(i, x) {
+			try {
+				clearInterval(x.resTicker);
+				clearInterval(x.activeTrades.timer);
+				clearInterval(x.tradeSchedules.timer);
+			}
+			catch(e) {}
+			$.each(x.bldg, function(j, y) {
+				try {
+					clearInterval(y.bldgTicker);
+					clearInterval(y.pplTicker);
+				}
+				catch(e) {}
+					$.each(y.Queue, function(k, z) {
+						try {
+							clearInterval(z.queueTicker);
+						}
+						catch(e) {}
+					});
+			});
+		});
+	display_output(false,"Tickers Cleared!");
 }
 
 function set_bottom_links() {
@@ -792,51 +840,6 @@ function set_sidebar_anim() {
 	});;
 }
 
-function clear_all_timers() {
-	display_output(false,"Clearing tickers...");
-		clearTimeout(player.timer);
-		
-		clearInterval(player.townUpdate);
-		
-		clearInterval(BUI.active.timer);
-		
-		clearInterval(player.research.ticker);
-		
-		clearInterval(player.raids.raidTicker);
-		
-		try {
-			clearInterval(player.curtown.incomingRaids.displayTimer);
-		}
-		catch(e) {}
-		try {
-			clearInterval(player.curtown.outgoingRaids.displayTimer);
-		}
-		catch(e) {}
-		
-		$.each(player.towns, function(i, x) {
-			try {
-				clearInterval(x.resTicker);
-				clearInterval(x.activeTrades.timer);
-				clearInterval(x.tradeSchedules.timer);
-			}
-			catch(e) {}
-			$.each(x.bldg, function(j, y) {
-				try {
-					clearInterval(y.bldgTicker);
-					clearInterval(y.pplTicker);
-				}
-				catch(e) {}
-					$.each(y.Queue, function(k, z) {
-						try {
-							clearInterval(z.queueTicker);
-						}
-						catch(e) {}
-					});
-			});
-		});
-	display_output(false,"Tickers Cleared!");
-}
-
 // usage: log('inside coolFunc',this,arguments);
 // paulirish.com/2009/log-a-lightweight-wrapper-for-consolelog/
 window.log = function(){
@@ -897,7 +900,7 @@ function tick_raids(thingToTick) {
 	return setInterval(function() {
 				if(thingToTick.length > 0) {
 					$.each(thingToTick, function(i, v) {
-						if(v.eta) {
+						if(typeof(v.eta) != "undefined") {
 							if(v.eta > 0 && v.eta != "updating") {
 								thingToTick[i].eta--;
 							} else if(v.eta != "updating") {
@@ -1004,4 +1007,55 @@ function tick_res(thingToTick) {
 				});
 				display_res();
 			}, time*1000);
+}
+
+var updateTimer = 0;
+function check_all_for_updates() {
+	updateTimer = setInterval(function() {
+									//check player for updates
+									var updatePlayer = false;
+									$.each(player.towns, function(i,v) {
+										$.each(v.bldg, function(j,w) {
+											if(w.update) {
+												load_player(player.league,true,false);
+												updatePlayer = true;
+												return false;
+											} else {
+												$.each(w.Queue, function(k, x) {
+													if(x.update) {
+														load_player(player.league,true,false);
+														updatePlayer = true;
+														return false;
+													}
+												});
+												return !updatePlayer;
+											}
+										});
+										if(!updatePlayer) { //load player already does all these checks
+											var updateTrades = false;
+											$.each(v.activeTrades, function(j,w) {
+												if(w.update) {
+													get_all_trades();
+													updateTrades = true;
+													return false;
+												}
+											});
+											if(!updateTrades) {
+												$.each(v.tradeSchedules, function(j,w) {
+													if(w.update) {
+														get_all_trades();
+														updateTrades = true;
+														return false;
+													}
+												});
+											}
+										}
+									});
+									if(SR.update) {
+										get_SRs()
+										get_raids(true);
+									} else if(player.raids.update) {
+										get_raids(true);
+									}
+								},60000);
 }

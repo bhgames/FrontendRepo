@@ -136,6 +136,7 @@ function load_client(type, reloadTown, reloadUI) {
 							get_ranks(false,info[7],info[8],info[9]);
 							
 							BUI.build();
+							if(loggedIn) clear_all_timers();
 							set_tickers();	
 							display_res();
 							
@@ -307,6 +308,7 @@ function load_player(type, reloadTown, reloadUI) {
 					get_messages(true);
 					build_raid_list();
 					BUI.build();
+					clear_all_timers();
 					set_tickers();	
 					display_res();
 					set_bottom_links();

@@ -34,6 +34,11 @@ function get_raids(async, raids) {
 }
 
 function build_raid_list() {
+	//do update check
+	if(SR.update) {
+		get_raids(true);
+		get_SRs();
+	}
 
 	BUI.HQ.numRaidsOut = 0;
 

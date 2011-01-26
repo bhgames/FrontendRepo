@@ -10,8 +10,6 @@ function get_SRs() {
 			display_output(false,"Loading Status Reports...");
 			SRget.callback = function(response) {
 				SR.reports = $.parseJSON(response);
-				SR.update = false;
-				gettingSRs = false;
 				if(SR.reports) {
 					SR.reports.reverse();
 					check_for_unread();
@@ -19,6 +17,8 @@ function get_SRs() {
 				$("#sr").click(function() {
 					do_fade(build_SR_menu, "amber");
 				});
+				SR.update = false;
+				gettingSRs = false;
 				display_output(false,"Status Reports Loaded!");
 			};
 			
