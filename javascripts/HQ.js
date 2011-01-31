@@ -138,13 +138,11 @@ function HQ_UI(bldgInfo) {
 									coverSize += value;
 									break;
 								case 5:
+								case 20:
 									coverSize += 10*value;
 									break;
 								case 10:
 									coverSize += 40*value;
-									break;
-								case 20:
-									coverSize += 10*value;
 									break;
 							}
 						} else {

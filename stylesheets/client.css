@@ -481,7 +481,7 @@ ul, li {
 .jspHorizontalBar .jspArrow {
 	width: 16px;
 	float: left;
-	height: 100%;
+	height: 80%;
 }
 .jspVerticalBar .jspArrow:focus {
 	outline: none;

@@ -490,6 +490,7 @@ function build_message_UI() {
 				}
 				messages.reload = true;
 				get_messages(true);
+				get_all_trades();
 			} else {
 				var error = response.split(":");
 				if(error.length==2)error=error[1];
@@ -512,7 +513,7 @@ function build_message_UI() {
 					messages.api.reinitialise();
 				}
 				messages.reload = true;
-				get_messages(true);
+				load_player(player.league,true,false); //automatically grabs messages
 			} else {
 				var error = response.split(":");
 				if(error.length==2)error=error[1];

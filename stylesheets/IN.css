@@ -111,6 +111,7 @@
 .researches > div {
 	height: 20px;
 	width: 700px;
+	margin-top: 5px;
 	padding: 5px 0px 0 20px;
 	}
 .research {
@@ -157,9 +158,13 @@
 	text-align: right;
 	}
 .info {
+	position: relative;
+	top: 8px;
+	margin-top: -15px;
+	}
+.fullName {
 	display: inline-block;
 	width: 206px;
-	cursor: help;
 	}
 .helpInsig {
 	height:40px;

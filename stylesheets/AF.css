@@ -130,3 +130,10 @@ a.noAss {
 	top: 65px;
 	right: 100px;
 	}
+#AF_capNeeded {
+	position: absolute;
+	bottom: -14px;
+	right: 10px;
+	width: 150px;
+	font-size: 14px;
+	}

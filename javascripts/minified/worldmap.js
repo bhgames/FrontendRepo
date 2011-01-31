@@ -1,26 +1,26 @@
 
-var map={};function get_map(){try{display_output(false,"Loading Worldmap...");var mapget=new make_AJAX();mapget.callback=function(response){map=$.parseJSON(response);if(map.towns.length<1){display_output(true,"Error Loading Worldmap!",true);display_output(false,"Retrying...");throw"No Towns";}
+var map={};var gettingMap=false;function get_map(){try{if(!gettingMap){gettingMap=true;display_output(false,"Loading Worldmap...");var mapget=new make_AJAX();mapget.callback=function(response){map=$.parseJSON(response);if(map.towns.length<1){display_output(true,"Error Loading Worldmap!",true);display_output(false,"Retrying...");throw"No Towns";}
 var maxX=0;var maxY=0;$.each(map.tiles,function(i,v){if(Math.abs(v.centerx)>maxX)maxX=Math.abs(v.centerx);if(Math.abs(v.centery)>maxY)maxY=Math.abs(v.centery);});map.tilesWide=0;var j=0;var temp=[];for(var y=maxY;y>=(-maxY);y-=9){temp[j]=[];for(var x=(-maxX);x<=maxX;x+=9){$.each(map.tiles,function(i,v){if(v.centerx==x&&v.centery==y){temp[j].push(v);return false;}});}
 if(temp[j].length>map.tilesWide)map.tilesWide=temp[j].length
 j++;}
 map.tiles=temp;map.x=0;map.y=0;map.origHTML="<div id='townMenuPopup'>\
-       </div>\
-       <div id='mapHelpButton' class='pplHelp'></div>\
-       <div id='mapTileSwitchBox'>\
-        <div id='mapTileSwitchButton'></div>\
-        <div id='mapTileSwitcher'>\
-         <div class='lightFrameBody'>\
-          <div id='mapTileUp' class='tileDir'></div>\
-          <div id='mapTileDown' class='tileDir'></div>\
-          <div id='mapTileLeft' class='tileDir'></div>\
-          <div id='mapTileRight' class='tileDir'></div>\
-          <div id='mapTileDisplay'></div>\
-         </div>\
-         <div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>\
         </div>\
-       </div>\
-       <div id='mapbox'></div>";map.box={};$("#wm").unbind('click').click(function(){map.focus=false;do_fade(build_map,"amber");});display_output(false,"Worldmap Loaded!");};mapget.get("/AIWars/GodGenerator?reqtype=world_map&league="+player.league);}catch(e){display_output(true,"Error loading World Map!",true);display_output(true,e);display_output(false,"Retrying...");get_map();}}
-function build_map(){currUI=build_map;$("#window").html(map.origHTML);map.box.id=$("#mapbox");var x=player.curtown.x;var y=player.curtown.y;if(map.focus){x=map.focusX;y=map.focusY;}
+        <div id='mapHelpButton' class='pplHelp'></div>\
+        <div id='mapTileSwitchBox'>\
+         <div id='mapTileSwitchButton'></div>\
+         <div id='mapTileSwitcher'>\
+          <div class='lightFrameBody'>\
+           <div id='mapTileUp' class='tileDir'></div>\
+           <div id='mapTileDown' class='tileDir'></div>\
+           <div id='mapTileLeft' class='tileDir'></div>\
+           <div id='mapTileRight' class='tileDir'></div>\
+           <div id='mapTileDisplay'></div>\
+          </div>\
+          <div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>\
+         </div>\
+        </div>\
+        <div id='mapbox'></div>";map.box={};$("#wm").unbind('click').click(function(){map.focus=false;do_fade(build_map,"amber");});gettingMap=false;display_output(false,"Worldmap Loaded!");};mapget.get("/AIWars/GodGenerator?reqtype=world_map&league="+player.league);}}catch(e){display_output(true,"Error loading World Map!",true);display_output(true,e);display_output(false,"Retrying...");get_map();}}
+function build_map(){currUI=build_map;$("#window").html(map.origHTML);map.box.id=$("#mapbox");if(map.update)get_map();var x=player.curtown.x;var y=player.curtown.y;if(map.focus){x=map.focusX;y=map.focusY;}
 var nearX=9999999999;var nearY=9999999999;var tile=[0,0];var tileHTML="<div id='tileBox'>";$.each(map.tiles,function(i,v){$.each(v,function(j,w){var disX=Math.abs(x-w.centerx);var disY=Math.abs(y-w.centery);if(disX<=nearX&&disY<=nearY){tile=[i,j];nearX=disX;nearY=disY;}
 tileHTML+="<div class='maptile "+w.mapName+"' style='top:"+(i*35)+"px;left:"+(j*40)+"px;'>"+w.centerx+", "+w.centery+"</div>";});});var activeTile=0;$.each(map.tiles,function(i,v){if(i<tile[0])activeTile+=v.length;else return false;});rebuild(tile);$("#window").fadeIn("fast");$("#mapTileDisplay").html(tileHTML+"</div>");city_hover($(".playerTown"),$("#towninfo .darkFrameBody"));$(".town").die('click').live('click',function(){city_select($(this),$("#townMenuPopup"));}).die('mouseover').live('mouseover',function(){city_hover($(this),$("#towninfo .darkFrameBody"));});$("#mapTileSwitchButton").unbind("click").click(function(){$("#mapTileSwitcher").animate({"opacity":"toggle"},"fast");if($(this).hasClass("active"))$(this).removeClass("active");else $(this).addClass("active");});$(".tileDir").unbind("click").click(function(){if($(this).is("#mapTileUp")){$("#tileBox").css("top",function(i,v){var newV=parseInt(v)+35;if(newV>0)return v;return newV+"px";});return true;}
 if($(this).is("#mapTileDown")){$("#tileBox").css("top",function(i,v){var newV=parseInt(v)-35;if(-newV>(map.tiles.length-3)*35)return v;return newV+"px";});return true;}

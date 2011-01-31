@@ -16,7 +16,20 @@ function AF_UI(bldgInfo) {
 	
 	var list = ["<ul>Build Queue:"]; //begin constructing the build queue
 	var time = 0;		//we have to add up the time as we go so the displays are correct
+	var slotsUsed = 0;
 	$.each(bldgInfo.Queue, function(i, x) {
+		switch(player.AU[x.AUtoBuild].popSize) {
+			case 1:
+				slotsUsed += x.AUNumber;
+				break;
+			case 5:
+			case 20:
+				slotsUsed += 10*x.AUNumber;
+				break;
+			case 10:
+				slotsUsed += 40*x.AUNumber;
+				break;
+		}
 		time += x.ticksPerUnit * x.AUNumber;
 		if(i == 0) { //if this is the first queue item we display extra info
 			list += " (Next unit in: <span class='time'>" + (x.ticksPerUnit - x.currTicks) + "</span>)<hr/>"
@@ -25,7 +38,8 @@ function AF_UI(bldgInfo) {
 		list += "<li><div class='cancelButton'><a href='javascript:;'></a></div>" 
 				+ x.AUNumber + " " + player.AU[x.AUtoBuild].name + "<div class='AFtimes'><span class='time'>" + time + "</span></div></li>";
 	});
-	list += "</ul><div id='AF_queueCap'>Queue Cap: " + bldgInfo.cap + "</div>";
+	
+	list += "</ul><div id='AF_queueCap'>Available Slots: <span>" + (bldgInfo.cap-slotsUsed) + "</span></div>";
 	$("#AF_queueList").html(list); //display the list
 	
 	$("#AF_AUbar > a").each(function(i, el){	//set up display of AU bar
@@ -284,7 +298,34 @@ function AF_UI(bldgInfo) {
 						
 			var numPpl = parseInt($("#BUI_numPpl").val());
 			if(!isNaN(numPpl) && player.AU[slot].name != "empty") {
-				var tier = player.AU[slot].popSize;
+				var size = 0;
+				switch(player.AU[slot].popSize) {
+					case 1:
+						size += numPpl;
+						break;
+					case 5:
+					case 20:
+						size += 10*numPpl;
+						break;
+					case 10:
+						size += 40*numPpl;
+						break;
+				}
+				var currentCap = 0;
+				$.each(bldgInfo.Queue, function(i,v) {
+					switch(player.AU[v.AUtoBuild].popSize) {
+						case 1:
+							currentCap += v.AUNumber;
+							break;
+						case 5:
+						case 20:
+							currentCap +=10* v.AUNumber;
+							break;
+						case 10:
+							currentCap += 40*v.AUNumber;
+							break;
+					}
+				});
 				var getPplInfo = new make_AJAX();
 				
 				getPplInfo.callback = function(response){						
@@ -305,9 +346,11 @@ function AF_UI(bldgInfo) {
 					$('#BUI_pplManMade').html(Math.ceil(parseFloat(pplCost[2]))).format({format:"###,###,###", locale:"us"}).addClass("noRes");
 					$('#BUI_pplFood').html(Math.ceil(parseFloat(pplCost[3]))).format({format:"###,###,###", locale:"us"}).addClass("noRes");
 					$('#BUI_pplTime').html(((hours<10)?"0"+hours:hours) + ":" + ((mins<10)?"0"+mins:mins) + ":" + ((secs<10)?"0"+secs:secs)).removeClass("noRes");
+					
+					$("#AF_capNeeded span").text(size);
 												
 					var canBuild = pplInfo[2];
-					if(!canBuild.match(/^false/) && (numPpl*player.AU[BUI.queue.AUtoBuild].popSize)+bldgInfo.Queue.length <= bldgInfo.cap) {
+					if(!canBuild.match(/^false/) && size+currentCap <= bldgInfo.cap) {
 						$('#BUI_pplSteel').removeClass("noRes");
 						$('#BUI_pplWood').removeClass("noRes");
 						$('#BUI_pplManMade').removeClass("noRes");
@@ -315,14 +358,12 @@ function AF_UI(bldgInfo) {
 						$("#BUI_bldPplButton").removeClass('noBld');
 					} else { //if the user can't build ppl, mark the button as unavailable.
 						$("#BUI_bldPplButton").addClass('noBld');
-						if(!canBuild.match(/false/)) $("#BUI_bFail").html("Insufficient queue cap!  Requires an available cap of "
-																			+player.AU[BUI.queue.AUtoBuild].popSize+" per unit.");
 					}
 				};
 				getPplInfo.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command 
 								+ ".returnPrice(" + player.AU[slot].name + "," + numPpl + "," 
 								+ player.curtown.townID + ");" + player.command + ".getTicksPerAttackUnit(" 
-								+ tier + "," + player.curtown.townID + ");" + player.command + ".canBuy(" 
+								+ player.AU[slot].popSize + "," + player.curtown.townID + ");" + player.command + ".canBuy(" 
 								+ player.AU[slot].name + "," + numPpl + "," + bldgInfo.lotNum + "," 
 								+ player.curtown.townID + ");");
 								
@@ -346,6 +387,21 @@ function AF_UI(bldgInfo) {
 			$.each(BUI.queue.cost, function(i,v){
 				player.curtown.res[i] -= v;
 			});
+			var slotsOpen = parseInt($("#AF_queueCap span").text()), slotsNeeded = 0;
+			switch(player.AU[BUI.queue.AUtoBuild].popSize) {
+				case 1:
+					slotsNeeded = numPpl;
+					break;
+				case 5:
+				case 20:
+					slotsNeeded =10*numPpl;
+					break;
+				case 10:
+					slotsNeeded = 40*numPpl;
+					break;
+			}
+			$("#AF_queueCap span").text(slotsOpen-slotsNeeded);
+			
 			BUI.queue.currTicks = 0;
 			var i = bldgInfo.Queue.push(BUI.queue);
 			bldgInfo.Queue[i-1].queueTicker = inc_queue_ticks(bldgInfo.Queue[i-1]);

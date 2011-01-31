@@ -914,7 +914,7 @@ function tick_raids(thingToTick) {
 									});
 								}
 								if(!map.update) {
-									if(v.type.match(/invasion|debris/)) map.update = true;
+									if(v.raidType.match(/invasion|debris/)) map.update = true;
 								}
 								thingToTick.update = true;
 							}

@@ -11,8 +11,8 @@ function IN_UI(bldgInfo) {
 		}
 	});
 			
-	$("#BUI_numCivs").html("Current Staff: <span class='pplTown' title='Traders in this Town'>"
-							+ scTotal + "</span>/<span class='totalTown' title='Total Traders this town can hold'>" + scTotalCap + "</span> (<span class='pplBldg' title='Available Traders'>"
+	$("#BUI_numCivs").html("Current Staff: <span class='pplTown' title='Scholars in this Town'>"
+							+ scTotal + "</span>/<span class='totalTown' title='Total Scholars this town can hold'>" + scTotalCap + "</span> (<span class='pplBldg' title='Available Traders'>"
 							+ bldgInfo.peopleInside + "</span>/<span class='totalBldg' title='Total allowed'>" + bldgInfo.cap + "</span>)");
 	$("#BUI_tutorial").click(function(){	
 							var message = "Are you sure you want to play the Institute Tutorial?";
@@ -209,7 +209,7 @@ function IN_UI(bldgInfo) {
 								break;
 							case 2:
 								$(v).text("[Level " + player.research.aLotTech + "]");
-								points = (player.research.aLotTech+1)*20;
+								points = player.research.aLotTech*20;
 								$(v).siblings(".points").text(points+" KP");
 								if(player.research.knowledge >= points) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
 								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
@@ -260,8 +260,8 @@ function IN_UI(bldgInfo) {
 								if(player.research.knowledge>=50) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
 								else $(v).siblings(".research").text("Need " + (50-player.research.knowledge)+" points");
 								$.each(player.AUTemplates,function(j,w){
-									if(w.name == $(v).siblings(".info").text()) { 
-										$(v).text("[Unlocked]").siblings(":not(.info)").css("display","none");
+									if(w.name == $(v).siblings(".fullName").text()) { 
+										$(v).text("[Unlocked]").siblings(":not(.fullName, .info)").css("display","none");
 										return false;
 									}
 								});
@@ -274,8 +274,8 @@ function IN_UI(bldgInfo) {
 								else if(player.towns.length<2) $(v).text("[Locked]");
 								else $(v).siblings(".research").text("Need " + (100-player.research.knowledge)+" points");
 								$.each(player.AUTemplates,function(j,w){
-									if(w.name == $(v).siblings(".info").text()) { 
-										$(v).text("[Unlocked]").siblings(":not(.info)").css("display","none");
+									if(w.name == $(v).siblings(".fullName").text()) { 
+										$(v).text("[Unlocked]").siblings(":not(.fullName, .info)").css("display","none");
 										return false;
 									}
 								});
@@ -288,8 +288,8 @@ function IN_UI(bldgInfo) {
 								else if(player.towns.length<3) $(v).text("[Locked]");
 								else $(v).siblings(".research").text("Need " + (200-player.research.knowledge)+" points");
 								$.each(player.AUTemplates,function(j,w){
-									if(w.name == $(v).siblings(".info").text()) { 
-										$(v).text("[Unlocked]").siblings(":not(.info)").css("display","none");
+									if(w.name == $(v).siblings(".fullName").text()) { 
+										$(v).text("[Unlocked]").siblings(":not(.fullName, .info)").css("display","none");
 										return false;
 									}
 								});
@@ -302,8 +302,8 @@ function IN_UI(bldgInfo) {
 								else if(player.towns.length<4) $(v).text("[Locked]");
 								else $(v).siblings(".research").text("Need " + (400-player.research.knowledge)+" points");
 								$.each(player.AUTemplates,function(j,w){
-									if(w.name == $(v).siblings(".info").text()) { 
-										$(v).text("[Unlocked]").siblings(":not(.info)").css("display","none");
+									if(w.name == $(v).siblings(".fullName").text()) { 
+										$(v).text("[Unlocked]").siblings(":not(.fullName, .info)").css("display","none");
 										return false;
 									}
 								});
@@ -319,7 +319,7 @@ function IN_UI(bldgInfo) {
 								if(!player.research.zeppTech) {
 									if(player.research.knowledge >= 800) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
 									else $(v).siblings(".research").text("Need " + (800-player.research.knowledge)+" points");
-								} else $(v).siblings(":not(.info)").css("display","none");
+								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 							case 1:
 								$(v).text((player.research.missileSiloTech?"[Unl":"[L") + "ocked]");
@@ -327,7 +327,7 @@ function IN_UI(bldgInfo) {
 								if(!player.research.missileSiloTech) {
 									if(player.research.knowledge >= 400) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
 									else $(v).siblings(".research").text("Need " + (400-player.research.knowledge)+" points");
-								} else $(v).siblings(":not(.info)").css("display","none");
+								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 							case 2:
 								$(v).text((player.research.recyclingTech?"[Unl":"[L") + "ocked]");
@@ -335,7 +335,7 @@ function IN_UI(bldgInfo) {
 								if(!player.research.recyclingTech) {
 									if(player.research.knowledge >= 100) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
 									else $(v).siblings(".research").text("Need " + (100-player.research.knowledge)+" points");
-								} else $(v).siblings(":not(.info)").css("display","none");
+								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 							case 3:
 							case 4:
@@ -352,7 +352,7 @@ function IN_UI(bldgInfo) {
 								if(!unlocked) {
 									if(player.research.knowledge >= 200) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
 									else $(v).siblings(".research").text("Need " + (200-player.research.knowledge)+" points");
-								} else $(v).siblings(":not(.info)").css("display","none");
+								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 						}
 					});
@@ -365,7 +365,7 @@ function IN_UI(bldgInfo) {
 								if(!player.research.attackAPI) {
 									if(player.research.knowledge >= 50) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
 									else $(v).siblings(".research").text("Need " + (50-player.research.knowledge)+" points");
-								} else $(v).siblings(":not(.info)").css("display","none");
+								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 							case 1:
 								$(v).text((player.research.advancedAttackAPI?"[Unl":"[L") + "ocked]");
@@ -373,7 +373,7 @@ function IN_UI(bldgInfo) {
 								if(!player.research.advancedAttackAPI) {
 									if(player.research.knowledge >= 75) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
 									else $(v).siblings(".research").text("Need " + (75-player.research.knowledge)+" points");
-								} else $(v).siblings(":not(.info)").css("display","none");
+								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 							case 2:
 								$(v).text((player.research.tradingAPI?"[Unl":"[L") + "ocked]");
@@ -381,7 +381,7 @@ function IN_UI(bldgInfo) {
 								if(!player.research.tradingAPI) {
 									if(player.research.knowledge >= 50) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
 									else $(v).siblings(".research").text("Need " + (50-player.research.knowledge)+" points");
-								} else $(v).siblings(":not(.info)").css("display","none");
+								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 							case 3:
 								$(v).text((player.research.advancedTradingAPI?"[Unl":"[L") + "ocked]");
@@ -389,7 +389,7 @@ function IN_UI(bldgInfo) {
 								if(!player.research.advancedTradingAPI) {
 									if(player.research.knowledge >= 75) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
 									else $(v).siblings(".research").text("Need " + (75-player.research.knowledge)+" points");
-								} else $(v).siblings(":not(.info)").css("display","none");
+								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 							case 4:
 								$(v).text((player.research.smAPI?"[Unl":"[L") + "ocked]");
@@ -397,7 +397,7 @@ function IN_UI(bldgInfo) {
 								if(!player.research.smAPI) {
 									if(player.research.knowledge >= 200) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
 									else $(v).siblings(".research").text("Need " + (200-player.research.knowledge)+" points");
-								} else $(v).siblings(":not(.info)").css("display","none");
+								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 							case 5:
 								$(v).text((player.research.buildingAPI?"[Unl":"[L") + "ocked]");
@@ -405,7 +405,7 @@ function IN_UI(bldgInfo) {
 								if(!player.research.buildingAPI) {
 									if(player.research.knowledge >= 75) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
 									else $(v).siblings(".research").text("Need " + (75-player.research.knowledge)+" points");
-								} else $(v).siblings(":not(.info)").css("display","none");
+								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 							case 6:
 								$(v).text((player.research.advancedBuildingAPI?"[Unl":"[L") + "ocked]");
@@ -413,7 +413,7 @@ function IN_UI(bldgInfo) {
 								if(!player.research.advancedBuildingAPI) {
 									if(player.research.knowledge >= 125) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
 									else $(v).siblings(".research").text("Need " + (125-player.research.knowledge)+" points");
-								} else $(v).siblings(":not(.info)").css("display","none");
+								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 							case 7:
 								$(v).text((player.research.researchAPI?"[Unl":"[L") + "ocked]");
@@ -421,7 +421,7 @@ function IN_UI(bldgInfo) {
 								if(!player.research.researchAPI) {
 									if(player.research.knowledge >= 50) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
 									else $(v).siblings(".research").text("Need " + (50-player.research.knowledge)+" points");
-								} else $(v).siblings(":not(.info)").css("display","none");
+								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 							case 8:
 								$(v).text((player.research.messagingAPI?"[Unl":"[L") + "ocked]");
@@ -429,7 +429,7 @@ function IN_UI(bldgInfo) {
 								if(!player.research.messagingAPI) {
 									if(player.research.knowledge >= 100) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
 									else $(v).siblings(".research").text("Need " + (100-player.research.knowledge)+" points");
-								} else $(v).siblings(":not(.info)").css("display","none");
+								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 							case 9:
 								$(v).text((player.research.zeppelinAPI?"[Unl":"[L") + "ocked]");
@@ -437,7 +437,7 @@ function IN_UI(bldgInfo) {
 								if(!player.research.zeppelinAPI) {
 									if(player.research.knowledge >= 400) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
 									else $(v).siblings(".research").text("Need " + (400-player.research.knowledge)+" points");
-								} else $(v).siblings(":not(.info)").css("display","none");
+								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 							case 10:
 								$(v).text((player.research.nukeAPI?"[Unl":"[L") + "ocked]");
@@ -445,7 +445,7 @@ function IN_UI(bldgInfo) {
 								if(!player.research.nukeAPI) {
 									if(player.research.knowledge >= 200) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
 									else $(v).siblings(".research").text("Need " + (200-player.research.knowledge)+" points");
-								} else $(v).siblings(":not(.info)").css("display","none");
+								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 							case 11:
 								$(v).text((player.research.worldMapAPI?"[Unl":"[L") + "ocked]");
@@ -453,7 +453,7 @@ function IN_UI(bldgInfo) {
 								if(!player.research.worldMapAPI) {
 									if(player.research.knowledge >= 50) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
 									else $(v).siblings(".research").text("Need " + (50-player.research.knowledge)+" points");
-								} else $(v).siblings(":not(.info)").css("display","none");
+								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 							case 12:
 								$(v).text((player.research.completeAnalyticAPI?"[Unl":"[L") + "ocked]");
@@ -462,7 +462,7 @@ function IN_UI(bldgInfo) {
 								if(!player.research.completeAnalyticAPI&&player.research.advancedAttackAPI&&player.research.advancedTradingAPI&&player.research.advancedBuildingAPI) {
 									if(player.research.knowledge >= 50) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
 									else $(v).siblings(".research").text("Need " + (50-player.research.knowledge)+" points");
-								} else $(v).siblings(":not(.info)").css("display","none");
+								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 						}
 					});

@@ -1,6 +1,7 @@
 
 var BUI={build:build_bldg_UIs,head:"<div id='BUI_header'>\
     <div class='darkFrameBody'>\
+     <div id='BUI_bldgInfoButton'></div>\
      <div id='BUI_bldgInfo'>\
       <div id='BUI_tutorial' class='pplHelp'></div>\
       <span id='BUI_bldgName'></span><span id='BUI_bldgLvl'></span>\
@@ -69,6 +70,7 @@ var BUI={build:build_bldg_UIs,head:"<div id='BUI_header'>\
         <div class='darkFrameBody'>Build</div>\
         <div class='darkFrameB'></div>\
        </div>\
+       <div id='AF_capNeeded'>Slots needed: <span></span></div>\
       </div>\
       <div id='BUI_bldPplCost'>\
        <div class='BUI_bldPpl totalCost'>\
@@ -96,14 +98,7 @@ var BUI={build:build_bldg_UIs,head:"<div id='BUI_header'>\
        <div id='AF_queueList'></div>\
       </div>\
       <div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div>\
-     </div>",build:AF_UI},AP:{name:["Airship Platform"],build:function(){}},Bnkr:{name:["Bunker"],HTML:"<div id='Bnkr_curModeEffect'></div>\
-     <select id='Bnkr_modeSelect'>\
-      <option>Defense Mode</option>\
-      <option>VIP Mode</option>\
-      <option>Resource Cache Mode</option>\
-     </select>\
-     <a href='javascript:;' id='Bnkr_assign'></a>\
-     <div id='Bnkr_modeEffect'></div>",build:bnkr_UI},CC:{name:["Communications Center"],HTML:" <div id='CC_tabs'>\
+     </div>",build:AF_UI},AP:{name:["Airship Platform"],build:function(){}},Bnkr:{name:["Bunker"],HTML:"<div id='Bnkr_curModeEffect'></div>",build:bnkr_UI},CC:{name:["Communications Center"],HTML:" <div id='CC_tabs'>\
       <div id='CC_activityTab'></div>\
      </div>\
      <div id='CC_window'>\
@@ -401,65 +396,65 @@ var BUI={build:build_bldg_UIs,head:"<div id='BUI_header'>\
        </div>\
       </div>",civInfHTML:" <div id='IN_civInf' class='researchTree'>\
          <div class='researches'>\
-          <div id='IN_bldgSlot' class='resWhite'> <div class='info'>Build Slot Tech</div>   <span class='name'>buildingSlotTech</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_bldgStab' class='resBlack'> <div class='info'>Building Stability Tech</div> <span class='name'>buildingStabilityTech</span> <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_lot' class='resWhite'>  <div class='info'>Building Lot Tech</div>  <span class='name'>lotTech</span>    <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_town' class='resBlack'>  <div class='info'>Town Tech</div>    <span class='name'>townTech</span>    <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_enEff' class='resWhite'> <div class='info'>Engineer Efficiency</div>  <span class='name'>engineerTech</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_trEff' class='resBlack'> <div class='info'>Trader Efficiency</div>  <span class='name'>tradeTech</span>    <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_srEff' class='resWhite'> <div class='info'>Scholar Efficiency</div>  <span class='name'>scholarTech</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_bldgSlot' class='resWhite'> <div class='info'></div> <div class='fullName'>Build Slot Tech</div>   <span class='name'>buildingSlotTech</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_bldgStab' class='resBlack'> <div class='info'></div> <div class='fullName'>Building Stability Tech</div> <span class='name'>buildingStabilityTech</span> <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_lot' class='resWhite'>  <div class='info'></div> <div class='fullName'>Building Lot Tech</div>  <span class='name'>lotTech</span>    <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_town' class='resBlack'>  <div class='info'></div> <div class='fullName'>Town Tech</div>    <span class='name'>townTech</span>    <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_enEff' class='resWhite'> <div class='info'></div> <div class='fullName'>Engineer Efficiency</div>  <span class='name'>engineerTech</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_trEff' class='resBlack'> <div class='info'></div> <div class='fullName'>Trader Efficiency</div>  <span class='name'>tradeTech</span>    <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_srEff' class='resWhite'> <div class='info'></div> <div class='fullName'>Scholar Efficiency</div>  <span class='name'>scholarTech</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
          </div>\
         </div>",milInfHTML:" <div id='IN_milInf' class='researchTree'>\
          <div class='researches'>\
-          <div id='IN_af' class='resWhite'>  <div class='info'>Arms Factory Tech</div> <span class='name'>afTech</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_bunker' class='resBlack'> <div class='info'>Bunker Tech</div>   <span class='name'>bunkerTech</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_unitSlot' class='resWhite'> <div class='info'>Manufacturing Tech</div> <span class='name'>unitLotTech</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_CCTech' class='resBlack'> <div class='info'>Communication Tech</div> <span class='name'>commsCenterTech</span> <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_stealth' class='resWhite'> <div class='info'>Stealth Tech</div>  <span class='name'>stealthTech</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_stealth' class='resBlack'> <div class='info'>Scout Tech</div>   <span class='name'>scoutTech</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_support' class='resWhite'> <div class='info'>Support Tech</div>  <span class='name'>supportTech</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_af' class='resWhite'>  <div class='info'></div> <div class='fullName'>Arms Factory Tech</div> <span class='name'>afTech</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_bunker' class='resBlack'> <div class='info'></div> <div class='fullName'>Bunker Tech</div>   <span class='name'>bunkerTech</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_unitSlot' class='resWhite'> <div class='info'></div> <div class='fullName'>Manufacturing Tech</div> <span class='name'>unitLotTech</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_CCTech' class='resBlack'> <div class='info'></div> <div class='fullName'>Communication Tech</div> <span class='name'>commsCenterTech</span> <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_stealth' class='resWhite'> <div class='info'></div> <div class='fullName'>Stealth Tech</div>  <span class='name'>stealthTech</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_stealth' class='resBlack'> <div class='info'></div> <div class='fullName'>Scout Tech</div>   <span class='name'>scoutTech</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_support' class='resWhite'> <div class='info'></div> <div class='fullName'>Support Tech</div>  <span class='name'>supportTech</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
          </div>\
         </div>",milUnitsHTML:" <div id='IN_milUnits' class='researchTree'>\
          <div class='researches'>\
-          <div id='IN_troopPush' class='resWhite'> <div class='info'>Troop Push</div>  <span class='name'>troopPush</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_ShockTrooper' class='resBlack'> <div class='info'>Shock Trooper</div> <span class='name'>ShockTrooper</span> <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_Pillager' class='resWhite'>  <div class='info'>Pillager</div>  <span class='name'>Pillager</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_Vanguard' class='resBlack'>  <div class='info'>Vanguard</div>  <span class='name'>Vanguard</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_Wolverine' class='resWhite'> <div class='info'>Wolverine</div>  <span class='name'>Wolverine</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_Seeker' class='resBlack'>  <div class='info'>Seeker</div>   <span class='name'>Seeker</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_Damascus' class='resWhite'>  <div class='info'>Damascus</div>  <span class='name'>Damascus</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_Punisher' class='resBlack'>  <div class='info'>Punisher</div>  <span class='name'>Punisher</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_Dreadnaught' class='resWhite'> <div class='info'>Dreadnaught</div>  <span class='name'>Dreadnaught</span> <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_Collossus' class='resBlack'> <div class='info'>Collossus</div>  <span class='name'>Collossus</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_Helios' class='resWhite'>  <div class='info'>Helios</div>   <span class='name'>Helios</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_Horizon' class='resBlack'>  <div class='info'>Horizon</div>   <span class='name'>Horizon</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_Hades' class='resWhite'>  <div class='info'>Hades</div>   <span class='name'>Hades</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_troopPush' class='resWhite'> <div class='info'></div> <div class='fullName'>Troop Push</div>  <span class='name'>troopPush</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_ShockTrooper' class='resBlack'> <div class='info'></div> <div class='fullName'>Shock Trooper</div> <span class='name'>ShockTrooper</span> <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_Pillager' class='resWhite'>  <div class='info'></div> <div class='fullName'>Pillager</div>  <span class='name'>Pillager</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_Vanguard' class='resBlack'>  <div class='info'></div> <div class='fullName'>Vanguard</div>  <span class='name'>Vanguard</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_Wolverine' class='resWhite'> <div class='info'></div> <div class='fullName'>Wolverine</div>  <span class='name'>Wolverine</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_Seeker' class='resBlack'>  <div class='info'></div> <div class='fullName'>Seeker</div>   <span class='name'>Seeker</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_Damascus' class='resWhite'>  <div class='info'></div> <div class='fullName'>Damascus</div>  <span class='name'>Damascus</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_Punisher' class='resBlack'>  <div class='info'></div> <div class='fullName'>Punisher</div>  <span class='name'>Punisher</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_Dreadnaught' class='resWhite'> <div class='info'></div> <div class='fullName'>Dreadnaught</div>  <span class='name'>Dreadnaught</span> <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_Collossus' class='resBlack'> <div class='info'></div> <div class='fullName'>Collossus</div>  <span class='name'>Collossus</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_Helios' class='resWhite'>  <div class='info'></div> <div class='fullName'>Helios</div>   <span class='name'>Helios</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_Horizon' class='resBlack'>  <div class='info'></div> <div class='fullName'>Horizon</div>   <span class='name'>Horizon</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_Hades' class='resWhite'>  <div class='info'></div> <div class='fullName'>Hades</div>   <span class='name'>Hades</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
          </div>\
         </div>",advTechHTML:" <div id='IN_advTech' class='researchTree'>\
          <div class='researches'>\
-          <div id='IN_zeppelin' class='resWhite'>  <div class='info'>Airship Tech</div>  <span class='name'>zeppTech</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_missileSilo' class='resBlack'> <div class='info'>Advanced Rocketry</div> <span class='name'>missileSiloTech</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_recycling' class='resWhite'> <div class='info'>Recycling Tech</div>  <span class='name'>recyclingTech</span> <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_metalRef' class='resBlack'>  <div class='info'>Advanced Metallurgy</div> <span class='name'>metalRefTech</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_timberRef' class='resWhite'> <div class='info'>Timber Processing</div> <span class='name'>timberRefTech</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_manMatRef' class='resBlack'> <div class='info'>Materials Research</div> <span class='name'>manMatRefTech</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_foodRef' class='resWhite'>  <div class='info'>Hydroponics</div>   <span class='name'>foodRefTech</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_zeppelin' class='resWhite'>  <div class='info'></div> <div class='fullName'>Airship Tech</div>  <span class='name'>zeppTech</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_missileSilo' class='resBlack'> <div class='info'></div> <div class='fullName'>Advanced Rocketry</div> <span class='name'>missileSiloTech</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_recycling' class='resWhite'> <div class='info'></div> <div class='fullName'>Recycling Tech</div>  <span class='name'>recyclingTech</span> <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_metalRef' class='resBlack'>  <div class='info'></div> <div class='fullName'>Advanced Metallurgy</div> <span class='name'>metalRefTech</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_timberRef' class='resWhite'> <div class='info'></div> <div class='fullName'>Timber Processing</div> <span class='name'>timberRefTech</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_manMatRef' class='resBlack'> <div class='info'></div> <div class='fullName'>Materials Research</div> <span class='name'>manMatRefTech</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_foodRef' class='resWhite'>  <div class='info'></div> <div class='fullName'>Hydroponics</div>   <span class='name'>foodRefTech</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
          </div>\
         </div>",aiResHTML:" <div id='IN_aiRes' class='researchTree'>\
          <div class='researches'>\
-          <div id='IN_attackAPI' class='resWhite'> <div class='info'>Attack Automation</div>   <span class='name'>attackAPI</span>    <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_aaAPI' class='resBlack'>  <div class='info'>Attack Integration</div>   <span class='name'>advancedAttackAPI</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_tradingAPI' class='resWhite'> <div class='info'>Trade Automation</div>   <span class='name'>tradingAPI</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_atAPI' class='resBlack'>  <div class='info'>Trade Integration</div>   <span class='name'>advancedTradingAPI</span> <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_smAPI' class='resWhite'>  <div class='info'>Market Integration</div>   <span class='name'>smAPI</span>     <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_buildingAPI' class='resBlack'> <div class='info'>Build Automation</div>   <span class='name'>buildingAPI</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_abAPI' class='resWhite'>  <div class='info'>Build Integration</div>   <span class='name'>advancedBuildingAPI</span> <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_researchAPI' class='resBlack'> <div class='info'>Research Integration</div>  <span class='name'>researchAPI</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_messagingAPI' class='resWhite'> <div class='info'>Communication Integration</div> <span class='name'>messagingAPI</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_zeppelinAPI' class='resBlack'> <div class='info'>Zeppelin Integration</div>  <span class='name'>zeppelinAPI</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_nukeAPI' class='resWhite'>  <div class='info'>Missile Integration</div>   <span class='name'>nukeAPI</span>    <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_wmAPI' class='resBlack'>  <div class='info'>Map Integration</div>    <span class='name'>worldMapAPI</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_caAPI' class='resWhite'>  <div class='info'>Complete Integration</div>  <span class='name'>completeAnalyticAPI</span> <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_attackAPI' class='resWhite'> <div class='info'></div> <div class='fullName'>Attack Automation</div>   <span class='name'>attackAPI</span>    <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_aaAPI' class='resBlack'>  <div class='info'></div> <div class='fullName'>Attack Integration</div>   <span class='name'>advancedAttackAPI</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_tradingAPI' class='resWhite'> <div class='info'></div> <div class='fullName'>Trade Automation</div>   <span class='name'>tradingAPI</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_atAPI' class='resBlack'>  <div class='info'></div> <div class='fullName'>Trade Integration</div>   <span class='name'>advancedTradingAPI</span> <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_smAPI' class='resWhite'>  <div class='info'></div> <div class='fullName'>Market Integration</div>   <span class='name'>smAPI</span>     <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_buildingAPI' class='resBlack'> <div class='info'></div> <div class='fullName'>Build Automation</div>   <span class='name'>buildingAPI</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_abAPI' class='resWhite'>  <div class='info'></div> <div class='fullName'>Build Integration</div>   <span class='name'>advancedBuildingAPI</span> <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_researchAPI' class='resBlack'> <div class='info'></div> <div class='fullName'>Research Integration</div>  <span class='name'>researchAPI</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_messagingAPI' class='resWhite'> <div class='info'></div> <div class='fullName'>Communication Integration</div> <span class='name'>messagingAPI</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_zeppelinAPI' class='resBlack'> <div class='info'></div> <div class='fullName'>Zeppelin Integration</div>  <span class='name'>zeppelinAPI</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_nukeAPI' class='resWhite'>  <div class='info'></div> <div class='fullName'>Missile Integration</div>   <span class='name'>nukeAPI</span>    <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_wmAPI' class='resBlack'>  <div class='info'></div> <div class='fullName'>Map Integration</div>    <span class='name'>worldMapAPI</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_caAPI' class='resWhite'>  <div class='info'></div> <div class='fullName'>Complete Integration</div>  <span class='name'>completeAnalyticAPI</span> <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
          </div>\
         </div>",build:IN_UI},Mine:{name:["Metal Mine","Manufactured Materials Plant","Timber Field","Food Farm"],HTML:"<div id='Mine_productionBox'>\
        <img src='images/trans.gif' id='Mine_typePic' />\
