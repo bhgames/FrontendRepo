@@ -2,7 +2,7 @@ function draw_support_UI() {
 	$("#window").html("	<div id='support_outerbox'>\
 							<div class='darkFrameBody'>\
 								<div id='gsfn_search_widget'>\
-									<a href='http://getsatisfaction.com/battlehard_games'class='widget_title'>People-Powered Customer Service for Battlehard Games</a>\
+									<a href='http://getsatisfaction.com/battlehard_games'class='widget_title'>Community-Powered Customer Service for AI Wars</a>\
 									<div class='gsfn_content'>\
 										<form accept-charset='utf-8' action='http://getsatisfaction.com/battlehard_games' id='gsfn_search_form' method='get' onsubmit='gsfn_search(this); return false;'>\
 											<div>\

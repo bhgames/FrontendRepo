@@ -665,7 +665,7 @@ function help_re(e) { //which is the type of research to display the description
 			desc = "<h4>Building Stability Tech</h4>Code: buildingStabilityTech<p>Each level of Building Stability Tech increases your engineer's ability to construct sound buildings.  This decreases their susceptability to bombing.</p>";
 			break;
 		case "lotTech":
-			desc = "<h4>Building Lot Tech</h4>Code: lotTech<p>Each level of Building Lot Tech increases the number of lots on which you can build buildings.  After level 14, additional levels only affect colonies.</p>";
+			desc = "<h4>Building Lot Tech</h4>Code: lotTech<p>Each level of Building Lot Tech increases the number of lots on which you can build buildings.  After level 9, additional levels only affect colonies.</p>";
 			break;
 		case "unitLotTech":
 			desc = "<h4>Manufacturing Tech</h4>Code: unitLotTech<p>Each level of Manufacturing Tech increases the quaility of the manufacturing equipment in your Arms Factories.  This allows your Arms Factories to produce more varied units without additional programming<br/>(Increases AU slots in Arms Factories by one)</p>";
