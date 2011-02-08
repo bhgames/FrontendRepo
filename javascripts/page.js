@@ -1,14 +1,3 @@
-window.fbAsyncInit = function() {
-	FB.init({appId: '164327976933647', status: true, cookie: true,
-			 xfbml: true});
-};
-(function() {
-	var e = document.createElement('script'); e.async = true;
-	e.src = document.location.protocol +
-	  '//connect.facebook.net/en_US/all.js';
-	document.getElementById('fb-root').appendChild(e);
-}());
-
 Modernizr.addTest('pointerEvents', function () {
     var test    = document.createElement('div'),
         fake = false,
@@ -32,6 +21,10 @@ Modernizr.addTest('pointerEvents', function () {
 });
 
 $(document).ready(function() {
+	FB.init({appId: '164327976933647', status: true, cookie: true,
+			 xfbml: true});
+	FB.Canvas.setSize();
+	
 	preload();
 	set_sidebar_anim();
 	get_session();

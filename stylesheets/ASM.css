@@ -123,13 +123,3 @@
 	bottom: 30px;
 	right: 0px;
 	}
-.fbButton {
-	height: 17px;
-	padding:5px 5px 0px 25px;
-	border-bottom: 1px solid #1A356E;
-	border-top: 1px solid #879AC0;
-	background: #5F78AB url(http://static.ak.fbcdn.net/rsrc.php/zDYYQ/hash/deh9tyqv.png) no-repeat 0% -188px;
-	font: bold 11px 'lucida grande', tahoma, verdana, arial, sans-serif;
-	text-align: right;
-	cursor: pointer;
-	}

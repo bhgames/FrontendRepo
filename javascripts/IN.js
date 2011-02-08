@@ -477,7 +477,7 @@ function IN_UI(bldgInfo) {
 	$(".expand").unbind("click").click(function() {
 		var not = "#blank"; //just to prevent errors in .not()
 		if(!$(this).hasClass("open")) {
-			var index = $(this).index(".expand");
+			var index = BUI.IN.activeTab = $(this).index(".expand");
 			
 			$(".expand.open").removeClass("open");
 			$(".researchTree.open").removeClass("open").animate({"opacity":"toggle"},"fast"); //close any open research Trees
@@ -509,7 +509,7 @@ function IN_UI(bldgInfo) {
 	$(".researches .research").click(function() {
 		if(!$(this).hasClass("noBuy")) {
 			var that = this;
-			var name = $(that).siblings(".info").text();
+			var name = $(that).siblings(".fullName").text();
 			display_message("Confirm","Are you sure you wish to purchase "+name+"?",
 				function() {
 					var research = $(that).siblings(".name").text();
@@ -650,7 +650,7 @@ function IN_UI(bldgInfo) {
 		}
 	});
 	
-	$(".expand:eq(0)").click();
+	$(".expand:eq("+BUI.IN.activeTab+")").click();
 }
 
 function help_re(e) { //which is the type of research to display the description of
@@ -659,7 +659,7 @@ function help_re(e) { //which is the type of research to display the description
 	var desc = '';
 	switch(which) {
 		case "buildingSlotTech":
-			desc = '<h4>Build Slot Tech</h4>Code: buildingSlotTech<p>Each level of Build Slot Tech increases the number of buildings that can be upgraded, constructed, or deconstructed at the same time.</p>';
+			desc = '<h4>Building Server Tech</h4>Code: buildingSlotTech<p>Each level of Build Slot Tech increases the number of buildings that can be upgraded, constructed, or deconstructed at the same time.</p>';
 			break;
 		case "buildingStabilityTech":
 			desc = "<h4>Building Stability Tech</h4>Code: buildingStabilityTech<p>Each level of Building Stability Tech increases your engineer's ability to construct sound buildings.  This decreases their susceptability to bombing.</p>";
@@ -674,7 +674,7 @@ function help_re(e) { //which is the type of research to display the description
 			desc = "<h4>Communication Tech</h4>Code: commsCenterTech<p>Reasearching Communication Tech allows your engineers to further upgrade the communication equipment in your Comms. Centers, increasing their effective range.<br/>(Increases detection range by 10%)</p>";
 			break;
 		case "townTech":
-			desc = "<h4>Town Tech</h4>Code: townTech<p>Researching Town Tech increases your AIs' ability to multitask and override the default systems in other towns.  This allows more towns to be controlled at once.</p>";
+			desc = "<h4>Town Tech</h4>Code: townTech<p>Researching Town Tech increases your system's ability to multitask and override the default systems in other towns.  This allows more towns to be controlled at once.</p>";
 			break;
 		case "engineerTech":
 			desc = "<h4>Engineer Efficiency</h4>Code: engineerTech<p>Engineer Efficiency increases, what else, the efficiency of your Engineers!  Each level of this research increases the build time reducing effect of your engineers by 10%.</p>";

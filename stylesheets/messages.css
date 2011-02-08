@@ -326,6 +326,7 @@
 	background: url(../../images/client/menus/View_Convo-button.png) no-repeat 0 -20px;
 	}
 .messages li {
+	height: 19px;
 	list-style: none;
 	margin-left: 25px;
 	}

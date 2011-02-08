@@ -140,18 +140,20 @@
 	background-position: 0 -82px;
 	}
 #CC_memberAdmin {
-	border: 2px solid #FFFFFF;
 	display: inline-block;
 	left: 50px;
 	padding: 5px;
 	position: relative;
 	top: 45px;
 	}
+#CC_memberAdmin .textFramed {
+	height: 125px;
+	}
 #CC_memberTownAdmin {
 	position: absolute;
-	top: 100px;
-	left: 5px;
-	height: 40px;
+	top: 115px;
+	left: 30px;
+	height: 35px;
 	}
 #CC_kickMember, #CC_saveInfo {
 	display: block;
@@ -175,7 +177,6 @@
 	background-position: 0 -82px;
 	}
 #CC_invitePlayer {
-	border: 2px solid #FFFFFF;
 	display: inline-block;
 	left: 440px;
 	padding: 5px;

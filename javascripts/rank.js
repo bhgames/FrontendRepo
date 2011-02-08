@@ -69,7 +69,7 @@ function draw_rank_UI() {
 	$("#Rank_playerTab").unbind("click").click(function(){
 		var api = $("#Rank_ranks ol").data('jsp');
 		api.getContentPane().html(function(){
-			var HTML = "<div id='Rank_key'><span class='pRankKey'>Rank</span><span class='pNameKey'>Username</span><span class='pCSLKey'>Average CSL</span></div>";
+			var HTML = "<div id='Rank_key'><span class='pRankKey'>Rank</span><span class='pNameKey'>Username</span><span class='pCSLKey'>Total CSL</span></div>";
 			$.each(ranks.player,function(i,v){
 				HTML += "<div class='pRank"+((v.username == player.username)?" player":"")+((i==0)?" topBor":"")+"'>"+(i+1)+".<span class='pName'><span class='"+((v.battlehardMode)?"BHM":"noBHM")+"'></span>"+v.username+"</span><span class='pCSL'>"+v.averageCSL+"</span></div>";
 			});
@@ -81,7 +81,7 @@ function draw_rank_UI() {
 	$("#Rank_leagueTab").unbind("click").click(function(){
 		var api = $("#Rank_ranks ol").data('jsp');
 		api.getContentPane().html(function(){
-			var HTML = "<div id='Rank_key'><span class='lRankKey'>Rank</span><span class='lNameKey'>League Name</span><span class='lTagKey'>Tag</span><span class='lCSLKey'>Sum CSL</span></div>";
+			var HTML = "<div id='Rank_key'><span class='lRankKey'>Rank</span><span class='lNameKey'>League Name</span><span class='lTagKey'>Tag</span><span class='lCSLKey'>total CSL</span></div>";
 			$.each(ranks.league,function(i,v){
 				HTML += "<div class='lRank"+((player.league)?((v.leagueLetters == player.username)?" player":""):((v.leagueLetters == player.TPR.league)?" player":""))+((i==0)?" topBor":"")+"'>"+(i+1)+".<span class='lName'><span class='"+((v.battlehardMode)?"BHM":"noBHM")+"'></span>"+v.leagueName+"</span><span class='lTag'>"+v.leagueLetters+"</span><span class='lCSL'>"+v.averageCSL+"</span></div>";
 			});

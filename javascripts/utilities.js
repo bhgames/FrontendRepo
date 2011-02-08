@@ -648,67 +648,26 @@ function set_tickers() {
 	try {
 		display_output(false,"Starting tickers...");
 		check_all_for_updates();
-		player.research.scholTicks *= player.gameClockFactor;
-		player.research.scholTicksTotal *= player.gameClockFactor;
-		player.research.feroTimer *= player.gameClockFactor;
-		player.research.mineTimer *= player.gameClockFactor;
-		player.research.mmTimer *= player.gameClockFactor;
-		player.research.premiumTimer *= player.gameClockFactor;
-		player.research.timberTimer *= player.gameClockFactor;
-		player.research.revTimer *= player.gameClockFactor;
-		player.research.ubTimer *= player.gameClockFactor;
-		player.research.fTimer *= player.gameClockFactor;
 		player.research.ticker = tick_research(player.research);
 		
 		$.each(player.towns, function(i, x) {
-				for(y in x.resInc) {
-					x.resInc[y] /= player.gameClockFactor;
-				}
-				x.resTicker = tick_res(x);									//start res tickers
+				x.resTicker = tick_res(x);												//start res tickers
 				
 			$.each(x.bldg, function(j, y) {
-				for(z in y.ticksToFinishTotal) {							//modify ticksToFinishTotal
-					y.ticksToFinishTotal[z] *= player.gameClockFactor;
-				}
 				if(y.lvlUps != 0) {
-					y.ticksToFinish *= player.gameClockFactor;				//modify ticksToFinish
-					if(y.ticksToFinish >= y.ticksToFinishTotal[0]) {		//check if we need to make modifications
-						y.ticksToFinish = 0;									//make modifications
-						y.lvlUps--;
-						if(y.lvlUps != 0) y.bldgTicker = inc_bldg_ticks(y); 	//start ticking bldg timers
-					} else {												//otherwise
-						y.bldgTicker = inc_bldg_ticks(y);						//just start ticking bldg timers
-					}
+					y.bldgTicker = inc_bldg_ticks(y); 								//start ticking bldg timers
 				}
-				y.ticksPerPerson *= player.gameClockFactor;					//modify ticksPerPerson
+				
 				if(y.numLeftToBuild > 0) {
-					y.ticksLeft *= player.gameClockFactor;					//modify ticksLeft
-					if(y.ticksLeft >= y.ticksPerPerson) {
-						y.ticksLeft = 0;
-						y.numLeftToBuild--;
-						if(y.numLeftToBuild > 0) y.pplTicker = inc_ppl_ticks(y);
-					} else {
-						y.pplTicker = inc_ppl_ticks(y);						//start ticking any ppl timers, if applicable
-					}
+					y.pplTicker = inc_ppl_ticks(y);
 				}
 				$.each(y.Queue,function(k, z) {
-					z.currTicks *= player.gameClockFactor;					//modify currTicks
-					z.ticksPerUnit *= player.gameClockFactor;				//modify ticksPerUnit
-					
-					if(z.currTicks >= z.ticksPerUnit) {
-						z.currTicks = 0
-						z.AUNumber--;
-						if(z.AUNumber <= 0) {
-							y.Queue.splice(k,1);
-						}
-					} else {
-						z.queueTicker = inc_queue_ticks(z);	//start queue tickers, if applicable
-					}
+					z.queueTicker = inc_queue_ticks(z);									//start queue tickers, if applicable
 				});
 			});
 		});
+		if(currUI===draw_bldg_UI) BUI.active.timer = update_time_displays(BUI.active);	//start the display ticker if applicable
 		display_output(false,"Tickers Started!");
-		if(currUI===draw_bldg_UI) BUI.active.timer = update_time_displays(BUI.active);
 	} catch(e) {
 		display_output(true,"Error starting tickers!",true);
 		display_output(true,e);

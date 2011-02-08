@@ -13,6 +13,7 @@
 	}
 body {
 	background: #000; 
+	min-height: 800px;
 	color: #FFF;
 	margin: 0;
 	padding: 0;
@@ -35,11 +36,13 @@ ul, li {
 	z-index: 2;
 	}
 #header img {
+	min-width: 1024px;
 	width: 100%;
 	}
 #content {
 	position: absolute;
 	top: 1%;
+	min-width: 1024px;
 	width: 100%;
 	padding-top: 100px;
 	background: #000000 url(../AIFrames/screen.png) no-repeat 50% 0;
@@ -70,6 +73,16 @@ ul, li {
 	top: 100px;
 	left: 60%;
 	z-index: 100;
+	}
+.fbButton {
+	height: 17px;
+	padding:5px 5px 0px 25px;
+	border-bottom: 1px solid #1A356E;
+	border-top: 1px solid #879AC0;
+	background: #5F78AB url(http://static.ak.fbcdn.net/rsrc.php/zDYYQ/hash/deh9tyqv.png) no-repeat 0% -188px;
+	font: bold 11px 'lucida grande', tahoma, verdana, arial, sans-serif;
+	text-align: right;
+	cursor: pointer;
 	}
 /************************************************************************************************************************************************
  * Client Viewer CSS
@@ -148,6 +161,125 @@ ul, li {
 	}
 .dirright {
 	background-position: -50px 0;
+	}
+/************************************************************************************************************************************************
+ * Login & Register Popup CSS
+************************************************************************************************************************************************/
+#regBox, #forgotPassBox, #tileSelectBox, #regWaitBox, #signInBox {
+	position: absolute;
+	top: 250px;
+	left: 50%;
+	display: none;
+	width: 350px;
+	margin-left: -175px;
+	z-index: 1001;
+	}
+#signInBox {
+	padding-top: 5px;
+	color: #FFF;
+	}
+#signIn {
+	position: relative;
+	}
+#signIn_legacy {
+	position: absolute;
+	top: 25px;
+	display: none;
+	width: 320px;
+	}
+#signIn_error {
+	position: absolute;
+	top: 30px;
+	right: 35px;
+	width: 120px;
+	color: #F00;
+	}
+#signInBox input {
+	background: transparent;
+	border: 1px solid #FFF;
+	color: #FFF;
+	}
+#forgotPass {
+	position: absolute;
+	bottom: -10px;
+	left: 10px;
+	font-size: 12px;
+	color: #CCC;
+	cursor: help;
+	}
+#reg_error, #forgot_error {
+	height: 20px;
+	color: #F00;
+	}
+#reg {
+	height: 155px;
+	}
+#reg_picktile, #reg_wait {
+	display: none;
+	}
+#reg input, #forgotPassBox input {
+	border: 1px solid #FFFFFF;
+	color: #FFFFFF;
+	}
+#reg label, #signIn label {
+	display: block;
+	}
+#reg span {
+	font-size: 12px;
+	}
+#reg_fbConnect, #signIn_fbLogin {
+	width: 120px;
+	margin: 10px auto 20px;
+	}
+#reg_submit, #forgot_submit, #tileSelect_submit, #signIn_submit {
+	float: right;
+	cursor: pointer;
+	}
+#reg_forumBox label {
+	display: inline;
+	}
+#tileSelect_skip {
+	position: absolute;
+	top: 22px;
+	right: 35px;
+	}
+#tileSelect_back, #tileSelect_skip {
+	width: 90px;
+	border: 1px solid #FFF;
+	text-align: center;
+	cursor: pointer;
+	}
+#tileSelect_back:hover, #tileSelect_skip:hover {
+	border-style: outset;
+	}
+#tileSelect_back:active, #tileSelect_skip:active {
+	border-style: inset;
+	}
+#tileSelect_playerTotal {
+	font-size: 20px;
+	}
+#tileSelect_info {
+	border: 1px solid #FFF;
+	}
+#tileSelect_info div {
+	margin-left: 20px;
+	}
+#tileSelect_submit {
+	position: relative;
+	bottom: 27px;
+	left: 1px;
+	}
+.noSubmit, .noUN, .noFB, div[class="mapTile"] {
+	filter:alpha(opacity=50);
+	opacity:0.5;
+	}
+/*Map Tile selection code*/
+#tileSelector {
+	position: relative;
+	height: 144px;
+	width: 160px;
+	padding-top: 1px;
+	margin: 0 auto;
 	}
 /************************************************************************************************************************************************
  * Console Output & Chatbox CSS
@@ -232,6 +364,8 @@ ul, li {
 	}
 #AIW_alertMod {
 	position: absolute;
+	top: 0;
+	left: 0;
 	height: 100%;
 	width: 100%;
 	background-color: #000000;

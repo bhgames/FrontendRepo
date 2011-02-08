@@ -396,7 +396,7 @@ var BUI={build:build_bldg_UIs,head:"<div id='BUI_header'>\
        </div>\
       </div>",civInfHTML:" <div id='IN_civInf' class='researchTree'>\
          <div class='researches'>\
-          <div id='IN_bldgSlot' class='resWhite'> <div class='info'></div> <div class='fullName'>Build Slot Tech</div>   <span class='name'>buildingSlotTech</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_bldgSlot' class='resWhite'> <div class='info'></div> <div class='fullName'>Building Server Tech</div>   <span class='name'>buildingSlotTech</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
           <div id='IN_bldgStab' class='resBlack'> <div class='info'></div> <div class='fullName'>Building Stability Tech</div> <span class='name'>buildingStabilityTech</span> <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
           <div id='IN_lot' class='resWhite'>  <div class='info'></div> <div class='fullName'>Building Lot Tech</div>  <span class='name'>lotTech</span>    <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
           <div id='IN_town' class='resBlack'>  <div class='info'></div> <div class='fullName'>Town Tech</div>    <span class='name'>townTech</span>    <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
@@ -456,7 +456,7 @@ var BUI={build:build_bldg_UIs,head:"<div id='BUI_header'>\
           <div id='IN_wmAPI' class='resBlack'>  <div class='info'></div> <div class='fullName'>Map Integration</div>    <span class='name'>worldMapAPI</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
           <div id='IN_caAPI' class='resWhite'>  <div class='info'></div> <div class='fullName'>Complete Integration</div>  <span class='name'>completeAnalyticAPI</span> <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
          </div>\
-        </div>",build:IN_UI},Mine:{name:["Metal Mine","Manufactured Materials Plant","Timber Field","Food Farm"],HTML:"<div id='Mine_productionBox'>\
+        </div>",build:IN_UI,activeTab:0},Mine:{name:["Metal Mine","Manufactured Materials Plant","Timber Field","Food Farm"],HTML:"<div id='Mine_productionBox'>\
        <img src='images/trans.gif' id='Mine_typePic' />\
        <span id='Mine_production'></span>\
       </div>\

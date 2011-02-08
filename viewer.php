@@ -98,7 +98,6 @@
 	</div>
 	<div id="header"><img src='AIFrames/Header.png' alt='BattleHard: AI Wars' /></div>
 	<div id="content">
-		<div id='surveyLink'>Got Feedback? <a href="http://www.surveymonkey.com/s/HWL86VM" target='_new'>Click here to take a survey</a>.</div>
 		<div id="client">
 			<ul id="toplinks">
 				<li id="citybox"><a href="javascript:;" id="cityname"></a><a href="javascript:;" id="citydropdown"></a></li>
@@ -215,6 +214,7 @@
 		insertScript("raids","js");
 		flush();
 	?>
+	<script type="text/javascript" src="http://connect.facebook.net/en_US/all.js"></script>
 	<div id="fb-root"></div>
 	<script type="text/javascript">
 		<?php include("javascripts/page.js"); ?>
@@ -235,5 +235,22 @@
 			</div>
 		</noscript>
 	<!-- End of StatCounter Code -->
+	<!-- GetSatisfaction code -->
+	<script type="text/javascript" charset="utf-8">
+	  var is_ssl = ("https:" == document.location.protocol);
+	  var asset_host = is_ssl ? "https://s3.amazonaws.com/getsatisfaction.com/" : "http://s3.amazonaws.com/getsatisfaction.com/";
+	  document.write(unescape("%3Cscript src='" + asset_host + "javascripts/feedback-v2.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+
+	<script type="text/javascript" charset="utf-8">
+	  var feedback_widget_options = {};
+
+	  feedback_widget_options.display = "overlay";  
+	  feedback_widget_options.company = "battlehard_games";
+	  feedback_widget_options.placement = "right";
+	  feedback_widget_options.color = "#222";
+	  feedback_widget_options.style = "question";
+	  var feedback_widget = new GSFN.feedback_widget(feedback_widget_options);
+	</script>
 </body>
 </html>

@@ -75,7 +75,7 @@ function AF_UI(bldgInfo) {
 				$(el).unbind('click').click(function(){
 					//swap the classes so that only this element has activeAU, the others have inactiveAU
 					$(this).removeClass('inactiveAU').addClass('activeAU').siblings('a').addClass('inactiveAU').removeClass('activeAU');
-					$("#AF_AUassignList").css("visibility", "visible");
+					$("#AF_AUassignList").css("visibility", "visible").change();
 					$("#AF_AUassignButton a").removeClass('noAss').removeClass('clear');
 					
 					//reset displays

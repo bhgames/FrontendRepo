@@ -66,8 +66,9 @@ function show_town() {
 		HTML += "<img src='AIFrames/buildings/Base";
 		var numLotsOpen = player.research.lotTech;
 		if(player.capitaltid == player.curtown.townID)  numLotsOpen += 4;
-		
-		HTML += Math.floor((numLotsOpen+1)/5)+".png' id='townback' alt=''/><div id='pos0' class='bldg'><img src='AIFrames/buildings/MetalMine.png' id='pos0_building' alt='Metal Mine'/></div><div id='pos1' class='bldg'><img src='AIFrames/buildings/TimberField.png' id='pos1_building' alt='Timber Field'/></div><div id='pos2' class='bldg'><img src='AIFrames/buildings/ManufacturedMaterialsPlant.png' id='pos2_building' alt='Manufactured Materials Plant'/></div><div id='pos3' class='bldg'><img src='AIFrames/buildings/FoodFarm.png' id='pos3_building' alt='Food Farm'/></div>";
+		var townNum = Math.floor((numLotsOpen+1)/5);
+		if(townNum>3)townNum=3;
+		HTML += townNum+".png' id='townback' alt=''/><div id='pos0' class='bldg'><img src='AIFrames/buildings/MetalMine.png' id='pos0_building' alt='Metal Mine'/></div><div id='pos1' class='bldg'><img src='AIFrames/buildings/TimberField.png' id='pos1_building' alt='Timber Field'/></div><div id='pos2' class='bldg'><img src='AIFrames/buildings/ManufacturedMaterialsPlant.png' id='pos2_building' alt='Manufactured Materials Plant'/></div><div id='pos3' class='bldg'><img src='AIFrames/buildings/FoodFarm.png' id='pos3_building' alt='Food Farm'/></div>";
 		for(i = 4; i <= 18; i++) {
 			
 			HTML += "<div id='pos" + i + "' class='emptylot notMine " + ((i > numLotsOpen)?"locked ":"")

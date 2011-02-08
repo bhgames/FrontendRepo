@@ -2,10 +2,8 @@
 							   Functions for the Account Settings Menu
 \***********************************************************************************************************/
 function build_ASM() {
-	log(currUI);
 	ASM.oldUI = currUI;
 	currUI = build_ASM;
-	log(ASM.oldUI);
 	
 	$("#accountPreferences").html(ASM.HTML);
 	$("#ASM_window").html(ASM.acct);
@@ -112,4 +110,24 @@ function build_ASM() {
 	$("#accountPreferences").fadeIn();
 	$("#ASM_achievements").jScrollPane({showArrows:true,hideFocus:true});
 	$("#ASM_townScroll").jScrollPane({showArrows:true,hideFocus:true});
+}
+
+function fb_connect(response) {
+	if(response.session) {
+		FB.api('/me', function(response) {
+			var regFB = new make_AJAX();
+			regFB.callback = function(response) {
+						if(response.match(/invalid/)){
+							display_output(true,"An error occured while linking your account.", true);
+							display_output(false,"Please try again later.");
+						}
+						else {
+							display_output(false,"Your account is now connected to Facebook!");
+							$("#ASM_fbConnect").text("Facebook Integrated!");
+						}
+					};
+			
+			regFB.post("/AIWars/GodGenerator","reqtype=linkFB&fuid="+response.id);
+		});
+	}
 }

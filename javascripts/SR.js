@@ -392,8 +392,12 @@ function build_SR_menu() {
 					$.each(report.offNames, function(i, v) {
 						if(i >5) {
 							if(i % 6 == 0) {
+								if(i!=6) {
+									HTML += "</div><div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div>\
+											</div><div class='offSupp'><div class='textFramed'>";
+								}
 								HTML += "<div class='offAU legend'><span>Unit Name:</span><span>Number:</span>\
-							<span style='border-top: 1px solid #AAAAAA;'>Info:</span></div>";
+										<span style='border-top: 1px solid #AAAAAA;'>Info:</span></div>";
 							}
 							HTML += "<div class='offAU' " + ((v == "empty" || v == "???")?"style='color: #AAAAAA !important;'":"")
 									+ "><span class='offName'>" + v + "</span><span class='offNumB'>" 
@@ -443,6 +447,10 @@ function build_SR_menu() {
 					$.each(report.offNames, function(i, v) {
 						if(i >5) {
 							if(i % 6 == 0) {
+								if(i!=6) {
+									HTML += "</div><div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div>\
+											</div><div class='offSupp'><div class='textFramed'>";
+								}
 								HTML += "<div class='offAU legend'><span>Unit Name:</span><span>Sent:</span>\
 										<span style='border-top: 1px solid #444444;'>" + ((report.support)?"Returned":"Lost") + ":</span></div>"
 							}
@@ -476,6 +484,10 @@ function build_SR_menu() {
 					$.each(report.defNames, function(i, v) {
 						if(i > 5) {
 							if(i % 6 == 0) {
+								if(i!=6) {
+									HTML += "</div><div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div>\
+											</div><div class='defSupp'><div class='textFramed'>";
+								}
 								HTML += "<div class='defAU legend'><span>Unit Name:</span><span>Beginning:</span>\
 										<span style='border-top: 1px solid #444444;'>End:</span></div>"
 							}
@@ -486,7 +498,7 @@ function build_SR_menu() {
 						}
 					});
 					HTML += "</div><div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div>\
-								</div>"; //close .defSupp
+							</div>";
 				}
 				HTML += "</div>";	//close #SR_defense
 				if(((player.research.autoblastable && player.research.bhmblastable) || player.research.resblastable) && player.research.fbLinked && !report.blasted) {
@@ -494,14 +506,10 @@ function build_SR_menu() {
 				}
 			}
 			
-			if(report.lotNumBombed[0] != 0) {
-				var headers = report.Headers.split(";");
-				if(report.nuke) {
-					for(var i=0;i<headers.length-2;i++) {
-						HTML += headers[i]+".<br/>";
-					}
-				} else {
-					HTML += "<div id='SR_bombed'>" + headers[0] + "</div>";
+			var headers = report.Headers.split(";");
+			if(headers.length > 2) {
+				for(var i=0;i<headers.length-2;i++) {
+					HTML += headers[i]+".<br/>";
 				}
 			}
 			var resTaken = "";
@@ -653,9 +661,10 @@ function build_SR_menu() {
 						percentLoss[0]=Math.round((numTroopsLoss[0]/numTroopsStart[0])*100);
 						if(numTroopsStart[1]>0) percentLoss[1]=Math.round((numTroopsLoss[1]/numTroopsStart[1])*100);
 						else percentLoss[1]=100;
-						if(report.lotNumBombed != 0) {//it's a bombing
+						if(report.Headers.split(";").length > 2) {//it's a bombing
 							if(report.genocide) { //glassing
 								desc = "As part of a Glassing campaign, I "+((report.isDefender)?"was attacked":"attacked")+" with "+numTroopsStart[0]+" troops, some of which were Bombers.  "+((report.isDefender)?"I":"The defender")+" stood with "+numTroopsStart[1]+" troops.  "+((report.isDefender)?((percentLoss[0]>percentLoss[1])?"My enemy's bombers were destroyed long before they could do any damage to my city.":"My enemies numbers were too great and their bombers rained death upon my city."):((percentLoss[1]>percentLoss[0])?"Bombs rained down on my enemy's city.  Pulverising all that stood.":"Unfortunately, my enemy's defense were stronger then expected, and none of my bombers managed to do any damage."));
+							} else if(report.nuke) {
 							} else { //strafe
 								desc = "In order to soften "+((report.isDefender)?"me up, I was attacked":"my opponent, I attacked")+" with "+numTroopsStart[0]+" troops, some of which were Bombers.  "+((report.isDefender)?"I":"The defender")+" stood with "+numTroopsStart[1]+" troops.  "+((report.isDefender)?((percentLoss[0]>percentLoss[1])?"My enemy's bombers were destroyed long before they could do any damage to my city.":"My enemies numbers were too great and their bombers rained death upon my city."):((percentLoss[1]>percentLoss[0])?"Bombs rained down on my enemy's city.  Pulverising all that stood.":"Unfortunately, my enemy's defense were stronger then expected, and none of my bombers managed to do any damage."));
 							}
