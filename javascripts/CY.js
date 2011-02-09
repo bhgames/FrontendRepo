@@ -20,26 +20,12 @@ function CY_UI(bldgInfo) {
 	// getEnEffect.get("/AIWars/GodGenerator?reqtype=command&command=bf.getEngineerReductionsAsStringArray(" 
 					// + bldgInfo.lotNum + "," + player.curtown.townID + ");");
 	
-	var lists = ["Currently Constructing:","Currently Deconstructing:"];
-	$.each(BUI.CY.bldgServer, function(i,x) {
-		if(x.deconstruct) { //add item to list of deconstructing buildings
-			lists[1] += "<li><div class='cancelButton noCancel'><a href='javascript:;'></a></div><div class='bldgName'>"
-						+ x.type + "</div><div class='bldgID'>"
-						+ x.lotNum + "</div>-<div class='bldgTicksToFinish'>" 
-						+ (x.ticksToFinishTotal[0] - x.ticksToFinish) + "</div></li>";
-		} else {	//the building is upgrading, add it to the list of upgrading buildings
-			var ticksTotal = 0;
-			$.each(x.ticksToFinishTotal,function(j,y) {
-				ticksTotal += y;
-				lists[0] += "<li><div class='cancelButton noCancel'><a href='javascript:;'></a></div><div class='bldgName'>"
-							+ x.type + "</div><div class='bldgID'>"
-							+ x.lotNum + "</div>-<div class='bldgTicksToFinish'>"
-							+ (ticksTotal - x.ticksToFinish) + "</div></li>";
-			});
-		}
+	$("#CY_townID span").text(player.curtown.townID);
+	var HTML = "<span id='CY_buildingInfoHeader'>Lot Numbers:</span><ul>";
+	$.each(player.curtown.bldg, function(i,v) {
+		HTML+="<li class='buildingInfo'>"+v.type + " : <span>" + v.lotNum+"</span></li>";
 	});
-	$("#CY_deconQueue").html(lists[1]); //display decon queue
-	$("#CY_buildQueue").html(lists[0]); //display build queue
+	$("#CY_buildingInfo").append(HTML+"</ul>");
 	
 	$("#CY_numPplBldg").html(bldgInfo.numLeftToBuild);
 	if(bldgInfo.numLeftToBuild == 0) {
@@ -154,32 +140,6 @@ function CY_UI(bldgInfo) {
 			bldPpl.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command 
 						+ ".buildEng(" + bldgInfo.lotNum + "," + numPpl + "," 
 						+ player.curtown.townID + ");");
-		}
-	});
-	$(".cancelButton").unbind("click").click(function() {
-		var ele = $(this);		//so that I always have access to the button itself
-		if(!ele.hasClass("noCancel")) {	//this is to catch people clicking on the invisible cancel buttons
-			$.each(BUI.CY.bldgServer, function(i,x) {
-				if(ele.next().text() == x.type) {
-					cancelQueue = new make_AJAX();
-					
-					cancelQueue.callback = function(response) {
-						if(response.match(/true/)) {
-							ele.parent().remove();
-							x.lvlUps = 0;
-							x.deconstruct = false;
-							load_player(player.league, true, false);
-						} else {
-							//if cancel failed, bad things are going on.
-							display_output(true,"Building Cancel Failed!",true); 
-						}
-					};
-					cancelQueue.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command 
-									+ ".cancelQueueItem(" + x.lotNum + "," 
-									+ player.curtown.townID + ");");
-					return false;
-				}
-			});
 		}
 	});
 }

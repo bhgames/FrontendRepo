@@ -133,12 +133,6 @@ function draw_bldg_UI() {
 				player.curtown.res[i] -= v;
 			});
 			BUI.build();
-			if(bldgInfo.type == "Construction Yard") {
-				$("#CY_buildQueue").append("<li><div class='cancelButton noCancel'><a href='javascript:;'></a></div><div class='bldgName'>"
-											+ bldgInfo.type + "</div><div class='bldgID'>"
-											+ bldgInfo.lotNum + "</div>-<div class='bldgTicksToFinish'>"
-											+ (bldgInfo.ticksToFinishTotal[bldgInfo.ticksToFinishTotal.length-1] - bldgInfo.ticksToFinish) + "</div></li>");
-			}
 			
 			levelUp = new make_AJAX();
 			levelUp.callback = function(response){

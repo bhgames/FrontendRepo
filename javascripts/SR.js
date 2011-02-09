@@ -13,7 +13,10 @@ function get_SRs() {
 				if(SR.reports) {
 					SR.reports.reverse();
 					check_for_unread();
+				} else {
+					SR.reports = [];
 				}
+			
 				$("#sr").click(function() {
 					do_fade(build_SR_menu, "amber");
 				});

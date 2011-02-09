@@ -188,11 +188,10 @@ var BUI = { //the Building Universal Interface object will hold everything our v
 							</div>\
 						</div>\
 					</div>\
-					<div id='CY_instaBuild' class='useBP'></div>\
-					<div id='CY_queues'>\
+					<div id='CY_info'>\
 						<div class='lightFrameBody'>\
-							<div id='CY_buildQueue'></div>\
-							<div id='CY_deconQueue'></div>\
+							<div id='CY_townID'>Town ID: <span></span></div>\
+							<div id='CY_buildingInfo'></div>\
 						</div>\
 						<div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>\
 					</div>",

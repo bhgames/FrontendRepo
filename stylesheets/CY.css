@@ -1,30 +1,30 @@
 /* *********************************************************************
  * Construction Yard CSS
 ***********************************************************************/
-#CY_queues {
+#CY_info {
 	position: absolute;
 	top: 5px;
-	left: 4px;
-	color: #000000;
+	left: 130px;
 	}
-#CY_queues .lightFrameBody {
-	height: 290px;
+#CY_info .lightFrameBody {
+	width: 500px;
 	}
-#CY_buildQueue, #CY_deconQueue {
-	display: block;
-	float: left;
-	height: 295px;
-	width: 380px;
-	border: 1px solid #000000;
-	overflow: auto;
-	text-align: center;
+#CY_townID {
+	float: right;
+	font-size: 20px;
 	}
-#CY_deconQueue {
-	margin-left: -1px;
+#CY_buildingInfo {
+	width: 315px;
 	}
-#CY_queues li {
+#CY_buildingInfoHeader {
+	border-bottom: 1px solid #000;
+	font-size: 16px;
+	}
+.buildingInfo {
 	list-style: none;
-	text-align: left;
+	}
+.buildingInfo span {
+	float: right;
 	}
 .bldgTicksToFinish, .bldgName, .cancelButton {
 	display: inline;
