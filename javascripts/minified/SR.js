@@ -1,5 +1,5 @@
 
-var gettingSRs=false;function get_SRs(){try{if(!gettingSRs){gettingSRs=true;SRget=new make_AJAX();display_output(false,"Loading Status Reports...");SRget.callback=function(response){SR.reports=$.parseJSON(response);if(SR.reports){SR.reports.reverse();check_for_unread();}
+var gettingSRs=false;function get_SRs(){try{if(!gettingSRs){gettingSRs=true;SRget=new make_AJAX();display_output(false,"Loading Status Reports...");SRget.callback=function(response){SR.reports=$.parseJSON(response);if(SR.reports){SR.reports.reverse();check_for_unread();}else{SR.reports=[];}
 $("#sr").click(function(){do_fade(build_SR_menu,"amber");});SR.update=false;gettingSRs=false;display_output(false,"Status Reports Loaded!");};SRget.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".getUserSR();");}}catch(e){display_output(true,"Error during SR load!",true);display_output(true,e,true);display_output(false,"Retrying...");get_SRs();}}
 function build_SR_menu(){currUI=build_SR_menu;$("#window").contents().unbind();if(SR.update){get_SRs();get_raids(true);}
 $("#window").html(SR.HTML);SR.api=$("#SR_window").css("display","none").jScrollPane({showArrows:true,hideFocus:true}).data('jsp');$("#SR_mainTabs a, #SR_secondaryTabs a").die('click').live('click',function(){if($(this).is("#SR_mainTabs a")){$("#SR_window").contents().unbind();}else{$("#SR_sWindow").contents().unbind();}

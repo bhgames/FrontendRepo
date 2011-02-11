@@ -158,11 +158,10 @@ var BUI={build:build_bldg_UIs,head:"<div id='BUI_header'>\
        </div>\
       </div>\
      </div>\
-     <div id='CY_instaBuild' class='useBP'></div>\
-     <div id='CY_queues'>\
+     <div id='CY_info'>\
       <div class='lightFrameBody'>\
-       <div id='CY_buildQueue'></div>\
-       <div id='CY_deconQueue'></div>\
+       <div id='CY_townID'>Town ID: <span></span></div>\
+       <div id='CY_buildingInfo'></div>\
       </div>\
       <div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>\
      </div>",build:CY_UI,bldgServer:[]},HQ:{name:["Headquarters"],HTML:" <div id='HQ_tabBar'>\

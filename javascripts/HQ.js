@@ -440,6 +440,21 @@ function HQ_UI(bldgInfo) {
 					return HTML;
 				});
 				
+				$(".recallRaid").unbind('click').click(function() {
+					var rid = $(this).siblings(".raidID").text();
+					recall = new make_AJAX();
+					recall.callback = function(response) {
+						if(response.match(/true/)) {
+							get_raids(true);
+						} else {
+							var error = response.split(":");
+							if(error.length==2)error=error[1];
+							display_output(true,error,true);
+						}
+					};
+					recall.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command + ".recall(" + rid + ");");
+				});
+				
 				$(".supportAUnumber").die('click').live('click',function() {
 					var sibling = $(this).siblings('.AUinput');
 					if($(this).text() == sibling.val()) {
@@ -452,11 +467,19 @@ function HQ_UI(bldgInfo) {
 				$(".callHome").die('click').live('click', function() {
 					var AUtoRecall = [0,0,0,0,0,0];
 					var index = $(this).parent('.aSupportRow').index('.aSupportRow');
+					var callAll = true;
 					
 					$(this).siblings('.supportAUbox').children('.troop').children('.AUinput').each(function(i, v) {
 						var j = player.curtown.supportAbroad[index].supportAU[i].originalSlot;
-						AUtoRecall[j] = parseInt($(v).val());
+						var val = parseInt($(v).val());
+						if(val != 0 && val != "") {
+							callAll = false;
+						} else if(val == "") val = 0;
+						AUtoRecall[j] = val;
 					});
+					
+					if(callAll) AUtoRecall = [999999,999999,999999,999999,999999,999999];
+					
 					var recall = new make_AJAX();
 					recall.callback = function(response) {						
 						if(!response.match(/false/i)) {
@@ -476,12 +499,17 @@ function HQ_UI(bldgInfo) {
 				$('.sendHome').die('click').live('click', function() {
 					var AUtoSend = [0,0,0,0,0,0];
 					var index = $(this).parent('.fSupportRow').index('.fSupportRow');
+					var sendAll = true;
 					
 					$(this).siblings('.supportAUbox').children('.troop').children('.AUinput').each(function(i, v) {
-						
 						var j = player.curtown.sortedSupport[index].indexes[i];
-						AUtoSend[player.curtown.supportAU[j].originalSlot] = parseInt($(v).val());
+						var val = parseInt($(v).val());
+						if(val != 0 && val != "") {
+							sendAll = false;
+						} else if(val == "") val = 0;
+						AUtoSend[player.curtown.supportAU[j].originalSlot] = val;
 					});
+					if(sendAll) AUtoSend = [999999,999999,999999,999999,999999,999999];
 					var sendHome = new make_AJAX();
 					sendHome.callback = function(response) {						
 						if(!response.match(/false/i)) {
