@@ -57,12 +57,11 @@
 	}
 #RAI_active {
 	background-image:url(../AIFrames/buttons/Active-eve.png);
-	filter:opacity(50);
-	opacity: 0.5;
+	filter:alpha(opacity=50);
 	}
 #RAI_active.active {
 	background-position: 0 -82px;
-	filter:opacity(100);
+	filter:alpha(opacity=100);
 	opacity: 1;
 	}
 #RAI_syntaxHighlight {

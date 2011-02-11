@@ -223,9 +223,11 @@
 		insertScript("utilities","js");
 		insertScript("raids","js");
 		//script editor
+		echo "<![if !IE]>";
 		insertScript("ace/ace","js");
 		insertScript("ace/theme-aiwars","js");
 		insertScript("ace/mode-java","js");
+		echo "<![endif]>";
 
 		flush();
 	?>

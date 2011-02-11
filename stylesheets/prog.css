@@ -27,7 +27,6 @@
 	}
 #RAI_active {
 	background-image:url(../AIFrames/buttons/Active-eve.png);
-	filter:opacity(50);
 	opacity: 0.5;
 	}
 #RAI_active.active {
