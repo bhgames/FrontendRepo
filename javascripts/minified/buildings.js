@@ -9,11 +9,7 @@ BUI.build();get_buildable();display_res();build_raid_list();BUI.set(bldg,lot);do
 display_output(false,"Building Loaded!");$("#window").fadeIn("fast");};getUpInfo.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".returnPrice("
 +bldgInfo.lotNum+","+player.curtown.townID+");"+player.command+".getTicksForLeveling("
 +bldgInfo.lotNum+","+player.curtown.townID+");"+player.command+".canUpgrade("
-+bldgInfo.lotNum+","+player.curtown.townID+");");$("#BUI_upButton").unbind('click').click(function(){if(!$(this).hasClass("noUp")){display_output(false,"Leveling "+bldgInfo.type);bldgInfo.lvlUps++;bldgInfo.ticksToFinish=(bldgInfo.ticksToFinish==-1)?0:bldgInfo.ticksToFinish;bldgInfo.ticksToFinishTotal.push(BUI.bldgQueue.ticks);bldgInfo.bldgTicker=inc_bldg_ticks(bldgInfo);$.each(BUI.bldgQueue.cost,function(i,v){player.curtown.res[i]-=v;});BUI.build();if(bldgInfo.type=="Construction Yard"){$("#CY_buildQueue").append("<li><div class='cancelButton noCancel'><a href='javascript:;'></a></div><div class='bldgName'>"
-+bldgInfo.type+"</div><div class='bldgID'>"
-+bldgInfo.lotNum+"</div>-<div class='bldgTicksToFinish'>"
-+(bldgInfo.ticksToFinishTotal[bldgInfo.ticksToFinishTotal.length-1]-bldgInfo.ticksToFinish)+"</div></li>");}
-levelUp=new make_AJAX();levelUp.callback=function(response){if(response.match(/true/)){getUpInfo.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".returnPrice("
++bldgInfo.lotNum+","+player.curtown.townID+");");$("#BUI_upButton").unbind('click').click(function(){if(!$(this).hasClass("noUp")){display_output(false,"Leveling "+bldgInfo.type);bldgInfo.lvlUps++;bldgInfo.ticksToFinish=(bldgInfo.ticksToFinish==-1)?0:bldgInfo.ticksToFinish;bldgInfo.ticksToFinishTotal.push(BUI.bldgQueue.ticks);bldgInfo.bldgTicker=inc_bldg_ticks(bldgInfo);$.each(BUI.bldgQueue.cost,function(i,v){player.curtown.res[i]-=v;});BUI.build();levelUp=new make_AJAX();levelUp.callback=function(response){if(response.match(/true/)){getUpInfo.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".returnPrice("
 +bldgInfo.lotNum+","+player.curtown.townID+");"+player.command+".getTicksForLeveling("
 +bldgInfo.lotNum+","+player.curtown.townID+");"+player.command+".canUpgrade("
 +bldgInfo.lotNum+","+player.curtown.townID+");");display_output(false,"Success!");load_player(player.league,player.curtown.townID,false);}else{var error=response.split(":")[1];display_output(true,error);$("#BUI_fail").html(error);}};levelUp.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".levelUp("+bldgInfo.lotNum+","

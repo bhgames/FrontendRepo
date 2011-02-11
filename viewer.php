@@ -212,6 +212,11 @@
 		insertScript("login","js");
 		insertScript("utilities","js");
 		insertScript("raids","js");
+		//script editor
+		insertScript("ace/ace","js");
+		insertScript("ace/theme-aiwars","js");
+		insertScript("ace/mode-java","js");
+
 		flush();
 	?>
 	<script type="text/javascript" src="http://connect.facebook.net/en_US/all.js"></script>

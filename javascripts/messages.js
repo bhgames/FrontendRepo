@@ -294,8 +294,8 @@ function build_message_UI() {
 		$.each(messages.messages[messages.currGroup], function(i, v) {
 			if(!v.read) {getPath += player.command + ".markReadMessage(" + v.messageID + ");";v.read=true;}
 			HTML += "<div class='convoMessage" + ((v.usernameFrom == player.username)?" fromSelf'":"'") + "><a href='javascript:;' class='deleteMess' title='Delete Message'></a><div class='messSender'>" 
-					+ v.usernameFrom + "</div><div class='messSubject'>" + v.subject.replace(/<u44>/ig,",").replace(/<u3B>/g,";").replace(/</g,"&lt;").replace(/>/g,"&gt;") + "</div><div class='messBodyBox'><div class='messBodyGrad'><div class='messBodyTop'><div class='messBodyBottom'><div class='messBody'>" 
-					+ v.body.replace(/<u44>/ig,",").replace(/<u3B>/g,";").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+					+ v.usernameFrom + "</div><div class='messSubject'>" + v.subject.replace(/<u44>/ig,",").replace(/<u3B>/g,";").replace(/<script/g,"") + "</div><div class='messBodyBox'><div class='messBodyGrad'><div class='messBodyTop'><div class='messBodyBottom'><div class='messBody'>" 
+					+ v.body.replace(/<u44>/ig,",").replace(/<u3B>/g,";").replace(/<script/g,"");
 			if(messages.curr.msgtype == 1 && i==0) {
 				HTML += "\n\nClick <a href='javascript:;' class='confirmTrade'>here</a> to accept this trade request.";
 			} else if(messages.curr.msgtype ==3 && i==0) {
@@ -334,10 +334,10 @@ function build_message_UI() {
 		$.each(participants, function(i,v) {
 			if(v == player.username) {participants.splice(i, 1); return false;}
 		});
-		var HTML = "<h2 id='mess_header'>" + messages.curr.subject.replace(/<u44>/ig,",").replace(/<u3B>/g,";").replace(/</g,"&lt;").replace(/>/g,"&gt;") + "</h2><a href='javascript:;' id='mess_showConvo'></a><div id='mess_box'" 
+		var HTML = "<h2 id='mess_header'>" + messages.curr.subject.replace(/<u44>/ig,",").replace(/<u3B>/g,";").replace(/<script/g,"") + "</h2><a href='javascript:;' id='mess_showConvo'></a><div id='mess_box'" 
 					+ ((messages.curr.usernameFrom == player.username)?" class='fromSelf'":"") + "><div class='messSender'>" 
 					+ participants + "</div><div class='messBodyBox'><div class='messBodyGrad'><div class='messBodyTop'><div class='messBodyBottom'><div class='messBody'>" 
-					+ messages.curr.body.replace(/<u44>/ig,",").replace(/<u3B>/g,";").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+					+ messages.curr.body.replace(/<u44>/ig,",").replace(/<u3B>/g,";").replace(/<script/g,"");
 		if(messages.curr.msgtype == 1) {
 			HTML += "\n\nClick <a href='javascript:;' id='mess_confirmTrade'>here</a> to accept this trade request.";
 		} else if(messages.curr.msgtype == 3) {
@@ -421,8 +421,8 @@ function build_message_UI() {
 		var that = $(this);
 		var message = {
 						to : (($("#mess_recip").val())?$("#mess_recip").val().replace(/\s*\u003B\s*(?=(\w|\d))/ig,",").replace(/\u003B/ig,""):(messages.curr.usernameFrom == player.username)?messages.curr.usernameTo:messages.curr.usernameFrom),
-						subject : $("#mess_subject").val() || messages.curr.subject,
-						body : $("#mess_bodyText").val(),
+						subject : $("#mess_subject").val().replace(/</g,"&lt;").replace(/>/g,"&gt;") || messages.curr.subject,
+						body : $("#mess_bodyText").val().replace(/</g,"&lt;").replace(/>/g,"&gt;"),
 						oMID : ((messages.curr)?(messages.curr.originalSubjectID || messages.curr.subjectID):0)
 						};
 		message.UG = message.to.match(/\w+\d*\s*(?=\u005D)/g);
