@@ -647,7 +647,6 @@ function check_for_unread() {
 function set_tickers() {
 	try {
 		display_output(false,"Starting tickers...");
-		check_all_for_updates();
 		player.research.ticker = tick_research(player.research);
 		
 		$.each(player.towns, function(i, x) {
@@ -675,6 +674,38 @@ function set_tickers() {
 		clear_all_timers();
 		set_tickers();
 	}
+}
+
+function clear_player_timers() {
+	display_output(false,"Clearing tickers...");
+		clearInterval(updateTimer);
+		
+		clearTimeout(player.timer);
+		
+		clearInterval(BUI.active.timer);
+		
+		clearInterval(player.research.ticker);
+		
+		$.each(player.towns, function(i, x) {
+			try {
+				clearInterval(x.resTicker);
+			}
+			catch(e) {}
+			$.each(x.bldg, function(j, y) {
+				try {
+					clearInterval(y.bldgTicker);
+					clearInterval(y.pplTicker);
+				}
+				catch(e) {}
+					$.each(y.Queue, function(k, z) {
+						try {
+							clearInterval(z.queueTicker);
+						}
+						catch(e) {}
+					});
+			});
+		});
+	display_output(false,"Tickers Cleared!");
 }
 
 function clear_all_timers() {

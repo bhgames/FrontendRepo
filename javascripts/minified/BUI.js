@@ -165,11 +165,11 @@ var BUI={build:build_bldg_UIs,head:"<div id='BUI_header'>\
       </div>\
       <div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>\
      </div>",build:CY_UI,bldgServer:[]},HQ:{name:["Headquarters"],HTML:" <div id='HQ_tabBar'>\
-       <div id='HQ_overview'>\
+       <div id='HQ_overview' class='lightButton'>\
         <div class='lightFrameBody'>Overview</div>\
         <div class='lightFrameBL'><div class='lightFrameB'></div></div>\
        </div>\
-       <div id='HQ_sendMission'>\
+       <div id='HQ_sendMission' class='lightButton'>\
         <div class='lightFrameBody'>Send Mission</div>\
         <div class='lightFrameBR'><div class='lightFrameB'></div></div>\
        </div>\
@@ -432,12 +432,12 @@ var BUI={build:build_bldg_UIs,head:"<div id='BUI_header'>\
         </div>",advTechHTML:" <div id='IN_advTech' class='researchTree'>\
          <div class='researches'>\
           <div id='IN_zeppelin' class='resWhite'>  <div class='info'></div> <div class='fullName'>Airship Tech</div>  <span class='name'>zeppTech</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_missileSilo' class='resBlack'> <div class='info'></div> <div class='fullName'>Advanced Rocketry</div> <span class='name'>missileSiloTech</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_recycling' class='resWhite'> <div class='info'></div> <div class='fullName'>Recycling Tech</div>  <span class='name'>recyclingTech</span> <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_metalRef' class='resBlack'>  <div class='info'></div> <div class='fullName'>Advanced Metallurgy</div> <span class='name'>metalRefTech</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_timberRef' class='resWhite'> <div class='info'></div> <div class='fullName'>Timber Processing</div> <span class='name'>timberRefTech</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_manMatRef' class='resBlack'> <div class='info'></div> <div class='fullName'>Materials Research</div> <span class='name'>manMatRefTech</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_foodRef' class='resWhite'>  <div class='info'></div> <div class='fullName'>Hydroponics</div>   <span class='name'>foodRefTech</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_missileSilo' class='resBlack'> <div class='info'></div> <div class='fullName'>Advanced Rocketry</div> <span class='name'>missileSiloTech</span> <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_recycling' class='resWhite'> <div class='info'></div> <div class='fullName'>Recycling Tech</div>  <span class='name'>recyclingTech</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_metalRef' class='resBlack'>  <div class='info'></div> <div class='fullName'>Advanced Metallurgy</div> <span class='name'>metalRefTech</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_timberRef' class='resWhite'> <div class='info'></div> <div class='fullName'>Timber Processing</div> <span class='name'>timberRefTech</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_manMatRef' class='resBlack'> <div class='info'></div> <div class='fullName'>Materials Research</div> <span class='name'>manMatRefTech</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_foodRef' class='resWhite'>  <div class='info'></div> <div class='fullName'>Hydroponics</div>   <span class='name'>foodRefTech</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
          </div>\
         </div>",aiResHTML:" <div id='IN_aiRes' class='researchTree'>\
          <div class='researches'>\

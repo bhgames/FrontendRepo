@@ -204,7 +204,8 @@ function IN_UI(bldgInfo) {
 								$(v).text("[Level " + player.research.bunkerTech + "]");
 								points = (player.research.bunkerTech+1)*5;
 								$(v).siblings(".points").text(points+" KP");
-								if(player.research.knowledge >= points) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+								if(player.research.knowledge >= points && player.research.bunkerTech<10) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+								else if(player.research.bunkerTech > 9) $(v).siblings(".bpResearch, .research, .points").css("display","none");
 								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
 								break;
 							case 2:
@@ -703,13 +704,13 @@ function help_re(e) { //which is the type of research to display the description
 		case "troopPush":
 			desc="<h4>Troop Push</h4>Code: troopPush<p>When you order a troop push, your entire town shifts into high gear to produce as many units as possible.  As time goes on, your town slowly loses the ability to produce units in this fasion.<br/>(Simulates one of your Arms Factories running at full capacity for the number of hours specified.  This time is split between all currently assigned AU.)</p>";
 			break;
-		case "zeppelinTech":
+		case "zeppTech":
 			desc="<h4>Airship Tech</h4>Code: zeppelinTech<p>Researching Airship Tech grants you access to the mighty Zeppelin.  Zeppelin's are built from a Zeppelin Hangar and function as Troop Transports and Mobile Command Centers.  Because of their speed and utility, Zeppelins can only travel so far without needing a refuel.  Fuel is generated at Hangars at a rate dictaded by the Hangars level</p>";
 			break;
 		case "missileSiloTech":
 			desc="<h4>Advanced Rocketry</h4>Code: missileSiloTech<p>With Advanced Rocketry, your empire gains the knowledge to create and use powerful missile technologies and unlocks the Missile Silo building.  As you level up your Missile silo, the missiles inside become more powerful.  Launching a missile destroyes the silo; defending against a missile lowers your Missile Silo's level by the level of the incoming missile, to a minimum of 1.</p>";
 			break;
-		case "recyclingCenterTech":
+		case "recyclingTech":
 			desc="<h4>Recycling Tech</h4>Code: recyclingCenterTech<p>Through the use of advanced Recycling Centers, your troops can now convert battlefield losses back into resources.  The process itself is quite grim, in some cases, but always results in high quality scrap that is converted back into useful resources.</p>";
 			break;
 		case "metalRefTech":

@@ -45,12 +45,12 @@ function build_raid_list() {
 	$("#IO").removeClass("incomingE incomingF outgoing");
 
 	player.curtown.incomingRaids = $.grep(player.raids, function(v, i) {
-							if(v.defendingTown == player.curtown.townName && !v.raidType.match(/(support|debris)/i) && !v.raidOver) {
+							if(v.defendingTown == player.curtown.townName && !v.raidType.match(/(support)/i) && !v.debris && !v.raidOver) {
 								$("#IO").addClass("incomingE");
 								return true;
 							}
-							if((v.attackingTown == player.curtown.townName && v.raidOver && !v.raidType.match(/support/i)) || (v.defendingTown == player.curtown.townName && (v.raidType.match(/support/i) && !v.raidType.match(/debris/i)))) {
-								if(!v.raidType.match(/support/i)) BUI.HQ.numRaidsOut++; //incoming support shouldn't be counted
+							if((v.attackingTown == player.curtown.townName && v.raidOver) || (v.defendingTown == player.curtown.townName && (v.raidType.match(/support/i) && !v.debris))) {
+								if(!v.raidType.match(/support/i) && v.attackingTown != player.curtown.townName) BUI.HQ.numRaidsOut++; //incoming support shouldn't be counted
 								$("#IO").addClass("incomingF");
 								return true;
 							}
@@ -132,8 +132,12 @@ function update_raid_display() {
 				if(player.curtown.outgoingRaids.length > 0) {
 					$('#outgoing_attacks .raidETA').each(function(i, v) {
 						if(player.curtown.outgoingRaids[i].update) {
-							get_SRs();
-							get_raids(true);
+							if(player.curtown.outgoingRaids[i].raidType.match(/invasion|support/)) {
+								load_player(player.league,true);
+							} else {
+								get_SRs();
+								get_raids(true);
+							}
 						}
 						if($(this).siblings(".raidID").text() != player.curtown.outgoingRaids[i].rid) $(this).parent().remove();
 						if(player.curtown.outgoingRaids[i].eta != "updating") {
@@ -148,8 +152,6 @@ function update_raid_display() {
 							$(this).html(player.curtown.outgoingRaids[i].eta);
 						}
 					});
-				} else {
-					clearInterval(player.curtown.outgoingRaids.displayTimer);
 				}
 			}
 			catch(e) {
@@ -166,8 +168,6 @@ function update_raid_display() {
 				if(player.curtown.incomingRaids.length > 0) {
 					$('#incomming_attacks .raidETA').each(function(i, v) {
 						if(player.curtown.incomingRaids[i].update) {
-							get_SRs();
-							get_raids(true);
 							load_player(player.league,true);
 						}
 						if($(this).siblings(".raidID").text() != player.curtown.incomingRaids[i].rid) $(this).parent().remove();
@@ -183,8 +183,6 @@ function update_raid_display() {
 							$(this).html(player.curtown.incomingRaids[i].eta);
 						}
 					});
-				} else {
-					clearInterval(player.curtown.incomingRaids.displayTimer);
 				}
 			}
 			catch(e) {

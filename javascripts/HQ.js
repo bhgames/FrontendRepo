@@ -177,6 +177,9 @@ function HQ_UI(bldgInfo) {
 					if(!$(this).hasClass('noAttack')) {
 						var AUarray = [];
 						$(".AUinput").each(function(i, v) {
+							if(i<6) {
+								if($(v).val() > player.curtown.au[i]) $(v).val(player.curtown.au[i])
+							} else if($(v).val() > player.curtown.supportAU[i-6]) $(v).val(player.curtown.supportAU[i-6].size);
 							AUarray.push((($(v).val() == "")?0:$(v).val()));
 						});
 						
@@ -441,11 +444,12 @@ function HQ_UI(bldgInfo) {
 				});
 				
 				$(".recallRaid").unbind('click').click(function() {
-					var rid = $(this).siblings(".raidID").text();
+					var rid = $(this).siblings(".raidInfo").find(".raidID").text();
 					recall = new make_AJAX();
 					recall.callback = function(response) {
 						if(response.match(/true/)) {
 							get_raids(true);
+							currUI();
 						} else {
 							var error = response.split(":");
 							if(error.length==2)error=error[1];
@@ -478,7 +482,7 @@ function HQ_UI(bldgInfo) {
 						AUtoRecall[j] = val;
 					});
 					
-					if(callAll) AUtoRecall = [999999,999999,999999,999999,999999,999999];
+					if(callAll) AUtoRecall = [0];
 					
 					var recall = new make_AJAX();
 					recall.callback = function(response) {						
@@ -509,7 +513,7 @@ function HQ_UI(bldgInfo) {
 						} else if(val == "") val = 0;
 						AUtoSend[player.curtown.supportAU[j].originalSlot] = val;
 					});
-					if(sendAll) AUtoSend = [999999,999999,999999,999999,999999,999999];
+					if(sendAll) AUtoSend = [0];
 					var sendHome = new make_AJAX();
 					sendHome.callback = function(response) {						
 						if(!response.match(/false/i)) {
@@ -638,7 +642,10 @@ function canSendAttack() {
 	$("#HQ_missionDesc").data('jsp').getContentPane().html(desc);
 	$("#HQ_missionDesc").data('jsp').reinitialise();
 	var AUarray = [];
-	$(".AUinput").each(function(i, v) {
+	$(".AUinput").each(function(i, v) {		
+		if(i<6) {
+			if($(v).val() > player.curtown.au[i]) $(v).val(player.curtown.au[i])
+		} else if($(v).val() > player.curtown.supportAU[i-6]) $(v).val(player.curtown.supportAU[i-6].size);
 		AUarray.push((($(v).val() == "")?0:$(v).val()));
 	});
 

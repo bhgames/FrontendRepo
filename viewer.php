@@ -35,12 +35,7 @@
 		insertScript("mine","css");
 		insertScript("MS","css");
 		insertScript("messages","css");
-		echo "<![if !IE]>";
 		insertScript("prog","css");
-		echo "<![endif]>";
-		echo "<!--[if true]>";
-		insertScript("prog-IE","css");
-		echo "<![endif]-->";
 		insertScript("premium","css");
 		insertScript("quest", "css");
 		insertScript("raidList","css");
@@ -206,12 +201,7 @@
 		insertScript("league","js");
 		insertScript("menus","js");
 		insertScript("messages","js");
-		echo "<![if !IE]>";
 		insertScript("prog","js");
-		echo "<![endif]>";
-		echo "<!--[if true]>";
-		insertScript("prog-IE","js");
-		echo "<![endif]-->";
 		insertScript("premium","js");
 		insertScript("quest", "js");
 		insertScript("rank","js");
@@ -223,11 +213,9 @@
 		insertScript("utilities","js");
 		insertScript("raids","js");
 		//script editor
-		echo "<![if !IE]>";
 		insertScript("ace/ace","js");
 		insertScript("ace/theme-aiwars","js");
-		insertScript("ace/mode-java","js");
-		echo "<![endif]>";
+		insertScript("ace/mode-AIWjava","js");
 
 		flush();
 	?>

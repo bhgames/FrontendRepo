@@ -9,6 +9,7 @@
 	margin: 0px;	
 	overflow: hidden;
 	z-index: 1;
+	cursor: text;
 	}
 #RAI_options {
 	position: absolute;
@@ -22,7 +23,7 @@
 	display: inline-block;
 	height: 41px;
 	width: 151px;
-	margin-left: 30px;
+	margin-left: 74px;
 	background: no-repeat 0 0;
 	}
 #RAI_active {

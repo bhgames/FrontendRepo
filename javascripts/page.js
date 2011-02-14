@@ -21,7 +21,7 @@ Modernizr.addTest('pointerEvents', function () {
 });
 
 $(document).ready(function() {	
-	FB.init({appId: '164101923624047', status: true, cookie: true,
+	FB.init({appId: '164327976933647', status: true, cookie: true,
 			 xfbml: true});
 	FB.Canvas.setSize();
 	
@@ -35,7 +35,8 @@ $(document).ready(function() {
 	
 	$(window).unload(function() {
 		$("*").unbind().die();
-		clear_all_timers()
+		clear_all_timers();
+		clearInterval(updateTimer);
 	});
 	$("#console").unbind("click").click(function() {
 		show_output_window();

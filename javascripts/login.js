@@ -10,8 +10,10 @@ function get_session() {
 	var seshget = new make_AJAX();
 	
 	seshget.callback = function(response) {
-		if(!response.match(/invalid/)) load_client(false); //if the user entered a valid UN and Pass
-		else {
+		if(!response.match(/invalid/)) {
+			load_client(false); //if the user entered a valid UN and Pass
+			check_all_for_updates();
+		} else {
 			var inFB = (window.self != window.top);
 			FB.getLoginStatus(function(response) {
 				if(response.session) {
@@ -25,7 +27,10 @@ function get_session() {
 								} else {
 									window.location.replace("/");
 								}
-							} else load_client(false);
+							} else { 
+								load_client(false);
+								check_all_for_updates();
+							}
 						};
 						login.post("/AIWars/GodGenerator","reqtype=login&fuid="+response.id);
 					});
@@ -374,7 +379,10 @@ function load_client(type, reloadTown, reloadUI) {
 	if(!gettingPlayer) {
 		gettingPlayer = true;
 		if(loggedIn) {
-			if(type != player.league) loggedIn=false; //this is so show_town will be called when switching to league towns
+			if(type != player.league) {
+				loggedIn=false; //this is so show_town will be called when switching to league towns
+				clear_all_timers();
+			}
 		}
 		display_output(false,"Loading Client");
 		display_output(false,"Loading Player Data");
@@ -382,6 +390,7 @@ function load_client(type, reloadTown, reloadUI) {
 		playerget.callback = function(response) {
 			if(!response.match(/invalid/i)) { //if the user entered a valid UN and Pass
 				try {
+					if(loggedIn) clear_all_timers();
 					$.extend(player, $.parseJSON(response));
 					
 					if(!player.towns) throw "No Towns";
@@ -520,7 +529,6 @@ function load_client(type, reloadTown, reloadUI) {
 							get_ranks(false,info[7],info[8],info[9]);
 							
 							BUI.build();
-							if(loggedIn) clear_all_timers();
 							set_tickers();	
 							display_res();
 							
@@ -603,7 +611,6 @@ function load_client(type, reloadTown, reloadUI) {
 					load_client(type);
 				}
 			} else {
-				clear_all_timers();
 				window.location.replace("/");
 			}
 		};
@@ -615,9 +622,6 @@ function load_client(type, reloadTown, reloadUI) {
 function load_player(type, reloadTown, reloadUI) {
 	if(!gettingPlayer) {
 		gettingPlayer = true;
-		if(loggedIn) {
-			if(type != player.league) loggedIn=false; //this is so show_town will be called when switching to league towns
-		}
 		display_output(false,"Loading Player Data");
 		var playerget = new make_AJAX();
 		playerget.callback = function(response) {
@@ -636,6 +640,7 @@ function load_player(type, reloadTown, reloadUI) {
 						get_map();
 					}					
 					
+					clear_player_timers();
 					$.extend(player, $.parseJSON(response));
 					
 					if(!player.towns) throw "No Towns";
@@ -711,6 +716,7 @@ function load_player(type, reloadTown, reloadUI) {
 					
 					// rebuild some info that gets lost
 					get_all_trades();
+					get_support_abroad();
 					
 						//assign curtown
 					if(reloadTown) {
@@ -725,7 +731,6 @@ function load_player(type, reloadTown, reloadUI) {
 					get_messages(true);
 					build_raid_list();
 					BUI.build();
-					clear_all_timers();
 					set_tickers();	
 					display_res();
 					set_bottom_links();
@@ -748,7 +753,6 @@ function load_player(type, reloadTown, reloadUI) {
 					load_player(type, reloadTown, reloadUI);
 				}
 			} else {
-				clear_all_timers();
 				window.location.replace("/");
 			}
 		};

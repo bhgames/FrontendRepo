@@ -34,9 +34,15 @@ clearInterval(v.activeTrades.timer);clearInterval(v.tradeSchedules.timer);v.acti
 function get_achievements(async,achieves){if(async){var getAchieves=new make_AJAX();getAchieves.callback=function(response){get_achievements(false,response);};getAchieves.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".getAchievements();");}else{player.achievements=$.parseJSON(achieves);}}
 function check_for_unread(){try{var unreadReports=false;$.each(SR.reports,function(i,v){if(!v.read){unreadReports=true;return false;}});if(unreadReports){clearInterval(SR.flashTimer);SR.flashTimer=setInterval(function(){$("#sr .flicker").animate({"opacity":"toggle"},250);},251);}else{clearInterval(SR.flashTimer);$("#sr .flicker").stop(true).fadeOut();}}catch(e){}
 try{var unreadMessages=false;$.each(messages.messages,function(i,v){$.each(v,function(j,w){if(!w.read){unreadMessages=true;return false;}});return!unreadMessages;});if(unreadMessages){clearInterval(messages.flashTimer);messages.flashTimer=setInterval(function(){$("#mailbox .flicker").animate({"opacity":"toggle"},250);},251);}else{clearInterval(messages.flashTimer);$("#mailbox .flicker").stop(true).fadeOut();}}catch(e){}}
-function set_tickers(){try{display_output(false,"Starting tickers...");check_all_for_updates();player.research.ticker=tick_research(player.research);$.each(player.towns,function(i,x){x.resTicker=tick_res(x);$.each(x.bldg,function(j,y){if(y.lvlUps!=0){y.bldgTicker=inc_bldg_ticks(y);}
+function set_tickers(){try{display_output(false,"Starting tickers...");player.research.ticker=tick_research(player.research);$.each(player.towns,function(i,x){x.resTicker=tick_res(x);$.each(x.bldg,function(j,y){if(y.lvlUps!=0){y.bldgTicker=inc_bldg_ticks(y);}
 if(y.numLeftToBuild>0){y.pplTicker=inc_ppl_ticks(y);}
 $.each(y.Queue,function(k,z){z.queueTicker=inc_queue_ticks(z);});});});if(currUI===draw_bldg_UI)BUI.active.timer=update_time_displays(BUI.active);display_output(false,"Tickers Started!");}catch(e){display_output(true,"Error starting tickers!",true);display_output(true,e);display_output(false,"Clearing...");clear_all_timers();set_tickers();}}
+function clear_player_timers(){display_output(false,"Clearing tickers...");clearInterval(updateTimer);clearTimeout(player.timer);clearInterval(BUI.active.timer);clearInterval(player.research.ticker);$.each(player.towns,function(i,x){try{clearInterval(x.resTicker);}
+catch(e){}
+$.each(x.bldg,function(j,y){try{clearInterval(y.bldgTicker);clearInterval(y.pplTicker);}
+catch(e){}
+$.each(y.Queue,function(k,z){try{clearInterval(z.queueTicker);}
+catch(e){}});});});display_output(false,"Tickers Cleared!");}
 function clear_all_timers(){display_output(false,"Clearing tickers...");clearInterval(updateTimer);clearTimeout(player.timer);clearInterval(player.townUpdate);clearInterval(BUI.active.timer);clearInterval(player.research.ticker);clearInterval(player.raids.raidTicker);try{clearInterval(player.curtown.incomingRaids.displayTimer);}
 catch(e){}
 try{clearInterval(player.curtown.outgoingRaids.displayTimer);}

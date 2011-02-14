@@ -122,13 +122,13 @@ function build_RAI_interface() {
 			if(response.match(/^true/i)) {
 				display_output(false, "Program Running!");
 				$("#RAI_active").addClass("active");
-			} else if(response.match(/^false/i)) {
+			} else if(response.match(/^false:/i)) {
 				var error = response.split("false:")[1];
 				display_output(true, "Compiler Error:",true);
 				display_output(true,error.replace(/\u003C/g,"&lt;").replace(/\u003E/g,"&gt;"));
 			} else {
 				display_output(true,"An Error has occured.",true);
-				display_output(true,repsonse);
+				display_output(true,"response was "+response);
 				display_output(false,"Please report this to the developers via the feedback button on the left.");
 			}
 		};
