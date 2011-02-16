@@ -58,13 +58,16 @@
 #HQ_AUinput, .supportAU, .troop {
 	text-align: center;
 	}
-#HQ_supportAUbox {
+#HQ_supportAUbox, #HQ_civilianAUbox {
 	position: absolute;
 	top: 150px;
 	right: 10px;
 	color: #FFF;
 	}
-#HQ_supportAU {
+#HQ_civilianAUbox {
+	display: none;
+	}
+#HQ_supportAU, #HQ_civilianAU {
 	height: 225px;
 	width: 390px;
 	overflow: auto;

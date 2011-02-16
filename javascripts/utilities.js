@@ -650,28 +650,28 @@ function set_tickers() {
 		player.research.ticker = tick_research(player.research);
 		
 		$.each(player.towns, function(i, x) {
-				x.resTicker = tick_res(x);												//start res tickers
+				x.resTicker = tick_res(x);				//start res tickers
 				
 			$.each(x.bldg, function(j, y) {
 				if(y.lvlUps != 0) {
-					y.bldgTicker = inc_bldg_ticks(y); 								//start ticking bldg timers
+					y.bldgTicker = inc_bldg_ticks(y); 	//start ticking bldg timers
 				}
 				
 				if(y.numLeftToBuild > 0) {
-					y.pplTicker = inc_ppl_ticks(y);
+					y.pplTicker = inc_ppl_ticks(y);		//start ppl tickers, if applicable
 				}
 				$.each(y.Queue,function(k, z) {
-					z.queueTicker = inc_queue_ticks(z);									//start queue tickers, if applicable
+					z.queueTicker = inc_queue_ticks(z);	//start queue tickers, if applicable
 				});
 			});
 		});
-		if(currUI===draw_bldg_UI) BUI.active.timer = update_time_displays(BUI.active);	//start the display ticker if applicable
+		
 		display_output(false,"Tickers Started!");
 	} catch(e) {
 		display_output(true,"Error starting tickers!",true);
 		display_output(true,e);
 		display_output(false,"Clearing...");
-		clear_all_timers();
+		clear_player_timers();
 		set_tickers();
 	}
 }
@@ -680,8 +680,6 @@ function clear_player_timers() {
 	display_output(false,"Clearing tickers...");
 		clearInterval(updateTimer);
 		
-		clearTimeout(player.timer);
-		
 		clearInterval(BUI.active.timer);
 		
 		clearInterval(player.research.ticker);
@@ -689,19 +687,16 @@ function clear_player_timers() {
 		$.each(player.towns, function(i, x) {
 			try {
 				clearInterval(x.resTicker);
-			}
-			catch(e) {}
+			} catch(e) {}
 			$.each(x.bldg, function(j, y) {
 				try {
 					clearInterval(y.bldgTicker);
 					clearInterval(y.pplTicker);
-				}
-				catch(e) {}
+				} catch(e) {}
 					$.each(y.Queue, function(k, z) {
 						try {
 							clearInterval(z.queueTicker);
-						}
-						catch(e) {}
+						} catch(e) {}
 					});
 			});
 		});
@@ -711,8 +706,6 @@ function clear_player_timers() {
 function clear_all_timers() {
 	display_output(false,"Clearing tickers...");
 		clearInterval(updateTimer);
-		
-		clearTimeout(player.timer);
 		
 		clearInterval(player.townUpdate);
 		
@@ -945,13 +938,9 @@ function tick_trades(thingToTick) {
 }
 
 function tick_research(thingToTick) {
-	return setInterval(function() {
-			if(thingToTick.scholTicks < thingToTick.scholTicksTotal) {
-				thingToTick.scholTicks++;
-			} else {
-				thingToTick.scholTicks = 0;
-				player.research.knowledge++;
-			}
+	return setInterval(function() {	
+			player.research.knowledge+=(1/thingToTick.scholTicksTotal);
+			
 			if(thingToTick.premiumTimer > 0) {
 				thingToTick.premiumTimer--;
 			}

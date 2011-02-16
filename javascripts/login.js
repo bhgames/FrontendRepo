@@ -453,8 +453,13 @@ function load_client(type, reloadTown, reloadUI) {
 					player.research.ubTimer *= player.gameClockFactor;
 					player.research.fTimer *= player.gameClockFactor;
 					
+					player.research.knowledge += (player.research.scholTicks/player.research.scholTicksTotal);
+					
 						//normalize town values to seconds from ticks and sort support
 					$.each(player.towns,function(i,x) {
+						//these have to be set to avoid errors in the TC
+						x.activeTrades = {};
+						x.tradeSchedules = {};
 						x.townName = x.townName.replace(/\u003c/g,"&#60;").replace(/\u003e/g,"&#62;");
 						for(y in x.resInc) {
 							x.resInc[y] /= player.gameClockFactor;
@@ -669,6 +674,8 @@ function load_player(type, reloadTown, reloadUI) {
 					player.research.revTimer *= player.gameClockFactor;
 					player.research.ubTimer *= player.gameClockFactor;
 					player.research.fTimer *= player.gameClockFactor;
+					
+					player.research.knowledge += (player.research.scholTicks/player.research.scholTicksTotal);
 					
 						//normalize town values to seconds from ticks and sort support
 					$.each(player.towns,function(i,x) {

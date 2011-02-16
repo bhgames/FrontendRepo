@@ -293,6 +293,19 @@ var BUI = { //the Building Universal Interface object will hold everything our v
 								</div>\
 								<div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>\
 							</div>\
+							<div id='HQ_civilianAUbox'>\
+								<div class='darkFrameBody'>\
+									<span>Civilian:</span>\
+									<div id='HQ_civilianAU'>\
+										<div id='HQ_civAU'>\
+											<div id='HQ_civName'></div>\
+											<a href='javascript:;' id='HQ_civNumber'></a>\
+											<input type='text' id='HQ_civInput' />\
+										</div>\
+									</div>\
+								</div>\
+								<div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>\
+							</div>\
 							<div id='HQ_SAS'>\
 								<div id='HQ_armySize' class='textFramed'>\
 									<div>Selected Army Size:</div>\
@@ -327,6 +340,12 @@ var BUI = { //the Building Universal Interface object will hold everything our v
 									</div>\
 									<div class='missionSelect'>\
 										<input type='radio' id='HQ_mission6' name='missionRadio' /><label for='HQ_mission6'>Debris</label>\
+									</div>\
+									<div class='missionSelect'>\
+										<input type='radio' id='HQ_mission7' name='missionRadio' /><label for='HQ_mission7'>Arch. Dig</label>\
+									</div>\
+									<div class='missionSelect'>\
+										<input type='radio' id='HQ_mission8' name='missionRadio' disabled='disabled'/><label for='HQ_mission8'>Harvest</label>\
 									</div>\
 									<select id='HQ_supportType'>\
 										<option>Defensive</option>\
@@ -371,7 +390,9 @@ var BUI = { //the Building Universal Interface object will hold everything our v
 								"Attempt to invade an enemy city. Only successful if all bunkers and the HQ is killed and the army must possess more than twice as much strength as the defending city in most situations.",
 								"Support an ally with units that can only help defend his town.  Sending your own troops to support one of your own cities will Station those troops there.",
 								"Send your troops to collect the debris left over from a previous battle.",
-								"Support an ally with units that can not only defend his town but can be launched on offenses from his town. Units cannot be moved from his town to another of his towns, and you will receive status reports of all offensive and defensive actions taken by this particular town.  Sending your own troops to support one of your own cities will Station those troops there."],
+								"Support an ally with units that can not only defend his town but can be launched on offenses from his town. Units cannot be moved from his town to another of his towns, and you will receive status reports of all offensive and defensive actions taken by this particular town.  Sending your own troops to support one of your own cities will Station those troops there.",
+								"Send your Scholars on an Archeological Dig.  Sending troops with your scholars will prevent unescored scholars from taking over the dig site.  Digs take 24 hours; after which, a prize is unlocked.  If you choose not to take the prize, you can resend the dig for a potentially better prize!",
+								"Send your Engineers to mine a Resource Outcropping.  Sending troops with your engineers will prevent unescorted engineers from taking over the outcropping."],
 				numRaidsOut : 0,
 				x : 0,
 				y : 0,
@@ -503,6 +524,7 @@ var BUI = { //the Building Universal Interface object will hold everything our v
 									<div class='researches'>\
 										<div id='IN_attackAPI' class='resWhite'>	<div class='info'></div>	<div class='fullName'>Attack Automation</div>			<span class='name'>attackAPI</span>				<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
 										<div id='IN_aaAPI' class='resBlack'>		<div class='info'></div>	<div class='fullName'>Attack Integration</div>			<span class='name'>advancedAttackAPI</span>		<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
+										<div id='IN_digAPI' class='resWhite'>		<div class='info'></div>	<div class='fullName'>Archeology Integration</div>		<span class='name'>digAPI</span>				<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
 										<div id='IN_tradingAPI' class='resWhite'>	<div class='info'></div>	<div class='fullName'>Trade Automation</div>			<span class='name'>tradingAPI</span>			<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
 										<div id='IN_atAPI' class='resBlack'>		<div class='info'></div>	<div class='fullName'>Trade Integration</div>			<span class='name'>advancedTradingAPI</span>	<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
 										<div id='IN_smAPI' class='resWhite'>		<div class='info'></div>	<div class='fullName'>Market Integration</div>			<span class='name'>smAPI</span>					<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\

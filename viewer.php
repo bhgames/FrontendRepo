@@ -181,6 +181,7 @@
 		insertScript("jScrollPane.mousewheel","js");
 		insertScript("mwheelIntent","js");
 		insertScript("jquery.sb.min","js");
+		insertScripts("page","js");
 		//game globals
 		insertScript("globals","js");
 		insertScript("global_ASM","js");
@@ -233,9 +234,6 @@
 	?>
 	<script type="text/javascript" src="http://connect.facebook.net/en_US/all.js"></script>
 	<div id="fb-root"></div>
-	<script type="text/javascript">
-		<?php include("javascripts/page.js"); ?>
-	</script>
 	<!-- Start of StatCounter Code -->
 		<script type="text/javascript">
 			var sc_project=6395156; 

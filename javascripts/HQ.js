@@ -96,6 +96,15 @@ function HQ_UI(bldgInfo) {
 				BUI.HQ.selectedIndex = 0;
 				$("#HQ_missionDesc").html(BUI.HQ.missionDesc[0]).jScrollPane({showArrows:true,hideFocus:true});
 				
+				$("#HQ_civNumber").unbind("click").click(function() {
+					var input = $(this).siblings("#HQ_civInput");
+					if(input.val() == $(this).text()) {
+						input.val(0);
+					} else {
+						input.val($(this).text());
+					}
+				});
+				
 				$(this).fadeIn(100);
 				
 				$(".supportAUnumber").unbind('click').click(function(){
@@ -114,6 +123,34 @@ function HQ_UI(bldgInfo) {
 					if(BUI.HQ.selectedIndex == 2 || BUI.HQ.selectedIndex == 3) $("#HQ_bombingTarget").fadeIn("fast");
 					else $("#HQ_bombingTarget").fadeOut("fast");
 					
+					if(BUI.HQ.selectedIndex == 7 || BUI.HQ.selectedIndex == 8) {
+						$("#HQ_supportAUbox").fadeOut();
+						$("#HQ_civilianAUbox").fadeIn();
+						var numCivs = 0;
+						var type = "";
+						if(BUI.HQ.selectedIndex == 7) {
+							type = "Institute";
+						} else {
+							type = "Construction Yard";
+						}
+						$.each(player.curtown.bldg, function(i,v) {
+								if(v.type == type) {
+									numCivs += v.peopleInside;
+								}
+						});
+						if(BUI.HQ.selectedIndex == 7) {
+							$("#HQ_civName").text("Scholar");
+							$("#HQ_civInput").val(10).attr("disabled","disabled");
+						} else {
+							$("#HQ_civName").text("Engineer");
+							$("#HQ_civInput").val("").attr("disabled","false"); //this is to prevent older browsers from leaving the field disabled
+						}
+						$("#HQ_civNumber").text(numCivs);
+					} else {
+						$("#HQ_supportAUbox").fadeIn();
+						$("#HQ_civilianAUbox").fadeOut();
+					}
+					
 					if(BUI.HQ.selectedIndex == 6) $("#HQ_supportType").fadeIn("fast");
 					else $("#HQ_supportType").fadeOut("fast");
 					
@@ -124,7 +161,7 @@ function HQ_UI(bldgInfo) {
 					canSendAttack();
 				});
 				
-				$(".AUinput").unbind('keyup').keyup(function() {
+				$(".AUinput, #HQ_civInput").unbind('keyup').keyup(function() {
 					try{clearTimeout(typeCheck);}catch(e) {}
 					typeCheck = setTimeout(function(){canSendAttack();get_attack_ETA();},250);
 					
@@ -145,7 +182,7 @@ function HQ_UI(bldgInfo) {
 									coverSize += 40*value;
 									break;
 							}
-						} else {
+						} else if(BUI.HQ.selectedIndex != 7 && BUI.HQ.selectedIndex != 8){
 							switch(player.curtown.supportAU[i-6].popSize) {
 								case 1:
 									coverSize += value;
@@ -160,6 +197,8 @@ function HQ_UI(bldgInfo) {
 									coverSize += 10*value;
 									break;
 							}
+						} else {
+							coverSize += $("#HQ_civInput").val();
 						}
 					});
 					$("#HQ_armySize span").text(coverSize);
@@ -635,6 +674,12 @@ function canSendAttack() {
 		case 7:
 			BUI.HQ.attackType = "debris";
 			break;
+		case 8:
+			BUI.HQ.attackType = "dig";
+			break;
+		case 9:
+			BUI.HQ.attackType = "mining";
+			//break;
 		case 0:
 		default:
 			BUI.HQ.attackType = "attack";

@@ -131,7 +131,7 @@ function IN_UI(bldgInfo) {
 													
 												
 											
-	$("#IN_numKnowledge span").text(player.research.knowledge);
+	$("#IN_numKnowledge span").text(Math.floor(player.research.knowledge));
 	$("#IN_ppd span").text(Math.floor(86400/player.research.scholTicksTotal));
 	
 	$(".researchTree").jScrollPane({showArrows:true,hideFocus:true});
@@ -142,49 +142,54 @@ function IN_UI(bldgInfo) {
 								$(v).text("[Level " + player.research.buildingSlotTech + "]");
 								points = (player.research.buildingSlotTech+1)*10;
 								$(v).siblings(".points").text(points+" KP");
-								if(player.research.knowledge >= points) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+								if(player.research.knowledge >= points) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
 								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
 								break;
 							case 1:
 								$(v).text("[Level " + player.research.stabilityTech + "]");
 								points = (player.research.stabilityTech+1)*5;
 								$(v).siblings(".points").text(points+" KP");
-								if(player.research.knowledge >= points) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+								if(player.research.knowledge >= points && player.research.stabilityTech<10) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
+								else if(player.research.stabilityTech>9) $(v).siblings(".bpResearch, .research, .points").css("display","none");
 								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
 								break;
 							case 2:
 								$(v).text("[Level " + (player.research.lotTech-7) + "]");
 								points = (player.research.lotTech-7)*20;
 								$(v).siblings(".points").text(points+" KP");
-								if(player.research.knowledge >= points) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+								if(player.research.knowledge >= points && player.research.lotTech<18) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
+								else if(player.research.lotTech>17) $(v).siblings(".bpResearch, .research, .points").css("display","none");
 								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
 								break;
 							case 3:
 								$(v).text("[Level " + player.research.townTech + "]");
 								points = (player.research.townTech+1)*50;
 								$(v).siblings(".points").text(points+" KP");
-								if(player.research.knowledge >= points) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+								if(player.research.knowledge >= points) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
 								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
 								break;
 							case 4:
 								$(v).text("[Level " + player.research.engTech + "]");
 								points = (player.research.engTech+1)*5;
 								$(v).siblings(".points").text(points+" KP");
-								if(player.research.knowledge >= points) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+								if(player.research.knowledge >= points && player.research.engTech<20) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
+								else if(player.research.engTech>19) $(v).siblings(".bpResearch, .research, .points").css("display","none");
 								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
 								break;
 							case 5:
 								$(v).text("[Level " + player.research.tradeTech + "]");
 								points = (player.research.tradeTech+1)*5;
 								$(v).siblings(".points").text(points+" KP");
-								if(player.research.knowledge >= points) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+								if(player.research.knowledge >= points && player.research.tradeTech<20) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
+								else if(player.research.tradeTech>19) $(v).siblings(".bpResearch, .research, .points").css("display","none");
 								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
 								break;
 							case 6:
 								$(v).text("[Level " + player.research.scholTech + "]");
 								points = (player.research.scholTech+1)*5;
 								$(v).siblings(".points").text(points+" KP");
-								if(player.research.knowledge >= points) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+								if(player.research.knowledge >= points && player.research.scholTech<20) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
+								else if(player.research.scholTech>19) $(v).siblings(".bpResearch, .research, .points").css("display","none");
 								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
 								break;
 						}
@@ -197,14 +202,15 @@ function IN_UI(bldgInfo) {
 								$(v).text("[Level " + player.research.afTech + "]");
 								points = (player.research.afTech+1)*5;
 								$(v).siblings(".points").text(points+" KP");
-								if(player.research.knowledge >= points) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+								if(player.research.knowledge >= points && player.research.afTech<10) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
+								else if(player.research.afTech > 9) $(v).siblings(".bpResearch, .research, .points").css("display","none");
 								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
 								break;
 							case 1:
 								$(v).text("[Level " + player.research.bunkerTech + "]");
 								points = (player.research.bunkerTech+1)*5;
 								$(v).siblings(".points").text(points+" KP");
-								if(player.research.knowledge >= points && player.research.bunkerTech<10) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+								if(player.research.knowledge >= points && player.research.bunkerTech<10) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
 								else if(player.research.bunkerTech > 9) $(v).siblings(".bpResearch, .research, .points").css("display","none");
 								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
 								break;
@@ -212,35 +218,36 @@ function IN_UI(bldgInfo) {
 								$(v).text("[Level " + player.research.aLotTech + "]");
 								points = player.research.aLotTech*20;
 								$(v).siblings(".points").text(points+" KP");
-								if(player.research.knowledge >= points) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+								if(player.research.knowledge >= points && player.research.aLotTech<6) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
+								else if(player.research.aLotTech>5)$(v).siblings(".bpResearch, .research, .points").css("display","none");
 								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
 								break;
 							case 3:
 								$(v).text("[Level " + player.research.commsCenterTech + "]");
 								points = (player.research.commsCenterTech+1)*5;
 								$(v).siblings(".points").text(points+" KP");
-								if(player.research.knowledge >= points) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+								if(player.research.knowledge >= points) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
 								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
 								break;
 							case 4:
 								$(v).text("[Level " + player.research.stealthTech + "]");
 								points = (player.research.stealthTech+1)*10;
 								$(v).siblings(".points").text(points+" KP");
-								if(player.research.knowledge >= points) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+								if(player.research.knowledge >= points) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
 								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
 								break;
 							case 5:
 								$(v).text("[Level " + player.research.scoutTech + "]");
 								points = (player.research.scoutTech+1)*10;
 								$(v).siblings(".points").text(points+" KP");
-								if(player.research.knowledge >= points) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+								if(player.research.knowledge >= points) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
 								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
 								break;
 							case 6:
 								$(v).text("[Level " + player.research.supportTech + "]");
 								points = (player.research.supportTech+1)*5;
 								$(v).siblings(".points").text(points+" KP");
-								if(player.research.knowledge >= points) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+								if(player.research.knowledge >= points) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
 								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
 								break;
 							
@@ -733,6 +740,10 @@ function help_re(e) { //which is the type of research to display the description
 			desc="<ul style='float: right;padding-left:20px;'><span style='margin-left:-20px;'>Unlocks:</span><li>getAFEffectToString</li><li>getBunkerEffectToString</li><li>getCSL</li><li>getCSLAtLevel</li><li>getPoppedUnits</li><li>getCS</li><li>getCivWeap</li><li>getAttackETA</li><li>getWeapons</li><li>getUserRaid</li><li>getUserRaids</li><li>getUserAttackUnits</li><li>getUserAttackUnitTemplates</li><li>getUserSR</li><li>markUnReadUserSR</li><li>markReadUserSR</li><li>deleteUserSR</li><li>archiveUserSR</li><li>unarchiveUserSR</li></ul>\
 					<h4>Attack Integration</h4>Code: advancedAttackAPI<p>By further integrating and improving the subsystems in your HQ and Communications Center, your AI can now see and communicate with your active missions as well as react to hostile presences.</p>";
 			break;
+		case "digAPI":
+			desc="<ul style='float: right;padding-left:20px;'><span style='margin-left:-20px;'>Unlocks:</span><li>respondToDigMessage</li></ul>\
+					<h4>Archeology Integration</h4>Code: digAPI<p>Adds additional hooks in your Scholars archeology equipment allowing your AI to send them commands remotely.</p>";
+			break;
 		case "tradingAPI":
 			desc="<ul style='float: right;padding-left:10px;'><span style='margin-left:-20px;'>Unlocks:</span><li>setUpTradeSchedule</li><li>cancelTradeSchedule</li><li>acceptTradeSchedule</li></ul>\
 					<h4>Trade Automation</h4>Code: tradingAPI<p>By adding AI subroutines to the equipment in your Trade Centers, your scientists can grant your AI access to the Trading system where it can automate your trades.</p>";
@@ -787,7 +798,7 @@ function help_re(e) { //which is the type of research to display the description
 						<div class='helpStat firstcol'><img src='AIFrames/icons/speed-white.png' title='Speed' alt='Speed' /> 50</div><div class='helpStat'><img src='AIFrames/icons/ammo-white.png' title='Ammunition' alt='Ammunition' /> 100</div>\
 						<div class='helpStat firstcol'><img src='AIFrames/icons/cargo-white.png' title='Cargo' alt='Cargo' /> 50</div>\
 					</div>Unit Type: Soldier<br/>Destroyer Class*<br/><br/>"
-					+UTCC.unitDesc[0]+"<br/><br/><span style='font-size:10px;'>* Class bonuses that affect stats are already calculated into the relevant stats.</span></p>";
+					+UTCC.unitDesc[0]+"<br/><br/>Strong against <img src='AIFrames/icons/speed-white.png' title='Speed' alt='Speed'><br/>Weak against <img src='AIFrames/icons/firepower-white.png' title='firepower' alt='firepower'><br/><br/><span style='font-size:10px;'>* Class bonuses that affect stats are already calculated into the relevant stats.</span></p>";
 			break;
 		case "Pillager":
 			desc="<h4>Pillager Blueprint</h4>Code: Pillager<p>\
@@ -799,7 +810,7 @@ function help_re(e) { //which is the type of research to display the description
 						<div class='helpStat firstcol'><img src='AIFrames/icons/speed-white.png' title='Speed' alt='Speed' /> 36</div><div class='helpStat'><img src='AIFrames/icons/ammo-white.png' title='Ammunition' alt='Ammunition' /> 11</div>\
 						<div class='helpStat firstcol'><img src='AIFrames/icons/cargo-white.png' title='Cargo' alt='Cargo' /> 221</div>\
 					</div>Unit Type: Soldier<br/>Mayhem Class* - 10% Stat Boost, 5% BP Bonus<br/><br/>"
-					+UTCC.unitDesc[0]+"<br/><br/><span style='font-size:10px;'>* Class bonuses that affect stats are already calculated into the relevant stats.</span></p>";
+					+UTCC.unitDesc[0]+"<br/><br/>Good against <img src='AIFrames/icons/armor-white.png' title='Armor' alt='Armor'><br/>Weak against <img src='AIFrames/icons/accuracy-white.png' title='Accuracy' alt='Accuracy' /><img src='AIFrames/icons/ammo-white.png' title='Ammunition' alt='Ammunition' /><br/><br/><span style='font-size:10px;'>* Class bonuses that affect stats are already calculated into the relevant stats.</span></p>";
 			break;
 		case "Vanguard":
 			desc="<h4>Vanguard Blueprint</h4>Code: Vanguard<p>\
@@ -811,7 +822,7 @@ function help_re(e) { //which is the type of research to display the description
 						<div class='helpStat firstcol'><img src='AIFrames/icons/speed-white.png' title='Speed' alt='Speed' /> 42</div><div class='helpStat'><img src='AIFrames/icons/ammo-white.png' title='Ammunition' alt='Ammunition' /> 40</div>\
 						<div class='helpStat firstcol'><img src='AIFrames/icons/cargo-white.png' title='Cargo' alt='Cargo' /> 1</div>\
 					</div>Unit Type: Soldier<br/>Defender Class* - 5% Armor, Conc., Speed, & Cargo Boost<br/><br/>"
-					+UTCC.unitDesc[0]+"<br/><br/><span style='font-size:10px;'>* Class bonuses that affect stats are already calculated into the relevant stats.</span></p>";
+					+UTCC.unitDesc[0]+"<br/><br/>Strong against <img src='AIFrames/icons/stealth-white.png' title='Concealment' alt='Concealment' /><br/>Weak against <img src='AIFrames/icons/firepower-white.png' title='Firepower' alt='Firepower' /><img src='AIFrames/icons/ammo-white.png' title='Ammunition' alt='Ammunition' /><br/><br/><span style='font-size:10px;'>* Class bonuses that affect stats are already calculated into the relevant stats.</span></p>";
 			break;
 		case "Wolverine":
 			desc="<h4>Wolverine Blueprint</h4>Code: Wolverine<p>You must have 2 cities to research a Tank Tech.<br/>\
@@ -823,7 +834,7 @@ function help_re(e) { //which is the type of research to display the description
 						<div class='helpStat firstcol'><img src='AIFrames/icons/speed-white.png' title='Speed' alt='Speed' /> 157</div><div class='helpStat'><img src='AIFrames/icons/ammo-white.png' title='Ammunition' alt='Ammunition' /> 92</div>\
 						<div class='helpStat firstcol'><img src='AIFrames/icons/cargo-white.png' title='Cargo' alt='Cargo' /> 105</div>\
 					</div>Unit Type: Tank<br/>Devastator Class* - 5% Stat Boost<br/><br/>"
-					+UTCC.unitDesc[1]+"<br/><br/><span style='font-size:10px;'>* Class bonuses that affect stats are already calculated into the relevant stats.</span></p>";
+					+UTCC.unitDesc[1]+"<br/><br/>Strong against <img src='AIFrames/icons/armor-white.png' title='Armor' alt='Armor' /><br/>Weak against <img src='AIFrames/icons/accuracy-white.png' title='Accuracy' alt='Accuracy' /><br/><br/><span style='font-size:10px;'>* Class bonuses that affect stats are already calculated into the relevant stats.</span></p>";
 			break;
 		case "Seeker":
 			desc="<h4>Seeker Blueprint</h4>Code: Seeker<p>You must have 2 cities to research a Tank Tech.<br/>\
@@ -835,7 +846,7 @@ function help_re(e) { //which is the type of research to display the description
 						<div class='helpStat firstcol'><img src='AIFrames/icons/speed-white.png' title='Speed' alt='Speed' /> 100</div><div class='helpStat'><img src='AIFrames/icons/ammo-white.png' title='Ammunition' alt='Ammunition' /> 88</div>\
 						<div class='helpStat firstcol'><img src='AIFrames/icons/cargo-white.png' title='Cargo' alt='Cargo' /> 100</div>\
 					</div>Unit Type: Tank<br/>Battlehard Class* - 25% BP Bonus<br/><br/>"
-					+UTCC.unitDesc[1]+"<br/><br/><span style='font-size:10px;'>* Class bonuses that affect stats are already calculated into the relevant stats.</span></p>";
+					+UTCC.unitDesc[1]+"<br/><br/>Strong against <img src='AIFrames/icons/stealth-white.png' title='Concealment' alt='Concealment' /><br/>Weak against <img src='AIFrames/icons/firepower-white.png' title='Firepower' alt='Firepower' /><br/><br/><span style='font-size:10px;'>* Class bonuses that affect stats are already calculated into the relevant stats.</span></p>";
 			break;
 		case "Damascus":
 			desc="<h4>Damascus Blueprint</h4>Code: Damascus<p>You must have 2 cities to research a Tank Tech.<br/>\
@@ -847,7 +858,7 @@ function help_re(e) { //which is the type of research to display the description
 						<div class='helpStat firstcol'><img src='AIFrames/icons/speed-white.png' title='Speed' alt='Speed' /> 199</div><div class='helpStat'><img src='AIFrames/icons/ammo-white.png' title='Ammunition' alt='Ammunition' /> 22</div>\
 						<div class='helpStat firstcol'><img src='AIFrames/icons/cargo-white.png' title='Cargo' alt='Cargo' /> 1</div>\
 					</div>Unit Type: Tank<br/>Stonewall Class* - 25% Cover Size Limit deflection<br/><br/>"
-					+UTCC.unitDesc[1]+"<br/><br/><span style='font-size:10px;'>* Class bonuses that affect stats are already calculated into the relevant stats.</span></p>";
+					+UTCC.unitDesc[1]+"<br/><br/>Good against <img src='AIFrames/icons/speed-white.png' title='Speed' alt='Speed' /><br/><br/><span style='font-size:10px;'>* Class bonuses that affect stats are already calculated into the relevant stats.</span></p>";
 			break;
 		case "Punisher":
 			desc="<h4>Punisher Blueprint</h4>Code: Punisher<p>You must have 3 cities to research a Juggernaut Tech.<br/>\
@@ -859,7 +870,7 @@ function help_re(e) { //which is the type of research to display the description
 						<div class='helpStat firstcol'><img src='AIFrames/icons/speed-white.png' title='Speed' alt='Speed' /> 256</div><div class='helpStat'><img src='AIFrames/icons/ammo-white.png' title='Ammunition' alt='Ammunition' /> 214</div>\
 						<div class='helpStat firstcol'><img src='AIFrames/icons/cargo-white.png' title='Cargo' alt='Cargo' /> 256</div>\
 					</div>Unit Type: Juggernaut<br/>Impervious Class* - 50% Weather Resistance, 10% Stat Boost<br/><br/>"
-					+UTCC.unitDesc[2]+"<br/><br/><span style='font-size:10px;'>* Class bonuses that affect stats are already calculated into the relevant stats.</span></p>";
+					+UTCC.unitDesc[2]+"<br/><br/>Good against <img src='AIFrames/icons/armor-white.png' title='Armor' alt='Armor' /><br/>Weak against <img src='AIFrames/icons/ammo-white.png' title='Ammunition' alt='Ammunition' /><br/><br/><span style='font-size:10px;'>* Class bonuses that affect stats are already calculated into the relevant stats.</span></p>";
 			break;
 		case "Dreadnaught":
 			desc="<h4>Dreadnaught Blueprint</h4>Code: Dreadnaught<p>You must have 3 cities to research a Juggernaut Tech.<br/>\
@@ -871,7 +882,7 @@ function help_re(e) { //which is the type of research to display the description
 						<div class='helpStat firstcol'><img src='AIFrames/icons/speed-white.png' title='Speed' alt='Speed' /> 220</div><div class='helpStat'><img src='AIFrames/icons/ammo-white.png' title='Ammunition' alt='Ammunition' /> 321</div>\
 						<div class='helpStat firstcol'><img src='AIFrames/icons/cargo-white.png' title='Cargo' alt='Cargo' /> 220</div>\
 					</div>Unit Type: Juggernaut<br/>Conqueror Class* - 25% Weather Resistance, 25% Cover Size Limit Deflection, 10% Stat Boost<br/><br/>"
-					+UTCC.unitDesc[2]+"<br/><br/><span style='font-size:10px;'>* Class bonuses that affect stats are already calculated into the relevant stats.</span></p>";
+					+UTCC.unitDesc[2]+"<br/><br/>Good against <img src='AIFrames/icons/speed-white.png' title='Speed' alt='Speed' /><br/>Weak against <img src='AIFrames/icons/accuracy-white.png' title='Accuracy' alt='Accuracy' /><br/><br/><span style='font-size:10px;'>* Class bonuses that affect stats are already calculated into the relevant stats.</span></p>";
 			break;
 		case "Collossus":
 			desc="<h4>Collossus Blueprint</h4>Code: Collossus<p>You must have 3 cities to research a Juggernaut Tech.<br/>\
@@ -883,7 +894,7 @@ function help_re(e) { //which is the type of research to display the description
 						<div class='helpStat firstcol'><img src='AIFrames/icons/speed-white.png' title='Speed' alt='Speed' /> 315</div><div class='helpStat'><img src='AIFrames/icons/ammo-white.png' title='Ammunition' alt='Ammunition' /> 403</div>\
 						<div class='helpStat firstcol'><img src='AIFrames/icons/cargo-white.png' title='Cargo' alt='Cargo' /> 315</div>\
 					</div>Unit Type: Juggernaut<br/>Ironside Class* - 25% BP Bonus, 25% Cover Size Limit deflection, 5% stat Boost<br/><br/>"
-					+UTCC.unitDesc[2]+"<br/><br/><span style='font-size:10px;'>* Class bonuses that affect stats are already calculated into the relevant stats.</span></p>";
+					+UTCC.unitDesc[2]+"<br/><br/>Good against <img src='AIFrames/icons/stealth-white.png' title='Concealment' alt='Concealment' /><br/>Weak against <img src='AIFrames/icons/ammo-white.png' title='Ammunition' alt='Ammunition' /><br/><br/><span style='font-size:10px;'>* Class bonuses that affect stats are already calculated into the relevant stats.</span></p>";
 			break;
 		case "Helios":
 			desc="<h4>Helios Blueprint</h4>Code: Helios<p>You must have 4 cities to research a Bomber Tech.<br/>Damage shown is the amount done to units.<br/>\
@@ -895,7 +906,7 @@ function help_re(e) { //which is the type of research to display the description
 						<div class='helpStat firstcol'><img src='AIFrames/icons/speed-white.png' title='Speed' alt='Speed' /> 30</div><div class='helpStat'><img src='AIFrames/icons/ammo-white.png' title='Ammunition' alt='Ammunition' /> 182</div>\
 						<div class='helpStat firstcol'><img src='AIFrames/icons/cargo-white.png' title='Cargo' alt='Cargo' /> 12</div>\
 					</div>Unit Type: Bomber<br/>Havoc Class* - 25% increase in Unit Damage<br/><br/>"
-					+UTCC.unitDesc[3]+"<br/><br/><span style='font-size:10px;'>* Class bonuses that affect stats are already calculated into the relevant stats.</span></p>";
+					+UTCC.unitDesc[3]+"<br/><br/>Weak against <img src='AIFrames/icons/ammo-white.png' title='Ammunition' alt='Ammunition' /><br/>Does significantly reduced damage to buildings.<br/><br/><span style='font-size:10px;'>* Class bonuses that affect stats are already calculated into the relevant stats.</span></p>";
 			break;
 		case "Horizon":
 			desc="<h4>Horizon Blueprint</h4>Code: Horizon<p>You must have 4 cities to research a Bomber Tech.<br/>Damage shown is the amount done to units.<br/>\
@@ -907,7 +918,7 @@ function help_re(e) { //which is the type of research to display the description
 						<div class='helpStat firstcol'><img src='AIFrames/icons/speed-white.png' title='Speed' alt='Speed' /> 30</div><div class='helpStat'><img src='AIFrames/icons/ammo-white.png' title='Ammunition' alt='Ammunition' /> 66</div>\
 						<div class='helpStat firstcol'><img src='AIFrames/icons/cargo-white.png' title='Cargo' alt='Cargo' /> 29</div>\
 					</div>Unit Type: Bomber<br/>Devastator Class* - 25% increase in Building Damage<br/><br/>"
-					+UTCC.unitDesc[3]+"<br/><br/><span style='font-size:10px;'>* Class bonuses that affect stats are already calculated into the relevant stats.</span></p>";
+					+UTCC.unitDesc[3]+"<br/><br/>Weak against <img src='AIFrames/icons/accuracy-white.png' title='Accuracy' alt='Accuracy' /><br/>Does reduced damage to buildings.<br/><br/><span style='font-size:10px;'>* Class bonuses that affect stats are already calculated into the relevant stats.</span></p>";
 			break;
 		case "Hades":
 			desc="<h4>Hades Blueprint</h4>Code: Hades<p>You must have 4 cities to research a Bomber Tech.<br/>Damage shown is the amount done to units.<br/>\
@@ -919,7 +930,7 @@ function help_re(e) { //which is the type of research to display the description
 						<div class='helpStat firstcol'><img src='AIFrames/icons/speed-white.png' title='Speed' alt='Speed' /> 29</div><div class='helpStat'><img src='AIFrames/icons/ammo-white.png' title='Ammunition' alt='Ammunition' /> 34</div>\
 						<div class='helpStat firstcol'><img src='AIFrames/icons/cargo-white.png' title='Cargo' alt='Cargo' /> 29</div>\
 					</div>Unit Type: Bomber<br/>Armageddon  Class* - 25% damage bonus<br/><br/>"
-					+UTCC.unitDesc[3]+"<br/><br/><span style='font-size:10px;'>* Class bonuses that affect stats are already calculated into the relevant stats.</span></p>";
+					+UTCC.unitDesc[3]+"<br/><br/>Weak against <img src='AIFrames/icons/firepower-white.png' title='Firepower' alt='Firepower' /><br/><br/><span style='font-size:10px;'>* Class bonuses that affect stats are already calculated into the relevant stats.</span></p>";
 			break;
 	} //end of switch
 	display_message("Help",desc);

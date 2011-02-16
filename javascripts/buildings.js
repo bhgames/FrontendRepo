@@ -2,6 +2,8 @@ function build_bldg_UIs() { //set up everything the various UIs will need
 	BUI.CY.bldgServer = $.grep(player.curtown.bldg, function(v, i) {
 						return (v.deconstruct || v.lvlUps != 0);
 					});
+	
+	 BUI.active.timer = update_time_displays(BUI.active);
 }
 function draw_bldg_UI() {
 	currUI = draw_bldg_UI;
@@ -335,7 +337,7 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 				
 				case "Institute":
 					//check to see if the number of knowledge points has increased
-					if(player.research.knowledge > parseInt($("#IN_numKnowledge span").text())) $("#IN_numKnowledge span").text(player.research.knowledge);
+					if(Math.floor(player.research.knowledge) > parseInt($("#IN_numKnowledge span").text())) $("#IN_numKnowledge span").text(Math.floor(player.research.knowledge));
 					break;
 				case "Headquarters":
 					$('#HQ_outgoingMissions .raidETA').each(function(i, v) {
