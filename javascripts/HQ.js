@@ -97,11 +97,13 @@ function HQ_UI(bldgInfo) {
 				$("#HQ_missionDesc").html(BUI.HQ.missionDesc[0]).jScrollPane({showArrows:true,hideFocus:true});
 				
 				$("#HQ_civNumber").unbind("click").click(function() {
-					var input = $(this).siblings("#HQ_civInput");
-					if(input.val() == $(this).text()) {
-						input.val(0);
-					} else {
-						input.val($(this).text());
+					if(BUI.HQ.selectedIndex != 8) {
+						var input = $(this).siblings("#HQ_civInput");
+						if(input.val() == $(this).text()) {
+							input.val(0);
+						} else {
+							input.val($(this).text());
+						}
 					}
 				});
 				

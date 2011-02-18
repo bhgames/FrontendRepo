@@ -270,10 +270,10 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 				case "Arms Factory":
 					var time = 0;
 					$(".time").each(function(i, el) {
-						if(bldgInfo.Queue[i].update) load_player(player.league,true,true);
 						
 						if(i > 0) { //if we're on anything after the extra .time for the first element 
 										//we have to subtract one from i to get the right queue item
+							if(bldgInfo.Queue[i-1].update) load_player(player.league,true,true);
 							time += (bldgInfo.Queue[i-1].ticksPerUnit * bldgInfo.Queue[i-1].AUNumber);
 							var days = Math.floor((time / 3600)/24);
 							var hours = Math.floor((time / 3600)%24);

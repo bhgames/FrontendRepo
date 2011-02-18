@@ -32,8 +32,8 @@ function make_AJAX() {
 					
 	temp.error = 	function(xhr, status, error) {
 						temp.clear();
-						console.log(error);
-						display_output(true,error.toString(),true);
+						var response = xhr.responseText.split("<body>")[1].split("</body>")[0];
+						display_output(true,response,true);
 					};
 	
 		//send method repackagers to make my life easier
@@ -360,7 +360,7 @@ function run_tutorial() { //long tutorial is long -->  check out display_tutoria
 					});
 					
 	$("#AIW_alertNo").live("click",function(){ //launch first quest if the tutorial is skipped
-		if(player.research.flicker == 'BQ1') {
+		if(player.research.flicker.match(/BQ1|NQ1/)) {
 			$.each(player.quests, function(i,v) {
 				if(v.name.match(/BQ1|NQ1/)) {
 					display_quest(v);
@@ -833,7 +833,6 @@ window.log = function(){
 	log.history.push(arguments);
 	if(this.console){
 		console.log( Array.prototype.slice.call(arguments) );
-		console.log(arguments.callee);
 	}
 };
 

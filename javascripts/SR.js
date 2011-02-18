@@ -509,7 +509,7 @@ function build_SR_menu() {
 				}
 			}
 			
-			if(report.offdig || report.defdig) HTML += report.digmessage +"<br/>";
+			if(report.offdig || report.defdig) HTML += report.digMessage +"<br/>";
 						
 			var headers = report.Headers.split(";");
 			if(headers.length > 2) {

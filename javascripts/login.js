@@ -14,7 +14,7 @@ function get_session() {
 			load_client(false); //if the user entered a valid UN and Pass
 			check_all_for_updates();
 		} else {
-			var inFB = (window.self != window.top);
+			var inFB = FB._inCanvas;
 			FB.getLoginStatus(function(response) {
 				if(response.session) {
 					FB.api("/me",function(response) {
