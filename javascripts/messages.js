@@ -300,6 +300,8 @@ function build_message_UI() {
 				HTML += "\n\nClick <a href='javascript:;' class='confirmTrade'>here</a> to accept this trade request.";
 			} else if(messages.curr.msgtype ==3 && i==0) {
 				HTML += "\n\nClick <a href='javascript:;' class='confirmInvite'>here</a> to accept this invite.";
+			} else if(messages.curr.msgtype == 6) {
+				HTML+= "\n\nYou may <a href='#' class='confReward'>accept</a> or <a href='#' class='decReward'>decline</a> your reward.\nDeclining your reward will allow you to pursue a better reward.";
 			}
 			HTML += "</div></div></div></div></div></div>";
 		});
@@ -342,6 +344,8 @@ function build_message_UI() {
 			HTML += "\n\nClick <a href='javascript:;' id='mess_confirmTrade'>here</a> to accept this trade request.";
 		} else if(messages.curr.msgtype == 3) {
 			HTML += "\n\nClick <a href='javascript:;' id='mess_confirmInvite'>here</a> to accept this invite.";
+		} else if(messages.curr.msgtype == 6) {
+			HTML+= "\n\nYou may <a href='#' id='mess_confReward'>accept</a> or <a href='#' id='mess_decReward'>decline</a> your reward.\nDeclining your reward will allow you to pursue a better reward.";
 		}
 		HTML += "</div></div></div></div></div><div id='mess_addMessNav'><a href='javascript:;' id='mess_reportMess'></a><a href='javascript:;' id='mess_deleteMess'></a>  <a href='javascript:;' id='mess_replyMess'></a></div>";
 					
@@ -463,8 +467,9 @@ function build_message_UI() {
 					$(".newMess").animate({'opacity':'toggle','height':'toggle'},'normal').removeClass("newMess");
 					$("#mess_bodyText").val("");
 					messages.api.reinitialise();
+				} else {
+					messages.reload = true;
 				}
-				messages.reload = true;
 				get_messages(true);
 			} else {
 				var error = response.split(":");
@@ -483,12 +488,13 @@ function build_message_UI() {
 				display_output(false,"Message Sent!");
 				if($(that).hasClass("confirmTrade")) {
 					$("#mess_convo").append("<div class='convoMessage newMess fromSelf' style='display: none'><div class='messSender'>" + player.username + "</div><div class='messSubject'>" + message.subject.replace(/<u44>/ig,",") 
-					+ "</div><div class='messBodyBox'><div class='messBodyGrad'><div class='messBodyTop'><div class='messBodyBottom'><div class='messBody'>" + message.body.replace(/<u44>/ig,",") + "</div></div></div></div></div></div>");
+					+ "</div><div class='messBodyBox'><div class='messBodyGrad'><div class='messBodyTop'><div class='messBodyBottom'><div class='messBody'>" +player.username+" has accepted your trade request.</div></div></div></div></div></div>");
 					$(".newMess").animate({'opacity':'toggle','height':'toggle'},'normal').removeClass("newMess");
 					$("#mess_bodyText").val("");
 					messages.api.reinitialise();
+				} else {
+					messages.reload = true;
 				}
-				messages.reload = true;
 				get_messages(true);
 				get_all_trades();
 			} else {
@@ -507,12 +513,13 @@ function build_message_UI() {
 				display_output(false,"Message Sent!");
 				if($(that).hasClass("confirmInvite")) {
 					$("#mess_convo").append("<div class='convoMessage newMess fromSelf' style='display: none'><div class='messSender'>" + player.username + "</div><div class='messSubject'>" + message.subject.replace(/<u44>/ig,",") 
-					+ "</div><div class='messBodyBox'><div class='messBodyGrad'><div class='messBodyTop'><div class='messBodyBottom'><div class='messBody'>" + message.body.replace(/<u44>/ig,",") + "</div></div></div></div></div></div>");
+					+ "</div><div class='messBodyBox'><div class='messBodyGrad'><div class='messBodyTop'><div class='messBodyBottom'><div class='messBody'>" +player.username+" has accepted your invitation.</div></div></div></div></div></div>");
 					$(".newMess").animate({'opacity':'toggle','height':'toggle'},'normal').removeClass("newMess");
 					$("#mess_bodyText").val("");
 					messages.api.reinitialise();
+				} else {
+					messages.reload = true;
 				}
-				messages.reload = true;
 				load_player(player.league,true,false); //automatically grabs messages
 			} else {
 				var error = response.split(":");
@@ -521,6 +528,28 @@ function build_message_UI() {
 			}
 		};
 		confInvite.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".sendLeagueMessage(["+messages.curr.usernameFrom+"],"+player.username+" has accepted your invitation.,"+messages.curr.subject+",4,"+messages.curr.pidFrom+","+messages.curr.subjectID+");");
+	});
+	$("#mess_confReward, .confReward, #mess_decReward, .decReward").die("click").live("click",function(){
+		var that = this;
+		var reward = false;
+		if($(this).is("#mess_confReward, .confReward")) reward = true;
+		var archResp = new make_AJAX();
+		archResp.callback = function(response){
+			if(response.match(/true/i)) {
+				display_output(false,"Message Sent!");
+				if($(that).hasClass("confirmInvite")) {
+					messages.api.reinitialise();
+				} else {
+					messages.reload = true;
+				}
+				load_player(player.league,true,false); //automatically grabs messages
+			} else {
+				var error = response.split(":");
+				if(error.length==2)error=error[1];
+				display_output(true,error,true);
+			}
+		};
+		archResp.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".respondToDigMessage("+reward+");");
 	});
 	
 	display_output(false,"DMC Loaded!");

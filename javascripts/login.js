@@ -736,6 +736,7 @@ function load_player(type, reloadTown, reloadUI) {
 					
 					get_ranks(true);
 					get_messages(true);
+					get_quests(true);
 					build_raid_list();
 					BUI.build();
 					set_tickers();	

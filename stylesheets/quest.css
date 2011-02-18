@@ -53,6 +53,9 @@
 	overflow: auto;
 	font-family:Verdana, Geneva, Arial, Helvetica, sans-serif;
 	}
+#quest_text ul {
+	padding-left: 40px;
+	}
 #quest_video {
 	padding-left: 80px;
 	}

@@ -24,6 +24,7 @@ function get_raids(async, raids) {
 			build_raid_list();
 			display_output(false,"Raids Loaded!");
 			gettingRaids = false;
+			if(currUI===draw_bldg_UI&&BUI.active.name[0]=="Headquarters"&&($("#HQ_Overview").hasClass("open")||BUI.HQ.reload)) currUI();
 		}
 	} catch(e) {
 		display_output(true,"Error loading Raids!",true);

@@ -79,7 +79,7 @@ function AF_UI(bldgInfo) {
 					$("#AF_AUassignButton a").removeClass('noAss').removeClass('clear');
 					
 					//reset displays
-					$("#AF_AUpic").attr("src","/images/trans.gif");
+					$("#AF_AUpic").attr("src","../../images/trans.gif");
 					
 					$("#AF_AUweapStats").html("<div id='AF_AUFP'><img src='AIFrames/icons/firepower.png' title='Unit Firepower' alt='Unit Firepower' /> <span class='stat'>???</span></div>"
 											+ "<div id='AF_AUAmmo'><img src='AIFrames/icons/ammo.png' title='Unit Ammunition' alt='Unit Ammunition' /> <span class='stat'>???</span></div>"
@@ -188,6 +188,7 @@ function AF_UI(bldgInfo) {
 					});
 					 //update build info
 					$("#BUI_numPpl").keyup();
+					$("#AF_AUassignList").change();
 				});
 			}
 		}
@@ -256,6 +257,8 @@ function AF_UI(bldgInfo) {
 						if(v.name == $("#AF_AUassignList option:selected").text()) {
 							player.AU[slot] = v;
 							return false;
+							if(bldgInfo.cap==0) bldgInfo.cap = 5;
+							load_player(player.league,true,true);
 						}
 					});
 					currUI();

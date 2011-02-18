@@ -38,7 +38,7 @@ function do_flick(async) {
 		
 		getFlick.get("/AIWars/GodGenerator?reqtype=flickStatus&league="+player.league);
 	} else {
-		if(player.research.flicker != "noFlick" && player.research.flicker != "BQ1") {
+		if(!player.research.flicker.match(/noFlick|BQ1|NQ1/)) {
 			$.each(player.quests, function(i,v) {
 				if(v.name == player.research.flicker) {
 					display_quest(v);
@@ -47,7 +47,7 @@ function do_flick(async) {
 					return false;
 				}
 			});
-		} else if(player.research.flicker == "BQ1"&&!tutorialRunning) {
+		} else if(player.research.flicker.match(/BQ1|NQ1/)&&!tutorialRunning) {
 			run_tutorial();
 			duration = 900000; //15 minutes
 		}
@@ -62,9 +62,9 @@ function show_quests() {
 	$.each(player.quests, function(i, v) {
 		var classes = 'quest'+(v.name.match(/AQ\d/)?" noShow":"");
 		if(v.status>0) {
-			if(v.status==1) questHTML[1] +="<li class='"+classes+"' title='View Description'>" + v.name + "</li>";
-			else questHTML[2] +="<li class='"+classes+"' title='Quest Completed'>" + v.name + "</li>";
-		} else questHTML[0] +="<li class='"+classes+"' title='Join Quest'>" + v.name + "</li>";
+			if(v.status==1) questHTML[1] +="<li class='"+classes+"' title='View Description'>" + (v.name.match(/BQ|RQ/)?v.name:v.info) + "</li>";
+			else questHTML[2] +="<li class='"+classes+"' title='Quest Completed'>" + (v.name.match(/BQ|RQ/)?v.name:v.info) + "</li>";
+		} else questHTML[0] +="<li class='"+classes+"' title='Join Quest'>" + (v.name.match(/BQ|RQ/)?v.name:v.info) + "</li>";
 	});
 	
 	var HTML = "<div id='quest_outerBox'><div class='darkFrameBody'><div>Click on a quest to view its description or join it, if you haven't already.</div><ul id='quest_listNoStart'>Not Started" + questHTML[0]

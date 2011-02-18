@@ -2,8 +2,6 @@
 							   Functions for the Account Settings Menu
 \***********************************************************************************************************/
 function build_ASM() {
-	ASM.oldUI = currUI;
-	currUI = build_ASM;
 	
 	$("#accountPreferences").html(ASM.HTML);
 	$("#ASM_window").html(ASM.acct);
@@ -78,17 +76,23 @@ function build_ASM() {
 			var save = new make_AJAX();
 			
 			save.callback = function(response) {
+				var lockCC = !hasCC;
 				if(response.match(/false/i)) {
 					var error = response.split(";");
 					$.each(error, function(i, v) {
 						if(v.match(/false/i)) {
-							error = v.split(":")[1];
-							return false;
+							if(lockCC && $(".CC:checked").length > 0 && i==error.length-1) lockCC=false;
+							error += v.split(":")[1]+"<br/>";
 						}
 					});
-					display_error("Account Settings", error);
+					display_message("Account Settings", error);
 				}
-				load_player(player.league, true, true);
+				if(lockCC) {
+					$(".CC").each(function(i,v) {
+						$(v).attr("disabled","disabled");
+					});
+				}
+				load_player(player.league, true);
 			};
 			
 			save.get(getPath);
@@ -104,7 +108,6 @@ function build_ASM() {
 	$("#ASM_close").unbind('click').click(function() {
 		$("#accountPreferences").children().unbind();
 		$("#accountPreferences").fadeOut();
-		currUI = ASM.oldUI;
 	});
 	
 	$("#accountPreferences").fadeIn();
@@ -119,7 +122,7 @@ function fb_connect(response) {
 			regFB.callback = function(response) {
 						if(response.match(/invalid/)){
 							display_output(true,"An error occured while linking your account.", true);
-							display_output(false,"Please try again later.");
+							display_output(false,"Your Facebook profile may already be connected to an account or your account may already be linked.");
 						}
 						else {
 							display_output(false,"Your account is now connected to Facebook!");

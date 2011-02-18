@@ -32,14 +32,16 @@ function make_AJAX() {
 					
 	temp.error = 	function(xhr, status, error) {
 						temp.clear();
-						display_output(true,error,true);
+						console.log(error);
+						display_output(true,error.toString(),true);
 					};
 	
 		//send method repackagers to make my life easier
-	temp.get = function(URL) {
+	temp.get = function(URL, sync) {
 								try {
 									$.ajax({
 										type : "GET",
+										async: !sync,
 										url : URL,
 										data : "",
 										dataType : "text",
@@ -56,10 +58,11 @@ function make_AJAX() {
 									temp.clear();
 								}
 							};
-	temp.post = function(URL, data) {
+	temp.post = function(URL, data, sync) {
 										try {
 											$.ajax({
 												type : "POST",
+												async: !sync,
 												url : URL,
 												data : data,
 												dataType : "text",
@@ -359,7 +362,7 @@ function run_tutorial() { //long tutorial is long -->  check out display_tutoria
 	$("#AIW_alertNo").live("click",function(){ //launch first quest if the tutorial is skipped
 		if(player.research.flicker == 'BQ1') {
 			$.each(player.quests, function(i,v) {
-				if(v.name == "BQ1") {
+				if(v.name.match(/BQ1|NQ1/)) {
 					display_quest(v);
 					player.research.flicker = 'noFlick';
 					var noFlick = new make_AJAX();
@@ -830,6 +833,7 @@ window.log = function(){
 	log.history.push(arguments);
 	if(this.console){
 		console.log( Array.prototype.slice.call(arguments) );
+		console.log(arguments.callee);
 	}
 };
 

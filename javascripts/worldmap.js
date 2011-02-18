@@ -266,7 +266,7 @@ function city_hover(city, box) {
 		var town = map.displayedTowns[city.index(".town")];
 		
 		box.html(function() {
-			var HTML = "Player:<ul>" + town.owner + "</ul><br/>Town:<ul>" + town.townName
+			var HTML = "Player:<ul>" + town.owner + "</ul><br/>Town:<ul>" +(town.capital?"&#171;" + town.townName + "&#187;":town.townName)
 							+ "</ul><br/>AI Status: " +(town.aiActive?"Active":"Inactive")
 							+ "<br/><br/>Coordinates:<ul>" + town.x + ", " + town.y
 							+ "</ul><br/>Scout Size Limit:<ul>" + town.SSL
@@ -442,10 +442,11 @@ function rebuild(tile) {
 			map.HTML += "<div class='town type"+((type%2)+1)+(x.owner=="Id"?" idTown":(x.owner==player.username?" playerTown":""));
 			$.each(player.raids, function(j, y) {
 				if(y.defendingTown == x.townName && !y.raidOver) {
-					if(y.raidType.match(/support/i) == null) {
+					if(!y.raidType.match(/support|dig/i)) {
 						map.HTML += " missionE";
 					} else {
-						map.HTML += " missionF";
+						if(y.raidType.match(/dig/i)) map.HTML += " missionC";
+						else map.HTML += " missionF";
 					}
 				}
 			});

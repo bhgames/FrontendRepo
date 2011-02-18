@@ -135,6 +135,7 @@ function IN_UI(bldgInfo) {
 	$("#IN_ppd span").text(Math.floor(86400/player.research.scholTicksTotal));
 	
 	$(".researchTree").jScrollPane({showArrows:true,hideFocus:true});
+	var KP = Math.floor(player.research.knowledge);
 	$("#IN_civInf .level").each(function(i, v) {
 						var points = 0;
 						switch(i) {
@@ -142,55 +143,55 @@ function IN_UI(bldgInfo) {
 								$(v).text("[Level " + player.research.buildingSlotTech + "]");
 								points = (player.research.buildingSlotTech+1)*10;
 								$(v).siblings(".points").text(points+" KP");
-								if(player.research.knowledge >= points) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
-								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
+								if(KP >= points) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
+								else $(v).siblings(".research").text("Need " + (points-KP)+" points");
 								break;
 							case 1:
 								$(v).text("[Level " + player.research.stabilityTech + "]");
 								points = (player.research.stabilityTech+1)*5;
 								$(v).siblings(".points").text(points+" KP");
-								if(player.research.knowledge >= points && player.research.stabilityTech<10) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
+								if(KP >= points && player.research.stabilityTech<10) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
 								else if(player.research.stabilityTech>9) $(v).siblings(".bpResearch, .research, .points").css("display","none");
-								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
+								else $(v).siblings(".research").text("Need " + (points-KP)+" points");
 								break;
 							case 2:
 								$(v).text("[Level " + (player.research.lotTech-7) + "]");
 								points = (player.research.lotTech-7)*20;
 								$(v).siblings(".points").text(points+" KP");
-								if(player.research.knowledge >= points && player.research.lotTech<18) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
+								if(KP >= points && player.research.lotTech<18) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
 								else if(player.research.lotTech>17) $(v).siblings(".bpResearch, .research, .points").css("display","none");
-								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
+								else $(v).siblings(".research").text("Need " + (points-KP)+" points");
 								break;
 							case 3:
 								$(v).text("[Level " + player.research.townTech + "]");
 								points = (player.research.townTech+1)*50;
 								$(v).siblings(".points").text(points+" KP");
-								if(player.research.knowledge >= points) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
-								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
+								if(KP >= points) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
+								else $(v).siblings(".research").text("Need " + (points-KP)+" points");
 								break;
 							case 4:
 								$(v).text("[Level " + player.research.engTech + "]");
 								points = (player.research.engTech+1)*5;
 								$(v).siblings(".points").text(points+" KP");
-								if(player.research.knowledge >= points && player.research.engTech<20) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
+								if(KP >= points && player.research.engTech<20) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
 								else if(player.research.engTech>19) $(v).siblings(".bpResearch, .research, .points").css("display","none");
-								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
+								else $(v).siblings(".research").text("Need " + (points-KP)+" points");
 								break;
 							case 5:
 								$(v).text("[Level " + player.research.tradeTech + "]");
 								points = (player.research.tradeTech+1)*5;
 								$(v).siblings(".points").text(points+" KP");
-								if(player.research.knowledge >= points && player.research.tradeTech<20) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
+								if(KP >= points && player.research.tradeTech<20) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
 								else if(player.research.tradeTech>19) $(v).siblings(".bpResearch, .research, .points").css("display","none");
-								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
+								else $(v).siblings(".research").text("Need " + (points-KP)+" points");
 								break;
 							case 6:
 								$(v).text("[Level " + player.research.scholTech + "]");
 								points = (player.research.scholTech+1)*5;
 								$(v).siblings(".points").text(points+" KP");
-								if(player.research.knowledge >= points && player.research.scholTech<20) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
+								if(KP >= points && player.research.scholTech<20) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
 								else if(player.research.scholTech>19) $(v).siblings(".bpResearch, .research, .points").css("display","none");
-								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
+								else $(v).siblings(".research").text("Need " + (points-KP)+" points");
 								break;
 						}
 					});
@@ -202,53 +203,53 @@ function IN_UI(bldgInfo) {
 								$(v).text("[Level " + player.research.afTech + "]");
 								points = (player.research.afTech+1)*5;
 								$(v).siblings(".points").text(points+" KP");
-								if(player.research.knowledge >= points && player.research.afTech<10) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
+								if(KP >= points && player.research.afTech<10) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
 								else if(player.research.afTech > 9) $(v).siblings(".bpResearch, .research, .points").css("display","none");
-								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
+								else $(v).siblings(".research").text("Need " + (points-KP)+" points");
 								break;
 							case 1:
 								$(v).text("[Level " + player.research.bunkerTech + "]");
 								points = (player.research.bunkerTech+1)*5;
 								$(v).siblings(".points").text(points+" KP");
-								if(player.research.knowledge >= points && player.research.bunkerTech<10) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
+								if(KP >= points && player.research.bunkerTech<10) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
 								else if(player.research.bunkerTech > 9) $(v).siblings(".bpResearch, .research, .points").css("display","none");
-								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
+								else $(v).siblings(".research").text("Need " + (points-KP)+" points");
 								break;
 							case 2:
 								$(v).text("[Level " + player.research.aLotTech + "]");
 								points = player.research.aLotTech*20;
 								$(v).siblings(".points").text(points+" KP");
-								if(player.research.knowledge >= points && player.research.aLotTech<6) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
+								if(KP >= points && player.research.aLotTech<6) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
 								else if(player.research.aLotTech>5)$(v).siblings(".bpResearch, .research, .points").css("display","none");
-								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
+								else $(v).siblings(".research").text("Need " + (points-KP)+" points");
 								break;
 							case 3:
 								$(v).text("[Level " + player.research.commsCenterTech + "]");
 								points = (player.research.commsCenterTech+1)*5;
 								$(v).siblings(".points").text(points+" KP");
-								if(player.research.knowledge >= points) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
-								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
+								if(KP >= points) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
+								else $(v).siblings(".research").text("Need " + (points-KP)+" points");
 								break;
 							case 4:
 								$(v).text("[Level " + player.research.stealthTech + "]");
 								points = (player.research.stealthTech+1)*10;
 								$(v).siblings(".points").text(points+" KP");
-								if(player.research.knowledge >= points) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
-								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
+								if(KP >= points) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
+								else $(v).siblings(".research").text("Need " + (points-KP)+" points");
 								break;
 							case 5:
 								$(v).text("[Level " + player.research.scoutTech + "]");
 								points = (player.research.scoutTech+1)*10;
 								$(v).siblings(".points").text(points+" KP");
-								if(player.research.knowledge >= points) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
-								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
+								if(KP >= points) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
+								else $(v).siblings(".research").text("Need " + (points-KP)+" points");
 								break;
 							case 6:
 								$(v).text("[Level " + player.research.supportTech + "]");
 								points = (player.research.supportTech+1)*5;
 								$(v).siblings(".points").text(points+" KP");
-								if(player.research.knowledge >= points) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
-								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
+								if(KP >= points) $(v).siblings(".research").text("Upgrade").removeClass("noBuy");
+								else $(v).siblings(".research").text("Need " + (points-KP)+" points");
 								break;
 							
 						}
@@ -258,15 +259,15 @@ function IN_UI(bldgInfo) {
 							case 0:
 								var points = 100*player.research.tPushes;
 								$(v).siblings(".points").text(points+" KP");
-								if(player.research.knowledge>=points) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
-								else $(v).siblings(".research").text("Need " + (points-player.research.knowledge)+" points");
+								if(KP>=points) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+								else $(v).siblings(".research").text("Need " + (points-KP)+" points");
 								break;
 							case 1:
 							case 2:
 							case 3:
 								$(v).text("[Locked]").siblings(".points").text("50 KP");
-								if(player.research.knowledge>=50) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
-								else $(v).siblings(".research").text("Need " + (50-player.research.knowledge)+" points");
+								if(KP>=50) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+								else $(v).siblings(".research").text("Need " + (50-KP)+" points");
 								$.each(player.AUTemplates,function(j,w){
 									if(w.name == $(v).siblings(".fullName").text()) { 
 										$(v).text("[Unlocked]").siblings(":not(.fullName, .info)").css("display","none");
@@ -278,9 +279,9 @@ function IN_UI(bldgInfo) {
 							case 5:
 							case 6:
 								$(v).text("[Locked]").siblings(".points").text("100 KP");
-								if(player.research.knowledge>=100&&player.towns.length>1) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+								if(KP>=100&&player.towns.length>1) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
 								else if(player.towns.length<2) $(v).text("[Locked]");
-								else $(v).siblings(".research").text("Need " + (100-player.research.knowledge)+" points");
+								else $(v).siblings(".research").text("Need " + (100-KP)+" points");
 								$.each(player.AUTemplates,function(j,w){
 									if(w.name == $(v).siblings(".fullName").text()) { 
 										$(v).text("[Unlocked]").siblings(":not(.fullName, .info)").css("display","none");
@@ -292,9 +293,9 @@ function IN_UI(bldgInfo) {
 							case 8:
 							case 9:
 								$(v).text("[Locked]").siblings(".points").text("200 KP");
-								if(player.research.knowledge>=200&&player.towns.length>2) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+								if(KP>=200&&player.towns.length>2) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
 								else if(player.towns.length<3) $(v).text("[Locked]");
-								else $(v).siblings(".research").text("Need " + (200-player.research.knowledge)+" points");
+								else $(v).siblings(".research").text("Need " + (200-KP)+" points");
 								$.each(player.AUTemplates,function(j,w){
 									if(w.name == $(v).siblings(".fullName").text()) { 
 										$(v).text("[Unlocked]").siblings(":not(.fullName, .info)").css("display","none");
@@ -306,9 +307,9 @@ function IN_UI(bldgInfo) {
 							case 11:
 							case 12:
 								$(v).text("[Locked]").siblings(".points").text("400 KP");
-								if(player.research.knowledge>=400&&player.towns.length>3) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+								if(KP>=400&&player.towns.length>3) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
 								else if(player.towns.length<4) $(v).text("[Locked]");
-								else $(v).siblings(".research").text("Need " + (400-player.research.knowledge)+" points");
+								else $(v).siblings(".research").text("Need " + (400-KP)+" points");
 								$.each(player.AUTemplates,function(j,w){
 									if(w.name == $(v).siblings(".fullName").text()) { 
 										$(v).text("[Unlocked]").siblings(":not(.fullName, .info)").css("display","none");
@@ -325,24 +326,24 @@ function IN_UI(bldgInfo) {
 								$(v).text((player.research.zeppTech?"[Unl":"[L") + "ocked]");
 								$(v).siblings(".points").text("800 KP");
 								if(!player.research.zeppTech) {
-									if(player.research.knowledge >= 800) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
-									else $(v).siblings(".research").text("Need " + (800-player.research.knowledge)+" points");
+									if(KP >= 800) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+									else $(v).siblings(".research").text("Need " + (800-KP)+" points");
 								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 							case 1:
 								$(v).text((player.research.missileSiloTech?"[Unl":"[L") + "ocked]");
 								$(v).siblings(".points").text("400 KP");
 								if(!player.research.missileSiloTech) {
-									if(player.research.knowledge >= 400) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
-									else $(v).siblings(".research").text("Need " + (400-player.research.knowledge)+" points");
+									if(KP >= 400) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+									else $(v).siblings(".research").text("Need " + (400-KP)+" points");
 								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 							case 2:
 								$(v).text((player.research.recyclingTech?"[Unl":"[L") + "ocked]");
 								$(v).siblings(".points").text("100 KP");
 								if(!player.research.recyclingTech) {
-									if(player.research.knowledge >= 100) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
-									else $(v).siblings(".research").text("Need " + (100-player.research.knowledge)+" points");
+									if(KP >= 100) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+									else $(v).siblings(".research").text("Need " + (100-KP)+" points");
 								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 							case 3:
@@ -358,8 +359,8 @@ function IN_UI(bldgInfo) {
 								$(v).text((unlocked?"[Unl":"[L") + "ocked]");
 								$(v).siblings(".points").text("200 KP");
 								if(!unlocked) {
-									if(player.research.knowledge >= 200) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
-									else $(v).siblings(".research").text("Need " + (200-player.research.knowledge)+" points");
+									if(KP >= 200) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+									else $(v).siblings(".research").text("Need " + (200-KP)+" points");
 								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 						}
@@ -371,105 +372,113 @@ function IN_UI(bldgInfo) {
 								$(v).text((player.research.attackAPI?"[Unl":"[L") + "ocked]");
 								$(v).siblings(".points").text("50 KP");
 								if(!player.research.attackAPI) {
-									if(player.research.knowledge >= 50) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
-									else $(v).siblings(".research").text("Need " + (50-player.research.knowledge)+" points");
+									if(KP >= 50) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+									else $(v).siblings(".research").text("Need " + (50-KP)+" points");
 								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 							case 1:
 								$(v).text((player.research.advancedAttackAPI?"[Unl":"[L") + "ocked]");
 								$(v).siblings(".points").text("75 KP");
 								if(!player.research.advancedAttackAPI) {
-									if(player.research.knowledge >= 75) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
-									else $(v).siblings(".research").text("Need " + (75-player.research.knowledge)+" points");
+									if(KP >= 75) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+									else $(v).siblings(".research").text("Need " + (75-KP)+" points");
 								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 							case 2:
-								$(v).text((player.research.tradingAPI?"[Unl":"[L") + "ocked]");
-								$(v).siblings(".points").text("50 KP");
-								if(!player.research.tradingAPI) {
-									if(player.research.knowledge >= 50) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
-									else $(v).siblings(".research").text("Need " + (50-player.research.knowledge)+" points");
+								$(v).text((player.research.digAPI?"[Unl":"[L") + "ocked]");
+								$(v).siblings(".points").text("75 KP");
+								if(!player.research.digAPI) {
+									if(KP >= 400) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+									else $(v).siblings(".research").text("Need " + (400-KP)+" points");
 								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 							case 3:
-								$(v).text((player.research.advancedTradingAPI?"[Unl":"[L") + "ocked]");
-								$(v).siblings(".points").text("75 KP");
-								if(!player.research.advancedTradingAPI) {
-									if(player.research.knowledge >= 75) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
-									else $(v).siblings(".research").text("Need " + (75-player.research.knowledge)+" points");
+								$(v).text((player.research.tradingAPI?"[Unl":"[L") + "ocked]");
+								$(v).siblings(".points").text("50 KP");
+								if(!player.research.tradingAPI) {
+									if(KP >= 50) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+									else $(v).siblings(".research").text("Need " + (50-KP)+" points");
 								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 							case 4:
-								$(v).text((player.research.smAPI?"[Unl":"[L") + "ocked]");
-								$(v).siblings(".points").text("200 KP");
-								if(!player.research.smAPI) {
-									if(player.research.knowledge >= 200) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
-									else $(v).siblings(".research").text("Need " + (200-player.research.knowledge)+" points");
+								$(v).text((player.research.advancedTradingAPI?"[Unl":"[L") + "ocked]");
+								$(v).siblings(".points").text("75 KP");
+								if(!player.research.advancedTradingAPI) {
+									if(KP >= 75) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+									else $(v).siblings(".research").text("Need " + (75-KP)+" points");
 								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 							case 5:
-								$(v).text((player.research.buildingAPI?"[Unl":"[L") + "ocked]");
-								$(v).siblings(".points").text("75 KP");
-								if(!player.research.buildingAPI) {
-									if(player.research.knowledge >= 75) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
-									else $(v).siblings(".research").text("Need " + (75-player.research.knowledge)+" points");
+								$(v).text((player.research.smAPI?"[Unl":"[L") + "ocked]");
+								$(v).siblings(".points").text("200 KP");
+								if(!player.research.smAPI) {
+									if(KP >= 200) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+									else $(v).siblings(".research").text("Need " + (200-KP)+" points");
 								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 							case 6:
-								$(v).text((player.research.advancedBuildingAPI?"[Unl":"[L") + "ocked]");
-								$(v).siblings(".points").text("125 KP");
-								if(!player.research.advancedBuildingAPI) {
-									if(player.research.knowledge >= 125) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
-									else $(v).siblings(".research").text("Need " + (125-player.research.knowledge)+" points");
+								$(v).text((player.research.buildingAPI?"[Unl":"[L") + "ocked]");
+								$(v).siblings(".points").text("75 KP");
+								if(!player.research.buildingAPI) {
+									if(KP >= 75) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+									else $(v).siblings(".research").text("Need " + (75-KP)+" points");
 								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 							case 7:
-								$(v).text((player.research.researchAPI?"[Unl":"[L") + "ocked]");
-								$(v).siblings(".points").text("50 KP");
-								if(!player.research.researchAPI) {
-									if(player.research.knowledge >= 50) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
-									else $(v).siblings(".research").text("Need " + (50-player.research.knowledge)+" points");
+								$(v).text((player.research.advancedBuildingAPI?"[Unl":"[L") + "ocked]");
+								$(v).siblings(".points").text("125 KP");
+								if(!player.research.advancedBuildingAPI) {
+									if(KP >= 125) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+									else $(v).siblings(".research").text("Need " + (125-KP)+" points");
 								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 							case 8:
-								$(v).text((player.research.messagingAPI?"[Unl":"[L") + "ocked]");
-								$(v).siblings(".points").text("100 KP");
-								if(!player.research.messagingAPI) {
-									if(player.research.knowledge >= 100) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
-									else $(v).siblings(".research").text("Need " + (100-player.research.knowledge)+" points");
+								$(v).text((player.research.researchAPI?"[Unl":"[L") + "ocked]");
+								$(v).siblings(".points").text("50 KP");
+								if(!player.research.researchAPI) {
+									if(KP >= 50) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+									else $(v).siblings(".research").text("Need " + (50-KP)+" points");
 								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 							case 9:
-								$(v).text((player.research.zeppelinAPI?"[Unl":"[L") + "ocked]");
-								$(v).siblings(".points").text("400 KP");
-								if(!player.research.zeppelinAPI) {
-									if(player.research.knowledge >= 400) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
-									else $(v).siblings(".research").text("Need " + (400-player.research.knowledge)+" points");
+								$(v).text((player.research.messagingAPI?"[Unl":"[L") + "ocked]");
+								$(v).siblings(".points").text("100 KP");
+								if(!player.research.messagingAPI) {
+									if(KP >= 100) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+									else $(v).siblings(".research").text("Need " + (100-KP)+" points");
 								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 							case 10:
-								$(v).text((player.research.nukeAPI?"[Unl":"[L") + "ocked]");
-								$(v).siblings(".points").text("200 KP");
-								if(!player.research.nukeAPI) {
-									if(player.research.knowledge >= 200) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
-									else $(v).siblings(".research").text("Need " + (200-player.research.knowledge)+" points");
+								$(v).text((player.research.zeppelinAPI?"[Unl":"[L") + "ocked]");
+								$(v).siblings(".points").text("400 KP");
+								if(!player.research.zeppelinAPI) {
+									if(KP >= 400) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+									else $(v).siblings(".research").text("Need " + (400-KP)+" points");
 								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 							case 11:
-								$(v).text((player.research.worldMapAPI?"[Unl":"[L") + "ocked]");
-								$(v).siblings(".points").text("50 KP");
-								if(!player.research.worldMapAPI) {
-									if(player.research.knowledge >= 50) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
-									else $(v).siblings(".research").text("Need " + (50-player.research.knowledge)+" points");
+								$(v).text((player.research.nukeAPI?"[Unl":"[L") + "ocked]");
+								$(v).siblings(".points").text("200 KP");
+								if(!player.research.nukeAPI) {
+									if(KP >= 200) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+									else $(v).siblings(".research").text("Need " + (200-KP)+" points");
 								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 							case 12:
+								$(v).text((player.research.worldMapAPI?"[Unl":"[L") + "ocked]");
+								$(v).siblings(".points").text("50 KP");
+								if(!player.research.worldMapAPI) {
+									if(KP >= 50) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+									else $(v).siblings(".research").text("Need " + (50-KP)+" points");
+								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
+								break;
+							case 13:
 								$(v).text((player.research.completeAnalyticAPI?"[Unl":"[L") + "ocked]");
 								$(v).siblings(".points").text("50 KP");
 								//all advanced APIs must be unlocked before this can be unlocked
 								if(!player.research.completeAnalyticAPI&&player.research.advancedAttackAPI&&player.research.advancedTradingAPI&&player.research.advancedBuildingAPI) {
-									if(player.research.knowledge >= 50) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
-									else $(v).siblings(".research").text("Need " + (50-player.research.knowledge)+" points");
+									if(KP >= 50) $(v).siblings(".research").text("Purchase").removeClass("noBuy");
+									else $(v).siblings(".research").text("Need " + (50-KP)+" points");
 								} else $(v).siblings(":not(.fullName, .info)").css("display","none");
 								break;
 						}

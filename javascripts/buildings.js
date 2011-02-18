@@ -216,7 +216,7 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 		try { //this is to prevent the script from breaking if an error gets thrown.
 			var bldgInfo = $.grep(player.curtown.bldg, get_bldg)[0];
 			switch(bldgInfo.type) {		//first, we have to determine if we even have updating displays
-				case "Construction Yard":
+				/*case "Construction Yard":
 					var iter = 0;
 					var ticksTotal = 0;
 					$(".bldgID").each(function(i,v){
@@ -266,38 +266,41 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 							} else if(ind == menu.bldgServer.length - 1) $(v).parent().remove();	//remove the line completely
 						});
 					});
-					break;
+					break;*/
 				case "Arms Factory":
 					var time = 0;
 					$(".time").each(function(i, el) {
-							if(i > 0) { //if we're on anything after the extra .time for the first element 
-											//we have to subtract one from i to get the right queue item
-								time += (bldgInfo.Queue[i-1].ticksPerUnit * bldgInfo.Queue[i-1].AUNumber);
-								var days = Math.floor((time / 3600)/24);
-								var hours = Math.floor((time / 3600)%24);
-								var mins = Math.floor((time % 3600) / 60);
-								var secs = Math.floor((time % 3600) % 60);
-							} else {
-								var ticks = (bldgInfo.Queue[i].ticksPerUnit - bldgInfo.Queue[i].currTicks);
-								var days = Math.floor((ticks / 3600)/24);
-								var hours = Math.floor((ticks / 3600)%24);
-								var mins = Math.floor((ticks % 3600) / 60);
-								var secs = Math.floor((ticks % 3600) % 60);
-								time -= bldgInfo.Queue[i].currTicks; //this is so that time displays correctly for the first element
-							}
-							if(time > 0 || i == 0) {
-								$(el).html(((days)?days + " d ":"") + ((hours<10)?"0"+hours:hours) + ":" + ((mins<10)?"0"+mins:mins) + ":" + ((secs<10)?"0"+secs:secs));
-							} else {
-								$(el).parent().parent().remove();
-							}
-						});
+						if(bldgInfo.Queue[i].update) load_player(player.league,true,true);
+						
+						if(i > 0) { //if we're on anything after the extra .time for the first element 
+										//we have to subtract one from i to get the right queue item
+							time += (bldgInfo.Queue[i-1].ticksPerUnit * bldgInfo.Queue[i-1].AUNumber);
+							var days = Math.floor((time / 3600)/24);
+							var hours = Math.floor((time / 3600)%24);
+							var mins = Math.floor((time % 3600) / 60);
+							var secs = Math.floor((time % 3600) % 60);
+						} else {
+							var ticks = (bldgInfo.Queue[i].ticksPerUnit - bldgInfo.Queue[i].currTicks);
+							var days = Math.floor((ticks / 3600)/24);
+							var hours = Math.floor((ticks / 3600)%24);
+							var mins = Math.floor((ticks % 3600) / 60);
+							var secs = Math.floor((ticks % 3600) % 60);
+							time -= bldgInfo.Queue[i].currTicks; //this is so that time displays correctly for the first element
+						}
+						if(time > 0 || i == 0) {
+							$(el).html(((days)?days + " d ":"") + ((hours<10)?"0"+hours:hours) + ":" + ((mins<10)?"0"+mins:mins) + ":" + ((secs<10)?"0"+secs:secs));
+						} else {
+							$(el).parent().parent().remove();
+						}
+					});
 					$("#AF_AUbar > a").each(function(i, el){
 						if(player.AU[i].name != "empty"&&player.AU[i].name != "locked")$(el).text(player.curtown.au[i]);
 					});
 					break;
 				case "Trade Center":
-					$(".ETA").each(function(i, el) {
+					if(player.curtown.activeTrades.update || player.curtown.tradeSchedules.update) get_all_trades();
 					
+					$(".ETA").each(function(i, el) {
 						var time = player.curtown.activeTrades[i].ticksToHit;
 						
 						var days = Math.floor((time / 3600)/24);
@@ -341,7 +344,7 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 					break;
 				case "Headquarters":
 					$('#HQ_outgoingMissions .raidETA').each(function(i, v) {
-						//if(parseInt($(this).siblings(".raidID").text()) != player.curtown.outgoingRaids[i].rid) $(this).parent().remove();
+						
 						if(player.curtown.outgoingRaids[i].eta != "updating") {
 							$(this).html(function() {
 								var time = player.curtown.outgoingRaids[i].eta;
@@ -352,7 +355,6 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 							});
 						} else {
 							$(this).html(player.curtown.outgoingRaids[i].eta);
-							if($("#HQ_scrollBox").length>0) setTimeout(function() {currUI();},player.gameClockFactor*1000);
 						}
 					});
 					$('#HQ_incomingMissions .raidETA').each(function(i, v) {
@@ -371,21 +373,15 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 					});
 					break;
 			}
-			var level = parseInt($("#BUI_bldgLvl").text().match(/\b\d+/));
-			if(level != bldgInfo.lvl) $("#BUI_bldgLvl").html(" - Level " + bldgInfo.lvl);
+			$("#BUI_bldgLvl").html(" - Level " + bldgInfo.lvl);
 			
 			if(bldgInfo.lvlUps == 0) {
-				if($("#BUI_upgrading").html() != "") $("#BUI_upgrading").text("");
+				$("#BUI_upgrading").text("");
 			} else if(bldgInfo.deconstruct) {
-				if(!$("#BUI_upgrading").html().match(/destruct/i)) {
-					bldgInfo.lvlUps = 1;
-					$("#BUI_upgrading").html("<img src='AIFrames/buildings/destruct.png' alt='Deconstructing'/> -" + bldgInfo.lvl).css("color", "red");
-				}
+				$("#BUI_upgrading").html("<img src='AIFrames/buildings/destruct.png' alt='Deconstructing'/> -" + bldgInfo.lvl).css("color", "red");
 			} else if(bldgInfo.lvlUps > 0) {
-				if(!$("#BUI_upgrading").html().match(/(upgrading|construction)/i)) {
-					if(bldgInfo.lvl == 0) $("#BUI_upgrading").html("<img src='AIFrames/buildings/construct.png' alt='Under Construction'/> +" + bldgInfo.lvlUps).css("color", "yellow");
-					else $("#BUI_upgrading").html("<img src='AIFrames/buildings/upgrade.png' alt='Upgrading'/> +" + bldgInfo.lvlUps).css("color", "lime");
-				}
+				if(bldgInfo.lvl == 0) $("#BUI_upgrading").html("<img src='AIFrames/buildings/construct.png' alt='Under Construction'/> +" + bldgInfo.lvlUps).css("color", "yellow");
+				else $("#BUI_upgrading").html("<img src='AIFrames/buildings/upgrade.png' alt='Upgrading'/> +" + bldgInfo.lvlUps).css("color", "lime");
 			}
 			
 			$(".pplBldg").text(bldgInfo.peopleInside);
@@ -400,7 +396,7 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 			$(".pplTown").text(pplCur);
 			$(".totalTown").text(pplTotal);
 			
-			if(bldgInfo.numLeftToBuild > 0) { 								//if we have people building
+			if($("#BUI_numPplBldg").length) {
 				$("#BUI_numPplBldg").html(bldgInfo.numLeftToBuild);			//update the number building
 				var pplTicks = bldgInfo.ticksPerPerson - bldgInfo.ticksLeft;//update the time left
 				var days = Math.floor((pplTicks / 3600)/24);

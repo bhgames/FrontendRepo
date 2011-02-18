@@ -61,16 +61,20 @@
 #HQ_supportAUbox, #HQ_civilianAUbox {
 	position: absolute;
 	top: 150px;
-	right: 10px;
+	right: 5px;
 	color: #FFF;
 	}
 #HQ_civilianAUbox {
 	display: none;
 	}
-#HQ_supportAU, #HQ_civilianAU {
+#HQ_supportAU {
 	height: 225px;
 	width: 390px;
 	overflow: auto;
+	}
+#HQ_civilianAU {
+	height: 60px;
+	width: 390px;
 	}
 #HQ_AUinput {
 	margin: 5px;
@@ -85,14 +89,18 @@
 	padding: 3px;
 	float: left;
 	}
-.AUinput {
+#HQ_civAU {
+	margin: 0 auto;
+	float: none;
+	}
+.AUinput, #HQ_civInput {
 	margin: 0px;
 	width: 40px;
 	}
 #HQ_AUinput img, .supportAUpic, .auPic {
 	float: left;
 	}
-#HQ_AUinput a, .supportAU a{
+#HQ_AUinput a, .supportAU a, #HQ_civNumber{
 	display: block;
 	color: #CCCCCC;
 	}
@@ -123,7 +131,7 @@
 #HQ_SAS {
 	position: absolute;
 	top: 150px;
-	left: 195px;
+	left: 207px;
 	text-align: center;
 	}
 #HQ_CSinfo {
@@ -184,15 +192,15 @@
 	position: absolute;
 	top: 140px;
 	left: 5px;
-	width: 180px;
+	width: 196px;
 	color: black;
 	}
 #HQ_missionSelectList .lightFrameBody {
-	height: 115px;
+	height: 125px;
 	}
 .missionSelect {
 	float: left;
-	min-width: 83px;
+	min-width: 93px;
 	}
 #HQ_bombingTarget, #HQ_supportType {
 	position: absolute;
@@ -231,7 +239,7 @@
 #HQ_missionDescBox {
 	position: absolute;
 	top: 205px;
-	left: 190px;
+	left: 201px;
 	}
 #HQ_missionDesc {
 	height: 75px;

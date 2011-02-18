@@ -49,6 +49,9 @@
 .missionE .inc {
 	background-image: url(../AIFrames/WM/incoming-hostile.png);
 	}
+.missionC .inc {
+	background-image: url(../AIFrames/WM/civilian-indicator.png);
+	}
 #towninfo {
 	position: absolute;
 	top: 0px;

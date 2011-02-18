@@ -123,28 +123,25 @@ function HQ_UI(bldgInfo) {
 					if(BUI.HQ.selectedIndex == 2 || BUI.HQ.selectedIndex == 3) $("#HQ_bombingTarget").fadeIn("fast");
 					else $("#HQ_bombingTarget").fadeOut("fast");
 					
-					if(BUI.HQ.selectedIndex == 7 || BUI.HQ.selectedIndex == 8) {
+					if(BUI.HQ.selectedIndex == 9 || BUI.HQ.selectedIndex == 8) {
 						$("#HQ_supportAUbox").fadeOut();
 						$("#HQ_civilianAUbox").fadeIn();
 						var numCivs = 0;
 						var type = "";
-						if(BUI.HQ.selectedIndex == 7) {
+						if(BUI.HQ.selectedIndex == 8) {
 							type = "Institute";
+							$("#HQ_civName").text("Scholar");
+							$("#HQ_civInput").val(10).attr("disabled","disabled");
 						} else {
 							type = "Construction Yard";
+							$("#HQ_civName").text("Engineer");
+							$("#HQ_civInput").val("").attr("disabled","false"); //this is to prevent older browsers from leaving the field disabled
 						}
 						$.each(player.curtown.bldg, function(i,v) {
 								if(v.type == type) {
 									numCivs += v.peopleInside;
 								}
 						});
-						if(BUI.HQ.selectedIndex == 7) {
-							$("#HQ_civName").text("Scholar");
-							$("#HQ_civInput").val(10).attr("disabled","disabled");
-						} else {
-							$("#HQ_civName").text("Engineer");
-							$("#HQ_civInput").val("").attr("disabled","false"); //this is to prevent older browsers from leaving the field disabled
-						}
 						$("#HQ_civNumber").text(numCivs);
 					} else {
 						$("#HQ_supportAUbox").fadeIn();
@@ -231,7 +228,7 @@ function HQ_UI(bldgInfo) {
 								for(i in player.curtown.au) {
 									player.curtown.au[i] -= AUarray[i];
 								}
-								currUI();
+								BUI.HQ.reload=true;
 							} else {
 								var error = response.split(":");
 								if(error.length==2) error=error[1]
@@ -473,7 +470,7 @@ function HQ_UI(bldgInfo) {
 										default: //this should never go, but just in case
 										path = "../images/client/buildings/AF-lockedAU.png";
 									}
-									HTML+=path+"' alt='"+w.name+"'/><a href='javascript:;' class='supportAUnumber'>" + w.size + "</a><input type='text' class='AUinput supportAUinput' maxlength='4' value='0'/></div>";
+									HTML+=path+"' alt='"+w.name+"'/><a href='javascript:;' class='supportAUnumber'>" + w.size + "</a><input type='text' class='AUinput supportAUinput' maxlength='4' "+(w.name="Scholar"?"value='' disabled='disabled'":"value='0'")+"/></div>";
 								});
 								HTML += "</div></div><div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>";
 							});

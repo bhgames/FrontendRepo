@@ -509,6 +509,8 @@ function build_SR_menu() {
 				}
 			}
 			
+			if(report.offdig || report.defdig) HTML += report.digmessage +"<br/>";
+						
 			var headers = report.Headers.split(";");
 			if(headers.length > 2) {
 				for(var i=0;i<headers.length-2;i++) {

@@ -297,7 +297,7 @@ var BUI = { //the Building Universal Interface object will hold everything our v
 								<div class='darkFrameBody'>\
 									<span>Civilian:</span>\
 									<div id='HQ_civilianAU'>\
-										<div id='HQ_civAU'>\
+										<div id='HQ_civAU' class='troop'>\
 											<div id='HQ_civName'></div>\
 											<a href='javascript:;' id='HQ_civNumber'></a>\
 											<input type='text' id='HQ_civInput' />\
@@ -342,10 +342,10 @@ var BUI = { //the Building Universal Interface object will hold everything our v
 										<input type='radio' id='HQ_mission6' name='missionRadio' /><label for='HQ_mission6'>Debris</label>\
 									</div>\
 									<div class='missionSelect'>\
-										<input type='radio' id='HQ_mission7' name='missionRadio' /><label for='HQ_mission7'>Arch. Dig</label>\
+										<input type='radio' id='HQ_mission9' name='missionRadio' /><label for='HQ_mission9'>Arch. Dig</label>\
 									</div>\
 									<div class='missionSelect'>\
-										<input type='radio' id='HQ_mission8' name='missionRadio' disabled='disabled'/><label for='HQ_mission8'>Harvest</label>\
+										<input type='radio' id='HQ_mission10' name='missionRadio' disabled='disabled'/><label for='HQ_mission10'>Harvest</label>\
 									</div>\
 									<select id='HQ_supportType'>\
 										<option>Defensive</option>\
