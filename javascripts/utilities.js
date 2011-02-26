@@ -158,7 +158,7 @@ function display_message(title, message, callback) { //callback is a function  a
 var tutorialRunning = false;
 function run_tutorial() { //long tutorial is long -->  check out display_tutorial_entity (below) to understand what's going on here
 	var message = "Welcome to the AI Wars game client!<br/><br/>Would you like to view our Beginner's Tutorial?<br/><span style='font-size:10px'>It is highly recommended that new users, especially those new to the MMORTS genre, view the tutorial.<br/>Once started, the tutorial cannot be stopped and refreshing the page will cause it to start over at this popup.</span>";
-	if(player.research.flicker!="BQ1") message = "Are you sure you wish to replay the tutorial?";
+	if(!player.research.flicker.match(/BQ1|NQ1/)) message = "Are you sure you wish to replay the tutorial?";
 	display_message("Beginner's Tutorial",message,
 					function() {
 						tutorialRunning = true;
@@ -362,7 +362,7 @@ function run_tutorial() { //long tutorial is long -->  check out display_tutoria
 	$("#AIW_alertNo").live("click",function(){ //launch first quest if the tutorial is skipped
 		if(player.research.flicker.match(/BQ1|NQ1/)) {
 			$.each(player.quests, function(i,v) {
-				if(v.name.match(/BQ1|NQ1/)) {
+				if(v.name == player.research.flicker) {
 					display_quest(v);
 					player.research.flicker = 'noFlick';
 					var noFlick = new make_AJAX();
@@ -836,6 +836,21 @@ window.log = function(){
 	}
 };
 
+/** http://strd6.com/2010/08/useful-javascript-game-extensions-clamp/
+ * Returns a number whose value is limited to the given range.
+ *
+ * Example: limit the output of this computation to between 0 and 255
+ * (x * 255).clamp(0, 255)
+ *
+ * @param {Number} min The lower boundary of the output range
+ * @param {Number} max The upper boundary of the output range
+ * @returns A number in the range [min, max]
+ * @type Number
+ */
+Number.prototype.clamp = function(min, max) {
+  return Math.min(Math.max(this, min), max);
+}
+
 function inc_bldg_ticks(thingToTick) {
 	return setInterval(function() {
 					//increment the ticks
@@ -874,7 +889,7 @@ function inc_ppl_ticks(thingToTick) {
 function inc_queue_ticks(thingToTick) {
 	return setInterval(function() {
 				thingToTick.currTicks++; //increment the ticks
-				if(thingToTick.currTicks >= thingToTick.ticksPerUnit && thingToTick.AUnumber > 0) {  //if a unit has finished
+				if(thingToTick.currTicks >= thingToTick.ticksPerUnit && thingToTick.AUNumber > 0) {  //if a unit has finished
 					thingToTick.AUNumber--;
 					thingToTick.currTicks -= thingToTick.ticksPerUnit;
 					thingToTick.update = true;

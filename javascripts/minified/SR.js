@@ -64,7 +64,7 @@ HTML+="<div class='defAU' "+((v=="empty"||v=="???")?"style='color: #AAAAAA !impo
 +report.defEnd[i]+"</span></div>";}});HTML+="</div><div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div>\
        </div>";}
 HTML+="</div>";if(((player.research.autoblastable&&player.research.bhmblastable)||player.research.resblastable)&&player.research.fbLinked&&!report.blasted){HTML+="<div id='SR_fbBlast' class='fbButton'>Share on Facebook!</div>";}}
-var headers=report.Headers.split(";");if(headers.length>2){for(var i=0;i<headers.length-2;i++){HTML+=headers[i]+".<br/>";}}
+if(report.offdig||report.defdig)HTML+=report.digMessage+"<br/>";var headers=report.Headers.split(";");if(headers.length>2){for(var i=0;i<headers.length-2;i++){HTML+=headers[i]+".<br/>";}}
 var resTaken="";$.each(report.resTaken,function(i,v){if(v>0){if(resTaken=="")resTaken="Resources Taken:<br/>"+v;else resTaken+=v;switch(i){case 0:resTaken+=" <img src='AIFrames/icons/MetalIcon.png' alt='Metal' />"
 break;case 1:resTaken+=" <img src='AIFrames/icons/TimberIcon.png' alt='Timber' />"
 break;case 2:resTaken+=" <img src='AIFrames/icons/PlasticIcon.png' alt='Manufactured Materials' />"

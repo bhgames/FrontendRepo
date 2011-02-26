@@ -54,7 +54,7 @@ var BUI={build:build_bldg_UIs,head:"<div id='BUI_header'>\
       <a href='javascript:;' id='AF_AUslot4' class='inactiveAU'>???</a>\
       <a href='javascript:;' id='AF_AUslot5' class='inactiveAU'>???</a>\
       <div id='AF_assignAU'>\
-       <div id='AF_AUassignButton'><a href='javascript:;'></a></div>\
+       <div id='AF_AUassignButton' class='noAss'><a href='javascript:;'></a></div>\
        <select id='AF_AUassignList'>\
        </select>\
       </div>\
@@ -255,6 +255,19 @@ var BUI={build:build_bldg_UIs,head:"<div id='BUI_header'>\
         </div>\
         <div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>\
        </div>\
+       <div id='HQ_civilianAUbox'>\
+        <div class='darkFrameBody'>\
+         <span>Civilian:</span>\
+         <div id='HQ_civilianAU'>\
+          <div id='HQ_civAU' class='troop'>\
+           <div id='HQ_civName'></div>\
+           <a href='javascript:;' id='HQ_civNumber'></a>\
+           <input type='text' id='HQ_civInput' />\
+          </div>\
+         </div>\
+        </div>\
+        <div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>\
+       </div>\
        <div id='HQ_SAS'>\
         <div id='HQ_armySize' class='textFramed'>\
          <div>Selected Army Size:</div>\
@@ -290,6 +303,12 @@ var BUI={build:build_bldg_UIs,head:"<div id='BUI_header'>\
          <div class='missionSelect'>\
           <input type='radio' id='HQ_mission6' name='missionRadio' /><label for='HQ_mission6'>Debris</label>\
          </div>\
+         <div class='missionSelect'>\
+          <input type='radio' id='HQ_mission9' name='missionRadio' /><label for='HQ_mission9'>Arch. Dig</label>\
+         </div>\
+         <div class='missionSelect'>\
+          <input type='radio' id='HQ_mission10' name='missionRadio' disabled='disabled'/><label for='HQ_mission10'>Harvest</label>\
+         </div>\
          <select id='HQ_supportType'>\
           <option>Defensive</option>\
           <option>Offensive</option>\
@@ -324,7 +343,7 @@ var BUI={build:build_bldg_UIs,head:"<div id='BUI_header'>\
        <div id='HQ_launchAttack' class='noAttack'>\
         <div class='lightFrameBody'>Send</div>\
         <div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>\
-       </div>",missionDesc:["One time hit on an opponent to collect as much of the spoils as your men can carry.","Hit the enemy multiple times from 1/4th the distance until all civilians are dead, then collect spoils. 50% spoils reduction.","One time bombing run on enemies.  Will also collect as much of the spoils as your men can carry.","Hit the enemy multiple times until the bomb targets are all dead, then collect spoils. 50% spoils reduction.","Run a scouting mission on an enemy town. You can only send soldiers on this mission type. Discovery means you  enter into an attack type combat mode with the enemy's defenses.","Attempt to invade an enemy city. Only successful if all bunkers and the HQ is killed and the army must possess more than twice as much strength as the defending city in most situations.","Support an ally with units that can only help defend his town.  Sending your own troops to support one of your own cities will Station those troops there.","Send your troops to collect the debris left over from a previous battle.","Support an ally with units that can not only defend his town but can be launched on offenses from his town. Units cannot be moved from his town to another of his towns, and you will receive status reports of all offensive and defensive actions taken by this particular town.  Sending your own troops to support one of your own cities will Station those troops there."],numRaidsOut:0,x:0,y:0,build:HQ_UI},IN:{name:["Institute"],HTML:" <div id='IN_research'>\
+       </div>",missionDesc:["Support an ally with units that can not only defend his town but can be launched on offenses from his town. Units cannot be moved from his town to another of his towns, and you will receive status reports of all offensive and defensive actions taken by this particular town.  Sending your own troops to support one of your own cities will Station those troops there.","One time hit on an opponent to collect as much of the spoils as your men can carry.","Hit the enemy multiple times from 1/4th the distance until all civilians are dead, then collect spoils. 50% spoils reduction.","One time bombing run on enemies.  Will also collect as much of the spoils as your men can carry.","Hit the enemy multiple times until the bomb targets are all dead, then collect spoils. 50% spoils reduction.","Run a scouting mission on an enemy town. You can only send soldiers on this mission type. Discovery means you  enter into an attack type combat mode with the enemy's defenses.","Attempt to invade an enemy city. Only successful if all bunkers and the HQ is killed and the army must possess more than twice as much strength as the defending city in most situations.","Support an ally with units that can only help defend his town.  Sending your own troops to support one of your own cities will Station those troops there.","Send your troops to collect the debris left over from a previous battle.","Send your Scholars on an Archeological Dig.  Sending troops with your scholars will prevent unescored scholars from taking over the dig site.  Digs take 24 hours; after which, a prize is unlocked.  If you choose not to take the prize, you can resend the dig for a potentially better prize!","Send your Engineers to mine a Resource Outcropping.  Sending troops with your engineers will prevent unescorted engineers from taking over the outcropping."],numRaidsOut:0,x:0,y:0,build:HQ_UI},IN:{name:["Institute"],HTML:" <div id='IN_research'>\
        <div id='IN_numKnowledge'>Knowledge Points: <span></span></div>\
        <div id='IN_ppd'>Points per Day: <span></span></div>\
        <div id='IN_researchSelection'>\
@@ -425,8 +444,6 @@ var BUI={build:build_bldg_UIs,head:"<div id='BUI_header'>\
           <div id='IN_Punisher' class='resBlack'>  <div class='info'></div> <div class='fullName'>Punisher</div>  <span class='name'>Punisher</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
           <div id='IN_Dreadnaught' class='resWhite'> <div class='info'></div> <div class='fullName'>Dreadnaught</div>  <span class='name'>Dreadnaught</span> <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
           <div id='IN_Collossus' class='resBlack'> <div class='info'></div> <div class='fullName'>Collossus</div>  <span class='name'>Collossus</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_Helios' class='resWhite'>  <div class='info'></div> <div class='fullName'>Helios</div>   <span class='name'>Helios</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_Horizon' class='resBlack'>  <div class='info'></div> <div class='fullName'>Horizon</div>   <span class='name'>Horizon</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
           <div id='IN_Hades' class='resWhite'>  <div class='info'></div> <div class='fullName'>Hades</div>   <span class='name'>Hades</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
          </div>\
         </div>",advTechHTML:" <div id='IN_advTech' class='researchTree'>\
@@ -443,6 +460,7 @@ var BUI={build:build_bldg_UIs,head:"<div id='BUI_header'>\
          <div class='researches'>\
           <div id='IN_attackAPI' class='resWhite'> <div class='info'></div> <div class='fullName'>Attack Automation</div>   <span class='name'>attackAPI</span>    <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
           <div id='IN_aaAPI' class='resBlack'>  <div class='info'></div> <div class='fullName'>Attack Integration</div>   <span class='name'>advancedAttackAPI</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_digAPI' class='resWhite'>  <div class='info'></div> <div class='fullName'>Archeology Integration</div>  <span class='name'>digAPI</span>    <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
           <div id='IN_tradingAPI' class='resWhite'> <div class='info'></div> <div class='fullName'>Trade Automation</div>   <span class='name'>tradingAPI</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
           <div id='IN_atAPI' class='resBlack'>  <div class='info'></div> <div class='fullName'>Trade Integration</div>   <span class='name'>advancedTradingAPI</span> <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
           <div id='IN_smAPI' class='resWhite'>  <div class='info'></div> <div class='fullName'>Market Integration</div>   <span class='name'>smAPI</span>     <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\

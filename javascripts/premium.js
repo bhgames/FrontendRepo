@@ -188,7 +188,7 @@ function show_help() {
 			break;
 		case "Premium_statusBox":
 			title = 'Account Modes';
-			desc = 'There are two account modes in AI Wars:<br/><dl><dt>Normal Mode:</dt><dd>Normal mode is the mode all new accounts start in.  It provides no bonuses and carries no innate disadvantages.  This mode is recommended for new players.</dd><dt>Battlehard Mode:</dt><dd>Battlehard Mode is designed to be challenging to play well, and rewarding if done correctly.  Once active, you will generate BP, Battlehard Points, after combat, but <span style="font-weight:bold">your resource production will be reduced by 50%</span>.  The amount of BP generated depends on the circumstances of the battle.  Closer or larger battles generate more BP then smaller or more one sided battles.  This Mode lasts for one full week.</dd></dl>';
+			desc = 'There are two account modes in AI Wars:<br/><dl><dt>Normal Mode:</dt><dd>Normal mode is the mode all new accounts start in.  It provides no bonuses and carries no innate disadvantages.  This mode is recommended for new players.</dd><dt>Battlehard Mode:</dt><dd>Battlehard Mode is designed to be challenging to play well, and rewarding if done correctly.  Once active, you will generate BP, Battlehard Points, after combat, but <span style="font-weight:bold">your resource production will be reduced by 25%</span>.  The amount of BP generated depends on the circumstances of the battle.  Closer or larger battles generate more BP then smaller or more one sided battles.  This Mode lasts for one full week.</dd></dl>';
 			break;
 		case "Premium_autopilotBox":
 			title = 'Autopilot';

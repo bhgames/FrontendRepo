@@ -63,7 +63,7 @@ var BUI = { //the Building Universal Interface object will hold everything our v
 						<a href='javascript:;' id='AF_AUslot4' class='inactiveAU'>???</a>\
 						<a href='javascript:;' id='AF_AUslot5' class='inactiveAU'>???</a>\
 						<div id='AF_assignAU'>\
-							<div id='AF_AUassignButton'><a href='javascript:;'></a></div>\
+							<div id='AF_AUassignButton' class='noAss'><a href='javascript:;'></a></div>\
 							<select id='AF_AUassignList'>\
 							</select>\
 						</div>\
@@ -382,7 +382,8 @@ var BUI = { //the Building Universal Interface object will hold everything our v
 								<div class='lightFrameBody'>Send</div>\
 								<div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>\
 							</div>",
-				missionDesc : [	"One time hit on an opponent to collect as much of the spoils as your men can carry.",
+				missionDesc : [	"Support an ally with units that can not only defend his town but can be launched on offenses from his town. Units cannot be moved from his town to another of his towns, and you will receive status reports of all offensive and defensive actions taken by this particular town.  Sending your own troops to support one of your own cities will Station those troops there.",
+								"One time hit on an opponent to collect as much of the spoils as your men can carry.",
 								"Hit the enemy multiple times from 1/4th the distance until all civilians are dead, then collect spoils. 50% spoils reduction.",
 								"One time bombing run on enemies.  Will also collect as much of the spoils as your men can carry.",
 								"Hit the enemy multiple times until the bomb targets are all dead, then collect spoils. 50% spoils reduction.",
@@ -390,7 +391,6 @@ var BUI = { //the Building Universal Interface object will hold everything our v
 								"Attempt to invade an enemy city. Only successful if all bunkers and the HQ is killed and the army must possess more than twice as much strength as the defending city in most situations.",
 								"Support an ally with units that can only help defend his town.  Sending your own troops to support one of your own cities will Station those troops there.",
 								"Send your troops to collect the debris left over from a previous battle.",
-								"Support an ally with units that can not only defend his town but can be launched on offenses from his town. Units cannot be moved from his town to another of his towns, and you will receive status reports of all offensive and defensive actions taken by this particular town.  Sending your own troops to support one of your own cities will Station those troops there.",
 								"Send your Scholars on an Archeological Dig.  Sending troops with your scholars will prevent unescored scholars from taking over the dig site.  Digs take 24 hours; after which, a prize is unlocked.  If you choose not to take the prize, you can resend the dig for a potentially better prize!",
 								"Send your Engineers to mine a Resource Outcropping.  Sending troops with your engineers will prevent unescorted engineers from taking over the outcropping."],
 				numRaidsOut : 0,
@@ -504,8 +504,6 @@ var BUI = { //the Building Universal Interface object will hold everything our v
 										<div id='IN_Punisher' class='resBlack'>		<div class='info'></div>	<div class='fullName'>Punisher</div>		<span class='name'>Punisher</span>		<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
 										<div id='IN_Dreadnaught' class='resWhite'>	<div class='info'></div>	<div class='fullName'>Dreadnaught</div>		<span class='name'>Dreadnaught</span>	<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
 										<div id='IN_Collossus' class='resBlack'>	<div class='info'></div>	<div class='fullName'>Collossus</div>		<span class='name'>Collossus</span>		<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
-										<div id='IN_Helios' class='resWhite'>		<div class='info'></div>	<div class='fullName'>Helios</div>			<span class='name'>Helios</span>		<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
-										<div id='IN_Horizon' class='resBlack'>		<div class='info'></div>	<div class='fullName'>Horizon</div>			<span class='name'>Horizon</span>		<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
 										<div id='IN_Hades' class='resWhite'>		<div class='info'></div>	<div class='fullName'>Hades</div>			<span class='name'>Hades</span>			<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
 									</div>\
 								</div>",

@@ -85,25 +85,18 @@
 			<div class='popFrameBL'><div class='popFrameBR'><div class='popFrameB'></div></div></div>
 		</div>
 	</div>
+	<a href="#" id="chatbox_tab">CHATBOX</a>
 	<div id='chat_box'>
-		<div class='popFrame'>
-			<div class='popFrameTop'><div class='popFrameLeft'><div class='popFrameRight'>
-				<div class='popFrameBody'>
-					<div id='chat_titlebar'>
-						<a href='javascript:;' id='chat_close'></a>
-						<span>Chat Window</span>
-					</div>
-					<div id='chat_innerbox'></div>
-				</div>
-			</div></div></div>
+		<div id='chat_titlebar'>
+			<a href='javascript:;' id='chat_close'></a>
+			<span>Chatbox</span>
 		</div>
-		<div class='popFrameBL-BR-B'>
-			<div class='popFrameBL'><div class='popFrameBR'><div class='popFrameB'></div></div></div>
-		</div>
+		<div id='chat_innerbox'></div>
 	</div>
 	<div id="header"><img src='AIFrames/Header.png' alt='BattleHard: AI Wars' /></div>
 	<div id="content">
 		<div id="client">
+			<div id="#"></div> <!-- this is to prevent the view from going to the top when a sidetab is clicked -->
 			<ul id="toplinks">
 				<li id="citybox"><a href="javascript:;" id="cityname"></a><a href="javascript:;" id="citydropdown"></a></li>
 				<li id="wm">World Map</li>
@@ -148,7 +141,6 @@
 							<li> <a href="javascript:;" id="support">Support</a> |</li>
 							<li> <a href="javascript:;" id="premium">Battlehard</a> |</li>
 							<li> <a href="javascript:;" id="options">Account</a> |</li>
-							<li> <a href="javascript:;" id="chat">Chat</a> |</li>
 							<li> <a href="javascript:;" id="tutorial">Tutorial</a> |</li>
 							<li> <a href="http://battlehardalpha.xtreemhost.com/" id="forum" target="_forum">Forum</a> |</li>
 							<li><a href="javascript:;" id="logout">Logout</a> |</li>
@@ -181,7 +173,7 @@
 		insertScript("jScrollPane.mousewheel","js");
 		insertScript("mwheelIntent","js");
 		insertScript("jquery.sb.min","js");
-		insertScripts("page","js");
+		insertScript("page","js");
 		//game globals
 		insertScript("globals","js");
 		insertScript("global_ASM","js");
@@ -262,7 +254,7 @@
 
 	  feedback_widget_options.display = "overlay";  
 	  feedback_widget_options.company = "battlehard_games";
-	  feedback_widget_options.placement = "right";
+	  feedback_widget_options.placement = "left";
 	  feedback_widget_options.color = "#222";
 	  feedback_widget_options.style = "question";
 	  var feedback_widget = new GSFN.feedback_widget(feedback_widget_options);

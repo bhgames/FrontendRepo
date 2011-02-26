@@ -75,8 +75,8 @@ function AF_UI(bldgInfo) {
 				$(el).unbind('click').click(function(){
 					//swap the classes so that only this element has activeAU, the others have inactiveAU
 					$(this).removeClass('inactiveAU').addClass('activeAU').siblings('a').addClass('inactiveAU').removeClass('activeAU');
+					$("#AF_AUassignButton a").removeClass('clear');
 					$("#AF_AUassignList").css("visibility", "visible").change();
-					$("#AF_AUassignButton a").removeClass('noAss').removeClass('clear');
 					
 					//reset displays
 					$("#AF_AUpic").attr("src","../../images/trans.gif");
@@ -87,6 +87,7 @@ function AF_UI(bldgInfo) {
 					
 					//reset unit information
 					$("#AF_AUname").html("");
+					$("#AF_AUrank").html("");
 					$("#AF_AUFP span").html(": "+player.AU[i].firepower);
 					$("#AF_AUAmmo span").html(": "+player.AU[i].ammo);
 					$("#AF_AUAccu span").html(": "+player.AU[i].accuracy);
@@ -102,8 +103,8 @@ function AF_UI(bldgInfo) {
 				$(el).unbind('click').click(function(){
 					//swap the classes so that only this element has activeAU, the others have inactiveAU
 					$(this).removeClass('inactiveAU').addClass('activeAU').siblings('a').addClass('inactiveAU').removeClass('activeAU');
-					$("#AF_AUassignList").css("visibility", "hidden");
-					$("#AF_AUassignButton a").removeClass('noAss').addClass('clear');
+					$("#AF_AUassignButton a").addClass('clear');
+					$("#AF_AUassignList").css("visibility", "hidden").change();
 					
 					var AUpic = "AIFrames/units/";
 					var rankPic = "AIFrames/units/";
@@ -188,7 +189,6 @@ function AF_UI(bldgInfo) {
 					});
 					 //update build info
 					$("#BUI_numPpl").keyup();
-					$("#AF_AUassignList").change();
 				});
 			}
 		}
@@ -228,7 +228,7 @@ function AF_UI(bldgInfo) {
 		
 		var URL = "/AIWars/GodGenerator?reqtype=command&command=" + player.command 
 					+ ".canCreateCombatUnit(" + slot + ",";
-		if($("#AF_AUassignButton a.clear").length > 0) { //if an AU is selected
+		if($("#AF_AUassignButton a").hasClass("clear")) { //if an AU is selected
 			URL += "empty);";
 		} else {
 			URL += $(this).children(':selected').text() + ");";
@@ -256,9 +256,9 @@ function AF_UI(bldgInfo) {
 					$.each(player.AUTemplates,function(i,v){
 						if(v.name == $("#AF_AUassignList option:selected").text()) {
 							player.AU[slot] = v;
-							return false;
 							if(bldgInfo.cap==0) bldgInfo.cap = 5;
 							load_player(player.league,true,true);
+							return false;
 						}
 					});
 					currUI();

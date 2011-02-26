@@ -440,13 +440,13 @@ function rebuild(tile) {
 			map.displayedTowns.push(x);
 			var type = Math.abs(x.x+x.y);
 			map.HTML += "<div class='town type"+((type%2)+1)+(x.owner=="Id"?" idTown":(x.owner==player.username?" playerTown":""));
+			if(x.dig) map.HTML += " missionC";
 			$.each(player.raids, function(j, y) {
 				if(y.defendingTown == x.townName && !y.raidOver) {
 					if(!y.raidType.match(/support|dig/i)) {
 						map.HTML += " missionE";
 					} else {
-						if(y.raidType.match(/dig/i)) map.HTML += " missionC";
-						else map.HTML += " missionF";
+						map.HTML += " missionF";
 					}
 				}
 			});

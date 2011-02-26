@@ -84,6 +84,18 @@ ul, li {
 	text-align: right;
 	cursor: pointer;
 	}
+a#fdbk_tab, #chatbox_tab, #chat_box {
+	-webkit-transition: all 0.3s linear;
+    -moz-transition: all 0.3s linear;
+    -o-transition: all 0.3s linear;
+    transition: all 0.3s linear;
+	}
+a#fdbk_tab {
+	top: 150px !important;
+	}
+a#fdbk_tab:hover {
+	z-index:100002
+	}
 /************************************************************************************************************************************************
  * Client Viewer CSS
 ************************************************************************************************************************************************/
@@ -284,12 +296,44 @@ ul, li {
 /************************************************************************************************************************************************
  * Console Output & Chatbox CSS
 ************************************************************************************************************************************************/
-#console_box, #chat_box {
+#chatbox_tab {
+	position: fixed;
+	top:67px;
+	left: 0;
+	height: 86px;
+	width: 42px;
+	background: #222 url(../AIFrames/buttons/chatbox-sidetab.png) no-repeat top left;
+	margin-left: -7px;
+	text-indent: -1000000px;
+	overflow: hidden;
+	z-index: 100001;
+	}
+#chatbox_tab:hover {
+	margin-left: -4px;
+	}
+#console_box {
 	position: absolute;
 	left: 0px;
 	top: 182px;
 	display: none;
 	z-index: 1000;
+	}
+#chat_box {
+	position: fixed;
+	top: 67px;
+	left: 0;
+	background: #222;
+	padding: 5px;
+	margin-left: -320px;
+	border: 3px solid white;
+	z-index: 100003;
+	-webkit-transition-duration: 0.1s;
+    -moz-transition-duration: 0.1s;
+    -o-transition-duration: 0.1s;
+    transition-duration: 0.1s;
+	}
+#chat_box.open {
+	margin-left: -4px;
 	}
 #console_box  {
 	font-size: 16px;
@@ -301,7 +345,7 @@ ul, li {
 	width: 100%;
 	height: 30px;
 	border-bottom: 1px groove #FFFFFF;
-	cursor: move;
+	cursor: default;
 	font-size: 20px;
 	}
 #console_close, #chat_close {
@@ -371,7 +415,7 @@ ul, li {
 	background-color: #000000;
 	filter:alpha(opacity=50);
 	opacity: .50;
-	z-index: 1000;
+	z-index: 1000005;
 	}
 #AIW_alert {
 	position: absolute;
@@ -380,7 +424,7 @@ ul, li {
 	display:none;
 	max-width: 500px;
 	margin: -75px -200px;
-	z-index: 1002;
+	z-index: 1000006;
 	}
 #AIW_alert .popFrameBody {
 	padding-bottom: 20px;

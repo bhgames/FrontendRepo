@@ -46,6 +46,7 @@
 	border-top: 1px solid #FFFFFF;
 	}
 .player {
+	background: rgba(255,255,255,0.1);
 	font-weight: bold;
 	}
 .pName, .lName, .bName {
@@ -72,8 +73,10 @@
 .pCSL, .lCSL, .pCSLKey, .lCSLKey {
 	width: 98px;
 	float: right;
+	text-align: right;
 	}
 .bBPKey, .bBP {
-	width: 120px;
+	width: 130px;
 	float: right;
+	text-align: center;
 	}

@@ -452,6 +452,9 @@ function HQ_UI(bldgInfo) {
 										case "Shock Trooper": //soldier
 										case "Pillager":
 										case "Vanguard":
+										case "Scholar":
+										case "Engineer":
+										case "Trader":
 											path += "soldierrenderTHUMB.png";
 											break;
 										case "Wolverine": //tank
@@ -472,7 +475,7 @@ function HQ_UI(bldgInfo) {
 										default: //this should never go, but just in case
 										path = "../images/client/buildings/AF-lockedAU.png";
 									}
-									HTML+=path+"' alt='"+w.name+"'/><a href='javascript:;' class='supportAUnumber'>" + w.size + "</a><input type='text' class='AUinput supportAUinput' maxlength='4' "+(w.name="Scholar"?"value='' disabled='disabled'":"value='0'")+"/></div>";
+									HTML+=path+"' alt='"+w.name+"'/><a href='javascript:;' class='supportAUnumber'>" + w.size + "</a><input type='text' class='AUinput supportAUinput' maxlength='4' "+(w.name=="Scholar"?"style='visibility:hidden;'":"value='0'")+"/></div>";
 								});
 								HTML += "</div></div><div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>";
 							});
@@ -512,12 +515,14 @@ function HQ_UI(bldgInfo) {
 					var callAll = true;
 					
 					$(this).siblings('.supportAUbox').children('.troop').children('.AUinput').each(function(i, v) {
-						var j = player.curtown.supportAbroad[index].supportAU[i].originalSlot;
-						var val = parseInt($(v).val());
-						if(val != 0 && val != "") {
-							callAll = false;
-						} else if(val == "") val = 0;
-						AUtoRecall[j] = val;
+						if($(this).css("visibility") != "hidden") {
+							var j = player.curtown.supportAbroad[index].supportAU[i].originalSlot;
+							var val = parseInt($(v).val());
+							if(val != 0 && val != "") {
+								callAll = false;
+							} else if(val == "") val = 0;
+							AUtoRecall[j] = val;
+						}
 					});
 					
 					if(callAll) AUtoRecall = [0];
@@ -645,7 +650,7 @@ function canSendAttack() {
 		}
 	};
 	
-	var desc = BUI.HQ.missionDesc[BUI.HQ.selectedIndex];
+	var desc = BUI.HQ.missionDesc[BUI.HQ.selectedIndex+1];
 	
 	switch(BUI.HQ.selectedIndex) {
 		case 1:
@@ -667,7 +672,7 @@ function canSendAttack() {
 			if($("#HQ_supportType").val() == "Defensive") BUI.HQ.attackType = "support";
 			else { 
 				BUI.HQ.attackType = "offsupport";
-				desc = BUI.HQ.missionDesc[8];
+				desc = BUI.HQ.missionDesc[0];
 			}
 			break;
 		case 7:

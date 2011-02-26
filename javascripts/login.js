@@ -404,30 +404,21 @@ function load_client(type, reloadTown, reloadUI) {
 						display_output(false,"Loading Chatbox...");
 						$("#chat_innerbox").load("/PHP/chatBox.php","UN="+player.username, 
 											function(response,status,xhr) {
-												$("#chat").unbind("click").click(function(){
-													$("#menu").click();
-													$("#chat_box").fadeIn();
-												});
-												$("#chat_titlebar").unbind("mousedown").mousedown(function(e) {
-													if(e.which == 1) {
-														var cLeft = parseInt($("#chat_box").css("left"));
-														var cTop = parseInt($("#chat_box").css("top"));
-														var mLeft = e.pageX;
-														var mTop = e.pageY;
-														$("body").unbind("mousemove").mousemove(function(e) {
-															$("#chat_box").css("left", (cLeft-mLeft+e.pageX) + "px");
-															$("#chat_box").css("top", (cTop-mTop+e.pageY) + "px");
-														});
-														$("body").unbind("mouseup").mouseup(function() {
-															$(this).unbind("mousemove").unbind("mouseup");
-														});
+												$("#chatbox_tab").unbind("click").click(function(){
+													if(Modernizr.csstransitions) {
+														$("#chat_box").addClass("open");
+													} else {
+														$("#chat_box").animate({"margin-left":"-4px"},100);
+													}
+												}).click();
+												$("#chat_close").unbind("click").click(function() {
+													if(Modernizr.csstransitions) {
+														$("#chat_box").removeClass("open");
+													} else {
+														$("#chat_box").animate({"margin-left":"-310px"},100);
 													}
 												});
-												$("#chat_close").unbind("click").click(function() {
-													$("#chat_box").fadeOut();
-												});
 												display_output(false,"Chatbox Loaded!");
-												$("#chat_box").fadeIn();
 											});
 					}
 						//sort towns alphabetically for display in list

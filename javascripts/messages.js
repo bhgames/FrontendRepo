@@ -537,7 +537,7 @@ function build_message_UI() {
 		archResp.callback = function(response){
 			if(response.match(/true/i)) {
 				display_output(false,"Message Sent!");
-				if($(that).hasClass("confirmInvite")) {
+				if($(that).hasClass("confReward")||$(that).hasClass("decReward")) {
 					messages.api.reinitialise();
 				} else {
 					messages.reload = true;
@@ -549,7 +549,7 @@ function build_message_UI() {
 				display_output(true,error,true);
 			}
 		};
-		archResp.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".respondToDigMessage("+reward+");");
+		archResp.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".respondToDigMessage("+reward+","+messages.curr.tsid+");");
 	});
 	
 	display_output(false,"DMC Loaded!");
