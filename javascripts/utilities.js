@@ -851,6 +851,12 @@ Number.prototype.clamp = function(min, max) {
   return Math.min(Math.max(this, min), max);
 }
 
+//formats a number for display as part of a clock.
+Number.prototype.toTime = function() {
+	if(this<10) return "0"+this;
+	return this;
+}
+
 function inc_bldg_ticks(thingToTick) {
 	return setInterval(function() {
 					//increment the ticks

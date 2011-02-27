@@ -85,7 +85,7 @@
 			<div class='popFrameBL'><div class='popFrameBR'><div class='popFrameB'></div></div></div>
 		</div>
 	</div>
-	<a href="#" id="chatbox_tab">CHATBOX</a>
+	<div id="chatbox_tab">CHATBOX</div>
 	<div id='chat_box'>
 		<div id='chat_titlebar'>
 			<a href='javascript:;' id='chat_close'></a>
@@ -182,6 +182,7 @@
 		//building files
 		insertScript("buildings","js");
 		insertScript("AF","js");
+		insertScript("AP","js");
 		insertScript("bnkr","js");
 		insertScript("CC","js");
 		insertScript("CY","js");

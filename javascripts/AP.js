@@ -4,7 +4,7 @@ function AP_UI(bldgInfo) {
 
 /*
 	numPpl is the current amount of fuel in the appCodeName
-	refuelTimer is the amount of time, in GCF ticks, until the next fuel cell is added to a docked Airship
+	refuelTicks is the amount of time, in GCF ticks, until the next fuel cell is added to a docked Airship
 	
 	createAirship(String airshipName, int townID)  townID is the ID of the town to build the Airship in (the current town)
 	

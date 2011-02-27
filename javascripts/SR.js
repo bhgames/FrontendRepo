@@ -112,8 +112,8 @@ function build_SR_menu() {
 								var sDate = new Date(createdAt);
 								var lDate = new Date();
 								var rDate = new Date(sDate - (lDate.getTimezoneOffset()*60*1000));
-								HTML += rDate.getFullYear() + "-" + ((rDate.getMonth() < 9)?"0"+(rDate.getMonth()+1):rDate.getMonth()+1) + "-" 
-										+ ((rDate.getDate() < 10)?"0"+rDate.getDate():rDate.getDate()) + " - " + rDate.toLocaleTimeString() + " ]</span></li>";
+								HTML += rDate.getFullYear() + "-" + (rDate.getMonth()+1).toTime() + "-" 
+										+ rDate.getDate().toTime() + " - " + rDate.toLocaleTimeString() + " ]</span></li>";
 						}
 					});
 				 HTML += "</ul><div id='SR_buttons'><a href='javascript:;' id='SR_markAll'>Mark all</a>\

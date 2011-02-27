@@ -33,8 +33,8 @@ function get_map() {
 				var maxX = 0;
 				var maxY = 0;
 				$.each(map.tiles, function(i, v) {
-					if(Math.abs(v.centerx) > maxX) maxX = Math.abs(v.centerx);
-					if(Math.abs(v.centery) > maxY) maxY = Math.abs(v.centery);
+					maxX = Math.max(maxX,Math.abs(v.centerx));
+					maxY = Math.max(maxY,Math.abs(v.centery));
 				});
 				map.tilesWide = 0;
 				var j = 0;
@@ -50,7 +50,7 @@ function get_map() {
 						});
 					}
 					if(temp[j].length>map.tilesWide) map.tilesWide = temp[j].length
-					j++;
+					if(temp[j].length>0) j++;
 				}
 				map.tiles = temp;
 				map.x = 0;
@@ -148,37 +148,24 @@ function build_map() {
 	});
 	
 	$(".tileDir").unbind("click").click(function() {
-		if($(this).is("#mapTileUp")) {
-			$("#tileBox").css("top",function(i,v){
-										var newV = parseInt(v)+35;
-										if(newV>0) return v;
-										return newV+"px";
-									});
-			return true;
-		}
-		if($(this).is("#mapTileDown")) {
-			$("#tileBox").css("top",function(i,v){
-										var newV = parseInt(v)-35;
-										if(-newV>(map.tiles.length-3)*35) return v;
-										return newV+"px";
-									});
-			return true;
-		}
-		if($(this).is("#mapTileLeft")) {
-			$("#tileBox").css("left",function(i,v){
-										var newV = parseInt(v)+40;
-										if(newV>0) return v;
-										return newV+"px";
-									});
-			return true;
-		}
-		if($(this).is("#mapTileRight")) {
-			$("#tileBox").css("left",function(i,v){
-										var newV = parseInt(v)-40;
-										if(-newV>(map.tilesWide-3)*40) return v;
-										return newV+"px";
-									});
-			return true;
+		var id = $(this).attr("id");
+		switch(id) {
+			case "mapTileUp":
+			case "mapTileDown":
+				var mod = (id.match(/D/)?-35:35);
+				$("#tileBox").css("top",function(i,v){
+											var newV = parseInt(v)+mod;
+											return newV.clamp((map.tiles.length-3)*-35,0)+"px";
+										});
+				break;
+			case "mapTileLeft":
+			case "mapTileRight":
+				var mod = (id.match(/R/)?-40:40);
+				$("#tileBox").css("left",function(i,v){
+											var newV = parseInt(v)+mod;
+											return newV.clamp((map.tilesWide-3)*-40,0)+"px";
+										});
+				break;
 		}
 	});
 	

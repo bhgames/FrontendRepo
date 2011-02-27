@@ -112,7 +112,15 @@ var BUI = { //the Building Universal Interface object will hold everything our v
 		},
 	AP : {
 			name : ["Airship Platform"],
-			build : function() {}
+			HTML : "<div id='AP_fuelInfo'>\
+						<div class='lightFrameBody'>\
+							<div id='AP_currFuel'>Stored Fuel Rods: <span></span></div>\
+							<div id='AP_nextIn'>Next Fuel Rod in: <span></span></div>\
+						</div>\
+						<div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>\
+					</div>\
+					",
+			build : AP_UI
 		},
 	Bnkr : {//Bunker
 			name : ["Bunker"],

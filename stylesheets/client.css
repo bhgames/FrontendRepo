@@ -307,6 +307,7 @@ a#fdbk_tab:hover {
 	text-indent: -1000000px;
 	overflow: hidden;
 	z-index: 100001;
+	cursor: pointer;
 	}
 #chatbox_tab:hover {
 	margin-left: -4px;
@@ -510,6 +511,9 @@ a#fdbk_tab:hover {
 	background: url("../AIFrames/Content Frame Elements/Light-body.png") repeat center center;
 	color: #000;
 	}
+.rgba .lightFrameBody {
+	background: rgba(255, 255, 255, 0.8);
+	}
 .lightFrameB {
 	height: 20px;
 	background: url("../AIFrames/Content Frame Elements/Light-BottomTile.png") repeat-x center bottom;
@@ -542,6 +546,9 @@ a#fdbk_tab:hover {
 	background: url("../AIFrames/Content Frame Elements/Dark-body.png") repeat center center;
 	color: #FFF;
 	}
+.rgba .darkFrameBody {
+	background: rgba(0, 0, 0, 0.8);
+	}
 .darkFrameB {
 	height: 20px;
 	background: url("../AIFrames/Content Frame Elements/Dark-BottomTile.png") repeat-x center bottom;
@@ -558,8 +565,11 @@ a#fdbk_tab:hover {
 ************************************************************************************************************************************************/
 .popFrameBody {
 	padding: 22px 5px 0px;
-	margin: 0px 10px;
 	background: url("../AIFrames/Content Frame Elements/Dark-body.png") repeat center center;
+	margin: 0px 10px;
+	}
+.rgba .popFrameBody {
+	background: rgba(0, 0, 0, 0.8);
 	}
 .popFrameTop {
 	background: url("../AIFrames/Content Frame Elements/toptile.png") repeat-x left top;
