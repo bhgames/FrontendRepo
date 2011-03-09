@@ -212,7 +212,7 @@ function build_league_UI() {
 			}
 		};
 		createLeague.get("/AIWars/GodGenerator?reqtype=command&command=bf.createLeague("+player.towns[$("#CC_createLeagueTown :selected").index("#CC_createLeagueTown option")-2].townID
-							+","+encodeURIComponent($("#CC_createLeagueName").val())+","+encodeURIComponent($("#CC_createLeagueDesc").val())+","+encodeURIComponent($("#CC_createLeagueSite").val())+","
-							+encodeURIComponent($("#CC_createLeagueInitials").val())+");");
+							+","+$("#CC_createLeagueName").val()+","+$("#CC_createLeagueDesc").val()+","+$("#CC_createLeagueSite").val()+","
+							+$("#CC_createLeagueInitials").val()+");");
 	});
 }

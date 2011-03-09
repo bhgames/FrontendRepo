@@ -61,12 +61,12 @@ $(document).ready(function() {
 	});
 	$("#console_titlebar").unbind("mousedown").mousedown(function(e) {
 		if(e.which == 1) {
-			var cLeft = parseInt($("#console_box").css("left"));
+			var cLeft = parseInt($("#console_box").css("right"));
 			var cTop = parseInt($("#console_box").css("top"));
 			var mLeft = e.pageX;
 			var mTop = e.pageY;
 			$("body").unbind("mousemove").mousemove(function(e) {
-				$("#console_box").css("left", (cLeft-mLeft+e.pageX) + "px");
+				$("#console_box").css("right", (cLeft-(e.pageX-mLeft)) + "px");
 				$("#console_box").css("top", (cTop-mTop+e.pageY) + "px");
 			});
 			$("body").unbind("mouseup").mouseup(function() {

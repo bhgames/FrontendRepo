@@ -114,12 +114,34 @@ var BUI = { //the Building Universal Interface object will hold everything our v
 			name : ["Airship Platform"],
 			HTML : "<div id='AP_fuelInfo'>\
 						<div class='lightFrameBody'>\
-							<div id='AP_currFuel'>Stored Fuel Rods: <span></span></div>\
-							<div id='AP_nextIn'>Next Fuel Rod in: <span></span></div>\
+							<h4>Fuel Info</h4>\
+							<div id='AP_currFuel'>Stored Fuel Cells: <span></span></div>\
+							<div id='AP_nextIn'>Next Fuel Cell in: <span></span></div>\
 						</div>\
 						<div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>\
 					</div>\
-					",
+					<div id='AP_makeAirshipBox'>\
+						<div class='darkFrameBody'>\
+							<h3>Create Airship</h3>\
+							<div id='AP_needTowns'>Airships occupy a town slot.  You need an available town tech before you can build an airship.</div>\
+							<div id='AP_error'></div>\
+							<div id='AP_makeAirship'>\
+								<div id='AP_buildAirship' class='lightButton'>\
+									<div class='lightFrameBody'>Build Airship</div>\
+									<div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>\
+								</div>\
+								<input id='AP_airshipName' type='text' placeholder='Airship Name' maxlength='20' />\
+							</div>\
+						</div>\
+						<div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>\
+					</div>\
+					<div id='AP_airshipInfo'>\
+						<div class='darkFrameBody'>\
+							<h3 id='AP_airshipName'>Docked Airships:</h3>\
+							<div id='AP_dockedAirships'></div>\
+						</div>\
+						<div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>\
+					</div>",
 			build : AP_UI
 		},
 	Bnkr : {//Bunker
@@ -213,6 +235,10 @@ var BUI = { //the Building Universal Interface object will hold everything our v
 								<div class='lightFrameBody'>Overview</div>\
 								<div class='lightFrameBL'><div class='lightFrameB'></div></div>\
 							</div>\
+							<div id='HQ_control' class='lightButton'>\
+								<div class='lightFrameBody'>Control</div>\
+								<div class='lightFrameB'></div>\
+							</div>\
 							<div id='HQ_sendMission' class='lightButton'>\
 								<div class='lightFrameBody'>Send Mission</div>\
 								<div class='lightFrameBR'><div class='lightFrameB'></div></div>\
@@ -252,7 +278,31 @@ var BUI = { //the Building Universal Interface object will hold everything our v
 									<div id='HQ_supportAbroad'></div>\
 								</div>\
 							</div>",
-				sendHTML :"<div id='HQ_AUinput'>\
+				controlHTML : "	<div id='HQ_airshipControl'>\
+									<div class='darkFrameBody'>\
+										<h3>Movement Controls</h3>\
+										<div id='HQ_currPos'>Current Position: <span></span></div>\
+										<div id='HQ_moveError'></div>\
+										<div id='HQ_moveAirship' class='lightButton'>\
+											<div class='lightFrameBody'>Move</div>\
+											<div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>\
+										</div>\
+										<div id='HQ_moveTo'>Move to:<br/>\
+											<input type='number' id='HQ_moveX' value='0' /><input type='number' id='HQ_moveY' value='0' />\
+										</div>\
+									</div>\
+									<div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>\
+								</div>\
+								<div id='HQ_airshipInfo'>\
+									<div class='lightFrameBody'>\
+										<h3>Airship Status</h3>\
+										<div id='HQ_airshipHeading'>Current Heading: <span></span></div>\
+										<div id='HQ_airshipETA'>ETA: <span></span></div>\
+										<div id='HQ_airshipFuel'>Fuel Reserves: <span></span></div>\
+									</div>\
+									<div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>\
+								</div>",
+				sendHTML :"	<div id='HQ_AUinput'>\
 								<div class='darkFrameBody'>\
 									<div id='HQ_AU1'>\
 										<div id='HQ_AU1name'></div>\
@@ -404,6 +454,7 @@ var BUI = { //the Building Universal Interface object will hold everything our v
 				numRaidsOut : 0,
 				x : 0,
 				y : 0,
+				startTab : "",
 				build : HQ_UI
 			},
 	IN :	{//Institute
@@ -531,17 +582,17 @@ var BUI = { //the Building Universal Interface object will hold everything our v
 										<div id='IN_attackAPI' class='resWhite'>	<div class='info'></div>	<div class='fullName'>Attack Automation</div>			<span class='name'>attackAPI</span>				<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
 										<div id='IN_aaAPI' class='resBlack'>		<div class='info'></div>	<div class='fullName'>Attack Integration</div>			<span class='name'>advancedAttackAPI</span>		<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
 										<div id='IN_digAPI' class='resWhite'>		<div class='info'></div>	<div class='fullName'>Archeology Integration</div>		<span class='name'>digAPI</span>				<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
-										<div id='IN_tradingAPI' class='resWhite'>	<div class='info'></div>	<div class='fullName'>Trade Automation</div>			<span class='name'>tradingAPI</span>			<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
-										<div id='IN_atAPI' class='resBlack'>		<div class='info'></div>	<div class='fullName'>Trade Integration</div>			<span class='name'>advancedTradingAPI</span>	<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
-										<div id='IN_smAPI' class='resWhite'>		<div class='info'></div>	<div class='fullName'>Market Integration</div>			<span class='name'>smAPI</span>					<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
-										<div id='IN_buildingAPI' class='resBlack'>	<div class='info'></div>	<div class='fullName'>Build Automation</div>			<span class='name'>buildingAPI</span>			<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
-										<div id='IN_abAPI' class='resWhite'>		<div class='info'></div>	<div class='fullName'>Build Integration</div>			<span class='name'>advancedBuildingAPI</span>	<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
-										<div id='IN_researchAPI' class='resBlack'>	<div class='info'></div>	<div class='fullName'>Research Integration</div>		<span class='name'>researchAPI</span>			<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
-										<div id='IN_messagingAPI' class='resWhite'>	<div class='info'></div>	<div class='fullName'>Communication Integration</div>	<span class='name'>messagingAPI</span>			<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
-										<div id='IN_zeppelinAPI' class='resBlack'>	<div class='info'></div>	<div class='fullName'>Zeppelin Integration</div>		<span class='name'>zeppelinAPI</span>			<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
-										<div id='IN_nukeAPI' class='resWhite'>		<div class='info'></div>	<div class='fullName'>Missile Integration</div>			<span class='name'>nukeAPI</span>				<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
-										<div id='IN_wmAPI' class='resBlack'>		<div class='info'></div>	<div class='fullName'>Map Integration</div>				<span class='name'>worldMapAPI</span>			<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
-										<div id='IN_caAPI' class='resWhite'>		<div class='info'></div>	<div class='fullName'>Complete Integration</div>		<span class='name'>completeAnalyticAPI</span>	<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
+										<div id='IN_tradingAPI' class='resBlack'>	<div class='info'></div>	<div class='fullName'>Trade Automation</div>			<span class='name'>tradingAPI</span>			<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
+										<div id='IN_atAPI' class='resWhite'>		<div class='info'></div>	<div class='fullName'>Trade Integration</div>			<span class='name'>advancedTradingAPI</span>	<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
+										<div id='IN_smAPI' class='resBlack'>		<div class='info'></div>	<div class='fullName'>Market Integration</div>			<span class='name'>smAPI</span>					<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
+										<div id='IN_buildingAPI' class='resWhite'>	<div class='info'></div>	<div class='fullName'>Build Automation</div>			<span class='name'>buildingAPI</span>			<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
+										<div id='IN_abAPI' class='resBlack'>		<div class='info'></div>	<div class='fullName'>Build Integration</div>			<span class='name'>advancedBuildingAPI</span>	<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
+										<div id='IN_researchAPI' class='resWhite'>	<div class='info'></div>	<div class='fullName'>Research Integration</div>		<span class='name'>researchAPI</span>			<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
+										<div id='IN_messagingAPI' class='resBlack'>	<div class='info'></div>	<div class='fullName'>Communication Integration</div>	<span class='name'>messagingAPI</span>			<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
+										<div id='IN_zeppelinAPI' class='resWhite'>	<div class='info'></div>	<div class='fullName'>Zeppelin Integration</div>		<span class='name'>zeppelinAPI</span>			<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
+										<div id='IN_nukeAPI' class='resBlack'>		<div class='info'></div>	<div class='fullName'>Missile Integration</div>			<span class='name'>nukeAPI</span>				<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
+										<div id='IN_wmAPI' class='resWhite'>		<div class='info'></div>	<div class='fullName'>Map Integration</div>				<span class='name'>worldMapAPI</span>			<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
+										<div id='IN_caAPI' class='resBlack'>		<div class='info'></div>	<div class='fullName'>Complete Integration</div>		<span class='name'>completeAnalyticAPI</span>	<span class='level'></span>	<span class='points'></span>	<div class='research noBuy'></div>	<div class='bpResearch'></div></div>\
 									</div>\
 								</div>",
 				build : IN_UI,

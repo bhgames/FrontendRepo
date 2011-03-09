@@ -505,7 +505,7 @@ function TC_UI(bldgInfo) {
 													var hours = Math.floor((temp[1] / 3600)%24);
 													var mins = Math.floor((temp[1] % 3600) / 60);
 													var secs = Math.floor((temp[1] % 3600) % 60);
-													$("#TC_issueDist div").html(((days)?days + " d ":"") + ((hours<10)?"0"+hours:hours) + ":" + ((mins<10)?"0"+mins:mins) + ":" + ((secs<10)?"0"+secs:secs));
+													$("#TC_issueDist div").html(((days)?days + " d ":"") + hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime());
 												};
 						getTradeInfo.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".howManyTraders("+cost+","+player.curtown.townID+");"
 										+player.command+".getTradeETA("+player.curtown.townID+","+trade.tid1+");");
@@ -568,7 +568,7 @@ function TC_UI(bldgInfo) {
 					$('#BUI_pplWood').html(Math.ceil(parseFloat(pplCost[1]))).format({format:"###,###,###", locale:"us"}).addClass("noRes");;
 					$('#BUI_pplManMade').html(Math.ceil(parseFloat(pplCost[2]))).format({format:"###,###,###", locale:"us"}).addClass("noRes");;
 					$('#BUI_pplFood').html(Math.ceil(parseFloat(pplCost[3]))).format({format:"###,###,###", locale:"us"}).addClass("noRes");;
-					$('#BUI_pplTime').html(((days)?days + " d ":"") + ((hours<10)?"0"+hours:hours) + ":" + ((mins<10)?"0"+mins:mins) + ":" + ((secs<10)?"0"+secs:secs)).removeClass("noRes");
+					$('#BUI_pplTime').html(((days)?days + " d ":"") + hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime()).removeClass("noRes");
 					
 					var canBuild = pplInfo[2];
 					if(canBuild.match(/true/)) {
@@ -640,7 +640,7 @@ function get_trade_ETA() {
 								var hours = Math.floor((response / 3600)%24);
 								var mins = Math.floor((response % 3600) / 60);
 								var secs = Math.floor((response % 3600) % 60);
-								$("#TC_dtETA").html("ETA: "+((days)?days + " d ":"") + ((hours<10)?"0"+hours:hours) + ":" + ((mins<10)?"0"+mins:mins) + ":" + ((secs<10)?"0"+secs:secs));
+								$("#TC_dtETA").html("ETA: "+((days)?days + " d ":"") + hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime());
 							} else {
 								$("#TC_dtETA").html("?!:?!:?!");
 							}

@@ -47,6 +47,11 @@
 #RAI_autosave:active, #RAI_autosave.active, #RAI_autostart:active, #RAI_autostart.active {
 	background-position: 0 -82px;
 	}
+#RAI_new2 {
+	position: absolute;
+	top: 470px;
+	left: 54px;
+	}
 #RAI_new, #RAI_run, #RAI_save, #RAI_stop {
 	position: relative;
 	top: 485px;

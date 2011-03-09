@@ -94,7 +94,7 @@ function draw_bldg_UI() {
 		var mins = Math.floor((ticks % 3600) / 60);
 		var secs = Math.floor((ticks % 3600) % 60);
 		
-		$("#BUI_upTime").html(((days)?days + " d ":"") + ((hours<10)?"0"+hours:hours) + ":" + ((mins<10)?"0"+mins:mins) + ":" + ((secs<10)?"0"+secs:secs)).removeClass("noRes");
+		$("#BUI_upTime").html(((days)?days + " d ":"") + hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime()).removeClass("noRes");
 
 		var cost = BUI.bldgQueue.cost = $.parseJSON(info[0]);
 		$(".BUI_up span").text(bldgInfo.lvl+bldgInfo.lvlUps+1);
@@ -215,163 +215,209 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 	return setInterval(function() {
 		try { //this is to prevent the script from breaking if an error gets thrown.
 			var bldgInfo = $.grep(player.curtown.bldg, get_bldg)[0];
-			switch(bldgInfo.type) {		//first, we have to determine if we even have updating displays
-				/*case "Construction Yard":
-					var iter = 0;
-					var ticksTotal = 0;
-					$(".bldgID").each(function(i,v){
-						$.each(menu.bldgServer, function(ind, x) {
-							if($(v).text() == x.lotNum) { //we found the building in bldgServer
-								var ticks;
-								if(x.lvlUps > 1) {	//if we have multiple level ups, we have to determine which one is last
-									if(i != 0) {	//if we're on the first .bldgName it has to be the first in the list, less checks
-														//if the last entry and this entry are the same building, or we're on the last index
-										if($(v).parent().prev().children(".bldgID").text() == $(v).text()) {
-											if(iter + 1 != x.lvlUps) { 	//check to see if we're on the last of a list of upgrading buildings
-												$(v).siblings(".cancelButton").addClass('noCancel');	//if not, add noCancel
-											} else {
-												$(v).siblings(".cancelButton").removeClass('noCancel');//otherwise, make sure the button is there.				
+			if(bldgInfo.update||player.curtown.update) {
+				load_player(player.league,true,true);
+			} else {
+				switch(bldgInfo.type) {		//first, we have to determine if we even have updating displays
+					/*case "Construction Yard":
+						var iter = 0;
+						var ticksTotal = 0;
+						$(".bldgID").each(function(i,v){
+							$.each(menu.bldgServer, function(ind, x) {
+								if($(v).text() == x.lotNum) { //we found the building in bldgServer
+									var ticks;
+									if(x.lvlUps > 1) {	//if we have multiple level ups, we have to determine which one is last
+										if(i != 0) {	//if we're on the first .bldgName it has to be the first in the list, less checks
+															//if the last entry and this entry are the same building, or we're on the last index
+											if($(v).parent().prev().children(".bldgID").text() == $(v).text()) {
+												if(iter + 1 != x.lvlUps) { 	//check to see if we're on the last of a list of upgrading buildings
+													$(v).siblings(".cancelButton").addClass('noCancel');	//if not, add noCancel
+												} else {
+													$(v).siblings(".cancelButton").removeClass('noCancel');//otherwise, make sure the button is there.				
+												}
+												ticksTotal += x.ticksToFinishTotal[iter]; 	//increase total ticks
+												iter++;
+											} else {								//otherwise
+												$(v).siblings(".cancelButton").addClass('noCancel'); 	//have to cancel the last one first
+												iter = 1;							//set this to our first iteration
+												ticksTotal = x.ticksToFinishTotal[0]; 	//set total ticks as same as current building
 											}
-											ticksTotal += x.ticksToFinishTotal[iter]; 	//increase total ticks
-											iter++;
-										} else {								//otherwise
+										} else {						//if we're on the first element, it must also be the first in the list
 											$(v).siblings(".cancelButton").addClass('noCancel'); 	//have to cancel the last one first
-											iter = 1;							//set this to our first iteration
-											ticksTotal = x.ticksToFinishTotal[0]; 	//set total ticks as same as current building
+											ticksTotal = x.ticksToFinishTotal[iter]; 	//set total ticks as same as current building
+											iter++;
 										}
-									} else {						//if we're on the first element, it must also be the first in the list
-										$(v).siblings(".cancelButton").addClass('noCancel'); 	//have to cancel the last one first
-										ticksTotal = x.ticksToFinishTotal[iter]; 	//set total ticks as same as current building
-										iter++;
+										ticks = ticksTotal - x.ticksToFinish;
+									} else {		//if we only have one level up, things are a lot simpler
+										ticks = x.ticksToFinishTotal[0] - x.ticksToFinish;
+										$(v).siblings(".cancelButton").removeClass('noCancel');
 									}
-									ticks = ticksTotal - x.ticksToFinish;
-								} else {		//if we only have one level up, things are a lot simpler
-									ticks = x.ticksToFinishTotal[0] - x.ticksToFinish;
-									$(v).siblings(".cancelButton").removeClass('noCancel');
-								}
-								//format the times
+									//format the times
+									var days = Math.floor((ticks / 3600)/24);
+									var hours = Math.floor((ticks / 3600)%24);
+									var mins = Math.floor((ticks % 3600) / 60);
+									var secs = Math.floor((ticks % 3600) % 60);
+									//and display them in a nice format
+									if(isNaN(hours)) { //if the time is NaN, it usually means the building is done, so we should display "updating"
+										$(v).siblings(".bldgTicksToFinish").html("updating");
+									} else {
+										$(v).siblings(".bldgTicksToFinish").html(((days)?days + " d ":"") + ((hours<10)?"0"+hours:hours) + ":" + ((mins<10)?"0"+mins:mins) + ":" + ((secs<10)?"0"+secs:secs));
+									}
+									return false;	//pops us out of the loop
+									
+								//if we didn't find any matches (building has finished)
+								} else if(ind == menu.bldgServer.length - 1) $(v).parent().remove();	//remove the line completely
+							});
+						});
+						break;*/
+					case "Arms Factory":
+						var time = 0;
+						$(".time").each(function(i, el) {
+							
+							if(i > 0) { //if we're on anything after the extra .time for the first element 
+											//we have to subtract one from i to get the right queue item
+								if(bldgInfo.Queue[i-1].update) load_player(player.league,true,true);
+								time += (bldgInfo.Queue[i-1].ticksPerUnit * bldgInfo.Queue[i-1].AUNumber);
+								var days = Math.floor((time / 3600)/24);
+								var hours = Math.floor((time / 3600)%24);
+								var mins = Math.floor((time % 3600) / 60);
+								var secs = Math.floor((time % 3600) % 60);
+							} else {
+								var ticks = (bldgInfo.Queue[i].ticksPerUnit - bldgInfo.Queue[i].currTicks);
 								var days = Math.floor((ticks / 3600)/24);
 								var hours = Math.floor((ticks / 3600)%24);
 								var mins = Math.floor((ticks % 3600) / 60);
 								var secs = Math.floor((ticks % 3600) % 60);
-								//and display them in a nice format
-								if(isNaN(hours)) { //if the time is NaN, it usually means the building is done, so we should display "updating"
-									$(v).siblings(".bldgTicksToFinish").html("updating");
-								} else {
-									$(v).siblings(".bldgTicksToFinish").html(((days)?days + " d ":"") + ((hours<10)?"0"+hours:hours) + ":" + ((mins<10)?"0"+mins:mins) + ":" + ((secs<10)?"0"+secs:secs));
-								}
-								return false;	//pops us out of the loop
-								
-							//if we didn't find any matches (building has finished)
-							} else if(ind == menu.bldgServer.length - 1) $(v).parent().remove();	//remove the line completely
+								time -= bldgInfo.Queue[i].currTicks; //this is so that time displays correctly for the first element
+							}
+							if(time > 0 || i == 0) {
+								$(el).html(((days)?days + " d ":"") + hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime());
+							} else {
+								$(el).parent().parent().remove();
+							}
 						});
-					});
-					break;*/
-				case "Arms Factory":
-					var time = 0;
-					$(".time").each(function(i, el) {
+						$("#AF_AUbar > a").each(function(i, el){
+							if(player.AU[i].name != "empty"&&player.AU[i].name != "locked")$(el).text(player.curtown.au[i]);
+						});
+						break;
+					case "Trade Center":
+						if(player.curtown.activeTrades.update || player.curtown.tradeSchedules.update) get_all_trades();
 						
-						if(i > 0) { //if we're on anything after the extra .time for the first element 
-										//we have to subtract one from i to get the right queue item
-							if(bldgInfo.Queue[i-1].update) load_player(player.league,true,true);
-							time += (bldgInfo.Queue[i-1].ticksPerUnit * bldgInfo.Queue[i-1].AUNumber);
+						$(".ETA").each(function(i, el) {
+							var time = player.curtown.activeTrades[i].ticksToHit;
+							
 							var days = Math.floor((time / 3600)/24);
 							var hours = Math.floor((time / 3600)%24);
 							var mins = Math.floor((time % 3600) / 60);
 							var secs = Math.floor((time % 3600) % 60);
-						} else {
-							var ticks = (bldgInfo.Queue[i].ticksPerUnit - bldgInfo.Queue[i].currTicks);
-							var days = Math.floor((ticks / 3600)/24);
-							var hours = Math.floor((ticks / 3600)%24);
-							var mins = Math.floor((ticks % 3600) / 60);
-							var secs = Math.floor((ticks % 3600) % 60);
-							time -= bldgInfo.Queue[i].currTicks; //this is so that time displays correctly for the first element
-						}
-						if(time > 0 || i == 0) {
-							$(el).html(((days)?days + " d ":"") + ((hours<10)?"0"+hours:hours) + ":" + ((mins<10)?"0"+mins:mins) + ":" + ((secs<10)?"0"+secs:secs));
-						} else {
-							$(el).parent().parent().remove();
-						}
-					});
-					$("#AF_AUbar > a").each(function(i, el){
-						if(player.AU[i].name != "empty"&&player.AU[i].name != "locked")$(el).text(player.curtown.au[i]);
-					});
-					break;
-				case "Trade Center":
-					if(player.curtown.activeTrades.update || player.curtown.tradeSchedules.update) get_all_trades();
-					
-					$(".ETA").each(function(i, el) {
-						var time = player.curtown.activeTrades[i].ticksToHit;
 						
-						var days = Math.floor((time / 3600)/24);
-						var hours = Math.floor((time / 3600)%24);
-						var mins = Math.floor((time % 3600) / 60);
-						var secs = Math.floor((time % 3600) % 60);
-					
-						if(time > 0) {
-							$(el).html(((days)?days + " d ":"") + ((hours<10)?"0"+hours:hours) + ":" + ((mins<10)?"0"+mins:mins) + ":" + ((secs<10)?"0"+secs:secs));
-						} else {
-							$(el).html(time);;
-						}
-					});
-					var SMoffset = 0;
-					$(".timeTillNext").each(function(i, el) {
-						
-						if(player.curtown.tradeSchedules[i + SMoffset].stockMarketTrade) {
-							SMoffset++;
-						}
-						
-						var ticks = player.curtown.tradeSchedules[i + SMoffset].currTicks;
-						
-						if(isNaN(ticks)) {
-							$(el).html(ticks);
-						} else {
-							var days = Math.floor((ticks / 3600)/24);
-							var hours = Math.floor((ticks / 3600)%24);
-							var mins = Math.floor((ticks % 3600) / 60);
-							var secs = Math.floor((ticks % 3600) % 60);
-						
-							if(ticks > 0) {
-								$(el).html(((days)?days + " d ":"") + ((hours<10)?"0"+hours:hours) + ":" + ((mins<10)?"0"+mins:mins) + ":" + ((secs<10)?"0"+secs:secs));
+							if(time > 0) {
+								$(el).html(((days)?days + " d ":"") + hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime());
+							} else {
+								$(el).html(time);;
 							}
+						});
+						var SMoffset = 0;
+						$(".timeTillNext").each(function(i, el) {
+							
+							if(player.curtown.tradeSchedules[i + SMoffset].stockMarketTrade) {
+								SMoffset++;
+							}
+							
+							var ticks = player.curtown.tradeSchedules[i + SMoffset].currTicks;
+							
+							if(isNaN(ticks)) {
+								$(el).html(ticks);
+							} else {
+								var days = Math.floor((ticks / 3600)/24);
+								var hours = Math.floor((ticks / 3600)%24);
+								var mins = Math.floor((ticks % 3600) / 60);
+								var secs = Math.floor((ticks % 3600) % 60);
+							
+								if(ticks > 0) {
+									$(el).html(((days)?days + " d ":"") + hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime());
+								}
+							}
+						});
+						break;
+					
+					case "Institute":
+						//check to see if the number of knowledge points has increased
+						if(Math.floor(player.research.knowledge) > parseInt($("#IN_numKnowledge span").text())) $("#IN_numKnowledge span").text(Math.floor(player.research.knowledge));
+						break;
+					case "Headquarters":
+						if(player.curtown.zeppelin) {
+							if(player.curtown.x != player.cirtown.destX || player.curtown.y != player.curtown.destY) {
+								$("#HQ_airshipETA span").text(function() {
+									var time = player.curtown.movementTicks;
+									var hours = Math.floor(time / 3600);
+									var mins = Math.floor((time % 3600) / 60);
+									var secs = Math.floor((time % 3600) % 60);
+									return hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime();
+								});
+							}
+							$("#HQ_currPos span").text(player.curtown.x+", "+player.curtown.y);
 						}
-					});
-					break;
-				
-				case "Institute":
-					//check to see if the number of knowledge points has increased
-					if(Math.floor(player.research.knowledge) > parseInt($("#IN_numKnowledge span").text())) $("#IN_numKnowledge span").text(Math.floor(player.research.knowledge));
-					break;
-				case "Headquarters":
-					$('#HQ_outgoingMissions .raidETA').each(function(i, v) {
+						$('#HQ_outgoingMissions .raidETA').each(function(i, v) {
+							
+							if(player.curtown.outgoingRaids[i].eta != "updating") {
+								$(this).html(function() {
+									var time = player.curtown.outgoingRaids[i].eta;
+									var hours = Math.floor(time / 3600);
+									var mins = Math.floor((time % 3600) / 60);
+									var secs = Math.floor((time % 3600) % 60);
+									return hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime();
+								});
+							} else {
+								$(this).html(player.curtown.outgoingRaids[i].eta);
+							}
+						});
+						$('#HQ_incomingMissions .raidETA').each(function(i, v) {
+							//if(parseInt($(this).siblings(".raidID").text()) != player.curtown.incomingRaids[i].rid) $(this).parent().remove();
+							if(player.curtown.incomingRaids[i].eta != "updating") {
+								$(this).html(function() {
+									var time = player.curtown.incomingRaids[i].eta;
+									var hours = Math.floor(time / 3600);
+									var mins = Math.floor((time % 3600) / 60);
+									var secs = Math.floor((time % 3600) % 60);
+									return hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime();
+								});
+							} else {
+								$(this).html(player.curtown.incomingRaids[i].eta);
+							}
+						});
+						break;
+					case "Airship Platform":
+						$("#AP_currFuel span").html(bldgInfo.peopleInside);
+						$("#AP_nextIn span").html(function() {
+							var time = bldgInfo.ticksPerPerson - bldgInfo.ticksLeft;
+							var hours = Math.floor(time / 3600);
+							var mins = Math.floor((time % 3600) / 60);
+							var secs = Math.floor((time % 3600) % 60);
+							return hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime();
+						});
 						
-						if(player.curtown.outgoingRaids[i].eta != "updating") {
-							$(this).html(function() {
-								var time = player.curtown.outgoingRaids[i].eta;
-								var hours = (time / 3600 < 10)?"0" + Math.floor(time / 3600): Math.floor(time / 3600);
-								var mins = ((time % 3600) / 60 < 10)?"0" + Math.floor((time % 3600) / 60):Math.floor((time % 3600) / 60);
-								var secs = ((time % 3600) % 60 < 10)?"0" + Math.floor((time % 3600) % 60):Math.floor((time % 3600) % 60);
-								return hours + ":" + mins + ":" + secs;
+						var townCounter = 0;
+						$(".refuelTime").each(function(i,v) {
+							$(v).find("span").html(function() {
+								var time = bldgInfo.refuelTicks;
+								var hours = Math.floor(time / 3600);
+								var mins = Math.floor((time % 3600) / 60);
+								var secs = Math.floor((time % 3600) % 60);
+								return hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime();
 							});
-						} else {
-							$(this).html(player.curtown.outgoingRaids[i].eta);
-						}
-					});
-					$('#HQ_incomingMissions .raidETA').each(function(i, v) {
-						//if(parseInt($(this).siblings(".raidID").text()) != player.curtown.incomingRaids[i].rid) $(this).parent().remove();
-						if(player.curtown.incomingRaids[i].eta != "updating") {
-							$(this).html(function() {
-								var time = player.curtown.incomingRaids[i].eta;
-								var hours = (time / 3600 < 10)?"0" + Math.floor(time / 3600): Math.floor(time / 3600);
-								var mins = ((time % 3600) / 60 < 10)?"0" + Math.floor((time % 3600) / 60):Math.floor((time % 3600) / 60);
-								var secs = ((time % 3600) % 60 < 10)?"0" + Math.floor((time % 3600) % 60):Math.floor((time % 3600) % 60);
-								return hours + ":" + mins + ":" + secs;
-							});
-						} else {
-							$(this).html(player.curtown.incomingRaids[i].eta);
-						}
-					});
-					break;
+							do {
+								townCounter++;
+							} while(!player.town[townCounter].zeppelin);
+							var zepp = player.town[townCounter];
+							$(v).sibling(".airshipFuel").find("span").html(zepp.fuelCells+"/"+zepp.fuelCellCap);
+							$(v).sibling(".airshipRes").find("span").html(zepp.res[0] + " <img src='AIFrames/icons/MetalIcon.png' alt='Metal' />"
+																		+ zepp.res[1] + " <img src='AIFrames/icons/TimberIcon.png' alt='Timber' />"
+																		+ zepp.res[2] + " <img src='AIFrames/icons/PlasticIcon.png' alt='Manufactured Materials' />"
+																		+ zepp.res[3] + " <img src='AIFrames/icons/FoodIcon.png' alt='Food' />");
+						});
+						break;
+				}
 			}
 			$("#BUI_bldgLvl").html(" - Level " + bldgInfo.lvl);
 			
@@ -396,14 +442,14 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 			$(".pplTown").text(pplCur);
 			$(".totalTown").text(pplTotal);
 			
-			if($("#BUI_numPplBldg").length) {
+			if(bldgInfo.numLeftToBuild) {
 				$("#BUI_numPplBldg").html(bldgInfo.numLeftToBuild);			//update the number building
 				var pplTicks = bldgInfo.ticksPerPerson - bldgInfo.ticksLeft;//update the time left
 				var days = Math.floor((pplTicks / 3600)/24);
 				var hours = Math.floor((pplTicks / 3600)%24);
 				var mins = Math.floor((pplTicks % 3600) / 60);
 				var secs = Math.floor((pplTicks % 3600) % 60);
-				$("#BUI_ticksTillNext").html(((days)?days + " d ":"") + ((hours<10)?"0"+hours:hours) + ":" + ((mins<10)?"0"+mins:mins) + ":" + ((secs<10)?"0"+secs:secs));
+				$("#BUI_ticksTillNext").html(((days)?days + " d ":"") + hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime());
 			}
 		} catch(e) {
 			//display_output(true,"Minor Error [update_time_displays()]:<br/>"+e);

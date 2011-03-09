@@ -72,6 +72,7 @@
 	text-align: center;
 	}
 #TC_sendTrade, #TC_createTrade {
+	position: relative;
 	margin: 0 38px;
 	color: #FFF;
 	float: left;
@@ -112,10 +113,10 @@
 	cursor: pointer;
 	}
 #TC_dtSend {
-	left: 38px;
+	left: 0px;
 	}
 #TC_ltSend {
-	right: 39px;
+	right: 0px;
 	}
 .noTrade {
 	filter: alpha(opacity=50);

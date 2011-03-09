@@ -98,7 +98,36 @@ var BUI={build:build_bldg_UIs,head:"<div id='BUI_header'>\
        <div id='AF_queueList'></div>\
       </div>\
       <div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div>\
-     </div>",build:AF_UI},AP:{name:["Airship Platform"],build:function(){}},Bnkr:{name:["Bunker"],HTML:"<div id='Bnkr_curModeEffect'></div>",build:bnkr_UI},CC:{name:["Communications Center"],HTML:" <div id='CC_tabs'>\
+     </div>",build:AF_UI},AP:{name:["Airship Platform"],HTML:"<div id='AP_fuelInfo'>\
+      <div class='lightFrameBody'>\
+       <h4>Fuel Info</h4>\
+       <div id='AP_currFuel'>Stored Fuel Cells: <span></span></div>\
+       <div id='AP_nextIn'>Next Fuel Cell in: <span></span></div>\
+      </div>\
+      <div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>\
+     </div>\
+     <div id='AP_makeAirshipBox'>\
+      <div class='darkFrameBody'>\
+       <h3>Create Airship</h3>\
+       <div id='AP_needTowns'>Airships occupy a town slot.  You need an available town tech before you can build an airship.</div>\
+       <div id='AP_error'></div>\
+       <div id='AP_makeAirship'>\
+        <div id='AP_buildAirship' class='lightButton'>\
+         <div class='lightFrameBody'>Build Airship</div>\
+         <div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>\
+        </div>\
+        <input id='AP_airshipName' type='text' placeholder='Airship Name' maxlength='20' />\
+       </div>\
+      </div>\
+      <div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>\
+     </div>\
+     <div id='AP_airshipInfo'>\
+      <div class='darkFrameBody'>\
+       <h3 id='AP_airshipName'>Docked Airships:</h3>\
+       <div id='AP_dockedAirships'></div>\
+      </div>\
+      <div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>\
+     </div>",build:AP_UI},Bnkr:{name:["Bunker"],HTML:"<div id='Bnkr_curModeEffect'></div>",build:bnkr_UI},CC:{name:["Communications Center"],HTML:" <div id='CC_tabs'>\
       <div id='CC_activityTab'></div>\
      </div>\
      <div id='CC_window'>\
@@ -169,6 +198,10 @@ var BUI={build:build_bldg_UIs,head:"<div id='BUI_header'>\
         <div class='lightFrameBody'>Overview</div>\
         <div class='lightFrameBL'><div class='lightFrameB'></div></div>\
        </div>\
+       <div id='HQ_control' class='lightButton'>\
+        <div class='lightFrameBody'>Control</div>\
+        <div class='lightFrameB'></div>\
+       </div>\
        <div id='HQ_sendMission' class='lightButton'>\
         <div class='lightFrameBody'>Send Mission</div>\
         <div class='lightFrameBR'><div class='lightFrameB'></div></div>\
@@ -206,7 +239,30 @@ var BUI={build:build_bldg_UIs,head:"<div id='BUI_header'>\
          <div id='HQ_outgoingMissions'></div>\
          <div id='HQ_supportAbroad'></div>\
         </div>\
-       </div>",sendHTML:"<div id='HQ_AUinput'>\
+       </div>",controlHTML:" <div id='HQ_airshipControl'>\
+         <div class='darkFrameBody'>\
+          <h3>Movement Controls</h3>\
+          <div id='HQ_currPos'>Current Position: <span></span></div>\
+          <div id='HQ_moveError'></div>\
+          <div id='HQ_moveAirship' class='lightButton'>\
+           <div class='lightFrameBody'>Move</div>\
+           <div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>\
+          </div>\
+          <div id='HQ_moveTo'>Move to:<br/>\
+           <input type='number' id='HQ_moveX' value='0' /><input type='number' id='HQ_moveY' value='0' />\
+          </div>\
+         </div>\
+         <div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>\
+        </div>\
+        <div id='HQ_airshipInfo'>\
+         <div class='lightFrameBody'>\
+          <h3>Airship Status</h3>\
+          <div id='HQ_airshipHeading'>Current Heading: <span></span></div>\
+          <div id='HQ_airshipETA'>ETA: <span></span></div>\
+          <div id='HQ_airshipFuel'>Fuel Reserves: <span></span></div>\
+         </div>\
+         <div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>\
+        </div>",sendHTML:" <div id='HQ_AUinput'>\
         <div class='darkFrameBody'>\
          <div id='HQ_AU1'>\
           <div id='HQ_AU1name'></div>\
@@ -343,7 +399,7 @@ var BUI={build:build_bldg_UIs,head:"<div id='BUI_header'>\
        <div id='HQ_launchAttack' class='noAttack'>\
         <div class='lightFrameBody'>Send</div>\
         <div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>\
-       </div>",missionDesc:["Support an ally with units that can not only defend his town but can be launched on offenses from his town. Units cannot be moved from his town to another of his towns, and you will receive status reports of all offensive and defensive actions taken by this particular town.  Sending your own troops to support one of your own cities will Station those troops there.","One time hit on an opponent to collect as much of the spoils as your men can carry.","Hit the enemy multiple times from 1/4th the distance until all civilians are dead, then collect spoils. 50% spoils reduction.","One time bombing run on enemies.  Will also collect as much of the spoils as your men can carry.","Hit the enemy multiple times until the bomb targets are all dead, then collect spoils. 50% spoils reduction.","Run a scouting mission on an enemy town. You can only send soldiers on this mission type. Discovery means you  enter into an attack type combat mode with the enemy's defenses.","Attempt to invade an enemy city. Only successful if all bunkers and the HQ is killed and the army must possess more than twice as much strength as the defending city in most situations.","Support an ally with units that can only help defend his town.  Sending your own troops to support one of your own cities will Station those troops there.","Send your troops to collect the debris left over from a previous battle.","Send your Scholars on an Archeological Dig.  Sending troops with your scholars will prevent unescored scholars from taking over the dig site.  Digs take 24 hours; after which, a prize is unlocked.  If you choose not to take the prize, you can resend the dig for a potentially better prize!","Send your Engineers to mine a Resource Outcropping.  Sending troops with your engineers will prevent unescorted engineers from taking over the outcropping."],numRaidsOut:0,x:0,y:0,build:HQ_UI},IN:{name:["Institute"],HTML:" <div id='IN_research'>\
+       </div>",missionDesc:["Support an ally with units that can not only defend his town but can be launched on offenses from his town. Units cannot be moved from his town to another of his towns, and you will receive status reports of all offensive and defensive actions taken by this particular town.  Sending your own troops to support one of your own cities will Station those troops there.","One time hit on an opponent to collect as much of the spoils as your men can carry.","Hit the enemy multiple times from 1/4th the distance until all civilians are dead, then collect spoils. 50% spoils reduction.","One time bombing run on enemies.  Will also collect as much of the spoils as your men can carry.","Hit the enemy multiple times until the bomb targets are all dead, then collect spoils. 50% spoils reduction.","Run a scouting mission on an enemy town. You can only send soldiers on this mission type. Discovery means you  enter into an attack type combat mode with the enemy's defenses.","Attempt to invade an enemy city. Only successful if all bunkers and the HQ is killed and the army must possess more than twice as much strength as the defending city in most situations.","Support an ally with units that can only help defend his town.  Sending your own troops to support one of your own cities will Station those troops there.","Send your troops to collect the debris left over from a previous battle.","Send your Scholars on an Archeological Dig.  Sending troops with your scholars will prevent unescored scholars from taking over the dig site.  Digs take 24 hours; after which, a prize is unlocked.  If you choose not to take the prize, you can resend the dig for a potentially better prize!","Send your Engineers to mine a Resource Outcropping.  Sending troops with your engineers will prevent unescorted engineers from taking over the outcropping."],numRaidsOut:0,x:0,y:0,startTab:"",build:HQ_UI},IN:{name:["Institute"],HTML:" <div id='IN_research'>\
        <div id='IN_numKnowledge'>Knowledge Points: <span></span></div>\
        <div id='IN_ppd'>Points per Day: <span></span></div>\
        <div id='IN_researchSelection'>\
@@ -461,17 +517,17 @@ var BUI={build:build_bldg_UIs,head:"<div id='BUI_header'>\
           <div id='IN_attackAPI' class='resWhite'> <div class='info'></div> <div class='fullName'>Attack Automation</div>   <span class='name'>attackAPI</span>    <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
           <div id='IN_aaAPI' class='resBlack'>  <div class='info'></div> <div class='fullName'>Attack Integration</div>   <span class='name'>advancedAttackAPI</span>  <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
           <div id='IN_digAPI' class='resWhite'>  <div class='info'></div> <div class='fullName'>Archeology Integration</div>  <span class='name'>digAPI</span>    <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_tradingAPI' class='resWhite'> <div class='info'></div> <div class='fullName'>Trade Automation</div>   <span class='name'>tradingAPI</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_atAPI' class='resBlack'>  <div class='info'></div> <div class='fullName'>Trade Integration</div>   <span class='name'>advancedTradingAPI</span> <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_smAPI' class='resWhite'>  <div class='info'></div> <div class='fullName'>Market Integration</div>   <span class='name'>smAPI</span>     <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_buildingAPI' class='resBlack'> <div class='info'></div> <div class='fullName'>Build Automation</div>   <span class='name'>buildingAPI</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_abAPI' class='resWhite'>  <div class='info'></div> <div class='fullName'>Build Integration</div>   <span class='name'>advancedBuildingAPI</span> <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_researchAPI' class='resBlack'> <div class='info'></div> <div class='fullName'>Research Integration</div>  <span class='name'>researchAPI</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_messagingAPI' class='resWhite'> <div class='info'></div> <div class='fullName'>Communication Integration</div> <span class='name'>messagingAPI</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_zeppelinAPI' class='resBlack'> <div class='info'></div> <div class='fullName'>Zeppelin Integration</div>  <span class='name'>zeppelinAPI</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_nukeAPI' class='resWhite'>  <div class='info'></div> <div class='fullName'>Missile Integration</div>   <span class='name'>nukeAPI</span>    <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_wmAPI' class='resBlack'>  <div class='info'></div> <div class='fullName'>Map Integration</div>    <span class='name'>worldMapAPI</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
-          <div id='IN_caAPI' class='resWhite'>  <div class='info'></div> <div class='fullName'>Complete Integration</div>  <span class='name'>completeAnalyticAPI</span> <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_tradingAPI' class='resBlack'> <div class='info'></div> <div class='fullName'>Trade Automation</div>   <span class='name'>tradingAPI</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_atAPI' class='resWhite'>  <div class='info'></div> <div class='fullName'>Trade Integration</div>   <span class='name'>advancedTradingAPI</span> <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_smAPI' class='resBlack'>  <div class='info'></div> <div class='fullName'>Market Integration</div>   <span class='name'>smAPI</span>     <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_buildingAPI' class='resWhite'> <div class='info'></div> <div class='fullName'>Build Automation</div>   <span class='name'>buildingAPI</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_abAPI' class='resBlack'>  <div class='info'></div> <div class='fullName'>Build Integration</div>   <span class='name'>advancedBuildingAPI</span> <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_researchAPI' class='resWhite'> <div class='info'></div> <div class='fullName'>Research Integration</div>  <span class='name'>researchAPI</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_messagingAPI' class='resBlack'> <div class='info'></div> <div class='fullName'>Communication Integration</div> <span class='name'>messagingAPI</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_zeppelinAPI' class='resWhite'> <div class='info'></div> <div class='fullName'>Zeppelin Integration</div>  <span class='name'>zeppelinAPI</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_nukeAPI' class='resBlack'>  <div class='info'></div> <div class='fullName'>Missile Integration</div>   <span class='name'>nukeAPI</span>    <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_wmAPI' class='resWhite'>  <div class='info'></div> <div class='fullName'>Map Integration</div>    <span class='name'>worldMapAPI</span>   <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
+          <div id='IN_caAPI' class='resBlack'>  <div class='info'></div> <div class='fullName'>Complete Integration</div>  <span class='name'>completeAnalyticAPI</span> <span class='level'></span> <span class='points'></span> <div class='research noBuy'></div> <div class='bpResearch'></div></div>\
          </div>\
         </div>",build:IN_UI,activeTab:0},Mine:{name:["Metal Mine","Manufactured Materials Plant","Timber Field","Food Farm"],HTML:"<div id='Mine_productionBox'>\
        <img src='images/trans.gif' id='Mine_typePic' />\

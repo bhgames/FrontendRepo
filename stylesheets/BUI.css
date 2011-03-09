@@ -1,20 +1,21 @@
 /************************************************************************************************************************************************
  * CSS code for Building Interfaces
 ************************************************************************************************************************************************/
-#BUI_header, #BUI_bldgContent,#BUI_deconButton {
+#BUI_bldgContent,#BUI_deconButton {
 	position: absolute;
 	}
 #BUI_header, #BUI_bldgContent{
 	left: 0px;
 	width: 100%;
 	color: #FFF;
-}
+	}
 #BUI_bldgContent {
+	height: 100%;
 	color: #000;
 	}
 #BUI_header {
-	top: 0px;
-}
+	position: relative;
+	}
 #BUI_bldgInfo{
 	padding-left: 5px;
 	border-bottom: 1px solid #888888;
@@ -24,7 +25,7 @@
 	position: absolute;
 	top: 65px;
 	left: 10px;
-}
+	}
 .BUI_up {
 	display: inline-block;
 	margin: 0px 0px 10px 5px;

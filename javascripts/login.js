@@ -119,11 +119,12 @@ function FB_login_window() {
 				</div>";
 	$("body").append(HTML);
 	if(userInfo.verified) {
+		if($("#reg_UN").val() == "") $("#reg_UN").val(userInfo.name);
 		$("#reg_fbConnect").text("Account Linked");
 		$("#reg_submit").removeClass("noFB");
 	}
 	$("#signInBox").fadeIn("fast");
-	//Tile Select JS --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	/*Tile Select JS --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	var getTiles = new make_AJAX();
 	getTiles.callback = function(response) {
 							tiles = $.parseJSON(response);
@@ -236,7 +237,7 @@ function FB_login_window() {
 							});
 						};
 	getTiles.get("/AIWars/GodGenerator?reqtype=getTiles");
-	//end Tile Select JS ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	//end Tile Select JS ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 	//Sign In JS --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	$("#signIn_switch").unbind("click").click(function() {
 		$("#signIn_facebook").fadeOut("fast",function() {
@@ -286,7 +287,12 @@ function FB_login_window() {
 		e.preventDefault();
 	});
 	var typeCheck = 0;
+	var badChars = /;|,|\/|\?|:|@|&|=|\+|\$|#|\s/g;
 	$("#reg_UN").unbind("keyup").keyup(function(){
+		if($(this).val().match(badChars)) {
+			$(this).val($(this).val().replace(badChars,""));
+			$("#reg_error").html("God doesn't like special characters.");
+		}
 		clearTimeout(typeCheck);
 		var that = this;
 		typeCheck = setTimeout(function() {
@@ -315,6 +321,7 @@ function FB_login_window() {
 				if(response.session) {
 					FB.api("/me", function(response) {
 						userInfo = response;
+						if($("#reg_UN").val() == "") $("#reg_UN").val(userInfo.name);
 						$("#reg_fbConnect").text("Account Linked");
 						$("#reg_submit").removeClass("noFB");
 					});
@@ -335,8 +342,15 @@ function FB_login_window() {
 	
 	$("#tileSelect_back").unbind("click").click(function() {
 		$("#signInBox").fadeOut("fast",function() {
+			var form = {
+						UN : $("#reg_UN").val(),
+						skipMe : true,
+						centerx : 0,
+						centery : 0
+						}
+			register(form);
 			$("#reg").css("display","block");
-			$("#reg_picktile").css("display","none");
+			$("#reg_wait").css("display","none");
 			$(this).fadeIn("fast");
 		});
 	});
@@ -452,13 +466,15 @@ function load_client(type, reloadTown, reloadUI) {
 						x.activeTrades = {};
 						x.tradeSchedules = {};
 						x.townName = x.townName.replace(/\u003c/g,"&#60;").replace(/\u003e/g,"&#62;");
+						x.movementTicks *= player.gameClockFactor;
 						for(y in x.resInc) {
-							x.resInc[y] /= player.gameClockFactor;
+							if(x.resInc.hasOwnProperty(y)) x.resInc[y] /= player.gameClockFactor;
 						}
 						$.each(x.bldg,function(j,y) {
 							y.path = y.type.replace(/\s/g, "");
+							if(y.type == "Airship Platform") y.numLeftToBuild = 99999; //this is to make sure that APs get ticked properly
 							for(z in y.ticksToFinishTotal) {
-								y.ticksToFinishTotal[z] *= player.gameClockFactor;
+								if(y.ticksToFinishTotal.hasOwnProperty(z)) y.ticksToFinishTotal[z] *= player.gameClockFactor;
 							}
 							if(y.lvlUps != 0) {
 								y.ticksToFinish *= player.gameClockFactor;
@@ -672,12 +688,13 @@ function load_player(type, reloadTown, reloadUI) {
 					$.each(player.towns,function(i,x) {
 						x.townName = x.townName.replace(/\u003c/g,"&#60;").replace(/\u003e/g,"&#62;");
 						for(y in x.resInc) {
-							x.resInc[y] /= player.gameClockFactor;
+							if(x.resInc.hasOwnProperty(y)) x.resInc[y] /= player.gameClockFactor;
 						}
 						$.each(x.bldg,function(j,y) {
 							y.path = y.type.replace(/\s/g, "");
+							if(y.type == "Airship Platform") y.numLeftToBuild = 99999; //this is to make sure that APs get ticked properly
 							for(z in y.ticksToFinishTotal) {
-								y.ticksToFinishTotal[z] *= player.gameClockFactor;
+								if(y.ticksToFinishTotal.hasOwnProperty(z)) y.ticksToFinishTotal[z] *= player.gameClockFactor;
 							}
 							if(y.lvlUps != 0) {
 								y.ticksToFinish *= player.gameClockFactor;

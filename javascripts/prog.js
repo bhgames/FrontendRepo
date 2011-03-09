@@ -1,5 +1,8 @@
 var RAI = {
-			HTML : "<div id='RAI_options'><div id='RAI_active'></div><div id='RAI_autosave' title='Automatically saves every 5 minutes.'></div><div id='RAI_autostart' title='Automatically restart script on server restart'></div></div><pre id='RAI_scriptDisplay'></pre><a href='javascript:;' id='RAI_new'></a><a href='javascript:;' id='RAI_run'></a><a href='javascript:;' id='RAI_save'></a><a href='javascript:;' id='RAI_stop'></a>"
+			HTML : "<div id='RAI_options'><div id='RAI_active'></div><div id='RAI_autosave' title='Automatically saves every 5 minutes.'></div><div id='RAI_autostart' title='Automatically restart script on server restart'></div></div><pre id='RAI_scriptDisplay'></pre><a href='javascript:;' id='RAI_new2'>Rev 2.0 Template</a><a href='javascript:;' id='RAI_new'></a><a href='javascript:;' id='RAI_run'></a><a href='javascript:;' id='RAI_save'></a><a href='javascript:;' id='RAI_stop'></a>",
+			//the new templates includes some text before this, but can't be written in until the player is loaded
+			template : "\n\nimport BattlehardFunctions.*;\nimport Revelations.RevelationsAI;\n\npublic class Revelations extends RevelationsAI {\n\n\t// place static and instance variables here:\n\n\tpublic Revelations(BattlehardFunctions bf) {\n\n\t\tsuper(bf);\n\t\t// your constructor code goes here:\n\t\t\n\t}\n\n\tpublic void run() {\n\t\t\n\t}\n\n}",
+			template2 : "\n\nimport BattlehardFunctions.*;\nimport Revelations.RevelationsAI2;\n\npublic class Revelations extends RevelationsAI2 {\n\n\t// place static and instance variables here:\n\n\tpublic Revelations(BattlehardFunctions bf) {\n\n\t\tsuper(bf);\n\t\t// your constructor code goes here:\n\n\t}\n\n\tpublic void onIncomingRaidDetected(UserRaid r) {\n\t\t\n\t}\n\n\tpublic void onOutgoingRaidReturning(UserRaid r) {\n\t\t\n\t}\n\n\tpublic void daily() {\n\t\t\n\t}\n\n\tpublic void hourly() {\n\t\t\n\t}\n\n\n}"
 		}
 function build_RAI_interface() {
 	currUI = build_RAI_interface;
@@ -29,7 +32,7 @@ function build_RAI_interface() {
 		if(script.match(/\w/)) {
 			RAI.script = script;
 		} else {
-			RAI.script = "// New Script Template\npackage Revelations."+player.username.toLowerCase().replace(/\s/g,"_")+";\n\nimport BattlehardFunctions.*;\nimport Revelations.RevelationsAI;\n\npublic class Revelations extends RevelationsAI {\n\n\t\t// place static and instance variables here:\n\n\tpublic Revelations(BattlehardFunctions bf) {\n\n\t\tsuper(bf);\n\t\t// your constructor code goes here:\n\n\t}\n\n\n\tpublic void run() {\n\t\t// your program code goes under this line.\n\n\n\t}\n\n}";
+			RAI.script = "// New Script Template\npackage Revelations."+player.username.toLowerCase().replace(/\s/g,"_")+";"+RAI.template;
 		}
 		$("#RAI_scriptDisplay").text(RAI.script);
 		show_output_window();
@@ -88,7 +91,10 @@ function build_RAI_interface() {
 	});
 	
 	$("#RAI_new").unbind('click').click(function() {
-		RAI.editor.getSession().setValue("// New Script Template\npackage Revelations."+player.username.toLowerCase().replace(/\s/g,"_")+";\n\nimport BattlehardFunctions.*;\nimport Revelations.RevelationsAI;\n\npublic class Revelations extends RevelationsAI {\n\n\t\t// place static and instance variables here:\n\n\tpublic Revelations(BattlehardFunctions bf) {\n\n\t\tsuper(bf);\n\t\t// your constructor code goes here:\n\n\t}\n\n\n\tpublic void run() {\n\t\t// your program code goes under this line.\n\n\n\t}\n\n}");
+		RAI.editor.getSession().setValue("// New Script Template\npackage Revelations."+player.username.toLowerCase().replace(/\s/g,"_")+";"+RAI.template);
+	});
+	$("#RAI_new2").unbind('click').click(function() {
+		RAI.editor.getSession().setValue("// New Script Template\npackage Revelations."+player.username.toLowerCase().replace(/\s/g,"_")+";"+RAI.template2);
 	});
 	$("#RAI_save").unbind('click').click(function() {
 		display_output(false, "Saving Program...");

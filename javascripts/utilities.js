@@ -39,11 +39,19 @@ function make_AJAX() {
 		//send method repackagers to make my life easier
 	temp.get = function(URL, sync) {
 								try {
+									var val = URL.split("&command="), data = "";
+									if(val.length == 2) { 
+										val[1] = encodeURIComponent(val[1]);//encode commands before sending them to the server
+										URL = val.join("&command=");
+									}
+									val = URL.split("Generator?");
+									if(val.length == 2) data = val[1];		//a full URL GET was supplied
+									else data = URL;						//only the data was supplied
 									$.ajax({
 										type : "GET",
 										async: !sync,
-										url : URL,
-										data : "",
+										url : "/AIWars/GodGenerator",
+										data : data,
 										dataType : "text",
 										cache : false,
 										global : false,
@@ -60,6 +68,11 @@ function make_AJAX() {
 							};
 	temp.post = function(URL, data, sync) {
 										try {
+											var val = data.split("&command=");
+											if(val.length == 2) { 
+												val[1] = encodeURIComponent(val[1]);	//encode commands before sending them to the server
+												data = val.join("&command=");
+											}
 											$.ajax({
 												type : "POST",
 												async: !sync,
@@ -655,6 +668,10 @@ function set_tickers() {
 		$.each(player.towns, function(i, x) {
 				x.resTicker = tick_res(x);				//start res tickers
 				
+				if(x.zeppelin) {
+					x.moveTicker = inc_movement_ticks(x);
+				}
+				
 			$.each(x.bldg, function(j, y) {
 				if(y.lvlUps != 0) {
 					y.bldgTicker = inc_bldg_ticks(y); 	//start ticking bldg timers
@@ -1010,6 +1027,16 @@ function tick_res(thingToTick) {
 				});
 				display_res();
 			}, time*1000);
+}
+
+function inc_movement_ticks(thingToTick) {
+	if(thingToTick.movementTicks>0) {
+		thingToTick.movementTicks--;
+	} else {
+		thingToTick.update = true;
+		thingToTick.x = thingToTick.destX;
+		thingToTick.y = thingToTick.destY;
+	}
 }
 
 var updateTimer = 0;

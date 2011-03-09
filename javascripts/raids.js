@@ -144,10 +144,10 @@ function update_raid_display() {
 						if(player.curtown.outgoingRaids[i].eta != "updating") {
 							$(this).html(function() {
 								var time = player.curtown.outgoingRaids[i].eta;
-								var hours = (time / 3600 < 10)?"0" + Math.floor(time / 3600): Math.floor(time / 3600);
-								var mins = ((time % 3600) / 60 < 10)?"0" + Math.floor((time % 3600) / 60):Math.floor((time % 3600) / 60);
-								var secs = ((time % 3600) % 60 < 10)?"0" + Math.floor((time % 3600) % 60):Math.floor((time % 3600) % 60);
-								return hours + ":" + mins + ":" + secs;
+								var hours = Math.floor(time / 3600);
+								var mins = Math.floor((time % 3600) / 60);
+								var secs = Math.floor((time % 3600) % 60);
+								return hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime();
 							});
 						} else {
 							$(this).html(player.curtown.outgoingRaids[i].eta);
@@ -175,10 +175,10 @@ function update_raid_display() {
 						if(player.curtown.incomingRaids[i].eta != "updating") {
 							$(this).html(function() {
 								var time = player.curtown.incomingRaids[i].eta;
-								var hours = (time / 3600 < 10)?"0" + Math.floor(time / 3600): Math.floor(time / 3600);
-								var mins = ((time % 3600) / 60 < 10)?"0" + Math.floor((time % 3600) / 60):Math.floor((time % 3600) / 60);
-								var secs = ((time % 3600) % 60 < 10)?"0" + Math.floor((time % 3600) % 60):Math.floor((time % 3600) % 60);
-								return hours + ":" + mins + ":" + secs;
+								var hours = Math.floor(time / 3600);
+								var mins = Math.floor((time % 3600) / 60);
+								var secs = Math.floor((time % 3600) % 60);
+								return hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime();
 							});
 						} else {
 							$(this).html(player.curtown.incomingRaids[i].eta);

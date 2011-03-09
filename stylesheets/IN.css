@@ -47,7 +47,7 @@
 	}
 #IN_researchList .textFramed {
 	position: relative;
-	height: 200px;
+	height: 205px;
 	margin-bottom: -5px;
 	}
 #IN_rankImage {
@@ -58,7 +58,7 @@
 .researchTree {
 	position: absolute;
 	width: 745px;
-	height: 200px;
+	height: 210px;
 	overflow: auto;
 	}
 .name, .researchTree {
@@ -153,7 +153,7 @@
 	}
 .points {
 	display: inline-block;
-	width: 70px;
+	width: 80px;
 	margin-left: 10px;
 	text-align: right;
 	}

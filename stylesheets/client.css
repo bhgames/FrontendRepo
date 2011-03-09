@@ -224,7 +224,7 @@ a#fdbk_tab:hover {
 	color: #F00;
 	}
 #reg {
-	height: 155px;
+	height: 190px;
 	}
 #reg_picktile, #reg_wait {
 	display: none;
@@ -307,14 +307,13 @@ a#fdbk_tab:hover {
 	text-indent: -1000000px;
 	overflow: hidden;
 	z-index: 100001;
-	cursor: pointer;
 	}
 #chatbox_tab:hover {
 	margin-left: -4px;
 	}
 #console_box {
 	position: absolute;
-	left: 0px;
+	right: 0px;
 	top: 182px;
 	display: none;
 	z-index: 1000;
@@ -524,6 +523,9 @@ a#fdbk_tab:hover {
 	}
 .lightFrameBR {
 	background: url("../AIFrames/Content Frame Elements/Light-Right-Lowcorner.png") no-repeat right bottom;
+	}
+.lightButton {
+	cursor: pointer;
 	}
 .lightButton:active  .lightFrameBody {
 	background: url("../../light/AIFrames/Content Frame Elements/Dark-body.png");

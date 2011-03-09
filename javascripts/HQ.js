@@ -15,6 +15,8 @@ function HQ_UI(bldgInfo) {
 		}
 	});
 	
+	if(player.curtown.zeppelin) {$("#HQ_control").css("display","block");}
+	
 	$("#BUI_extras").text(BUI.HQ.numRaidsOut + " of " + bldgInfo.lvl + " mission slots used.");
 	$("#CS").addClass("open").mouseover();
 	$("#HQ_sendMission").unbind("click").click(function() {
@@ -159,9 +161,9 @@ function HQ_UI(bldgInfo) {
 				$("#HQ_supportType").unbind("change").change(function() {
 					canSendAttack();
 				});
-				
+				var typeCheck = 0;
 				$(".AUinput, #HQ_civInput").unbind('keyup').keyup(function() {
-					try{clearTimeout(typeCheck);}catch(e) {}
+					clearTimeout(typeCheck);
 					typeCheck = setTimeout(function(){canSendAttack();get_attack_ETA();},250);
 					
 					var coverSize = 0;
@@ -207,7 +209,7 @@ function HQ_UI(bldgInfo) {
 					BUI.HQ.x = $('#HQ_targetX').val();
 					BUI.HQ.y = $('#HQ_targetY').val();
 					
-					try{clearTimeout(typeCheck);}catch(e) {}
+					clearTimeout(typeCheck);
 					typeCheck = setTimeout(function(){canSendAttack();get_attack_ETA();},250);
 				}).keyup();
 				
@@ -217,7 +219,9 @@ function HQ_UI(bldgInfo) {
 						$(".AUinput").each(function(i, v) {
 							if(i<6) {
 								if($(v).val() > player.curtown.au[i]) $(v).val(player.curtown.au[i])
-							} else if($(v).val() > player.curtown.supportAU[i-6]) $(v).val(player.curtown.supportAU[i-6].size);
+							} else {
+								if($(v).val() > player.curtown.supportAU[i-6]) $(v).val(player.curtown.supportAU[i-6].size);
+							}
 							AUarray.push((($(v).val() == "")?0:$(v).val()));
 						});
 						
@@ -269,24 +273,107 @@ function HQ_UI(bldgInfo) {
 		}
 	});
 	
+	$("#HQ_control").unbind("click").click(function() {
+		if(!$(this).hasClass("open")) {
+			$("#HQ_tabBar > div").removeClass("open");
+			$(this).addClass("open");
+			$("#HQ_window").fadeOut(100, function() {
+				$(this).html(BUI.HQ.controlHTML);
+				$("#HQ_moveX").val(BUI.HQ.x);
+				$("#HQ_moveY").val(BUI.HQ.y);
+				
+				$("#HQ_moveTo input").unbind('keyup').keyup(function() {
+					BUI.HQ.x = $('#HQ_moveX').val();
+					BUI.HQ.y = $('#HQ_moveY').val();
+					var dist = Math.floor(Math.sqrt(Math.pow((BUI.HQ.x-player.curtown.x),2)+Math.pow((BUI.HQ.y-player.curtown.y),2)))
+					if(dist>player.curtown.fuelCells) {
+						$("#HQ_moveAirship").addClass("noMove");
+						$("#HQ_moveError").html("Insufficient Fuel");
+					} else {
+						$("#HQ_moveAirship").removeClass("noMove");
+						$("#HQ_moveError").html("");
+					}
+				}).unbind("click").click(function() {
+					$(this).keyup();
+				}).keyup();
+				
+				$("#HQ_currPos span").text(player.curtown.x+", "+player.curtown.y);
+				
+				if(player.curtown.x != player.curtown.destX || player.curtown.y != player.curtown.destY) {
+					$("#HQ_airshipHeading span").text(player.curtown.destX+", "+player.curtown.destY);
+					$("#HQ_airshipETA span").text(player.curtown.movementTicks);
+					$("#HQ_moveAirship").addClass("noMove");
+				} else {
+					$("#HQ_airshipHeading span, #HQ_airshipETA span").text("N/A");
+				}
+				
+				$("#HQ_airshipFuel span").text(player.curtown.fuelCells+" Cells");
+				
+				$(this).fadeIn(100);
+				
+				$("#HQ_moveAirship").unbind("click").click(function() {
+					if(!$(this).hasClass("noMove")) {
+						var moveAirship = make_AJAX();
+						
+						moveAirship.callback = function(response) {
+							if(response.match(/false/)) {
+								var error = response.split(":")[1];
+								$("#HQ_moveError").html(error);
+								display_output(true,error);
+							} else {
+								$("#HQ_airshipHeading span").text($("#HQ_moveX").val()+", "+$("#HQ_moveY").val());
+								$("#HQ_airshipETA span").text("updating");
+								load_player(player.league,true,true);
+							}
+						};
+						
+						moveAirship.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".moveAirship("+BUI.HQ.x+","
+										+BUI.HQ.y+","+player.curtown.townID+");");
+					}
+				});
+			});
+		}
+	});
+	
 	$("#HQ_overview").unbind("click").click(function() {
 		if(!$(this).hasClass("open")) {
 			$("#HQ_tabBar > div").removeClass("open");
 			$(this).addClass("open");
 			$("#HQ_window").fadeOut(100, function() {
 				$(this).html(BUI.HQ.overHTML);
-				var getCSinfo = new make_AJAX();
-				getCSinfo.callback = function(response) {
-					$("#HQ_armySizeTotal span").text(response);
-					$("#HQ_window").fadeIn(100);
-					if($("#HQ_scrollBox").data('jsp')) $("#HQ_scrollBox").data('jsp').reinitialise();
-					else $("#HQ_scrollBox").jScrollPane({showArrows:true,hideFocus:true});
-				};
-				setTimeout(function() {
-								$("#HQ_window").fadeIn(100);
-								if(!$("#HQ_scrollBox").data('jsp')) $("#HQ_scrollBox").jScrollPane({showArrows:true,hideFocus:true});
-							},3000);
-				getCSinfo.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command + ".getCS(" + player.curtown.townID + ");");
+				
+				$("#HQ_armySizeTotal span").text(function() {
+					var coverSize = 0;
+					$.each(player.curtown.au, function(i,v) {
+						switch(player.AU[i].popSize) {
+							case 1:
+								coverSize += v;
+								break;
+							case 5:
+							case 20:
+								coverSize += 10*v;
+								break;
+							case 10:
+								coverSize += 40*v;
+								break;
+						}
+					});
+					$.each(player.curtown.supportAU, function(i,v) {
+						switch(v.popSize) {
+							case 1:
+								coverSize += v.size;
+								break;
+							case 5:
+							case 20:
+								coverSize += 10*v.size;
+								break;
+							case 10:
+								coverSize += 40*v.size;
+								break;
+						}
+					});
+					return coverSize;
+				});
 				
 				$("#HQ_CSL span").text(player.curtown.CSL);
 				
@@ -623,15 +710,113 @@ function HQ_UI(bldgInfo) {
 						}
 					});
 				});
+				
+				$("#HQ_window").fadeIn(100);
+				
+				$("#HQ_scrollBox").jScrollPane({showArrows:true,hideFocus:true});
+				setTimeout(function() { $("#HQ_scrollBox").data('jsp').reinitialise();},2000);
 			});
 		}
 	});
-	if(BUI.HQ.sendMission) {
-		BUI.HQ.sendMission = false;
-		$("#HQ_sendMission").click();
-	} else {
+	
+	switch(BUI.HQ.startTab) {
+		case "send":
+			$("#HQ_sendMission").click();
+			BUI.HQ.startTab = "";
+			break;
+		case "control":
+			$("#HQ_control").click();
+			BUI.HQ.startTab = "";
+			break;
+		default:
 		$("#HQ_overview").click();
 	}
+	
+	$("#BUI_tutorial").click(function(){	
+		var message = "Are you sure you want to play the Headquarters Tutorial?";
+		display_message("Headquarters Tutorial",message,
+						function() {
+							display_tutorial_entity({	"text":"From your Headquarters, or HQ, you can monitor your troop movements in and out of this city, and send attacks and other mission types to other cities. Please switch to your Tactical Overview tab if you are not already in it.<br/><br/>Click 'Next' to continue.",
+														"css":{"top":"200px","left":"200px","width":"300px"}
+													}
+								,function() {
+									display_tutorial_entity({	"text":" Your CSL or 'Cover Soft Limit' is a number that denotes how many soldiers your city can safely provide cover for in the event of an attack. If you have a total army size above this limit, some of your soldiers may get hit by stray bullets because there isn't any cover for them to hide behind! <br/><br/>Click 'Next' to continue.",
+																"css":{"top":"200px","left":"600px","width":"300px"},
+																"arrows":	{
+																				
+																				"arrow1":{"dir":"right","css":{"top":"350px","right":"600px"}}
+																			}
+															}
+													
+										,function() {
+											display_tutorial_entity({	"text":" When somebody sieges or glasses your city, and your entire army dies, your civilians bust out of their buildings and bring the fight to the bad guys. You can choose which weapon they will use to go down fighting with using this box.<br/><br/>Click 'Next' to continue.",
+																		"css":{"top":"200px","left":"100px","width":"300px"},
+																		"arrows":	{
+																						"arrow1":{"dir":"left","css":{"top":"350px","right":"170px"}}
+																					}
+																	}
+												,function() {
+													display_tutorial_entity({	"text":" Your current troop numbers are displayed for each unit type you have down below. You can cause your units to commit suicide from this box by inputting how much of each you want to die horribly and hitting the Kill button. If you have any raids out, these troop numbers will also display in a scrollable fashion below your home troop numbers.<br/><br/>Click 'Next' to continue.",
+																				"css":{"top":"200px","left":"100px","width":"300px"},
+																				"arrows":	{
+																								"arrow1":{"dir":"down","css":{"top":"450px","right":"400px"}}
+																							}
+																			}
+														,function() {
+															display_tutorial_entity({	"text":" Next, please click your Send Mission tab. From here you can send missions all over the map. There are a variety of different mission types, from plain old attacks to missions where your sole purpose is to collect debris from around another player's city!<br/><br/>Click 'Next' to continue.",
+																						"css":{"top":"200px","left":"500px","width":"300px"}
+																					}					
+																,function() {
+																	display_tutorial_entity({	"text":" To begin the process of sending a mission, you need a destination for that mission. To specify a destination, you must either enter the x and y of the destination city or Airship manually, or you can have it done automatically for you by clicking Send Mission on the drop down tab for a city on the World Map menu! <br/><br/>Click 'Next' to continue.",
+																								"css":{"top":"200px","left":"400px","width":"300px"},
+																								"arrows":	{
+																												"arrow1":{"dir":"right","css":{"top":"550px","right":"805px"}}
+																											}
+																							}
+																		,function() {
+																			display_tutorial_entity({	"text":" Using the troop numbers bar here, you can select how much of each unit in your army you wish to send on the mission.<br/><br/>Click 'Next' to continue.",
+																										"css":{"top":"500px","left":"100px","width":"300px"},
+																										"arrows":	{
+																														"arrow1":{"dir":"right","css":{"top":"300px","right":"805px"}}
+																													}
+																									}
+																				,function() {
+																					display_tutorial_entity({	"text":" Once you've selected your team, you need to select a mission type. You can select one here. The description of the mission is shown in the adjoining box.<br/><br/>Click 'Next' to continue.",
+																												"css":{"top":"200px","left":"100px","width":"300px"},
+																												"arrows":	{
+																																"arrow1":{"dir":"right","css":{"top":"400px","right":"805px"}}
+																															}
+																											}
+																						,function() {
+																							display_tutorial_entity({	"text":" Finally, when everything is set up, you can hit Send to execute the mission. You can track the mission's progress from the I/O box by clicking on this icon to enable it. <br/><br/>Click 'Next' to continue.",
+																														"css":{"top":"300px","left":"100px","width":"300px"},
+																														"arrows":	{
+																																		"arrow4":{"dir":"left","css":{"top":"110px","right":"805px"}}
+																																	}
+																													}
+																								,function() {
+																									display_tutorial_entity({	"text":" Once your mission arrives at it's destination, you will receive a Status Report that tells you how the mission went, casualty reports, resources collected, debris created, etc. You can view your Status Report by clicking the Status Reports tab. <br /><br />Once the Report is generated, the timer in the I/O will restart and your mission will return if there are any units left in the party. When the mission returns, the units will be added back to your city's army and the countdown timer will disappear off your I/O box. <br/><br/>Click 'Next' to continue.",
+																																"css":{"top":"200px","left":"100px","width":"300px"},
+																																"arrows":	{
+																																				"arrow5":{"dir":"up","css":{"top":"80px","right":"290px"}}
+																																			}
+																															}
+																										,function() {
+																												display_tutorial_entity({	"text":" This concludes the Headquarters tutorial. <br/><br/>Click 'Next' to continue.",
+																																			"css":{"top":"200px","left":"100px","width":"300px"},
+																																		});
+																										});// Closing exit message.
+																								});// Closing SR
+																						});// Closing IO
+																				});// Closing Mission Type
+																		});// Closing troop numbers
+																});// Closing destination
+														});// closing click Send Mission tab
+												});// Troop numbers
+										});// Closing Civ weap
+								});// closing CSL
+						});// closing intro
+	});
 }
 
 function canSendAttack() {
@@ -703,118 +888,6 @@ function canSendAttack() {
 					+ "," + BUI.HQ.y + ",[" + AUarray.join(",") + "]," + BUI.HQ.attackType 
 					+ "," + $("#HQ_bombingTarget option:selected").index("#HQ_bombingTarget option")
 					+ ");");
-					
-	$("#BUI_tutorial").click(function(){	
-							var message = "Are you sure you want to play the Headquarters Tutorial?";
-			display_message("Headquarters Tutorial",message,
-											function() {
-												tutorialRunning = true;
-												display_tutorial_entity({	"text":"From your Headquarters, or HQ, you can monitor your troop movements in and out of this city, and send attacks and other mission types to other cities. Please switch to your Tactical Overview tab if you are not already in it.<br/><br/>Click 'Next' to continue.",
-																			"css":{"top":"200px","left":"200px","width":"300px"}
-																		}
-																	,	function() {
-																			display_tutorial_entity({	"text":" Your CSL or 'Cover Soft Limit' is a number that denotes how many soldiers your city can safely provide cover for in the event of an attack. If you have a total army size above this limit, some of your soldiers may get hit by stray bullets because there isn't any cover for them to hide behind! <br/><br/>Click 'Next' to continue.",
-																										"css":{"top":"200px","left":"600px","width":"300px"},
-																										"arrows":	{
-																														
-																														"arrow1":{"dir":"right","css":{"top":"350px","right":"600px"}}
-																													}
-																									}
-																							
-																							,	function() {
-																											display_tutorial_entity({	"text":" When somebody sieges or glasses your city, and your entire army dies, your civilians bust out of their buildings and bring the fight to the bad guys. You can choose which weapon they will use to go down fighting with using this box.<br/><br/>Click 'Next' to continue.",
-																																		"css":{"top":"200px","left":"100px","width":"300px"},
-																																		"arrows":	{
-																																		"arrow1":{"dir":"left","css":{"top":"350px","right":"170px"}}
-																																	}
-																											}
-																											,	function() {
-																													display_tutorial_entity({	"text":" Your current troop numbers are displayed for each unit type you have down below. You can cause your units to commit suicide from this box by inputting how much of each you want to die horribly and hitting the Kill button. If you have any raids out, these troop numbers will also display in a scrollable fashion below your home troop numbers.<br/><br/>Click 'Next' to continue.",
-																																				"css":{"top":"200px","left":"100px","width":"300px"},
-																																				"arrows":	{
-																																				"arrow1":{"dir":"down","css":{"top":"450px","right":"400px"}}
-																																			
-																																			}
-
-																														}
-																														,	function() {
-																																display_tutorial_entity({	"text":" Next, please click your Send Mission tab. From here you can send missions all over the map. There are a variety of different mission types, from plain old attacks to missions where your sole purpose is to collect debris from around another player's city!<br/><br/>Click 'Next' to continue.",
-																																							"css":{"top":"200px","left":"500px","width":"300px"}
-																																						
-																																	}					
-																																		,	function() {
-																																									display_tutorial_entity({	"text":" To begin the process of sending a mission, you need a destination for that mission. To specify a destination, you must either enter the x and y of the destination city or Airship manually, or you can have it done automatically for you by clicking Send Mission on the drop down tab for a city on the World Map menu! <br/><br/>Click 'Next' to continue.",
-																																																"css":{"top":"200px","left":"400px","width":"300px"},
-																																																"arrows":	{
-																																																
-																																																	"arrow1":{"dir":"right","css":{"top":"550px","right":"805px"}}
-																																																
-																																															}
-																																										}
-																																											,	function() {
-																																													display_tutorial_entity({	"text":" Using the troop numbers bar here, you can select how much of each unit in your army you wish to send on the mission.<br/><br/>Click 'Next' to continue.",
-																																																				"css":{"top":"500px","left":"100px","width":"300px"},
-																																																				"arrows":	{
-																																																				"arrow1":{"dir":"right","css":{"top":"300px","right":"805px"}}
-																																																			}
-																																														}
-																																															,	function() {
-																																																	display_tutorial_entity({	"text":" Once you've selected your team, you need to select a mission type. You can select one here. The description of the mission is shown in the adjoining box.<br/><br/>Click 'Next' to continue.",
-																																																								"css":{"top":"200px","left":"100px","width":"300px"},
-																																																								"arrows":	{
-																																																							
-																																																									"arrow1":{"dir":"right","css":{"top":"400px","right":"805px"}}
-																																																								
-																																																							}
-																																																		}
-																																																			,	function() {
-																																																					display_tutorial_entity({	"text":" Finally, when everything is set up, you can hit Send to execute the mission. You can track the mission's progress from the I/O box by clicking on this icon to enable it. <br/><br/>Click 'Next' to continue.",
-																																																												"css":{"top":"300px","left":"100px","width":"300px"},
-																																																												"arrows":	{
-																																																												
-																																																												"arrow4":{"dir":"left","css":{"top":"110px","right":"805px"}}
-																																																											}
-																																																						}
-																																																							,	function() {
-																																																									display_tutorial_entity({	"text":" Once your mission arrives at it's destination, you will receive a Status Report that tells you how the mission went, casualty reports, resources collected, debris created, etc. You can view your Status Report by clicking the Status Reports tab. <br /><br />Once the Report is generated, the timer in the I/O will restart and your mission will return if there are any units left in the party. When the mission returns, the units will be added back to your city's army and the countdown timer will disappear off your I/O box. <br/><br/>Click 'Next' to continue.",
-																																																																"css":{"top":"200px","left":"100px","width":"300px"},
-																																																																"arrows":	{
-																																																															
-																																																																"arrow5":{"dir":"up","css":{"top":"80px","right":"290px"}}
-																																																															}
-																																																										}
-																																																											,	function() {
-																																																													display_tutorial_entity({	"text":" This concludes the Headquarters tutorial. <br/><br/>Click 'Next' to continue.",
-																																																																				"css":{"top":"200px","left":"100px","width":"300px"},
-																																																																				
-																																																														}
-																																																													)
-																																																												} // Closing exit message.
-																																																									)
-																																																								} // Closing SR
-																																																					)
-																																																				} // Closing IO
-																																																	)
-																																																} // Closing Mission Type
-																																													)
-																																												} // Closing troop numbers
-																																								)
-																																						} // Closing destination
-																																					
-																															)
-																												} 	 // closing click Send Mission tab
-																											)
-																										} // Troop numbers
-																							
-																								
-																						)
-																					}// Closing Civ weap
-																				)
-																		}// closing CSL
-																	)
-																}// closing intro
-															);
-														});
 }
 
 function get_attack_ETA() {
@@ -826,7 +899,7 @@ function get_attack_ETA() {
 								var hours = Math.floor((time / 3600)%24);
 								var mins = Math.floor((time % 3600) / 60);
 								var secs = Math.floor((time % 3600) % 60);
-								$("#HQ_ETA").html("ETA: "+((days)?days + " d ":"") + ((hours<10)?"0"+hours:hours) + ":" + ((mins<10)?"0"+mins:mins) + ":" + ((secs<10)?"0"+secs:secs));
+								$("#HQ_ETA").html("ETA: "+((days)?days + " d ":"") + hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime());
 							} else {
 								$("#HQ_ETA").html("?!:?!:?!");
 							}

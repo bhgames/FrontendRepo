@@ -44,6 +44,20 @@ img.lvlImage  {
 .locked, .locked img  {
 	display: none;
 	}
+#enginespin1 {
+	position: absolute;
+	bottom: 36px;
+	right: 283px;
+	}
+#enginespin2 {
+	position: absolute;
+	bottom: 163px;
+	right: 71px;
+	-webkit-transform: rotateY(180deg);
+	-moz-transform: rotateY(180deg);
+	-o-transform: rotateY(180deg);
+	transform: rotateY(180deg);
+	}
 #pos0, #pos1, #pos2, #pos3 {
 	z-index: 4;
 	}
@@ -73,35 +87,64 @@ img.lvlImage  {
 	background: transparent !important;
 	z-index: 1;
 	}
+.airship#pos0,.airship#pos1,.airship#pos2,.airship#pos3 {
+	display: none;
+	}
 #pos4{
 	top: 172px;
 	left: 419px;
 	z-index: 2;
+	}
+.airship#pos4 {
+	top: 195px;
+	left: 311px;
+	filter:alpha(opacity=0);
+	opacity: 0;
 	}
 #pos5{
 	top: 283px;
 	left: 327px;
 	z-index: 2;
 	}
+.airship#pos5 {
+	top: 269px;
+	left: 316px;
+	}
 #pos6{
 	top: 338px;
 	left: 421px;
 	z-index: 4;
+	}
+.airship#pos6 {
+	top: 299px;
+	left: 367px;
 	}
 #pos7{
 	top: 283px;
 	left: 510px;
 	z-index: 2;
 	}
+.airship#pos7 {
+	top: 237px;
+	left: 367px;
+	}
 #pos8{
 	top: 254px;
 	left: 421px;
 	z-index: 3;
 	}
+.airship#pos8 {
+	top: 269px;
+	left: 415px;
+	}
 #pos9{
 	top: 285px;
 	left: 210px;
 	z-index: 2;
+	}
+.airship#pos9 {
+	top: 324px;
+	left: 458px;
 	}
 #pos10{
 	top: 320px;

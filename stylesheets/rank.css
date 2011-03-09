@@ -75,6 +75,9 @@
 	float: right;
 	text-align: right;
 	}
+.pCSL, .lCSL {
+	padding-right: 10px;
+	}
 .bBPKey, .bBP {
 	width: 130px;
 	float: right;

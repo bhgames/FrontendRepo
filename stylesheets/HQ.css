@@ -35,17 +35,20 @@
 .no-flexbox #HQ_tabBar > div {
 	float: left;
 	}
-#HQ_tabBar > div:active .lightFrameBody, #HQ_tabBar > div.open .lightFrameBody, #HQ_launchAttack[class='']:active .lightFrameBody {
+#HQ_control {
+	display: none;
+	}
+ #HQ_tabBar > div.open .lightFrameBody, #HQ_launchAttack[class='']:active .lightFrameBody {
 	background: url("../AIFrames/Content Frame Elements/Dark-body.png");
 	color: #FFFFFF;
 	}
-#HQ_tabBar > div:active .lightFrameB, #HQ_tabBar > div.open .lightFrameB, #HQ_launchAttack[class='']:active .lightFrameB {
+ #HQ_tabBar > div.open .lightFrameB, #HQ_launchAttack[class='']:active .lightFrameB {
 	background-image: url("../AIFrames/Content Frame Elements/Dark-BottomTile.png");
 	}
-#HQ_tabBar > div:active .lightFrameBL, #HQ_tabBar > div.open .lightFrameBL, #HQ_launchAttack[class='']:active .lightFrameBL {
+ #HQ_tabBar > div.open .lightFrameBL, #HQ_launchAttack[class='']:active .lightFrameBL {
 	background-image: url("../AIFrames/Content Frame Elements/Dark-Left-Lowcorner.png");
 	}
-#HQ_tabBar > div:active .lightFrameBR, #HQ_tabBar > div.open .lightFrameBR, #HQ_launchAttack[class='']:active .lightFrameBR {
+ #HQ_tabBar > div.open .lightFrameBR, #HQ_launchAttack[class='']:active .lightFrameBR {
 	background-image: url("../AIFrames/Content Frame Elements/Dark-Right-Lowcorner.png");
 	}
 #HQ_tabBar > div .lightFrameBL > .lightFrameB {
@@ -54,7 +57,9 @@
 #HQ_tabBar > div > .lightFrameBR > .lightFrameB {
 	margin-left: 0px;
 	}
-
+#HQ_tabBar > div > .lightFrameB {
+	margin: 0;
+	}
 #HQ_AUinput, .supportAU, .troop {
 	text-align: center;
 	}
@@ -231,7 +236,7 @@
 	height: 10px;
 	padding: 5px 10px;
 	}
-.noAttack {
+.noAttack, .noMove {
 	filter:alpha(opacity=50);
 	opacity: 0.5;
 	cursor: default;
@@ -251,8 +256,36 @@
 	top: 0px;
 	left: 470px;
 	}
+#HQ_airshipControl {
+	position: absolute;
+	top: 140px;
+	left: 150px;
+	}
+#HQ_moveError {
+	color: red;
+	}
+#HQ_moveTo {
+	margin-top: 10px;
+	}
+#HQ_moveX, #HQ_moveY {
+	width: 50px;
+	margin-left: 5px;
+	text-align: right;
+	}
+#HQ_moveAirship {
+	width: 70px;
+	margin-top: 20px;
+	float: right;
+	text-align: center;
+	}
+#HQ_airshipInfo {
+	position: absolute;
+	top: 150px;
+	right: 150px;
+	}
 #HQ_scrollBox {
 	height: 360px;
+	width: 776px;
 	margin-left: 5px;
 	overflow: auto;
 	}

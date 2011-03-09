@@ -9,7 +9,7 @@
 	}
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html class='no-js'>
+<html class='no-js'> <!-- manifest='http://www.aiwars.org/manifest.appcache'> -->
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"> 
@@ -23,6 +23,7 @@
 		insertScript("resource","css");
 		insertScript("bottomNav","css");
 		insertScript("AF","css");
+		insertScript("AP","css");
 		insertScript("ASM","css");
 		insertScript("BUI","css");
 		insertScript("bunker","css");
@@ -85,7 +86,7 @@
 			<div class='popFrameBL'><div class='popFrameBR'><div class='popFrameB'></div></div></div>
 		</div>
 	</div>
-	<div id="chatbox_tab">CHATBOX</div>
+	<a id="chatbox_tab" href="#">CHATBOX</a>
 	<div id='chat_box'>
 		<div id='chat_titlebar'>
 			<a href='javascript:;' id='chat_close'></a>
@@ -96,7 +97,7 @@
 	<div id="header"><img src='AIFrames/Header.png' alt='BattleHard: AI Wars' /></div>
 	<div id="content">
 		<div id="client">
-			<div id="#"></div> <!-- this is to prevent the view from going to the top when a sidetab is clicked -->
+			<a id="#"></a> <!-- this is to prevent the view from going to the top when a sidetab is clicked -->
 			<ul id="toplinks">
 				<li id="citybox"><a href="javascript:;" id="cityname"></a><a href="javascript:;" id="citydropdown"></a></li>
 				<li id="wm">World Map</li>

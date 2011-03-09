@@ -477,7 +477,7 @@ function build_message_UI() {
 				display_output(true,error,true);
 			}
 		};
-		postMess.post("/AIWars/GodGenerator","reqtype=command&command=" + player.command + ".sendMessage([" + encodeURI(message.to) + "]," + encodeURIComponent(message.body.replace(/,/g, "<u44>").replace(/"/g,'\\"').replace(/;/g,"<u3B>")) + "," + encodeURIComponent(message.subject.replace(/,/g, "<u44>").replace(/"/g,'\\"').replace(/;/g,"<u3B>")) + "," + message.oMID + ");");
+		postMess.post("/AIWars/GodGenerator","reqtype=command&command=" + player.command + ".sendMessage([" + message.to + "]," + message.body.replace(/,/g, "<u44>").replace(/"/g,'\\"').replace(/;/g,"<u3B>") + "," + message.subject.replace(/,/g, "<u44>").replace(/"/g,'\\"').replace(/;/g,"<u3B>") + "," + message.oMID + ");");
 	});
 	
 	$("#mess_confirmTrade, .confirmTrade").die("click").live("click",function(){

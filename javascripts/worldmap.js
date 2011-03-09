@@ -49,7 +49,7 @@ function get_map() {
 							}
 						});
 					}
-					if(temp[j].length>map.tilesWide) map.tilesWide = temp[j].length
+					map.tilesWide = Math.max(map.tilesWide,temp[j].length);
 					if(temp[j].length>0) j++;
 				}
 				map.tiles = temp;
@@ -59,6 +59,7 @@ function get_map() {
 				map.origHTML = "<div id='townMenuPopup'>\
 								</div>\
 								<div id='mapHelpButton' class='pplHelp'></div>\
+								<div id='mapAirshipToggle'></div>\
 								<div id='mapTileSwitchBox'>\
 									<div id='mapTileSwitchButton'></div>\
 									<div id='mapTileSwitcher'>\
@@ -200,11 +201,20 @@ function build_map() {
 		}
 	});
 	
+	$("#mapAirshipToggle").unbind("click").click(function() {
+		if($(this).hasClass("active")) {
+			$(this).removeClass("active");
+			map.box.id.removeClass("airshipMode");
+		} else {
+			$(this).addClass("active");
+			map.box.id.addClass("airshipMode");
+		}
+	});
+	
 	$("#mapHelpButton").unbind("click").click(function(){
 		var message = "Are you sure you want to play the World Map Tutorial?";
 		display_message("World Map Tutorial",message,
 				function() {
-					tutorialRunning = true;
 					display_tutorial_entity({	"text":"From your World Map, you can view nearby cities and Airships as well as initiate attacks and one-way trades. You can also view interesting information about other cities that will be helpful to you in your decision making.",
 												"css":{"top":"200px","left":"200px","width":"300px"}
 											},
@@ -331,17 +341,16 @@ function city_hover(city, box) {
 function city_select(city, box) {
 	var index=city.index(".town");
 	var town = map.displayedTowns[index];
-	//build our popup text
-	var menutext = "<div id='townMenu_content'><div class='darkFrameBody'><span id='ownerText'>"+ town.owner + "'s city " + town.townName + "</span><span id='townIndex'>" + index +"</span><a href='javascript:;' id='sendMission'>Send Mission</a><a href='javascript:;' id='sendTrade'>Send Trade</a>";
-	if(town.owner == player.username) {
-		menutext += "<a href='javascript:;' id='viewCity'>View City</a>";
-	} else {
-		menutext += "<br/>";
-	}
-	menutext += "	<a href='javascript:;' id='close'>Close</a></div><div class='darkFrameBL-BR-B'><div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div></div></div>";
+	//build our popup text	
 	box.children().unbind().die();
 	box.animate({"height":"0px","width":"0px","opacity":"0"},250,function() {
-		box.html(menutext);
+		box.html(	"<div id='townMenu_content'><div class='darkFrameBody'><span id='ownerText'>"
+					+ town.owner + "'s city " + town.townName + "</span><span id='townIndex'>" 
+					+ index +"</span><a href='javascript:;' id='sendMission'>Send Mission</a>"
+					+ (player.curtown.zeppelin?"<a href='javascript:;' id='moveTo'>Move To</a>":"")
+					+ "<a href='javascript:;' id='sendTrade'>Send Trade</a>"
+					+ (town.owner == player.username?"<a href='javascript:;' id='viewCity'>View City</a>":"<br/>")
+					+ "<a href='javascript:;' id='close'>Close</a></div><div class='darkFrameBL-BR-B'><div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div></div></div>");
 		
 		box.css({"bottom":(parseInt(city.css("bottom")) + 20) + "px"});
 		
@@ -355,21 +364,22 @@ function city_select(city, box) {
 		
 		box.animate({"height":"110px","width":"300px","opacity":"1"},250);
 		
-		$("#viewCity").die('click').live('click', function() {
+		$("#viewCity").unbind('click').click(function() {
 			player.curtown = $.grep(player.towns, function(v) {
 					return map.displayedTowns[$("#townIndex").text()].townName == v.townName;
 				})[0];
 			show_town($("#window"));
 		});
-		$("#sendMission").unbind('click').click(function() {
+		$("#sendMission,#moveTo").unbind('click').click(function() {
 			var town = map.displayedTowns[$("#townIndex").text()];
+			var that = this;
 			BUI.HQ.x = town.x;
 			BUI.HQ.y = town.y;
 			$.each(player.curtown.bldg, function(i, x) {
 				if(x.type == "Headquarters") {
 					BUI.set(x.type, x.lotNum);
 					do_fade(draw_bldg_UI);
-					BUI.HQ.sendMission = true;
+					BUI.HQ.startTab = $(that).is("#moveTo")?"control":"send";
 					return false;
 				}
 			});
@@ -425,8 +435,8 @@ function rebuild(tile) {
 		$.each(map.towns, function(i, x) {
 			if(Math.abs(x.x-map.x)>4||Math.abs(x.y-map.y)>4) return true;
 			map.displayedTowns.push(x);
-			var type = Math.abs(x.x+x.y);
-			map.HTML += "<div class='town type"+((type%2)+1)+(x.owner=="Id"?" idTown":(x.owner==player.username?" playerTown":""));
+			var type = Math.abs(x.x%x.y);
+			map.HTML += "<div class='town "+(x.zeppelin?"airship":"type"+((type%2)+1)+(x.owner=="Id"?" idTown":(x.owner==player.username?" playerTown":"")));
 			if(x.dig) map.HTML += " missionC";
 			$.each(player.raids, function(j, y) {
 				if(y.defendingTown == x.townName && !y.raidOver) {
@@ -437,10 +447,18 @@ function rebuild(tile) {
 					}
 				}
 			});
-			var bottom = ((x.y-map.y)*36) + 156;
-			var right = ((map.x-x.x)*65) + 257;
+			
+			var bottom = ((x.y-map.y)*36) + (x.zeppelin?141:156);
+			var right = ((map.x-x.x)*65) + (x.zeppelin?223:257);
 			map.HTML +="' style='bottom:" + bottom + "px; right:" + right + "px;'><div class='inc'></div></div>";
 		});
 		map.box.id.html(map.HTML).css("background-image","url(AIFrames/WM/"+mapTile.mapName+(mapTile.irradiated?"2":"")+".png)").fadeIn();
+		$(".airship").each(float_airship);
+	});
+}
+
+function float_airship(airship) {
+	$(airship).animate({"bottom":"+=5"},"slow", function() {
+		$(this).animate({"bottom":"-=5"},"slow",float_airship(this));
 	});
 }
