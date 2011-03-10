@@ -8,7 +8,7 @@ var userInfo = {};
 function get_session() {
 
 	var seshget = new make_AJAX();
-	
+	log(seshget);
 	seshget.callback = function(response) {
 		if(!response.match(/invalid/)) {
 			load_client(false); //if the user entered a valid UN and Pass

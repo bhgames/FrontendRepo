@@ -7,104 +7,128 @@ function preload() {
 	$("#preload").html(newImages.toString());
 }
 
+var websock = false;
 function make_AJAX() {
-	var temp = {};
-	//defined on-the-fly for custom response handling
-	temp.callback = function() {};
-	
-	temp.success = 	function(response, status, xhr) {
-						temp.clear();
-						try {
-							display_output(false,"Response received!");
-							$("body").css("cursor","auto");
-							display_output(false,"Processing...");
-									//strip trailing semicolons on BF function calls
-							response = response.split(";");
-							if(!response[response.length-1].match(/\S/)) response = response.slice(0,response.length-1);
-							response = response.join(";");
-									//check for invalid commands 
-							if(!response.match(/invalidcmd/)) temp.callback(response);
-							else display_output(true,"Invalid Command",true);
-						} catch(e) {
-							display_output(true,e,true);
-						}
-					};
-					
-	temp.error = 	function(xhr, status, error) {
-						temp.clear();
-						var response = xhr.responseText.split("<body>")[1].split("</body>")[0];
-						display_output(true,response,true);
-					};
-	
-		//send method repackagers to make my life easier
-	temp.get = function(URL, sync) {
-								try {
-									var val = URL.split("&command="), data = "";
-									if(val.length == 2) { 
-										val[1] = encodeURIComponent(val[1]);//encode commands before sending them to the server
-										URL = val.join("&command=");
-									}
-									val = URL.split("Generator?");
-									if(val.length == 2) data = val[1];		//a full URL GET was supplied
-									else data = URL;						//only the data was supplied
-									$.ajax({
-										type : "GET",
-										async: !sync,
-										url : "/AIWars/GodGenerator",
-										data : data,
-										dataType : "text",
-										cache : false,
-										global : false,
-										error : temp.error,
-										success : temp.success
-									});
-									temp.set();
-									$("body").css("cursor","wait");
-									display_output(false,"Fetching...");
-								} catch(e) {
-									display_output(true,e,true);
-									temp.clear();
-								}
-							};
-	temp.post = function(URL, data, sync) {
-										try {
-											var val = data.split("&command=");
-											if(val.length == 2) { 
-												val[1] = encodeURIComponent(val[1]);	//encode commands before sending them to the server
-												data = val.join("&command=");
-											}
-											$.ajax({
-												type : "POST",
-												async: !sync,
-												url : URL,
-												data : data,
-												dataType : "text",
-												cache : false,
-												global : false,
-												error : temp.error,
-												success : temp.success
-											});
-											temp.set();
-											$("body").css("cursor","wait");
-											display_output(false,"Fetching...");
-										} catch(e) {
-											display_output(true,e,true);
-											temp.clear();
-										}
+	if(Modernizr.websockets && !websock.nosock) {
+		if(!websock) {
+			try {
+				websock = new WebSocket("ws://"+location.hostname+"/AIWars/GodGenerator");
+				websock.connected = websock.readyState == 1;
+				websock.onopen = 	function() {
+										this.connected = true;
 									};
-								
-	temp.set = function() { //latency announcer
-							temp.requestTimer = setTimeout(function() {
-														display_output(true,"High Latency Detected!", true);
-														display_output(false,"Your last action may not have been received.  You may have to refresh your client or browser.");
-													}, 10000);
-												};
-	
-	temp.clear = function() {
-			clearTimeout(temp.requestTimer);
-		};
-	
-	return temp;
+				websock.onerror = 	function(err) {};
+				websock.onmessage = function(e) {};
+				websock.onclose = 	function() {
+										this.connected = false;
+									};
+				websock.nosock = false;
+			} catch(e) {
+				websock.nosock = true;
+				log(e);
+			}
+		} else {
+		}
+	} 
+	if(websock.nosock) {
+		var temp = {};
+		//defined on-the-fly for custom response handling
+		temp.callback = function() {};
+		
+		temp.success = 	function(response, status, xhr) {
+							temp.clear();
+							try {
+								display_output(false,"Response received!");
+								$("body").css("cursor","auto");
+								display_output(false,"Processing...");
+										//strip trailing semicolons on BF function calls
+								response = response.split(";");
+								if(!response[response.length-1].match(/\S/)) response = response.slice(0,response.length-1);
+								response = response.join(";");
+										//check for invalid commands 
+								if(!response.match(/invalidcmd/)) temp.callback(response);
+								else display_output(true,"Invalid Command",true);
+							} catch(e) {
+								display_output(true,e,true);
+							}
+						};
+						
+		temp.error = 	function(xhr, status, error) {
+							temp.clear();
+							var response = xhr.responseText.split("<body>")[1].split("</body>")[0];
+							display_output(true,response,true);
+						};
+		
+			//send method repackagers to make my life easier
+		temp.get = function(URL, sync) {
+									try {
+										var val = URL.split("&command="), data = "";
+										if(val.length == 2) { 
+											val[1] = encodeURIComponent(val[1]);//encode commands before sending them to the server
+											URL = val.join("&command=");
+										}
+										val = URL.split("Generator?");
+										if(val.length == 2) data = val[1];		//a full URL GET was supplied
+										else data = URL;						//only the data was supplied
+										$.ajax({
+											type : "GET",
+											async: !sync,
+											url : "/AIWars/GodGenerator",
+											data : data,
+											dataType : "text",
+											cache : false,
+											global : false,
+											error : temp.error,
+											success : temp.success
+										});
+										temp.set();
+										$("body").css("cursor","wait");
+										display_output(false,"Fetching...");
+									} catch(e) {
+										display_output(true,e,true);
+										temp.clear();
+									}
+								};
+		temp.post = function(URL, data, sync) {
+											try {
+												var val = data.split("&command=");
+												if(val.length == 2) { 
+													val[1] = encodeURIComponent(val[1]);	//encode commands before sending them to the server
+													data = val.join("&command=");
+												}
+												$.ajax({
+													type : "POST",
+													async: !sync,
+													url : URL,
+													data : data,
+													dataType : "text",
+													cache : false,
+													global : false,
+													error : temp.error,
+													success : temp.success
+												});
+												temp.set();
+												$("body").css("cursor","wait");
+												display_output(false,"Fetching...");
+											} catch(e) {
+												display_output(true,e,true);
+												temp.clear();
+											}
+										};
+									
+		temp.set = function() { //latency announcer
+								temp.requestTimer = setTimeout(function() {
+															display_output(true,"High Latency Detected!", true);
+															display_output(false,"Your last action may not have been received.  You may have to refresh your client or browser.");
+														}, 10000);
+													};
+		
+		temp.clear = function() {
+				clearTimeout(temp.requestTimer);
+			};
+		
+		return temp;
+	}
 }
 
 function show_output_window() { //packaged to allow easy calling

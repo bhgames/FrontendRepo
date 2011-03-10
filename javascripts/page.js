@@ -25,7 +25,7 @@ $(document).ready(function() {
 			 xfbml: true});
 	FB.Canvas.setSize();
 	
-	preload();
+	//preload();
 	set_sidebar_anim();
 	get_session();
 	$("#menu").unbind("click").click(function() {
