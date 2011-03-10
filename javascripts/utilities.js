@@ -9,15 +9,29 @@ function preload() {
 
 var websock = false;
 function make_AJAX() {
+	var that = this; //this is so I always have a reference to the calling object
 	if(Modernizr.websockets && !websock.nosock) {
-		if(!websock) {
+		if(!websock||websock.readyState==2) {
 			try {
 				websock = new WebSocket("ws://"+location.hostname+"/AIWars/GodGenerator");
 				websock.connected = websock.readyState == 1;
+				websock.backlog = websock.backlog || [];
+				websock.log = websock.log || [];
+				websock.checksock = websock.checksock || [];
 				websock.onopen = 	function() {
 										this.connected = true;
+										while(websock.checksock.length>0) {
+											clearTimeout(websock.checksock.shift());
+										}
+										while(websock.backlog.length>0) {
+											websock.send(websock.backlog[0].data);
+											websock.log.push(websock.backlog.shift());
+										}
 									};
-				websock.onerror = 	function(err) {};
+				websock.onerror = 	function(err) {
+										log(err);
+										display_output(true,err,true);
+									};
 				websock.onmessage = function(e) {};
 				websock.onclose = 	function() {
 										this.connected = false;
@@ -27,16 +41,46 @@ function make_AJAX() {
 				websock.nosock = true;
 				log(e);
 			}
-		} else {
 		}
+		this.get = this.post = 	function(URL,data) {	//this is to maintain backwards compatability in the code
+									if(typeof(data)!=="String") {
+										if(URL.match(/Generator\?/)) {
+											data = URL.split("Generator?")[1];
+										} else {
+											data = URL;
+										}
+									}
+									that.data = data;
+									if(data.match(/&command=/)) {
+										data = data.split("&command=");
+										data[1] = encodeURIComponent(data[1]);
+										data = data.join("&command=");
+									}
+									
+									if(websock.connected) {
+										websock.send(data); //this will have to be modified so that an additional ID is passed that is returned with the call so that the appropriate function gets the data
+										websock.log(that);
+									} else {
+										websock.backlog.push(that);
+										websock.checksock.push(	setTimeout(	function() {
+																				log(websock.readyState)
+																				if(websock.readyState > 1) {
+																					websock.nosock = true;
+																					var temp = websock.backlog.shift();
+																					var AJAX = new make_AJAX();
+																					AJAX.callback = temp.callback;
+																					AJAX.post("/AIWars/GodGenerator",temp.data);
+																				}
+																			},5000));
+									}
+								}
 	} 
 	if(websock.nosock) {
-		var temp = {};
 		//defined on-the-fly for custom response handling
-		temp.callback = function() {};
+		this.callback = function() {};
 		
-		temp.success = 	function(response, status, xhr) {
-							temp.clear();
+		this.success = 	function(response, status, xhr) {
+							that.clear();
 							try {
 								display_output(false,"Response received!");
 								$("body").css("cursor","auto");
@@ -46,21 +90,21 @@ function make_AJAX() {
 								if(!response[response.length-1].match(/\S/)) response = response.slice(0,response.length-1);
 								response = response.join(";");
 										//check for invalid commands 
-								if(!response.match(/invalidcmd/)) temp.callback(response);
+								if(!response.match(/invalidcmd/)) that.callback(response);
 								else display_output(true,"Invalid Command",true);
 							} catch(e) {
 								display_output(true,e,true);
 							}
 						};
 						
-		temp.error = 	function(xhr, status, error) {
-							temp.clear();
+		this.error = 	function(xhr, status, error) {
+							that.clear();
 							var response = xhr.responseText.split("<body>")[1].split("</body>")[0];
 							display_output(true,response,true);
 						};
 		
 			//send method repackagers to make my life easier
-		temp.get = function(URL, sync) {
+		this.get = function(URL, sync) {
 									try {
 										var val = URL.split("&command="), data = "";
 										if(val.length == 2) { 
@@ -78,18 +122,18 @@ function make_AJAX() {
 											dataType : "text",
 											cache : false,
 											global : false,
-											error : temp.error,
-											success : temp.success
+											error : that.error,
+											success : that.success
 										});
-										temp.set();
+										that.set();
 										$("body").css("cursor","wait");
 										display_output(false,"Fetching...");
 									} catch(e) {
 										display_output(true,e,true);
-										temp.clear();
+										that.clear();
 									}
 								};
-		temp.post = function(URL, data, sync) {
+		this.post = function(URL, data, sync) {
 											try {
 												var val = data.split("&command=");
 												if(val.length == 2) { 
@@ -104,30 +148,28 @@ function make_AJAX() {
 													dataType : "text",
 													cache : false,
 													global : false,
-													error : temp.error,
-													success : temp.success
+													error : that.error,
+													success : that.success
 												});
-												temp.set();
+												that.set();
 												$("body").css("cursor","wait");
 												display_output(false,"Fetching...");
 											} catch(e) {
 												display_output(true,e,true);
-												temp.clear();
+												that.clear();
 											}
 										};
 									
-		temp.set = function() { //latency announcer
-								temp.requestTimer = setTimeout(function() {
+		this.set = function() { //latency announcer
+								that.requestTimer = setTimeout(function() {
 															display_output(true,"High Latency Detected!", true);
 															display_output(false,"Your last action may not have been received.  You may have to refresh your client or browser.");
 														}, 10000);
 													};
 		
-		temp.clear = function() {
-				clearTimeout(temp.requestTimer);
+		this.clear = function() {
+				clearTimeout(that.requestTimer);
 			};
-		
-		return temp;
 	}
 }
 
