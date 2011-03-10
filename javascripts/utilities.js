@@ -955,13 +955,15 @@ function tick_trades(thingToTick) {
 				if(thingToTick.length > 0) {
 					$.each(thingToTick, function(i, v) {
 						if(v.currTicks) {
-							if(v.currTicks != "Updating" && v.timesDone >= v.timesToDo && v.destTown!="") {
+							if(v.currTicks != "Updating" && v.timesDone < v.timesToDo && v.destTown!="") {
 								thingToTick[i].currTicks--;
 								if(v.currTicks == 0 && !v.stockMarketTrade) {
 									thingToTick[i].currTicks = thingToTick[i].intervalTime;
 									thingToTick[i].timesDone++;
 									thingToTick.update = true;
 								}
+							} else if(v.timesDone >= v.timesToDo) {
+								thingToTick[i].currTicks = "-";
 							}
 						} else if(v.ticksToHit != "Updating") {
 							thingToTick[i].ticksToHit--;

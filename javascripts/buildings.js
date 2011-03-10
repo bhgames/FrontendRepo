@@ -301,20 +301,21 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 						});
 						break;
 					case "Trade Center":
-						if(player.curtown.activeTrades.update || player.curtown.tradeSchedules.update) get_all_trades();
+						if(player.curtown.activeTrades.update || player.curtown.tradeSchedules.update) {
+							load_player(player.league,true,true);
+						}
 						
 						$(".ETA").each(function(i, el) {
 							var time = player.curtown.activeTrades[i].ticksToHit;
-							
-							var days = Math.floor((time / 3600)/24);
-							var hours = Math.floor((time / 3600)%24);
-							var mins = Math.floor((time % 3600) / 60);
-							var secs = Math.floor((time % 3600) % 60);
-						
-							if(time > 0) {
-								$(el).html(((days)?days + " d ":"") + hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime());
+							if(isNaN(time)) {
+								$(el).html(time);
 							} else {
-								$(el).html(time);;
+								var days = Math.floor((time / 3600)/24);
+								var hours = Math.floor((time / 3600)%24);
+								var mins = Math.floor((time % 3600) / 60);
+								var secs = Math.floor((time % 3600) % 60);
+								
+								$(el).html(((days)?days + " d ":"") + hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime());
 							}
 						});
 						var SMoffset = 0;
@@ -334,9 +335,7 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 								var mins = Math.floor((ticks % 3600) / 60);
 								var secs = Math.floor((ticks % 3600) % 60);
 							
-								if(ticks > 0) {
-									$(el).html(((days)?days + " d ":"") + hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime());
-								}
+								$(el).html(((days)?days + " d ":"") + hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime());
 							}
 						});
 						break;
