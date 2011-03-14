@@ -1,6 +1,8 @@
 function TC_UI(bldgInfo) {
 	//do update checks
-	if(player.curtown.activeTrades.update || player.curtown.tradeSchedules.update) get_all_trades();
+	try {
+		if(player.curtown.activeTrades.update || player.curtown.tradeSchedules.update) get_all_trades();
+	} catch(e) {}
 	
 	var trTotal = 0;
 	var trTotalCap = 0;
