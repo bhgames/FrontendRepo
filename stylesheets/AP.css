@@ -27,3 +27,6 @@
 #AP_airshipInfo .darkFrameBody {
 	height: 245px;
 	}
+.airshipID {
+	display: none;
+	}
