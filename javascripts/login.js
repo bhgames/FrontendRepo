@@ -411,6 +411,7 @@ function load_client(type, reloadTown, reloadUI) {
 					if(player.towns.length < 1) throw "No Towns";
 					player.username = player.username.replace(/\u003c/g,"&#60;").replace(/\u003e/g,"&#62;");
 					player.command = (player.league)?"bf.getLeague()":"bf";
+					player.time = new Date();
 					
 					//get chatbox
 					if(!chatboxLoaded) { //chatbox only has to load once
