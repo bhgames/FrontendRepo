@@ -1,0 +1,29 @@
+#AP_fuelInfo {
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	}
+#AP_fuelInfo h4 {
+	margin: 5px 0;
+	}
+#AP_makeAirshipBox {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	width: 400px;
+	}
+#AP_needTowns {
+	display: none;
+	}
+#AP_buildAirship {
+	float: right;
+	}
+#AP_airshipInfo {
+	position: absolute;
+	top: 150px;
+	left: 5px;
+	width: 770px;
+	}
+#AP_airshipInfo .darkFrameBody {
+	height: 245px;
+	}
