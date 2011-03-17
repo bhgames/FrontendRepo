@@ -3,6 +3,7 @@ function AP_UI(bldgInfo){if(!Modernizr.input.placeholder){$("#AP_airshipName").v
 $("#AP_currFuel span").html(bldgInfo.peopleInside);$("#AP_nextIn span").html(bldgInfo.ticksPerPerson-bldgInfo.ticksLeft);if(player.towns.length==player.research.townTech){$("#AP_needTowns").css("display","block");$("#AP_makeAirship").css("display","none");}
 $.each(player.towns,function(i,v){if(v.zeppelin){if(v.x==player.curtown.x&&v.y==player.curtown.y){$("#AP_dockedAirships").append("<div class='airship'>\
             <div class='airshipName'>"+v.townName+"</div>\
+            <div class='airshipID'>"+v.townID+"</div>\
             <div class='airshipFuel'>Airship Fuel: <span>"+v.fuelCells+" Cells</span></div>\
             <div class='refuelTime'>Next Fuel Cell loaded in: <span>"+bldgInfo.refuelTicks+"</span></div>\
             <div class='airshipRes'>Resources on Airship: <span>"

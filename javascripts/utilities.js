@@ -585,10 +585,10 @@ function get_all_trades() {
 							w.intervaltime *= player.gameClockFactor;
 						});
 					}
-					clearInterval(v.activeTrades.timer);
-					clearInterval(v.tradeSchedules.timer);
-					v.activeTrades.timer = tick_trades(v.activeTrades);
-					v.tradeSchedules.timer = tick_trades(v.tradeSchedules);
+					// clearInterval(v.activeTrades.timer);
+					// clearInterval(v.tradeSchedules.timer);
+					// v.activeTrades.timer = tick_trades(v.activeTrades);
+					// v.tradeSchedules.timer = tick_trades(v.tradeSchedules);
 				});
 				display_output(false,"Trades Loaded!");
 				gettingTrades = false;
@@ -672,7 +672,7 @@ function set_tickers() {
 					x.moveTicker = inc_movement_ticks(x);
 				}
 				
-			$.each(x.bldg, function(j, y) {
+			/*$.each(x.bldg, function(j, y) {
 				if(y.lvlUps != 0) {
 					y.bldgTicker = inc_bldg_ticks(y); 	//start ticking bldg timers
 				}
@@ -683,7 +683,7 @@ function set_tickers() {
 				$.each(y.Queue,function(k, z) {
 					z.queueTicker = inc_queue_ticks(z);	//start queue tickers, if applicable
 				});
-			});
+			});*/
 		});
 		
 		display_output(false,"Tickers Started!");
@@ -708,7 +708,7 @@ function clear_player_timers() {
 			try {
 				clearInterval(x.resTicker);
 			} catch(e) {}
-			$.each(x.bldg, function(j, y) {
+			/*$.each(x.bldg, function(j, y) {
 				try {
 					clearInterval(y.bldgTicker);
 					clearInterval(y.pplTicker);
@@ -718,7 +718,7 @@ function clear_player_timers() {
 							clearInterval(z.queueTicker);
 						} catch(e) {}
 					});
-			});
+			});*/
 		});
 	display_output(false,"Tickers Cleared!");
 }
@@ -733,7 +733,7 @@ function clear_all_timers() {
 		
 		clearInterval(player.research.ticker);
 		
-		clearInterval(player.raids.raidTicker);
+		//clearInterval(player.raids.raidTicker);
 		
 		try {
 			clearInterval(player.curtown.incomingRaids.displayTimer);
@@ -747,11 +747,11 @@ function clear_all_timers() {
 		$.each(player.towns, function(i, x) {
 			try {
 				clearInterval(x.resTicker);
-				clearInterval(x.activeTrades.timer);
-				clearInterval(x.tradeSchedules.timer);
+				//clearInterval(x.activeTrades.timer);
+				//clearInterval(x.tradeSchedules.timer);
 			}
 			catch(e) {}
-			$.each(x.bldg, function(j, y) {
+			/*$.each(x.bldg, function(j, y) {
 				try {
 					clearInterval(y.bldgTicker);
 					clearInterval(y.pplTicker);
@@ -763,7 +763,7 @@ function clear_all_timers() {
 						}
 						catch(e) {}
 					});
-			});
+			});*/
 		});
 	display_output(false,"Tickers Cleared!");
 }
@@ -868,10 +868,51 @@ Number.prototype.clamp = function(min, max) {
   return Math.min(Math.max(this, min), max);
 }
 
-//formats a number for display as part of a clock.
+/**
+ * Formats a number for display as a clock or other time teller
+ *
+ * (5).toTime() == "05"
+ *
+ * @returns The formatted number
+ * @type String
+ */
 Number.prototype.toTime = function() {
-	if(this<10) return "0"+this;
-	return this;
+	if(this<10) {return "0"+this;}
+	return ""+this;
+}
+
+/**
+ * Returns the difference between the current time, and the time represented by the Date Object
+ *
+ * @param  {Number or String} specifies a time offset (IE "seconds" or 1000)
+ * @returns The numeric differnce between the Date and now
+ * @type Number
+ */
+
+Date.prototype.timeFromNow = function(offset) {
+	var diff = new Date().getTime() - this.getTime();
+	if(offset) {/*
+		if(typeof(offset) == "String") {
+			switch(offset) {
+				case "seconds":
+					offset = 1000;
+					break;
+				case "minutes":
+					offset = 60000;
+					break;
+				case "hours":
+					offset = 3600000;
+					break;
+				case "years":
+					offset = 86400000;
+					break;
+				default:
+					offset = 1;
+			}
+		}*/
+		diff = Math.round(diff/offset);
+	}
+	return diff;
 }
 
 function inc_bldg_ticks(thingToTick) {

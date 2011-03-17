@@ -21,6 +21,7 @@ function AP_UI(bldgInfo) {
 			if(v.x == player.curtown.x && v.y == player.curtown.y) {
 				$("#AP_dockedAirships").append("<div class='airship'>\
 												<div class='airshipName'>"+v.townName+"</div>\
+												<div class='airshipID'>"+v.townID+"</div>\
 												<div class='airshipFuel'>Airship Fuel: <span>"+v.fuelCells+" Cells</span></div>\
 												<div class='refuelTime'>Next Fuel Cell loaded in: <span>"+bldgInfo.refuelTicks+"</span></div>\
 												<div class='airshipRes'>Resources on Airship: <span>"

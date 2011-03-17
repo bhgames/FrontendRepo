@@ -276,39 +276,35 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 							
 							if(i > 0) { //if we're on anything after the extra .time for the first element 
 											//we have to subtract one from i to get the right queue item
-								if(bldgInfo.Queue[i-1].update) load_player(player.league,true,true);
 								time += (bldgInfo.Queue[i-1].ticksPerUnit * bldgInfo.Queue[i-1].AUNumber);
 								var days = Math.floor((time / 3600)/24);
 								var hours = Math.floor((time / 3600)%24);
 								var mins = Math.floor((time % 3600) / 60);
 								var secs = Math.floor((time % 3600) % 60);
 							} else {
-								var ticks = (bldgInfo.Queue[i].ticksPerUnit - bldgInfo.Queue[i].currTicks);
-								var days = Math.floor((ticks / 3600)/24);
-								var hours = Math.floor((ticks / 3600)%24);
-								var mins = Math.floor((ticks % 3600) / 60);
-								var secs = Math.floor((ticks % 3600) % 60);
-								time -= bldgInfo.Queue[i].currTicks; //this is so that time displays correctly for the first element
+								var currTicks = Math.max(0,bldgInfo.Queue[i].ticksPerUnit-(bldgInfo.Queue[i].currTicks+player.time.timeFromNow(1000)));
+								if(currTicks<1) {
+									bldgInfo.update = true;
+								}
+								var days = Math.floor((currTicks / 3600)/24);
+								var hours = Math.floor((currTicks / 3600)%24);
+								var mins = Math.floor((currTicks % 3600) / 60);
+								var secs = Math.floor((currTicks % 3600) % 60);
+								time -= currTicks; //this is so that time displays correctly for the first element
 							}
-							if(time > 0 || i == 0) {
-								$(el).html(((days)?days + " d ":"") + hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime());
-							} else {
-								$(el).parent().parent().remove();
-							}
+							
+							$(el).html(((days)?days + " d ":"") + hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime());
 						});
 						$("#AF_AUbar > a").each(function(i, el){
 							if(player.AU[i].name != "empty"&&player.AU[i].name != "locked")$(el).text(player.curtown.au[i]);
 						});
 						break;
 					case "Trade Center":
-						if(player.curtown.activeTrades.update || player.curtown.tradeSchedules.update) {
-							load_player(player.league,true,true);
-						}
-						
 						$(".ETA").each(function(i, el) {
-							var time = player.curtown.activeTrades[i].ticksToHit;
-							if(isNaN(time)) {
-								$(el).html(time);
+							var time = Math.max(0,player.curtown.activeTrades[i].ticksToHit-player.time.timeFromNow(1000));
+							if(isNaN(time)||time<1) {
+								$(el).html("updating");
+								get_all_trades();
 							} else {
 								var days = Math.floor((time / 3600)/24);
 								var hours = Math.floor((time / 3600)%24);
@@ -325,10 +321,11 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 								SMoffset++;
 							}
 							
-							var ticks = player.curtown.tradeSchedules[i + SMoffset].currTicks;
+							var ticks = Math.max(0,player.curtown.tradeSchedules[i + SMoffset].currTicks-player.time.timeFromNow(1000));
 							
-							if(isNaN(ticks)) {
-								$(el).html(ticks);
+							if(isNaN(ticks)||time<1) {
+								$(el).html("updating");
+								get_all_trades();
 							} else {
 								var days = Math.floor((ticks / 3600)/24);
 								var hours = Math.floor((ticks / 3600)%24);
@@ -342,7 +339,7 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 					
 					case "Institute":
 						//check to see if the number of knowledge points has increased
-						if(Math.floor(player.research.knowledge) > parseInt($("#IN_numKnowledge span").text())) $("#IN_numKnowledge span").text(Math.floor(player.research.knowledge));
+						$("#IN_numKnowledge span").text(Math.floor(player.research.knowledge));
 						break;
 					case "Headquarters":
 						if(player.curtown.zeppelin) {
@@ -358,57 +355,65 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 							$("#HQ_currPos span").text(player.curtown.x+", "+player.curtown.y);
 						}
 						$('#HQ_outgoingMissions .raidETA').each(function(i, v) {
-							
-							if(player.curtown.outgoingRaids[i].eta != "updating") {
+							var time = Math.max(0,player.curtown.outgoingRaids[i].eta-player.time.timeFromNow(1000));
+							if(time>0) {
 								$(this).html(function() {
-									var time = player.curtown.outgoingRaids[i].eta;
 									var hours = Math.floor(time / 3600);
 									var mins = Math.floor((time % 3600) / 60);
 									var secs = Math.floor((time % 3600) % 60);
 									return hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime();
 								});
 							} else {
-								$(this).html(player.curtown.outgoingRaids[i].eta);
+								$(this).html("updating");
 							}
 						});
 						$('#HQ_incomingMissions .raidETA').each(function(i, v) {
 							//if(parseInt($(this).siblings(".raidID").text()) != player.curtown.incomingRaids[i].rid) $(this).parent().remove();
-							if(player.curtown.incomingRaids[i].eta != "updating") {
+							var time = Math.max(0,player.curtown.incomingRaids[i].eta-player.time.timeFromNow(1000));
+							if(time>1) {
 								$(this).html(function() {
-									var time = player.curtown.incomingRaids[i].eta;
 									var hours = Math.floor(time / 3600);
 									var mins = Math.floor((time % 3600) / 60);
 									var secs = Math.floor((time % 3600) % 60);
 									return hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime();
 								});
 							} else {
-								$(this).html(player.curtown.incomingRaids[i].eta);
+								$(this).html("updating");
 							}
 						});
 						break;
 					case "Airship Platform":
-						$("#AP_currFuel span").html(bldgInfo.peopleInside);
 						$("#AP_nextIn span").html(function() {
-							var time = bldgInfo.ticksPerPerson - bldgInfo.ticksLeft;
+							var time = bldgInfo.ticksPerPerson - (bldgInfo.ticksLeft+player.time.timeFromNow(1000));
+							if(time<1) {
+								bldgInfo.ticksLeft = Math.abs(time)-player.time.timeFromNow(1000);
+								time = bldgInfo.ticksPerPerson;
+								bldgInfo.peopleInside++;
+							}
 							var hours = Math.floor(time / 3600);
 							var mins = Math.floor((time % 3600) / 60);
 							var secs = Math.floor((time % 3600) % 60);
 							return hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime();
 						});
+						$("#AP_currFuel span").html(bldgInfo.peopleInside);
 						
-						var townCounter = 0;
 						$(".refuelTime").each(function(i,v) {
 							$(v).find("span").html(function() {
-								var time = bldgInfo.refuelTicks;
+								var time = Math.max(0,bldgInfo.refuelTicks-player.time.timeFromNow(1000));
+								if(time<1) {
+									bldgInfo.peopleInside--;
+									bldgInfo.update = true;
+								}
 								var hours = Math.floor(time / 3600);
 								var mins = Math.floor((time % 3600) / 60);
 								var secs = Math.floor((time % 3600) % 60);
 								return hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime();
 							});
+							var townCounter = 0;
+							var zepp;
 							do {
-								townCounter++;
-							} while(!player.town[townCounter].zeppelin);
-							var zepp = player.town[townCounter];
+								zepp = player.town[townCounter++];
+							} while(!zepp.zeppelin && $(v).sibling(".airshipID").text()!=zepp.townID);
 							$(v).sibling(".airshipFuel").find("span").html(zepp.fuelCells+"/"+zepp.fuelCellCap);
 							$(v).sibling(".airshipRes").find("span").html(zepp.res[0] + " <img src='AIFrames/icons/MetalIcon.png' alt='Metal' />"
 																		+ zepp.res[1] + " <img src='AIFrames/icons/TimberIcon.png' alt='Timber' />"
@@ -416,6 +421,26 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 																		+ zepp.res[3] + " <img src='AIFrames/icons/FoodIcon.png' alt='Food' />");
 						});
 						break;
+				}
+			}
+			if(bldgInfo.lvlUps>0) {
+				var currTicks = thingToTick.ticksToFinishTotal[0]-(bldgInfo.ticksToFinish+player.time.tomeFromNow(1000));
+				if(currTicks<1) {
+					if(bldgInfo.deconstruct) {
+						bldgInfo.lvl = 0;
+						bldgInfo.lvlUps = 0;
+						bldgInfo.lotNum = -1;
+						$("#cityname").click();
+						bldgInfo.update = true;
+					} else {
+						bldgInfo.lvl++;
+						bldgInfo.lvlUps--;
+						bldgInfo.update = true;
+						if(bldgInfo.lvlUps>0) {
+							bldgInfo.ticksToFinish = Math.abs(currTicks)-player.time.tomeFromNow(1000);
+							bldgInfo.ticksToFinishTotal.shift();
+						}
+					}
 				}
 			}
 			$("#BUI_bldgLvl").html(" - Level " + bldgInfo.lvl);
@@ -440,18 +465,31 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 			});
 			$(".pplTown").text(pplCur);
 			$(".totalTown").text(pplTotal);
-			
-			if(bldgInfo.numLeftToBuild) {
-				$("#BUI_numPplBldg").html(bldgInfo.numLeftToBuild);			//update the number building
-				var pplTicks = bldgInfo.ticksPerPerson - bldgInfo.ticksLeft;//update the time left
-				var days = Math.floor((pplTicks / 3600)/24);
-				var hours = Math.floor((pplTicks / 3600)%24);
-				var mins = Math.floor((pplTicks % 3600) / 60);
-				var secs = Math.floor((pplTicks % 3600) % 60);
-				$("#BUI_ticksTillNext").html(((days)?days + " d ":"") + hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime());
+			if(bldgInfo.numLeftToBuild>0) {																	//update the number building
+				var pplTicks = bldgInfo.ticksPerPerson - (bldgInfo.ticksLeft+player.time.timeFromNow(1000));//update the time left
+				if(pplTicks<1) {
+					bldgInfo.numLeftToBuild--;
+					bldgInfo.ticksLeft = Math.abs(pplTicks)-player.time.timeFromNow(1000);
+					bldgInfo.update = true;
+				}
+				
+				if(bldgInfo.numLeftToBuild>0) {
+					$("#BUI_numPplBldg").html(bldgInfo.numLeftToBuild);		
+					var days = Math.floor((pplTicks / 3600)/24);
+					var hours = Math.floor((pplTicks / 3600)%24);
+					var mins = Math.floor((pplTicks % 3600) / 60);
+					var secs = Math.floor((pplTicks % 3600) % 60);
+					$("#BUI_ticksTillNext").html(((days)?days + " d ":"") + hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime());
+				} else {
+					$("#BUI_numPplBldg").html("0");
+					$("#BUI_ticksTillNext").html("??:??:??");
+				}
+			}
+			if(bldgInfo.update) {
+				load_player(player.league,true,true);
 			}
 		} catch(e) {
-			//display_output(true,"Minor Error [update_time_displays()]:<br/>"+e);
+			display_output(true,"Minor Error [update_time_displays()]:<br/>"+e);
 		}
 	}, 1000);
 }
