@@ -126,7 +126,7 @@ function show_town() {
 			$("#pos" + lot + "_building").attr("title","Level " + x.lvl + " " + x.type);
 			if(lot > 3) {
 				var back = "AIFrames/buildings/" + x.path + ".png";
-				$("#pos" + lot).removeClass("emptylot").addClass("buildlot");
+				$("#pos" + lot).removeClass("emptylot locked").addClass("buildlot");
 				$("#pos" + lot + "_building").attr({"src":back,"alt":x.type});
 			} else if(player.league) {
 				$("#pos" + lot + "_building").parent().css("display","none");
@@ -374,43 +374,44 @@ function update_bldg_timers() {
 					//do update check
 					if(x.update) load_player(player.league, true,true);
 					
-					if($(v).text() == x.lotNum) { //we found the building in bldgServer
+					if($(v).text() == x.lotNum) { 	//we found the building in bldgServer
 						var ticks;
-						if(x.lvlUps > 1) {	//if we have multiple level ups, we have to determine which one is last
-							if(i != 0) {	//if we're on the first .bldgName it has to be the first in the list, less checks
-												//if the last entry and this entry are the same building, or we're on the last index
+						if(x.lvlUps > 1) {			//if we have multiple level ups, we have to determine which one is last
+							if(i != 0) {			//if we're on the first .bldgName it has to be the first in the list, less checks
+													//if the last entry and this entry are the same building, or we're on the last index
 								if($(v).parent().prev().children(".bldgListID").text() == $(v).text()) {
-									if(iter + 1 != x.lvlUps) { 	//check to see if we're on the last of a list of upgrading buildings
+									if(iter + 1 != x.lvlUps) { 									//check to see if we're on the last of a list of upgrading buildings
 										$(v).siblings(".cancelButton").addClass('noCancel');	//if not, add noCancel
 									} else {
-										$(v).siblings(".cancelButton").removeClass('noCancel');//otherwise, make sure the button is there.				
+										$(v).siblings(".cancelButton").removeClass('noCancel');	//otherwise, make sure the button is there.				
 									}
-									ticksTotal += x.ticksToFinishTotal[iter]; 	//increase total ticks
+									ticksTotal += x.ticksToFinishTotal[iter]; 					//increase total ticks
 									iter++;
-								} else {								//otherwise
+								} else {													//otherwise
 									$(v).siblings(".cancelButton").addClass('noCancel'); 	//have to cancel the last one first
-									iter = 1;							//set this to our first iteration
-									ticksTotal = x.ticksToFinishTotal[0]; 	//set total ticks as same as current building
+									iter = 1;												//set this to our first iteration
+									ticksTotal = x.ticksToFinishTotal[0]; 					//set total ticks as same as current building
 								}
-							} else {						//if we're on the first element, it must also be the first in the list
-								$(v).siblings(".cancelButton").addClass('noCancel'); 	//have to cancel the last one first
-								ticksTotal = x.ticksToFinishTotal[iter]; 	//set total ticks as same as current building
+							} else {														//if we're on the first element, it must also be the first in the list
+								$(v).siblings(".cancelButton").addClass('noCancel'); 		//have to cancel the last one first
+								ticksTotal = x.ticksToFinishTotal[iter]; 					//set total ticks as same as current building
 								iter++;
 							}
-							ticks = ticksTotal - x.ticksToFinish;
-						} else {		//if we only have one level up, things are a lot simpler
-							ticks = x.ticksToFinishTotal[0] - x.ticksToFinish;
+							ticks = ticksTotal - (x.ticksToFinish+player.time.timeFromNow(1000));
+						} else {															//if we only have one level up, things are a lot simpler
+							ticks = x.ticksToFinishTotal[0] - (x.ticksToFinish+player.time.timeFromNow(1000));
 							$(v).siblings(".cancelButton").removeClass('noCancel');
 						}
-						//format the times
-						var days = Math.floor((ticks / 3600)/24);
-						var hours = Math.floor((ticks / 3600)%24);
-						var mins = Math.floor((ticks % 3600) / 60);
-						var secs = Math.floor((ticks % 3600) % 60);
-						//and display them in a nice format
-						if(isNaN(hours)) { //if the time is NaN, it usually means the building is done, so we should display "updating"
+						if(ticks<1) { //if the time is less then 1 the building is finished
 							$(v).siblings(".bldgTicksToFinish").html("updating");
+							load_player(player.league,true,true);
 						} else {
+								//format the times
+							var days = Math.floor((ticks / 3600)/24);
+							var hours = Math.floor((ticks / 3600)%24);
+							var mins = Math.floor((ticks % 3600) / 60);
+							var secs = Math.floor((ticks % 3600) % 60);
+								//and display them in a nice format
 							$(v).siblings(".bldgTicksToFinish").html(((days)?days + " d ":"") + hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime());
 						}
 						return false;	//pops us out of the loop

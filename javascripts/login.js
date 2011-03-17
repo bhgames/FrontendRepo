@@ -660,6 +660,7 @@ function load_player(type, reloadTown, reloadUI) {
 					if(player.towns.length < 1) throw "No Towns";
 					player.username = player.username.replace(/\u003c/g,"&#60;").replace(/\u003e/g,"&#62;");
 					player.command = (player.league)?"bf.getLeague()":"bf";
+					player.time = new Date();
 
 						//sort towns alphabetically for display in list
 					player.towns.sort(function(a, b) {

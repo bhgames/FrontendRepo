@@ -365,7 +365,6 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 								});
 							} else {
 								$(this).html("updating");
-								load_raids(true);
 							}
 						});
 						$('#HQ_incomingMissions .raidETA').each(function(i, v) {
@@ -380,34 +379,41 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 								});
 							} else {
 								$(this).html("updating");
-								get_SRs();
-								load_raids(true);
 							}
 						});
 						break;
 					case "Airship Platform":
-						$("#AP_currFuel span").html(bldgInfo.peopleInside);
 						$("#AP_nextIn span").html(function() {
-							var time = bldgInfo.ticksPerPerson - bldgInfo.ticksLeft;
+							var time = bldgInfo.ticksPerPerson - (bldgInfo.ticksLeft+player.time.timeFromNow(1000));
+							if(time<1) {
+								bldgInfo.ticksLeft = Math.abs(time)-player.time.timeFromNow(1000);
+								time = bldgInfo.ticksPerPerson;
+								bldgInfo.peopleInside++;
+							}
 							var hours = Math.floor(time / 3600);
 							var mins = Math.floor((time % 3600) / 60);
 							var secs = Math.floor((time % 3600) % 60);
 							return hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime();
 						});
+						$("#AP_currFuel span").html(bldgInfo.peopleInside);
 						
-						var townCounter = 0;
 						$(".refuelTime").each(function(i,v) {
 							$(v).find("span").html(function() {
-								var time = bldgInfo.refuelTicks;
+								var time = Math.max(0,bldgInfo.refuelTicks-player.time.timeFromNow(1000));
+								if(time<1) {
+									bldgInfo.peopleInside--;
+									bldgInfo.update = true;
+								}
 								var hours = Math.floor(time / 3600);
 								var mins = Math.floor((time % 3600) / 60);
 								var secs = Math.floor((time % 3600) % 60);
 								return hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime();
 							});
+							var townCounter = 0;
+							var zepp;
 							do {
-								townCounter++;
-							} while(!player.town[townCounter].zeppelin);
-							var zepp = player.town[townCounter];
+								zepp = player.town[townCounter++];
+							} while(!zepp.zeppelin && $(v).sibling(".airshipID").text()!=zepp.townID);
 							$(v).sibling(".airshipFuel").find("span").html(zepp.fuelCells+"/"+zepp.fuelCellCap);
 							$(v).sibling(".airshipRes").find("span").html(zepp.res[0] + " <img src='AIFrames/icons/MetalIcon.png' alt='Metal' />"
 																		+ zepp.res[1] + " <img src='AIFrames/icons/TimberIcon.png' alt='Timber' />"
@@ -415,6 +421,26 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 																		+ zepp.res[3] + " <img src='AIFrames/icons/FoodIcon.png' alt='Food' />");
 						});
 						break;
+				}
+			}
+			if(bldgInfo.lvlUps>0) {
+				var currTicks = thingToTick.ticksToFinishTotal[0]-(bldgInfo.ticksToFinish+player.time.tomeFromNow(1000));
+				if(currTicks<1) {
+					if(bldgInfo.deconstruct) {
+						bldgInfo.lvl = 0;
+						bldgInfo.lvlUps = 0;
+						bldgInfo.lotNum = -1;
+						$("#cityname").click();
+						bldgInfo.update = true;
+					} else {
+						bldgInfo.lvl++;
+						bldgInfo.lvlUps--;
+						bldgInfo.update = true;
+						if(bldgInfo.lvlUps>0) {
+							bldgInfo.ticksToFinish = Math.abs(currTicks)-player.time.tomeFromNow(1000);
+							bldgInfo.ticksToFinishTotal.shift();
+						}
+					}
 				}
 			}
 			$("#BUI_bldgLvl").html(" - Level " + bldgInfo.lvl);
@@ -439,21 +465,31 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 			});
 			$(".pplTown").text(pplCur);
 			$(".totalTown").text(pplTotal);
-			
-			if(bldgInfo.numLeftToBuild) {
-				$("#BUI_numPplBldg").html(bldgInfo.numLeftToBuild);			//update the number building
-				var pplTicks = bldgInfo.ticksPerPerson - bldgInfo.ticksLeft;//update the time left
-				var days = Math.floor((pplTicks / 3600)/24);
-				var hours = Math.floor((pplTicks / 3600)%24);
-				var mins = Math.floor((pplTicks % 3600) / 60);
-				var secs = Math.floor((pplTicks % 3600) % 60);
-				$("#BUI_ticksTillNext").html(((days)?days + " d ":"") + hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime());
+			if(bldgInfo.numLeftToBuild>0) {																	//update the number building
+				var pplTicks = bldgInfo.ticksPerPerson - (bldgInfo.ticksLeft+player.time.timeFromNow(1000));//update the time left
+				if(pplTicks<1) {
+					bldgInfo.numLeftToBuild--;
+					bldgInfo.ticksLeft = Math.abs(pplTicks)-player.time.timeFromNow(1000);
+					bldgInfo.update = true;
+				}
+				
+				if(bldgInfo.numLeftToBuild>0) {
+					$("#BUI_numPplBldg").html(bldgInfo.numLeftToBuild);		
+					var days = Math.floor((pplTicks / 3600)/24);
+					var hours = Math.floor((pplTicks / 3600)%24);
+					var mins = Math.floor((pplTicks % 3600) / 60);
+					var secs = Math.floor((pplTicks % 3600) % 60);
+					$("#BUI_ticksTillNext").html(((days)?days + " d ":"") + hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime());
+				} else {
+					$("#BUI_numPplBldg").html("0");
+					$("#BUI_ticksTillNext").html("??:??:??");
+				}
 			}
 			if(bldgInfo.update) {
 				load_player(player.league,true,true);
 			}
 		} catch(e) {
-			//display_output(true,"Minor Error [update_time_displays()]:<br/>"+e);
+			display_output(true,"Minor Error [update_time_displays()]:<br/>"+e);
 		}
 	}, 1000);
 }

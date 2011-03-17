@@ -109,9 +109,7 @@ function build_SR_menu() {
 								<span class='timeStamp'>[ ";
 								//fix date strings so IE doesn't freak out
 								var createdAt = v.createdAt.replace(/-/g,"/").split(".")[0];
-								var sDate = new Date(createdAt);
-								var lDate = new Date();
-								var rDate = new Date(sDate - (lDate.getTimezoneOffset()*60*1000));
+								var rDate = new Date((new Date(createdAt)).getTime() - (player.time.getTimezoneOffset()*60*1000));
 								HTML += rDate.getFullYear() + "-" + (rDate.getMonth()+1).toTime() + "-" 
 										+ rDate.getDate().toTime() + " - " + rDate.toLocaleTimeString() + " ]</span></li>";
 						}

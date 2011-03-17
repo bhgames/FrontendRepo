@@ -19,8 +19,8 @@ function get_raids(async, raids) {
 			$.each(player.raids, function(i) {
 				player.raids[i].eta *= player.gameClockFactor;
 			});
-			clearInterval(player.raids.raidTicker);
-			player.raids.raidTicker = tick_raids(player.raids);
+			//clearInterval(player.raids.raidTicker);
+			//player.raids.raidTicker = tick_raids(player.raids);
 			build_raid_list();
 			display_output(false,"Raids Loaded!");
 			gettingRaids = false;
@@ -125,70 +125,58 @@ function build_raid_list() {
 
 function update_raid_display() {
 
-	if(player.curtown.outgoingRaids) {
-		clearInterval(player.curtown.outgoingRaids.displayTimer);
+		clearInterval(player.raidDisplayTimer);
 		player.curtown.outgoingRaids.displayTimer =
 			setInterval(function() {
 			try {
 				if(player.curtown.outgoingRaids.length > 0) {
 					$('#outgoing_attacks .raidETA').each(function(i, v) {
-						if(player.curtown.outgoingRaids[i].update) {
+					
+						if($(this).siblings(".raidID").text() != player.curtown.outgoingRaids[i].rid) {build_raid_list();}
+						var time = player.curtown.outgoingRaids[i].eta-player.time.timeFromNow(1000);
+						if(time>0) {
+							$(this).html(function() {
+								var hours = Math.floor(time / 3600);
+								var mins = Math.floor((time % 3600) / 60);
+								var secs = Math.floor((time % 3600) % 60);
+								return hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime();
+							});
+						} else {
+							$(this).html("updating");
 							if(player.curtown.outgoingRaids[i].raidType.match(/invasion|support/)) {
+								map.update = true;
+								SR.update = true;
 								load_player(player.league,true);
 							} else {
 								get_SRs();
 								get_raids(true);
 							}
 						}
-						if($(this).siblings(".raidID").text() != player.curtown.outgoingRaids[i].rid) $(this).parent().remove();
-						if(player.curtown.outgoingRaids[i].eta != "updating") {
-							$(this).html(function() {
-								var time = player.curtown.outgoingRaids[i].eta;
-								var hours = Math.floor(time / 3600);
-								var mins = Math.floor((time % 3600) / 60);
-								var secs = Math.floor((time % 3600) % 60);
-								return hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime();
-							});
-						} else {
-							$(this).html(player.curtown.outgoingRaids[i].eta);
-						}
 					});
 				}
-			}
-			catch(e) {
+			} catch(e) {
 				log(e);
 			}
-		}, 1000);
-	}
-	
-	if(player.curtown.incomingRaids) {
-		clearInterval(player.curtown.incomingRaids.displayTimer);
-		player.curtown.incomingRaids.displayTimer =
-			setInterval(function() {
-			try {
+			try {	
 				if(player.curtown.incomingRaids.length > 0) {
 					$('#incomming_attacks .raidETA').each(function(i, v) {
-						if(player.curtown.incomingRaids[i].update) {
-							load_player(player.league,true);
-						}
-						if($(this).siblings(".raidID").text() != player.curtown.incomingRaids[i].rid) $(this).parent().remove();
-						if(player.curtown.incomingRaids[i].eta != "updating") {
+						if($(this).siblings(".raidID").text() != player.curtown.incomingRaids[i].rid) {build_raid_list();}
+						var time = player.curtown.incomingRaids[i].eta-player.time.timeFromNow(1000);
+						if(time>0) {
 							$(this).html(function() {
-								var time = player.curtown.incomingRaids[i].eta;
 								var hours = Math.floor(time / 3600);
 								var mins = Math.floor((time % 3600) / 60);
 								var secs = Math.floor((time % 3600) % 60);
 								return hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime();
 							});
 						} else {
-							$(this).html(player.curtown.incomingRaids[i].eta);
+							$(this).html("updating");
+							load_player(player.league,true);
 						}
 					});
 				}
-			}
-			catch(e) {
+			} catch(e) {
 				log(e);
 			}
 		}, 1000);
-	}
 }

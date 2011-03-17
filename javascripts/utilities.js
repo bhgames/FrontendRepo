@@ -585,10 +585,10 @@ function get_all_trades() {
 							w.intervaltime *= player.gameClockFactor;
 						});
 					}
-					clearInterval(v.activeTrades.timer);
-					clearInterval(v.tradeSchedules.timer);
-					v.activeTrades.timer = tick_trades(v.activeTrades);
-					v.tradeSchedules.timer = tick_trades(v.tradeSchedules);
+					// clearInterval(v.activeTrades.timer);
+					// clearInterval(v.tradeSchedules.timer);
+					// v.activeTrades.timer = tick_trades(v.activeTrades);
+					// v.tradeSchedules.timer = tick_trades(v.tradeSchedules);
 				});
 				display_output(false,"Trades Loaded!");
 				gettingTrades = false;
@@ -889,7 +889,7 @@ Number.prototype.toTime = function() {
  * @type Number
  */
 
-Date.prototype.timeFromNow(offset) {
+Date.prototype.timeFromNow = function(offset) {
 	var diff = new Date().getTime() - this.getTime();
 	if(offset) {/*
 		if(typeof(offset) == "String") {
@@ -910,7 +910,7 @@ Date.prototype.timeFromNow(offset) {
 					offset = 1;
 			}
 		}*/
-		diff /= offset;
+		diff = Math.round(diff/offset);
 	}
 	return diff;
 }
