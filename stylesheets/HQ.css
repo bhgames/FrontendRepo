@@ -151,7 +151,7 @@
 	top:20px;
 }
 #HQ_civWeapon {
-	display: inline-block;
+	display: none;
 	width: 218px;
 	margin-left: 5px;
 	}

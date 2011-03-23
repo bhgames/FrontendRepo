@@ -574,15 +574,19 @@ function get_all_trades() {
 					h++;
 					v.tradeSchedules = $.parseJSON(trades[i + h]);
 					if(v.activeTrades.length > 0) {
-						$.each(v.activeTrades, function(j, w) {
-							w.ticksToHit *= player.gameClockFactor;
-							w.totalTicks *= player.gameClockFactor;
+						$.each(v.activeTrades,function(j,w) {
+								w.currTicks *= player.gameClockFactor;
+								w.currTicks -= player.time.timeFromNow(1000)+player.gameClockFactor;
+								w.intervaltime *= player.gameClockFactor;
+							
 						});
 					}
 					if(v.tradeSchedules.length > 0) {
-						$.each(v.tradeSchedules, function(j, w) {
-							w.currTicks *= player.gameClockFactor;
-							w.intervaltime *= player.gameClockFactor;
+						$.each(v.tradeSchedules,function(j,w) {
+								w.currTicks *= player.gameClockFactor;
+								w.currTicks -= player.time.timeFromNow(1000)+player.gameClockFactor;
+								w.intervaltime *= player.gameClockFactor;
+							
 						});
 					}
 					// clearInterval(v.activeTrades.timer);
@@ -633,7 +637,7 @@ function check_for_unread() {
 			}, 251);
 		} else {
 			clearInterval(SR.flashTimer);
-			$("#sr .flicker").stop(true).fadeOut();
+			$("#sr .flicker").stop(true,true).fadeOut();
 		}
 	} catch(e) {}
 	
@@ -655,7 +659,7 @@ function check_for_unread() {
 			}, 251);
 		} else {
 			clearInterval(messages.flashTimer);
-			$("#mailbox .flicker").stop(true).fadeOut();
+			$("#mailbox .flicker").stop(true,true).fadeOut();
 		}
 	} catch(e) {}
 }
@@ -890,7 +894,7 @@ Number.prototype.toTime = function() {
  */
 
 Date.prototype.timeFromNow = function(offset) {
-	var diff = new Date().getTime() - this.getTime();
+	var diff = (new Date()).getTime() - this.getTime();
 	if(offset) {/*
 		if(typeof(offset) == "String") {
 			switch(offset) {

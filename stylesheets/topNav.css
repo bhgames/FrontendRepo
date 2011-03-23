@@ -40,7 +40,7 @@
 	color: #FFFFFF;
 	}
 #citydropdown {
-	background: url(../../images/client/client-City_dropdown_arrow.png) no-repeat 0 0px;
+	background: url(../AIFrames/city_dropdown_arrow.png) no-repeat 0 0px;
 	width: 19px;
 	height: 14px !important;
 	position: absolute;

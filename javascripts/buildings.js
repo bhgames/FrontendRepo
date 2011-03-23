@@ -489,7 +489,7 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 				load_player(player.league,true,true);
 			}
 		} catch(e) {
-			display_output(true,"Minor Error [update_time_displays()]:<br/>"+e);
+			//display_output(true,"Minor Error [update_time_displays()]:<br/>"+e);
 		}
 	}, 1000);
 }

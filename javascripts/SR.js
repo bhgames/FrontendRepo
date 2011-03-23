@@ -685,50 +685,37 @@ function build_SR_menu() {
 							});
 							desc = "I "+((report.isDefender)?"was attacked":"attacked")+" with "+numTroopsStart[0]+" troops.  "+((report.isDefender)?"I":"The defender")+" stood with "+numTroopsStart[1]+" troops.  "+((report.isDefender)?((percentLoss[0]>percentLoss[1])?"I won this battle by ":"I was routed by "):((percentLoss[1]>percentLoss[0])?"I won this battle by ":"I was routed by "))+Math.abs(percentLoss[0]-percentLoss[1])+"% and "+resTaken;
 						}
-						display_message("Custom Message","If you want to add your own custom message to the Blast, please do so here.\
-															<textarea id='fbBlastMessage' style='width: 450px;height: 100px; display: block; background: transparent; border: 1px solid #FFFFFF; color: #FFFFFF;'></textarea>\
-															In addition, the following message will also be added as a description of the report:\
-															<div style='font-size:10px;margin: 10px 5px;'>"+desc+
-															"</div>Please note, clicking no will cause the Blast to not send.<br/>\
-															Continue?\
-															<script type='text/javascript'>\
-																$('#fbBlastMessage').unbind('blur').blur(function(){\
-																	window.fbMessage = $(this).val();\
-																});\
-															</script>",
-						function() {
-							FB.api("/me/feed", "post", {"message":window.fbMessage,
-														"link":"http://www.aiwars.org",
-														"picture":"http://www.aiwars.org/AIFrames/Juggy.jpg",
-														"name":report.Subject,
-														"caption":"Blasted from the AI Wars client",
-														"description":desc},
-														function(r){
-															window.fbMessage = undefined;
-															if(!r || r.error) {
-																display_output(true,"An error occured during this FB Blast:<br/>"+r.error.message,true);
-																display_output(false,"Please try again later");
-															} else {
-																display_message("Select Reward","Please choose one of the following rewards:<br/>\
-																									Note: be careful what you choose.  Once you have clicked your choice you will be unable to change it.<br/><br/>\
-																									<input type='checkbox' id='autoblastable' class='fbBlastReward' "+((player.research.autoblastable&&player.research.bhmblastable)?"":"disabled='disabled'")
-																									+"/> One day of Autopilot for free!<br/><input type='checkbox' id='bhmblastable' class='fbBlastReward' "
-																									+((player.research.autoblastable&&player.research.bhmblastable)?"":"disabled='disabled'")+"/> One day of Battlehard Mode for free!<br/>\
-																									<input type='checkbox' id='resblastable' class='fbBlastReward' "+((player.research.resblastable)?"":"disabled='disabled'")
-																									+"/> 25% of resources gained in this report as a bonus<br/><br/>You may click the \"Okay\" button below to save these bonuses for another report.\
-																									<script type='text/javascript'>\
-																									$('.fbBlastReward').unbind('click').click(function(){\
-																										$(this).siblings().andSelf().each(function(){\
-																											$(this).attr('disabled','disabled');\
-																										});\
-																										var reward = new make_AJAX();\
-																										reward.callback = function() {display_output(true,reward.responseText);};\
-																										reward.get('/AIWars/GodGenerator?reqtype=FBBlast&fuid="+response.session.uid+"&rewardChoice='+$(this).index('.fbBlastReward')+'&SID="+report.sid+"');\
-																										$('#AIW_alertButton').click();\
-																									});</script>");
-															}
-														});
-						});
+						FB.ui({	"method":"feed",
+								"message":"Check this out!",
+								"link":"http://www.aiwars.org",
+								"picture":"http://www.aiwars.org/AIFrames/Juggy.jpg",
+								"name":report.Subject,
+								"caption":"Blasted from the AI Wars client",
+								"description":desc},
+								function(r){
+									if(r && r.post_id) {
+										display_message("Select Reward","Please choose one of the following rewards:<br/>\
+																			Note: be careful what you choose.  Once you have clicked your choice you will be unable to change it.<br/><br/>\
+																			<input type='checkbox' id='autoblastable' class='fbBlastReward' "+((player.research.autoblastable&&player.research.bhmblastable)?"":"disabled='disabled'")
+																			+"/> One day of Autopilot for free!<br/><input type='checkbox' id='bhmblastable' class='fbBlastReward' "
+																			+((player.research.autoblastable&&player.research.bhmblastable)?"":"disabled='disabled'")+"/> One day of Battlehard Mode for free!<br/>\
+																			<input type='checkbox' id='resblastable' class='fbBlastReward' "+((player.research.resblastable)?"":"disabled='disabled'")
+																			+"/> 25% of resources gained in this report as a bonus<br/><br/>You may click the \"Okay\" button below to save these bonuses for another report.\
+																			<script type='text/javascript'>\
+																			$('.fbBlastReward').unbind('click').click(function(){\
+																				$(this).siblings().andSelf().each(function(){\
+																					$(this).attr('disabled','disabled');\
+																				});\
+																				var reward = new make_AJAX();\
+																				reward.callback = function() {display_output(true,reward.responseText);};\
+																				reward.get('/AIWars/GodGenerator?reqtype=FBBlast&fuid="+response.session.uid+"&rewardChoice='+$(this).index('.fbBlastReward')+'&SID="+report.sid+"');\
+																				$('#AIW_alertButton').click();\
+																			});</script>");
+									} else {
+										display_output(true,"An error occured during this FB Blast:<br/>"+r.error.message,true);
+										display_output(false,"Please try again later");
+									}
+								});
 					}
 				}
 			}, {"perms":"publish_stream"});

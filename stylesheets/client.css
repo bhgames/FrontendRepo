@@ -12,7 +12,7 @@
 	src: local("Bank Gothic"), local("BankGothic Lt BT"), local("BankGothicBTLight"), url(/BankGothic.ttf) format("truetype");
 	}
 body {
-	background: #000; 
+	background: #000 url(../AIFrames/screen-tile.png) repeat-y 50% 0; 
 	min-height: 800px;
 	color: #FFF;
 	margin: 0;
@@ -45,7 +45,7 @@ ul, li {
 	min-width: 1024px;
 	width: 100%;
 	padding-top: 100px;
-	background: #000000 url(../AIFrames/screen.png) no-repeat 50% 0;
+	background: url(../AIFrames/screen.png) no-repeat 50% 0;
 	z-index: 1;
 	}
 #client input[type="text"], #client input[type="email"], #client input[type="number"], #client select {
@@ -470,10 +470,12 @@ a#fdbk_tab:hover {
 	padding: 5px 5px 1px;
 	border: 1px solid #FFF;
 	border-bottom: none;
+	margin-bottom: -1px;
 	}
 .textFrameB{
 	height: 16px;
-	background: url(../AIFrames/TextFrame/Bottom.png) repeat-x center bottom;
+	/*background: url(../AIFrames/TextFrame/Bottom.png) repeat-x center bottom;*/
+	border-bottom: 1px solid #FFF;
 	margin: 0px 16px;
 	}
 .textFrameBL{
@@ -486,14 +488,15 @@ a#fdbk_tab:hover {
  * Black Frame
  */
 .blackFramed {
-	padding: 5px 5px 0;
-	margin-bottom: -5px;
+	padding: 5px 5px 1px;
 	border: 1px solid #000;
 	border-bottom: none;
+	margin-bottom: -1px;
 	}
 .blackFrameB{
 	height: 16px;
-	background: url(../AIFrames/TextFrame/Bottom-black.png) repeat-x center bottom;
+	/*background: url(../AIFrames/TextFrame/Bottom-black.png) repeat-x center bottom;*/
+	border-bottom: 1px solid #000;
 	margin: 0px 16px;
 	}
 .blackFrameBL{

@@ -84,9 +84,9 @@ function show_town() {
 		$("#town_bldgBldgsBar").css("display","block");
 		
 		$("#town_bldgBldgsPopup").unbind("mouseenter").mouseenter(function() {
-			$("#town_bldgBldgsList").slideDown();
+			$("#town_bldgBldgsList").stop(true).slideDown();
 		}).unbind("mouseleave").mouseleave(function() {
-			$("#town_bldgBldgsList").slideUp();
+			$("#town_bldgBldgsList").stop(true).slideUp();
 		});
 		var list = "<ul>";
 		$.each(BUI.CY.bldgServer, function(i,x) {

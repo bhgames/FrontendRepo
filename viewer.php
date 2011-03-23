@@ -9,7 +9,7 @@
 	}
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html class='no-js'> <!-- manifest='http://www.aiwars.org/manifest.appcache'> -->
+<html class='no-js'>
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"> 
@@ -165,7 +165,7 @@
 		</div>
 	</div>
 	<div id="preload"></div>
-	<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.5.1.min.js"></script>
 	<?php
 		flush();
 		//page function JS
@@ -221,7 +221,7 @@
 		echo "<![if !IE]>";
 		insertScript("ace/ace","js");
 		insertScript("ace/theme-aiwars","js");
-		insertScript("ace/mode-java","js");
+		insertScript("ace/mode-AIWjava","js");
 		echo "<![endif]>";
 
 		flush();

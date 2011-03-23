@@ -247,15 +247,18 @@ function TC_UI(bldgInfo) {
 					
 					$("#TC_dtSend").unbind('click').click(function() {
 						if(!$(this).hasClass("noTrade")) {
+							if(BUI.TC.DT.interval<player.gameClockFactor) {BUI.TC.DT.interval = player.gameClockFactor}
 							var makeTrade = new make_AJAX();
 							var getPath = "/AIWars/GodGenerator?reqtype=command&command=" + player.command 
 											+ ".setUpTradeSchedule(" + player.curtown.townID + "," + BUI.TC.DT.x + ","
 										+ BUI.TC.DT.y + ",";
 							$("#TC_dtResSendType option").each(function(i, v) {
-								if(v.selected == true) {
-									getPath += $("#TC_dtResSendAmnt").val() + ",";
-								} else {
-									getPath += "0,";
+								if(i<4) {
+									if(v.selected == true) {
+										getPath += $("#TC_dtResSendAmnt").val() + ",";
+									} else {
+										getPath += "0,";
+									}
 								}
 							});
 							getPath += BUI.TC.DT.interval + "," + BUI.TC.DT.numIntervals + ");";
@@ -344,17 +347,21 @@ function TC_UI(bldgInfo) {
 							var getPath = "/AIWars/GodGenerator?reqtype=command&command=" + player.command 
 											+ ".setUpTradeSchedule(" + player.curtown.townID + ",";
 							$("#TC_ltResSendType option").each(function(i, v) {
-								if(v.selected == true) {
-									getPath += $("#TC_ltResSendAmnt").val() + ",";
-								} else {
-									getPath += "0,";
+								if(i<4) {
+									if(v.selected == true) {
+										getPath += $("#TC_ltResSendAmnt").val() + ",";
+									} else {
+										getPath += "0,";
+									}
 								}
 							});
 							$("#TC_ltResRecType option").each(function(i, v) {
-								if(v.selected == true) {
-									getPath += $("#TC_ltResRecAmnt").val() + ",";
-								} else {
-									getPath += "0,";
+								if(i<4) {
+									if(v.selected == true) {
+										getPath += $("#TC_ltResRecAmnt").val() + ",";
+									} else {
+										getPath += "0,";
+									}
 								}
 							});
 							getPath += player.gameClockFactor + ",1);";
@@ -638,6 +645,7 @@ function get_trade_ETA() {
 	var getETA = new make_AJAX();
 	getETA.callback = 	function(response) {
 							if(response.match(/\d/)) {
+								response*=player.gameClockFactor;
 								var days = Math.floor((response / 3600)/24);
 								var hours = Math.floor((response / 3600)%24);
 								var mins = Math.floor((response % 3600) / 60);

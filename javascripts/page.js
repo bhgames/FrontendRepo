@@ -21,6 +21,17 @@ Modernizr.addTest('pointerEvents', function () {
 });
 
 $(document).ready(function() {	
+	try {
+		window.applicationCache.addEventListener('updateready', function(e) {
+			if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+				window.applicationCache.swapCache();
+			  display_message('Update','A new version of this site is available. Load it?',function() {
+				window.location.reload();
+			  });
+			}
+		});
+	} catch(e) {} //browser doesn't support appcache
+
 	FB.init({appId: '164327976933647', status: true, cookie: false,
 			 xfbml: true});
 	FB.Canvas.setSize();

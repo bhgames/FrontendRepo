@@ -468,6 +468,7 @@ function load_client(type, reloadTown, reloadUI) {
 						x.tradeSchedules = {};
 						x.townName = x.townName.replace(/\u003c/g,"&#60;").replace(/\u003e/g,"&#62;");
 						x.movementTicks *= player.gameClockFactor;
+						x.movementTicks += player.time.timeFromNow(1000)+player.gameClockFactor;
 						for(y in x.resInc) {
 							if(x.resInc.hasOwnProperty(y)) x.resInc[y] /= player.gameClockFactor;
 						}
@@ -479,13 +480,16 @@ function load_client(type, reloadTown, reloadUI) {
 							}
 							if(y.lvlUps != 0) {
 								y.ticksToFinish *= player.gameClockFactor;
+								y.ticksToFinish -= player.time.timeFromNow(1000)+player.gameClockFactor;
 							}
 							y.ticksPerPerson *= player.gameClockFactor;
 							if(y.numLeftToBuild > 0) {
 								y.ticksLeft *= player.gameClockFactor;
+								y.ticksLeft -= player.time.timeFromNow(1000)+player.gameClockFactor;
 							}
 							$.each(y.Queue,function(k, z) {
 								z.currTicks *= player.gameClockFactor;
+								z.currTicks -= player.time.timeFromNow(1000)+player.gameClockFactor;
 								z.ticksPerUnit *= player.gameClockFactor;
 							});
 						});
@@ -641,17 +645,23 @@ function load_player(type, reloadTown, reloadUI) {
 			if(!response.match(/invalid/i)) { //if the user entered a valid UN and Pass
 				try {
 					//update checks
-					if(player.raids.update && !SR.update) {
-						get_raids(true);
-					}
-					if(SR.update) {
-						get_SRs();
-						get_raids(true);
-					}
-					if(map.update) {
-						map.update = false;
-						get_map();
-					}					
+					try {
+						if(player.raids.update && !SR.update) {
+							get_raids(true);
+						}	
+					} catch(e) {}
+					try {
+						if(SR.update) {
+							get_SRs();
+							get_raids(true);
+						}	
+					} catch(e) {}
+					try {
+						if(map.update) {
+							map.update = false;
+							get_map();
+						}					
+					} catch(e) {}
 					
 					clear_player_timers();
 					$.extend(player, $.parseJSON(response));
@@ -688,7 +698,12 @@ function load_player(type, reloadTown, reloadUI) {
 					
 						//normalize town values to seconds from ticks and sort support
 					$.each(player.towns,function(i,x) {
+						//these have to be set to avoid errors in the TC
+						x.activeTrades = {};
+						x.tradeSchedules = {};
 						x.townName = x.townName.replace(/\u003c/g,"&#60;").replace(/\u003e/g,"&#62;");
+						x.movementTicks *= player.gameClockFactor;
+						x.movementTicks += player.time.timeFromNow(1000)+player.gameClockFactor;
 						for(y in x.resInc) {
 							if(x.resInc.hasOwnProperty(y)) x.resInc[y] /= player.gameClockFactor;
 						}
@@ -700,14 +715,16 @@ function load_player(type, reloadTown, reloadUI) {
 							}
 							if(y.lvlUps != 0) {
 								y.ticksToFinish *= player.gameClockFactor;
+								y.ticksToFinish -= player.time.timeFromNow(1000)+player.gameClockFactor;
 							}
-							
 							y.ticksPerPerson *= player.gameClockFactor;
 							if(y.numLeftToBuild > 0) {
 								y.ticksLeft *= player.gameClockFactor;
+								y.ticksLeft -= player.time.timeFromNow(1000)+player.gameClockFactor;
 							}
 							$.each(y.Queue,function(k, z) {
 								z.currTicks *= player.gameClockFactor;
+								z.currTicks -= player.time.timeFromNow(1000)+player.gameClockFactor;
 								z.ticksPerUnit *= player.gameClockFactor;
 							});
 						});

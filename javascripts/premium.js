@@ -202,28 +202,28 @@ function show_help() {
 function set_premium_timers() {
 	setInterval(function() {
 					$(".bpTime").each(function(i,v) {
-						var time = 0;
+						var time = -player.time.timeFromNow(1000);;
 						switch(i) {
 							case 0:
-								time = player.research.premiumTimer;
+								time += player.research.premiumTimer;
 								break;
 							case 1:
-								time = player.research.mineTimer;
+								time += player.research.mineTimer;
 								break;
 							case 2:
-								time = player.research.mmTimer;
+								time += player.research.mmTimer;
 								break;
 							case 3:
-								time = player.research.timberTimer;
+								time += player.research.timberTimer;
 								break;
 							case 4:
-								time = player.research.fTimer;
+								time += player.research.fTimer;
 								break;
 							case 5:
-								time = player.research.ubTimer;
+								time += player.research.ubTimer;
 								break;
 							case 6:
-								time = player.research.feroTimer;
+								time += player.research.feroTimer;
 								break;
 						}
 						if(time > 0) {

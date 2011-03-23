@@ -18,6 +18,7 @@ function get_raids(async, raids) {
 			player.raids = $.parseJSON(raids);
 			$.each(player.raids, function(i) {
 				player.raids[i].eta *= player.gameClockFactor;
+				player.raids[i].eta += player.time.timeFromNow(1000)+player.gameClockFactor;
 			});
 			//clearInterval(player.raids.raidTicker);
 			//player.raids.raidTicker = tick_raids(player.raids);
