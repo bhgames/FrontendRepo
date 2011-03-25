@@ -19,7 +19,7 @@ function make_AJAX() {
 				websock.log = websock.log || [];
 				websock.checksock = websock.checksock || [];
 				websock.onopen = 	function() {
-										this.connected = true;
+										websock.connected = true;
 										while(websock.checksock.length>0) {
 											clearTimeout(websock.checksock.shift());
 										}
@@ -32,7 +32,44 @@ function make_AJAX() {
 										log(err);
 										display_output(true,err,true);
 									};
-				websock.onmessage = function(e) {};
+				websock.onmessage = function(e) {
+										var message = e.data;
+										if(message.match(/invalidcmd/)) {
+											display_output(true,"Invalid Command",true);
+											return false;
+										}
+										message = $.parseJSON(message);
+										if(message.id) {
+											$.each(websock.log,function(i,v) {
+												if(v.id == message.id) {
+													v.callback(message);
+													websock.log.splice(i,1);
+													return false;
+												}
+											});
+										} else {
+											switch(message.type) {
+												case "player":
+													//call a parse player function that parses the sent data into the client
+													break;
+												
+												case "raids":
+													get_raids(false,message);
+													break;
+												
+												case "trades":
+													//call parse trades function that parses this data into the client
+													break;
+													
+												case "statusreports":
+													//call parse SRs function that parses the data into the client
+													break;
+													
+												case "messages":
+													
+											}
+										}
+									};
 				websock.onclose = 	function() {
 										this.connected = false;
 									};
@@ -57,13 +94,15 @@ function make_AJAX() {
 										data = data.join("&command=");
 									}
 									
+									that.id = Math.round(Math.random()*100000);
+									
 									if(websock.connected) {
-										websock.send(data); //this will have to be modified so that an additional ID is passed that is returned with the call so that the appropriate function gets the data
-										websock.log(that);
+										websock.send(data+"id="+that.id); //this will have to be modified so that an additional ID is passed that is returned with the call so that the appropriate function gets the data
+										websock.log.push(that);
 									} else {
 										websock.backlog.push(that);
 										websock.checksock.push(	setTimeout(	function() {
-																				log(websock.readyState)
+																				log(websock.readyState);
 																				if(websock.readyState > 1) {
 																					websock.nosock = true;
 																					var temp = websock.backlog.shift();

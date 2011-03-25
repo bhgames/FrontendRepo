@@ -1,6 +1,6 @@
 var messages = {};
 
-function get_messages(async,mess, UG) {
+function get_messages(async,mess,UG) {
 	try {
 		if(async) {
 			getMess = new make_AJAX();

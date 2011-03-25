@@ -15,7 +15,11 @@ function get_raids(async, raids) {
 				getRaids.get('/AIWars/GodGenerator?reqtype=command&command=' + player.command+ '.getUserRaids();');
 			}
 		} else {
-			player.raids = $.parseJSON(raids);
+			if(typeof(raids) == "String") {
+				player.raids = $.parseJSON(raids);
+			} else {
+				player.raids = raids;
+			}
 			$.each(player.raids, function(i) {
 				player.raids[i].eta *= player.gameClockFactor;
 			});

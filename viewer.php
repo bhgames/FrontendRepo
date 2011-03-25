@@ -9,7 +9,7 @@
 	}
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html class='no-js'> <!-- manifest='http://www.aiwars.org/manifest.appcache'> -->
+<html class='no-js'>
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"> 
