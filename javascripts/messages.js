@@ -8,16 +8,16 @@ function get_messages(async,mess,UG) {
 									response = response.split(";");
 									get_messages(false,response[0],response[1]);
 								};
-			getMess.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".getMessages();" + player.command + ".getUserGroups();");
+			getMess.get("reqtype=command&command="+player.command+".getMessages();" + player.command + ".getUserGroups();");
 		} else {
 			if(messages.curr) {
 				var temp = messages.curr; 
 				var temp2 = messages.currGroup;
 			}
 			var reload = messages.reload;
-			messages.messages = $.parseJSON(mess).reverse();
+			messages.messages = ((mess) ? $.parseJSON(mess).reverse() : messages.messages || {});
 			display_output(false,"Messages Loaded!");
-			messages.UG = $.parseJSON(UG);
+			messages.UG = ((UG) ? $.parseJSON(UG) : messages.UG || {});
 			display_output(false,"User Groups Loaded!");
 			if(temp){
 				messages.curr=temp;

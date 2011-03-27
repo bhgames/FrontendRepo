@@ -25,25 +25,31 @@ function get_ranks(async,player, league, BHM) {
 									response = response.split(";");
 									get_ranks(false,response[0],response[1],response[2]);
 								};
-			getRanks.get("/AIWars/GodGenerator?reqtype=command&command=bf.getPlayerRanking();bf.getLeagueRanking();bf.getBattlehardRanking();");
+			getRanks.get("reqtype=command&command=bf.getPlayerRanking();bf.getLeagueRanking();bf.getBattlehardRanking();");
 		} else {
-			ranks.player = $.parseJSON(player).sort(function(a, b) {
-												return b.averageCSL - a.averageCSL;
-											});
+			//assign the current values to the ranks
+			ranks.player = 	((player) ? ((typeof(player)=="string") ? $.parseJSON(player) : player) : ranks.player || {});
+			ranks.league = 	((league) ? ((typeof(league)=="string") ? $.parseJSON(league) : league) : ranks.league || {});
+			ranks.BHM = 	((BHM) ? ((typeof(BHM)=="string") ? $.parseJSON(BHM) : BHM) : ranks.BHM || {});
+			
+			ranks.player.sort(function(a, b) {
+								return b.averageCSL - a.averageCSL;
+							});
+			ranks.league.sort(function(a, b) {
+								return b.averageCSL - a.averageCSL;
+							});
+			ranks.BHM.sort(function(a, b) {
+								return b.BP - a.BP;
+							});
+			
 			$.each(ranks.player, function(i,v){
 				v.username = v.username.replace(/\u003c/g,"&#60;").replace(/\u003e/g,"&#62;");
 			});
-			ranks.league = $.parseJSON(league).sort(function(a, b) {
-												return b.averageCSL - a.averageCSL;
-											});
 			$.each(ranks.league, function(i,v){
 				v.leagueName = v.leagueName.replace(/\u003c/g,"&#60;").replace(/\u003e/g,"&#62;");
 				v.leagueLetters = v.leagueLetters.replace(/\u003c/g,"&#60;").replace(/\u003e/g,"&#62;");
 				v.leagueWebsite = v.leagueWebsite.replace(/\u003c/g,"&#60;").replace(/\u003e/g,"&#62;");
 			});
-			ranks.BHM = $.parseJSON(BHM).sort(function(a, b) {
-												return b.BP - a.BP;
-											});
 			$.each(ranks.BHM, function(i,v){
 				v.username = v.username.replace(/\u003c/g,"&#60;").replace(/\u003e/g,"&#62;");
 			});

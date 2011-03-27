@@ -407,8 +407,7 @@ function load_client(type, reloadTown, reloadUI) {
 					if(loggedIn) clear_all_timers();
 					$.extend(player, $.parseJSON(response));
 					
-					if(!player.towns) throw "No Towns";
-					if(player.towns.length < 1) throw "No Towns";
+					if(!player.towns || player.towns.length < 1) throw "No Towns";
 					player.username = player.username.replace(/\u003c/g,"&#60;").replace(/\u003e/g,"&#62;");
 					player.command = (player.league)?"bf.getLeague()":"bf";
 					
@@ -639,24 +638,26 @@ function load_player(type, reloadTown, reloadUI) {
 		playerget.callback = function(response) {
 			if(!response.match(/invalid/i)) { //if the user entered a valid UN and Pass
 				try {
-					//update checks
-					if(player.raids.update && !SR.update) {
-						get_raids(true);
+					//if we have a websocket connection, these updates are automatic
+					if(websock.nosock||!websock) {
+						//update checks
+						if(player.raids.update && !SR.update) {
+							get_raids(true);
+						}
+						if(SR.update) {
+							get_SRs();
+							get_raids(true);
+						}
+						if(map.update) {
+							map.update = false;
+							get_map();
+						}				
 					}
-					if(SR.update) {
-						get_SRs();
-						get_raids(true);
-					}
-					if(map.update) {
-						map.update = false;
-						get_map();
-					}					
 					
 					clear_player_timers();
 					$.extend(player, $.parseJSON(response));
 					
-					if(!player.towns) throw "No Towns";
-					if(player.towns.length < 1) throw "No Towns";
+					if(!player.towns || player.towns.length < 1) throw "No Towns";
 					player.username = player.username.replace(/\u003c/g,"&#60;").replace(/\u003e/g,"&#62;");
 					player.command = (player.league)?"bf.getLeague()":"bf";
 
@@ -686,6 +687,9 @@ function load_player(type, reloadTown, reloadUI) {
 					
 						//normalize town values to seconds from ticks and sort support
 					$.each(player.towns,function(i,x) {
+						x.activeTrades = player.activeTrades[i] || {};
+						x.tradeSchedules = player.tradeSchedules[i] || {};
+						x.supportAbroad = player.supportAbroad[i] || {};
 						x.townName = x.townName.replace(/\u003c/g,"&#60;").replace(/\u003e/g,"&#62;");
 						for(y in x.resInc) {
 							if(x.resInc.hasOwnProperty(y)) x.resInc[y] /= player.gameClockFactor;
@@ -729,9 +733,6 @@ function load_player(type, reloadTown, reloadUI) {
 						player.towns[i].sortedSupport = sortedSupport;
 					});
 					
-					// rebuild some info that gets lost
-					get_all_trades();
-					get_support_abroad();
 					
 						//assign curtown
 					if(reloadTown) {
@@ -774,6 +775,39 @@ function load_player(type, reloadTown, reloadUI) {
 		};
 		
 		playerget.get("/AIWars/GodGenerator?reqtype=" + ((type)?"league":"player"));
+	}
+}
+
+function parse_player(data) {
+	if(!gettingPlayer) {
+		$.extend(player, $.parseJSON(data));
+					if(!player.towns || player.towns.length < 1) throw "No Towns";
+					player.username = player.username.replace(/\u003c/g,"&#60;").replace(/\u003e/g,"&#62;");
+					player.command = (player.league)?"bf.getLeague()":"bf";
+
+						//sort towns alphabetically for display in list
+					player.towns.sort(function(a, b) {
+						if(b.townID == player.capitaltid) {return 1}
+						if(a.townID == player.capitaltid) {return -1}
+						var nameA = a.townName.toLowerCase();
+						var nameB = b.townName.toLowerCase();
+						if (nameA < nameB) {return -1}
+						if (nameA > nameB) {return 1}
+						return 0;
+					});
+						// normalize  research values to seconds from ticks
+					player.research.scholTicks *= player.gameClockFactor;
+					player.research.scholTicksTotal *= player.gameClockFactor;
+					player.research.feroTimer *= player.gameClockFactor;
+					player.research.mineTimer *= player.gameClockFactor;
+					player.research.mmTimer *= player.gameClockFactor;
+					player.research.premiumTimer *= player.gameClockFactor;
+					player.research.timberTimer *= player.gameClockFactor;
+					player.research.revTimer *= player.gameClockFactor;
+					player.research.ubTimer *= player.gameClockFactor;
+					player.research.fTimer *= player.gameClockFactor;
+					
+					player.research.knowledge += (player.research.scholTicks/player.research.scholTicksTotal);
 	}
 }
 

@@ -33,16 +33,17 @@ function make_AJAX() {
 										display_output(true,err,true);
 									};
 				websock.onmessage = function(e) {
-										var message = e.data;
-										if(message.match(/invalidcmd/)) {
-											display_output(true,"Invalid Command",true);
-											return false;
-										}
-										message = $.parseJSON(message);
+										var message = $.parseJSON(e.data);
 										if(message.id) {
+											var valid = true;
+											if(message.data.match(/invalidcmd/)) {
+												display_output(true,"Invalid Command",true);
+												valid = false;
+											}
 											$.each(websock.log,function(i,v) {
 												if(v.id == message.id) {
-													v.callback(message);
+													if(valid) v.callback(message);
+													websock.log[i] = null;
 													websock.log.splice(i,1);
 													return false;
 												}
@@ -50,23 +51,50 @@ function make_AJAX() {
 										} else {
 											switch(message.type) {
 												case "player":
-													//call a parse player function that parses the sent data into the client
+													parse_player(message.data);
 													break;
 												
 												case "raids":
-													get_raids(false,message);
+													get_raids(false,message.data);
 													break;
 												
 												case "trades":
-													//call parse trades function that parses this data into the client
+													parse_trades(message.data);
 													break;
 													
-												case "statusreports":
-													//call parse SRs function that parses the data into the client
+												case "status_reports":
+													parse_SRs(message.data);
 													break;
 													
 												case "messages":
+													get_messages(false,message.data,false);
+													break;
 													
+												case "user_groups":
+													get_messages(false,false,message.data);
+													break;
+													
+												case "quests":
+													get_quests(false,message.data);
+													break;
+												
+												case "achievements":
+													get_achievements(false,message.data);
+													break;
+													
+												case "ranks_player":
+													get_ranks(false,message.data,false,false);
+													break;
+													
+												case "ranks_leagues":
+													get_ranks(false,false,message.data,false);
+													break;
+													
+												case "ranks_BHM":
+													get_ranks(false,false,false,message.data);
+													break;
+													
+												
 											}
 										}
 									};
@@ -97,7 +125,7 @@ function make_AJAX() {
 									that.id = Math.round(Math.random()*100000);
 									
 									if(websock.connected) {
-										websock.send(data+"id="+that.id); //this will have to be modified so that an additional ID is passed that is returned with the call so that the appropriate function gets the data
+										websock.send(data+"id="+that.id);
 										websock.log.push(that);
 									} else {
 										websock.backlog.push(that);
@@ -114,7 +142,7 @@ function make_AJAX() {
 									}
 								}
 	} 
-	if(websock.nosock) {
+	if(websock.nosock||!websock) {
 		//defined on-the-fly for custom response handling
 		this.callback = function() {};
 		
@@ -182,7 +210,7 @@ function make_AJAX() {
 												$.ajax({
 													type : "POST",
 													async: !sync,
-													url : URL,
+													url : "/AIWars/GodGenerator",
 													data : data,
 													dataType : "text",
 													cache : false,
@@ -634,6 +662,7 @@ function get_weapons(async,weapons) {
 
 function get_support_abroad() {
 	try {
+		player.supportAbroad = [];
 		getSupport = new make_AJAX();
 		display_output(false,"Loading Support...");
 		getSupport.callback = function(response) {
@@ -641,6 +670,7 @@ function get_support_abroad() {
 			
 			$.each(player.towns, function(i, v) {
 				v.supportAbroad = $.parseJSON(support[i]);
+				player.supportAbroad.push(v.supportAbroad);
 			});
 			display_output(false,"Support Loaded!");
 		};
@@ -665,6 +695,9 @@ function get_all_trades() {
 		if(!gettingTrades) {
 			gettingTrades = true;
 			display_output(false,"Loading Trades...");
+			 //these are here to retain trades between player loads (they survive the extend call)
+			player.activeTrades = [];
+			player.tradeSchedules = [];
 			var getTrades = new make_AJAX();
 			var getPath = "/AIWars/GodGenerator?reqtype=command&command=";
 			$.each(player.towns, function(i, v) {
@@ -690,6 +723,10 @@ function get_all_trades() {
 							w.intervaltime *= player.gameClockFactor;
 						});
 					}
+					
+					player.activeTrades.push(v.activeTrades);
+					player.tradeSchedules.push(v.tradeSchedules);
+					
 					clearInterval(v.activeTrades.timer);
 					clearInterval(v.tradeSchedules.timer);
 					v.activeTrades.timer = tick_trades(v.activeTrades);
@@ -707,6 +744,12 @@ function get_all_trades() {
 		display_output(true,e,true);
 		display_output(false,"Retrying...");
 		get_all_trades();
+	}
+}
+
+function parse_trades(trades) {
+	if(!gettingTrades) {
+		
 	}
 }
 
