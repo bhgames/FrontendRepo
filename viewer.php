@@ -54,7 +54,7 @@
 		insertScript("town","css");
 		insertScript("warehouse","css");
 		insertScript("worldmap","css");
-		insertScript("modernizr-1.6.min","js");
+		insertScript("modernizr-1.7.cust","js");
 	?>
 </head>
 <?php flush(); ?>
