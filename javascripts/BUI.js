@@ -371,7 +371,6 @@ var BUI = { //the Building Universal Interface object will hold everything our v
 								</div>\
 								<div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div>\
 							</div>\
-							<div id='HQ_ferocity' class='useBP'></div>\
 							<div id='HQ_missionSelectList'>\
 								<div class='lightFrameBody'>\
 									<div>Mission Select:</div>\

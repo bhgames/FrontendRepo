@@ -331,7 +331,6 @@ var BUI={build:build_bldg_UIs,head:"<div id='BUI_header'>\
         </div>\
         <div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div>\
        </div>\
-       <div id='HQ_ferocity' class='useBP'></div>\
        <div id='HQ_missionSelectList'>\
         <div class='lightFrameBody'>\
          <div>Mission Select:</div>\

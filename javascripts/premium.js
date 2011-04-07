@@ -168,7 +168,7 @@ function show_help() {
 			break;
 		case "Premium_ib":
 			title = 'Instant Build';
-			desc = 'Instantly finishes all your currently constructing, upgrading, and deconstructing buildings.<br/><br/>Cost: 100BP';
+			desc = 'Instantly finishes all your currently constructing units.<br/><br/>Cost: 100BP';
 			break;
 		case "Premium_fero":
 			title = 'Ferocity';
