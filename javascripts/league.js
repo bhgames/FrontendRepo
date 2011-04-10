@@ -9,7 +9,9 @@ function build_league_UI() {
 		}
 		HTML += "<input type='text' id='CC_createLeagueName' value='League Name' /><input type='text' id='CC_createLeagueInitials' maxlength='5' value='Tag'/><textarea id='CC_createLeagueDesc'>Description of Your League</textarea><input type='url' id='CC_createLeagueSite' value='http://' /><select id='CC_createLeagueTown'><option disabled='disabled'>Select Town</option><option disabled='disabled'>-----------</option>";
 		$.each(player.towns, function(i, v) {
-			HTML += "<option>" + v.townName + "</option>";
+			if(v.townID != player.capitalid) {
+				HTML += "<option>" + v.townName + "</option>";
+			}
 		});
 		HTML += "</select><a href='javascript:;' id='CC_createLeagueButton'></a></div></div></div></div></div><div class='textFrameB-BL-BR'><div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div></div></div></div><div class='darkFrameBL-BR-B'><div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div></div></div>";
 		$("#window").html(HTML).fadeIn();

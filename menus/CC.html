@@ -1,0 +1,276 @@
+<div id='CC_tabBar'>
+	<div id='CC_construct' class='lightButton'>
+		<div class='lightFrameBody'>Town Info</div>
+		<div class='lightFrameBL'><div class='lightFrameB'></div></div>
+	</div>
+	<div id='CC_overview' class='lightButton'>
+		<div class='lightFrameBody'>Military<br/>Overview</div>
+		<div class='lightFrameB'></div>
+	</div>
+	<div id='CC_control' class='lightButton'>
+		<div class='lightFrameBody'>Airship<br/>Control</div>
+		<div class='lightFrameB'></div>
+	</div>
+	<div id='CC_sendMission' class='lightButton'>
+		<div class='lightFrameBody'>Send Mission</div>
+		<div class='lightFrameBR'><div class='lightFrameB'></div></div>
+	</div>
+</div>
+<div id='CC_window'>
+	<!-- Town Info HTML -->
+	<div id='CC_CYTab'>
+		<div id='BUI_bFail'></div>
+		<div id='BUI_bldPplBox'>
+			<div id='BUI_bldPplHeader'>Build Engineers<div id='BUI_pplHelp' class='pplHelp'></div><span id='BUI_numCivs'></span></div>
+			<div id='BUI_bldPpl'>
+				<label for='BUI_numPpl'>Units:</label><input type='text' id='BUI_numPpl' autofocus='autofocus' maxlength='4' />
+				<div id='BUI_straightArrow'></div>
+				<div id='BUI_bentArrow'></div>
+				<div id='BUI_bldPplButton' class='noBld'>
+					<div class='darkFrameBody'>Build</div>
+					<div class='darkFrameB'></div>
+				</div>
+				<div id='BUI_pplBldgInfo'>
+					<div id='BUI_pplBldg'>Number Building: <span id='BUI_numPplBldg'>0</span></div>
+					<div id='BUI_pplNext'>Next in: <span id='BUI_ticksTillNext'>??:??:??</span></div>
+				</div>
+			</div>
+			<div id='BUI_bldPplCost'>
+				<div class='BUI_bldPpl totalCost'>
+					Total Cost
+				</div>
+				<div class='BUI_bldPpl'>
+					<div id='BUI_pplSteel' class='noRes upSteel'>???</div>
+				</div>
+				<div class='BUI_bldPpl'>
+					<div id='BUI_pplWood' class='noRes upWood'>???</div>
+				</div>
+				<div class='BUI_bldPpl'>
+					<div id='BUI_pplTime' class='noRes upTime'>??:??:??</div>
+				</div>
+				<div class='BUI_bldPpl'>
+					<div id='BUI_pplManMade' class='noRes upManMade'>???</div>
+				</div>
+				<div class='BUI_bldPpl'>
+					<div id='BUI_pplFood' class='noRes upFood'>???</div>
+				</div>
+			</div>
+		</div>
+		<div id='CY_info'>
+			<div class='lightFrameBody'>
+				<div id='CY_townID'>Town ID: <span></span></div>
+				<div id='CY_buildingInfo'></div>
+			</div>
+			<div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>
+		</div>
+	</div>
+	<!-- Military Overview HTML -->
+	<div id='CC_milOverTab'>
+		<div id='HQ_scrollBox'>
+			<h2>Tactical Overview</h2>
+			<div id='HQ_tacOverview'>
+				<div id='HQ_CSinfo'>
+					<div class='textFramed'>
+						<div id='HQ_CSL'>
+							<div>Cover Soft Limit:</div>
+							<span>0</span>
+						</div>
+						<div id='HQ_armySizeTotal'>
+							<div>Total Army Size:</div>
+							<span>0</span>
+						</div>
+					</div>
+					<div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div>
+				</div>
+				<div id='HQ_civWeapon'>
+					<div class='textFramed'>
+						<div>Civilian Weapon</div>
+						<select id='HQ_civWeaponSelect'></select>
+						<a href='javascript:;' id='HQ_save'></a>
+					</div>
+					<div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div>
+				</div>
+			</div>
+			<h2>Missions Overview</h2>
+			<div id='HQ_missionList'>
+				<div id='HQ_incomingMissions'></div>
+				<div id='HQ_troopsHere'></div>
+				<div id='HQ_outgoingMissions'></div>
+				<div id='HQ_supportAbroad'></div>
+			</div>
+		</div>
+	</div>
+	<!-- Airship Control HTML -->
+	<div id='CC_airshipControlTab'>
+		<div id='HQ_airshipControl'>
+			<div class='darkFrameBody'>
+				<h3>Movement Controls</h3>
+				<div id='HQ_currPos'>Current Position: <span></span></div>
+				<div id='HQ_moveError'></div>
+				<div id='HQ_moveAirship' class='lightButton'>
+					<div class='lightFrameBody'>Move</div>
+					<div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>
+				</div>
+				<div id='HQ_moveTo'>Move to:<br/>
+					<input type='number' id='HQ_moveX' value='0' /><input type='number' id='HQ_moveY' value='0' />
+				</div>
+			</div>
+			<div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>
+		</div>
+		<div id='HQ_airshipInfo'>
+			<div class='lightFrameBody'>
+				<h3>Airship Status</h3>
+				<div id='HQ_airshipHeading'>Current Heading: <span></span></div>
+				<div id='HQ_airshipETA'>ETA: <span></span></div>
+				<div id='HQ_airshipFuel'>Fuel Reserves: <span></span></div>
+			</div>
+			<div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>
+		</div>
+	</div>
+	<!-- Send Mission HTML-->
+	<div id='CC_sendTab'>
+		<div id='HQ_AUinput'>
+			<div class='darkFrameBody'>
+				<div id='HQ_AU1'>
+					<div id='HQ_AU1name'></div>
+					<img src='images/trans.gif' id='HQ_AU1pic' />
+					<a href='javascript:;' id='HQ_AU1number'></a>
+					<input type='text' id='HQ_AU1input' class='AUinput' autofocus='autofocus' maxlength='4' value='0'/>
+				</div>
+				<div id='HQ_AU2'>
+					<div id='HQ_AU2name'></div>
+					<img src='images/trans.gif' id='HQ_AU2pic' />
+					<a href='javascript:;' id='HQ_AU2number'></a>
+					<input type='text' id='HQ_AU2input' class='AUinput' maxlength='4' value='0'/>
+				</div>
+				<div id='HQ_AU3'>
+					<div id='HQ_AU3name'></div>
+					<img src='images/trans.gif' id='HQ_AU3pic' />
+					<a href='javascript:;' id='HQ_AU3number'></a>
+					<input type='text' id='HQ_AU3input' class='AUinput' maxlength='4' value='0'/>
+				</div>
+				<div id='HQ_AU4'>
+					<div id='HQ_AU4name'></div>
+					<img src='images/trans.gif' id='HQ_AU4pic' />
+					<a href='javascript:;' id='HQ_AU4number'></a>
+					<input type='text' id='HQ_AU4input' class='AUinput' maxlength='4' value='0'/>
+				</div>
+				<div id='HQ_AU5'>
+					<div id='HQ_AU5name'></div>
+					<img src='images/trans.gif' id='HQ_AU5pic' />
+					<a href='javascript:;' id='HQ_AU5number'></a>
+					<input type='text' id='HQ_AU5input' class='AUinput' maxlength='4' value='0'/>
+				</div>
+				<div id='HQ_AU6'>
+					<div id='HQ_AU6name'></div>
+					<img src='images/trans.gif' id='HQ_AU6pic' />
+					<a href='javascript:;' id='HQ_AU6number'></a>
+					<input type='text' id='HQ_AU6input' class='AUinput' maxlength='4' value='0'/>
+				</div>
+			</div>
+			<div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>
+		</div>
+		<div id='HQ_supportAUbox'>
+			<div class='darkFrameBody'>
+				<span>Support:</span>
+				<div id='HQ_supportAU'>
+				</div>
+			</div>
+			<div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>
+		</div>
+		<div id='HQ_civilianAUbox'>
+			<div class='darkFrameBody'>
+				<span>Civilian:</span>
+				<div id='HQ_civilianAU'>
+					<div id='HQ_civAU' class='troop'>
+						<div id='HQ_civName'></div>
+						<a href='javascript:;' id='HQ_civNumber'></a>
+						<input type='text' id='HQ_civInput' />
+					</div>
+				</div>
+			</div>
+			<div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>
+		</div>
+		<div id='HQ_SAS'>
+			<div id='HQ_armySize' class='textFramed'>
+				<div>Selected Army Size:</div>
+				<span>0</span>
+			</div>
+			<div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div>
+		</div>
+		<div id='HQ_missionSelectList'>
+			<div class='lightFrameBody'>
+				<div>Mission Select:</div>
+				<div class='missionSelect'>
+					<input type='radio' id='HQ_mission1' name='missionRadio' checked='checked'/><label for='HQ_mission1'>Attack</label>
+				</div>
+				<div class='missionSelect'>
+					<input type='radio' id='HQ_mission2' name='missionRadio' /><label for='HQ_mission2'>Siege</label>
+				</div>
+				<div class='missionSelect'>
+					<input type='radio' id='HQ_mission3' name='missionRadio' /><label for='HQ_mission3'>Strafe</label>
+				</div>
+				<div class='missionSelect'>
+					<input type='radio' id='HQ_mission4' name='missionRadio' /><label for='HQ_mission4'>Glass</label>
+				</div>
+				<div class='missionSelect'>
+					<input type='radio' id='HQ_mission7' name='missionRadio' /><label for='HQ_mission7'>Scout</label>
+				</div>
+				<div class='missionSelect'>
+					<input type='radio' id='HQ_mission8' name='missionRadio' /><label for='HQ_mission8'>Invasion</label>
+				</div>
+				<div class='missionSelect'>
+					<input type='radio' id='HQ_mission5' name='missionRadio' /><label for='HQ_mission5'>Support</label>
+				</div>
+				<div class='missionSelect'>
+					<input type='radio' id='HQ_mission6' name='missionRadio' /><label for='HQ_mission6'>Debris</label>
+				</div>
+				<div class='missionSelect'>
+					<input type='radio' id='HQ_mission9' name='missionRadio' /><label for='HQ_mission9'>Arch. Dig</label>
+				</div>
+				<div class='missionSelect'>
+					<input type='radio' id='HQ_mission10' name='missionRadio' disabled='disabled'/><label for='HQ_mission10'>Harvest</label>
+				</div>
+				<select id='HQ_supportType'>
+					<option>Defensive</option>
+					<option>Offensive</option>
+				</select>
+				<select id='HQ_bombingTarget'>
+					<option>All Buildings</option>
+					<option>Airstrips</option>
+					<option>Arms Factories</option>
+					<option>Command Center</option>
+					<option>Crystal Refineries</option>
+					<option>Fortifications</option>
+					<option>Foundries</option>
+					<option>Institutes</option>
+					<option>Manufacturing Plants</option>
+					<option>Recycling Yards</option>
+					<option>Resource Caches</option>
+					<option>Sawmills</option>
+					<option>Storage Yards</option>
+					<option>Trade Centers</option>
+					<option>Warehouses</option>
+				</select>
+			</div>
+			<div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>
+		</div>
+		<div id='HQ_missionDescBox'>
+			<div class='textFramed'>Mission Description:
+				<div id='HQ_missionDesc'></div>
+			</div>
+			<div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div>
+		</div>
+		<div id='HQ_targetSelect'>
+			<div>Target Coordinates:</div>
+			x:<input type='text' id='HQ_targetX' maxlength='3' />
+			y:<input type='text' id='HQ_targetY' maxlength='3' />
+			<div id='HQ_ETA'></div>
+		</div>
+		<div id='HQ_isValid'></div>
+		<div id='HQ_launchAttack' class='noAttack'>
+			<div class='lightFrameBody'>Send</div>
+			<div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>
+		</div>
+	</div>
+</div>

@@ -1,10 +1,15 @@
 function MS_UI(bldgInfo) {
-	if(bldgInfo.bunkerMode != 0 || bldgInfo.refuelTicks != 0) $("#MS_status div").html("En route. ("+bldgInfo.refuelTicks+","+bldgInfo.bunkerMode+")");
-	else $("#MS_status div").html("Standing By");
+	if(bldgInfo.bunkerMode != 0 || bldgInfo.refuelTicks != 0) {
+		$("#MS_status div").html("En route. ("+bldgInfo.refuelTicks+","+bldgInfo.bunkerMode+")");
+	} else { 
+		$("#MS_status div").html("Standing By");
+	}
 	$("#MS_nukeDamage div").html(bldgInfo.lvl+" building levels");
 	$("#MS_troopDamage div").html((bldgInfo.lvl*5)+"% unit death");
-	$("#MS_EMPduration div").html(Math.round(bldgInfo.lvl*0.05*700)/100+" days");
-	$("#MS_falloutDuration div").html(Math.round(bldgInfo.lvl*0.05*700)/100+" days");
+	
+		//the original version of the following equations was: bldgInfo.lvl*0.05*7
+	$("#MS_EMPduration div").html(Math.round(bldgInfo.lvl*35)/100+" days");
+	$("#MS_falloutDuration div").html(Math.round(bldgInfo.lvl*35)/100+" days");
 	
 	$("#MS_launch").unbind("click").click(function(){
 		if(!$(this).hasClass("noLaunch")) {
@@ -21,10 +26,12 @@ function MS_UI(bldgInfo) {
 						+($("#MS_nukeMode").val()=="GroundBurst"?",false":",true")+");");
 		}
 	});
-	
+	var typeCheck = 0;
 	$("#MS_launchNuke input").unbind("keyup").keyup(function(){
-		if(isNaN($(this).val())) $(this).val(0);
-		try{clearTimeout(typeCheck);} catch(e){}
+		if(isNaN($(this).val())) { 
+			$(this).val(0);
+		}
+		clearTimeout(typeCheck);
 		typeCheck = setTimeout(function() {
 			can_launch(bldgInfo.bid);
 			},250);

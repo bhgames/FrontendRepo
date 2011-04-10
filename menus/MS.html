@@ -1,0 +1,47 @@
+<div id='MS_overview'>
+	<div class='darkFrameBody'>
+		<div id='MS_status'>
+			<h2>Missile Status:</h2><div></div>
+		</div>
+		<h3>Missile Info</h3>
+		<div id='MS_groundBurst'>
+			GroundBurst nuke
+			<div id='MS_nukeDamage'>
+				Bombing Damage:<div></div>
+			</div><br/>
+			<div id='MS_troopDamage'>
+				Troop Damage:<div></div>
+			</div>
+		</div><br/>
+		<div id='MS_skyBurst'>
+			SkyBurst Nuke
+			<div id='MS_EMPduration'>
+				EMP Duration:<div></div>
+			</div>
+		</div><br/>
+		<div id='MS_falloutDuration'>
+			Fallout Duration:<div></div>
+		</div>
+	</div>
+	<div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>
+</div>
+<div id='MS_launchNuke'>
+	<div class='darkFrameBody'>
+		<h2>Launch Nuke</h2>
+		<div id='MS_fail'></div>
+		Select Warhead:
+		<select id='MS_nukeMode'>
+			<option>GroundBurst</option>
+			<option>SkyBurst</option>
+		</select><br/>
+		Target:
+		<div id='MS_target'>
+			<label for='MS_x'>X </label><input type='number' id='MS_x' max='999' min='-999' value='0'/><label for='MS_y'>Y </label><input type='number' id='MS_y' max='999' min='-999' value='0'/>
+		</div>
+		<div id='MS_launch' class='noLaunch'>
+			<div class='lightFrameBody'>Launch</div>
+			<div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>
+		</div>
+	</div>
+	<div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>
+</div>
