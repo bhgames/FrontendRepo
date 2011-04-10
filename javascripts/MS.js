@@ -3,8 +3,10 @@ function MS_UI(bldgInfo) {
 	else $("#MS_status div").html("Standing By");
 	$("#MS_nukeDamage div").html(bldgInfo.lvl+" building levels");
 	$("#MS_troopDamage div").html((bldgInfo.lvl*5)+"% unit death");
-	$("#MS_EMPduration div").html(Math.round(bldgInfo.lvl*0.05*700)/100+" days");
-	$("#MS_falloutDuration div").html(Math.round(bldgInfo.lvl*0.05*700)/100+" days");
+	
+		//the original version of the following equations was: bldgInfo.lvl*0.05*7
+	$("#MS_EMPduration div").html(Math.round(bldgInfo.lvl*35)/100+" days");
+	$("#MS_falloutDuration div").html(Math.round(bldgInfo.lvl*35)/100+" days");
 	
 	$("#MS_launch").unbind("click").click(function(){
 		if(!$(this).hasClass("noLaunch")) {
