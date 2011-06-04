@@ -16,7 +16,7 @@
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW, NOARCHIVE">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	
-	<title>AI Wars Client</title>
+	<title>Steampunk Wars Test Server</title>
 	<?php
 		insertScript("client","css");
 		insertScript("topNav","css");

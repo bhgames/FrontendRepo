@@ -435,73 +435,40 @@ function build_SR_menu() {
 							<div class='offAU legend'><span>Unit Name:</span><span>Sent:</span>\
 							<span style='border-top: 1px solid #444444;'>" + ((report.support)?"Returned":"Lost") + ":</span></div>";
 				$.each(report.offNames, function(i, v) {
-					if(i > 5 || typeof(report.offBegin[i]) == "undefined") return false;
-					HTML += "<div class='offAU' " + ((v == "empty" || v == "???")?"style='color: #AAAAAA !important;'":"") 
+					if(typeof(report.offBegin[i]) == "undefined") return false;
+					if(i % 6 == 0 && i > 0) {
+						HTML += "</div><div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div>\
+								</div><div class='offSupp'><div class='textFramed'>\
+								<div class='offAU legend'><span>Unit Name:</span><span>Sent:</span>\
+								<span style='border-top: 1px solid #444444;'>" + ((report.support)?"Returned":"Lost") + ":</span></div>";
+					}
+					HTML += "<div class='offAU' " + ((v == "empty" || v == "???")?"style='color: #AAAAAA !important;'":"")
 							+ "><span class='offName'>" + v + "</span><span class='offNumB'>" 
 							+ report.offBegin[i] + "</span><span class='offNumE'>"
-							+ report.offEnd[i] + "</span></div>";				
+							+ report.offEnd[i] + "</span></div>";		
 				});
-				HTML += "</div><div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div>\
-						</div>"; //close #SR_offMain
-				if(report.offNames.length > 6) {
-					HTML += "<div class='offSupp'><div class='textFramed'>";
-					$.each(report.offNames, function(i, v) {
-						if(i >5) {
-							if(i % 6 == 0) {
-								if(i!=6) {
-									HTML += "</div><div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div>\
-											</div><div class='offSupp'><div class='textFramed'>";
-								}
-								HTML += "<div class='offAU legend'><span>Unit Name:</span><span>Sent:</span>\
-										<span style='border-top: 1px solid #444444;'>" + ((report.support)?"Returned":"Lost") + ":</span></div>"
-							}
-							HTML += "<div class='offAU' " + ((v == "empty" || v == "???")?"style='color: #AAAAAA !important;'":"")
-									+ "><span class='offName'>" + v + "</span><span class='offNumB'>" 
-									+ report.offBegin[i] + "</span><span class='offNumE'>"
-									+ report.offEnd[i] + "</span></div>";				
-						}
-					});
-					HTML += "</div><div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div>\
-								</div>"; //close .offSupp
-				}
-				HTML += "</div>";	//close #SR_offense
-			}
+			HTML += "</div><div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div>\
+					</div></div>";	//close #SR_offense
 			
 			if(report.defNames.length > 0) {
 				HTML += "<div id='SR_defense'>--Defenders--<div id='SR_defMain'><div class='textFramed'>\
 							<div class='defAU legend'><span>Unit Name:</span><span>Beginning:</span>\
 							<span style='border-top: 1px solid #444444;'>Lost:</span></div>";
 				$.each(report.defNames, function(i, v) {
-					if(i > 5 || typeof(report.defBegin[i]) == "undefined") return false;
-					HTML += "<div class='defAU' " + ((v == "empty" || v == "???")?"style='color: #AAAAAA !important;'":"") 
-							+ "><span class='defName'>" + v + "</span><span class='defNumB'>" 
-							+ report.defBegin[i] + "</span><span class='defNumE'>"
-							+ report.defEnd[i] + "</span></div>";				
+					if(typeof(report.defBegin[i]) == "undefined") return false;
+						if(i % 6 == 0 && i > 0) {
+							HTML += "</div><div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div>\
+									</div><div class='defSupp'><div class='textFramed'>\
+									<div class='defAU legend'><span>Unit Name:</span><span>Beginning:</span>\
+									<span style='border-top: 1px solid #444444;'>End:</span></div>"
+						}
+						HTML += "<div class='defAU' " + ((v == "empty" || v == "???")?"style='color: #AAAAAA !important;'":"")
+								+ "><span class='defName'>" + v + "</span><span class='defNumB'>" 
+								+ report.defBegin[i] + "</span><span class='defNumE'>"
+								+ report.defEnd[i] + "</span></div>";			
 				});
 				HTML += "</div><div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div>\
-						</div>"; //close #SR_defMain
-				if(report.defNames.length > 6) {
-					HTML += "<div class='defSupp'><div class='textFramed'>";
-					$.each(report.defNames, function(i, v) {
-						if(i > 5) {
-							if(i % 6 == 0) {
-								if(i!=6) {
-									HTML += "</div><div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div>\
-											</div><div class='defSupp'><div class='textFramed'>";
-								}
-								HTML += "<div class='defAU legend'><span>Unit Name:</span><span>Beginning:</span>\
-										<span style='border-top: 1px solid #444444;'>End:</span></div>"
-							}
-							HTML += "<div class='defAU' " + ((v == "empty" || v == "???")?"style='color: #AAAAAA !important;'":"")
-									+ "><span class='defName'>" + v + "</span><span class='defNumB'>" 
-									+ report.defBegin[i] + "</span><span class='defNumE'>"
-									+ report.defEnd[i] + "</span></div>";				
-						}
-					});
-					HTML += "</div><div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div>\
-							</div>";
-				}
-				HTML += "</div>";	//close #SR_defense
+						</div></div>";	//close #SR_defense
 				if(((player.research.autoblastable && player.research.bhmblastable) || player.research.resblastable) && player.research.fbLinked && !report.blasted) {
 					HTML += "<div id='SR_fbBlast' class='fbButton'>Share on Facebook!</div>";
 				}

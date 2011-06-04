@@ -534,19 +534,19 @@ function load_client(type, reloadTown, reloadUI) {
 						try {
 							//see get call below for call order (it explains the numbering)
 							var info = response.split(";");
-							get_bldgs(false,info[0]);
-							get_weapons(false,info[1]);
-							get_raids(false,info[2]);
-							get_messages(false,info[3], info[4]);
-							player.TPR = (info[5].match(/^false/i))?false:$.parseJSON(info[5]);
-							get_quests(false,info[6]);
-							get_achievements(info[10]);
+							var i = 0;
+							get_bldgs(false,info[i++]);
+							get_raids(false,info[i++]);
+							get_messages(false,info[i++], info[i++]);
+							player.TPR = (info[i].match(/^false/i))?false:$.parseJSON(info[i++]);
+							get_quests(false,info[i++]);
+							get_achievements(info[i++]);
 							display_output(false,"Player Data Loaded!");
 							
-							get_ranks(false,info[7],info[8],info[9]);
+							get_ranks(false,info[i++],info[i++],info[i++]);
 							
 							BUI.build();
-							set_tickers();	
+							set_tickers();
 							display_res();
 							
 							if(player.research.premiumTimer==0 && player.research.bp==0) $("body").addClass("notBH");
@@ -614,11 +614,11 @@ function load_client(type, reloadTown, reloadUI) {
 					};
 									
 					miscAJAX.get('/AIWars/GodGenerator?reqtype=command&command=' + player.command 
-									+ '.getBuildings();' + player.command + '.getWeapons();' + player.command 
-									+ '.getUserRaids();' + player.command + '.getMessages();' + player.command 
-									+ '.getUserGroups();' + player.command + ((!type)?'.getUserTPR();':'.getUserTPRs();')
-									+ player.command + '.getQuests();bf.getPlayerRanking();bf.getLeagueRanking();bf.getBattlehardRanking();'
-									+ player.command + '.getAchievements();');
+									+ '.getBuildings();' + player.command + '.getUserRaids();' + player.command 
+									+ '.getMessages();' + player.command + '.getUserGroups();' + player.command 
+									+ ((!type&&player.league_pid)?'.getLeague()':'') + '.getUserTPRs();'
+									+ player.command + '.getQuests()' + player.command 
+									+ '.getAchievements();bf.getPlayerRanking();bf.getLeagueRanking();bf.getBattlehardRanking();');
 				}
 				catch(e) {
 					display_output(true,"Error during Player load!", true);

@@ -377,16 +377,6 @@ function HQ_UI(bldgInfo) {
 				
 				$("#HQ_CSL span").text(player.curtown.CSL);
 				
-				$("#HQ_civWeaponSelect").html(function() {
-					var list = "";
-					$.each(UTCC.weapons, function(i, v) {
-						if(v.tier == 1) {
-							list += "<option " + ((i == player.civWeapChoice)?"selected='selected'":"") 
-									+ ((player.research.weap[i])?"":"disabled='disabled'") + ">" + v.name + "</option>";
-						}
-					});
-					return list;
-				});
 				$("#HQ_incomingMissions").html(function() {
 					var HTML = '<h3>Incoming Missions</h3>';
 					$.each(player.curtown.incomingRaids, function(i, v) {

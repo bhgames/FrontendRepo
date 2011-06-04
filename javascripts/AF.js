@@ -1,3 +1,23 @@
+/*
+ *	TODO:
+ *		Rewrite display code to remain inline with new construction system.
+ *			This will require a check against building level to determine building slots and queue length.
+ *			Units will display as an icon only (no names)
+ *			I think I will display two times per slot: Time till next unit and Time to finish all
+ *			Only soldiers need to be displayed as other units are handled by other buildings
+ *		General layout schematic:  The AF and MP will both follow this layout.
+ *			_____________________________
+ *			|		Building Info		|
+ *			|___________________________|
+ *			|__Unit Selection___| Queue	|
+ *			|					|		|
+ *			|	Unit data		|		|
+ *			|					|		|
+ *			|___________________|_______|
+ *			|	Unit Construction menu	|
+ *			|___________________________|
+*/
+
 function AF_UI(bldgInfo) {
 	//do update check
 	$.each(bldgInfo.Queue, function(i,v) {
@@ -18,18 +38,7 @@ function AF_UI(bldgInfo) {
 	var time = 0;		//we have to add up the time as we go so the displays are correct
 	var slotsUsed = 0;
 	$.each(bldgInfo.Queue, function(i, x) {
-		switch(player.AU[x.AUtoBuild].popSize) {
-			case 1:
-				slotsUsed += x.AUNumber;
-				break;
-			case 5:
-			case 20:
-				slotsUsed += 10*x.AUNumber;
-				break;
-			case 10:
-				slotsUsed += 40*x.AUNumber;
-				break;
-		}
+		slotsUsed += x.AUNumber;
 		time += x.ticksPerUnit * x.AUNumber;
 		if(i == 0) { //if this is the first queue item we display extra info
 			list += " (Next unit in: <span class='time'>" + (x.ticksPerUnit - x.currTicks) + "</span>)<hr/>"
@@ -44,155 +53,139 @@ function AF_UI(bldgInfo) {
 	
 	$("#AF_AUbar > a").each(function(i, el){	//set up display of AU bar
 		$(el).css("left", (55 * i) + "px");
-		if(player.AU[i].name == "empty" || player.AU[i].name == "locked") {
-			$(el).css("backgroundImage", "url(../images/client/buildings/AF-" + player.AU[i].name + "AU.png)").text(" ");
-		} else {
+		if(!player.AU[i]) {
+			$(el).css("display", "none)");
+		} else if(player.AU[i].type == 1) { //the Arms Factory only builds Soldiers
 			var path = "url(AIFrames/units/";
 			
-			switch(player.AU[i].popSize) {	//type isn't stored, we have to derive it
-				case 1: //soldier
-					path += "soldier";
-					break;
-				case 5: //tank
-					path += "tank";
-					break;
-				case 10: //juggernaught
-					path += "juggernaut";
-					break;
-				case 20: //bomber
-					path += "bomber";
-					break;
-			}
-			path += "renderTHUMB.png)"; //the icons are half sized versions of the full image
-			$(el).css("backgroundImage", path).text(player.curtown.au[i]); //set the image and the number of AU
-		}
-		
-		$(el).attr("title", player.AU[i].name); //this sets the tooltip to the name of the AU
-		
-		if(player.AU[i].name != "locked") { //you can't select locked slots
-			if(player.AU[i].name == "empty") {
-				//code for assinging AUs
-				$(el).unbind('click').click(function(){
-					//swap the classes so that only this element has activeAU, the others have inactiveAU
-					$(this).removeClass('inactiveAU').addClass('activeAU').siblings('a').addClass('inactiveAU').removeClass('activeAU');
-					$("#AF_AUassignButton a").removeClass('clear');
-					$("#AF_AUassignList").css("visibility", "visible").change();
-					
-					//reset displays
-					$("#AF_AUpic").attr("src","../../images/trans.gif");
-					
-					$("#AF_AUweapStats").html("<div id='AF_AUFP'><img src='AIFrames/icons/firepower.png' title='Unit Firepower' alt='Unit Firepower' /> <span class='stat'>???</span></div>"
-											+ "<div id='AF_AUAmmo'><img src='AIFrames/icons/ammo.png' title='Unit Ammunition' alt='Unit Ammunition' /> <span class='stat'>???</span></div>"
-											+ "<div id='AF_AUAccu'><img src='AIFrames/icons/accuracy.png' title='Unit Accuracy' alt='Unit Accuracy' /> <span class='stat'>???</span></div>");
-					
-					//reset unit information
-					$("#AF_AUname").html("");
-					$("#AF_AUrank").html("");
-					$("#AF_AUFP span").html(": "+player.AU[i].firepower);
-					$("#AF_AUAmmo span").html(": "+player.AU[i].ammo);
-					$("#AF_AUAccu span").html(": "+player.AU[i].accuracy);
-					$("#AF_AUconceal span").html(": "+player.AU[i].conc);
-					$("#AF_AUarmor span").html(": "+player.AU[i].armor);
-					$("#AF_AUspeed span").html(": "+player.AU[i].speed);
-					$("#AF_AUcargo span").html(": "+player.AU[i].cargo);
-					//reset build info
-					$("#AF_numPpl").val("").keyup(); 
-				});
-			} else {
-				//code for displaying AUs
-				$(el).unbind('click').click(function(){
-					//swap the classes so that only this element has activeAU, the others have inactiveAU
-					$(this).removeClass('inactiveAU').addClass('activeAU').siblings('a').addClass('inactiveAU').removeClass('activeAU');
-					$("#AF_AUassignButton a").addClass('clear');
-					$("#AF_AUassignList").css("visibility", "hidden").change();
-					
-					var AUpic = "AIFrames/units/";
-					var rankPic = "AIFrames/units/";
 			
-					switch(player.AU[i].popSize) {
-						case 1: //soldier
-							AUpic += "soldier";
-							break;
-						case 5: //tank
-							AUpic += "tank";
-							break;
-						case 10: //juggernaut
-							AUpic += "juggernaut";
-							break;
-						case 20: //bomber
-							AUpic += "bomber";
-							rankPic += "bomb";
-							break;
-					}
-					AUpic += "renderSMALL.png";
-					$("#AF_AUpic").attr("src",AUpic);
-					rankPic += "insig" + (player.AU[i].graphicNum+1) + ".png";
-					$("#AF_rankPic").attr("src",rankPic);
-					
-					$("#AF_AUweapStats").html("<div id='AF_AUFP'><img src='AIFrames/icons/firepower.png' title='Unit Firepower' alt='Unit Firepower' /> <span class='stat'>???</span></div>"
-											+ "<div id='AF_AUAmmo'><img src='AIFrames/icons/ammo.png' title='Unit Ammunition' alt='Unit Ammunition' /> <span class='stat'>???</span></div>"
-											+ "<div id='AF_AUAccu'><img src='AIFrames/icons/accuracy.png' title='Unit Accuracy' alt='Unit Accuracy' /> <span class='stat'>???</span></div>");
-					
-					var classType = '';
-					switch(player.AU[i].graphicNum) {
-						case 0:
-							classType = "Destroyer Class";
-							break;
-						case 1:
-							classType = "Havoc Class";
-							break;
-						case 2:
-							if(player.AU[i].popSize==20) classType = "Devastator Class";
-							else classType = "Defender Class";
-							break;
-						case 3:
-							if(player.AU[i].popSize==20) classType = "Mayhem Class";
-							else classType = "Devastator Class";
-							break;
-						case 4:
-							if(player.AU[i].popSize==20) classType = "Armageddon Class";
-							else classType = "Mayhem Class";
-							break;
-						case 5:
-							classType = "Battlehard Class";
-							break;
-						case 6:
-							classType = "Stonewall Class";
-							break;
-						case 7:
-							classType = "Ironside Class";
-							break;
-						case 8:
-							classType = "Impervious Class";
-							break;
-						case 9:
-							classType = "Conqueror Class";
-							break;
-					}
-					//display unit information
-					$("#AF_AUname").html(player.AU[i].name);
-					$("#AF_AUrank").html(classType);
-					$("#AF_AUFP span").html(player.AU[i].firepower);
-					$("#AF_AUAmmo span").html(player.AU[i].ammo);
-					$("#AF_AUAccu span").html(player.AU[i].accuracy);
-					$("#AF_AUconceal span").html(player.AU[i].conc);
-					$("#AF_AUarmor span").html(player.AU[i].armor);
-					$("#AF_AUspeed span").html(player.AU[i].speed);
-					$("#AF_AUcargo span").html(player.AU[i].cargo);
-					
-					var weapPics = "";
-					
-					$.each(player.AU[i].weap, function(i, x) {
-						weapPics += "<img src='images/client/weapons/" 
-									+ UTCC.weapons[x].name.toLowerCase().replace(/\s/g,"-") + ".png' title='"
-									+ UTCC.weapons[x].name + "' />";
+			$(el).attr("title", player.AU[i].name); //this sets the tooltip to the name of the AU
+			
+			if(player.AU[i].name != "locked") { //you can't select locked slots
+				if(player.AU[i].name == "empty") {
+					//code for assinging AUs
+					$(el).unbind('click').click(function(){
+						//swap the classes so that only this element has activeAU, the others have inactiveAU
+						$(this).removeClass('inactiveAU').addClass('activeAU').siblings('a').addClass('inactiveAU').removeClass('activeAU');
+						$("#AF_AUassignButton a").removeClass('clear');
+						$("#AF_AUassignList").css("visibility", "visible").change();
+						
+						//reset displays
+						$("#AF_AUpic").attr("src","../../images/trans.gif");
+						
+						$("#AF_AUweapStats").html("<div id='AF_AUFP'><img src='AIFrames/icons/firepower.png' title='Unit Firepower' alt='Unit Firepower' /> <span class='stat'>???</span></div>"
+												+ "<div id='AF_AUAmmo'><img src='AIFrames/icons/ammo.png' title='Unit Ammunition' alt='Unit Ammunition' /> <span class='stat'>???</span></div>"
+												+ "<div id='AF_AUAccu'><img src='AIFrames/icons/accuracy.png' title='Unit Accuracy' alt='Unit Accuracy' /> <span class='stat'>???</span></div>");
+						
+						//reset unit information
+						$("#AF_AUname").html("");
+						$("#AF_AUrank").html("");
+						$("#AF_AUFP span").html(": "+player.AU[i].firepower);
+						$("#AF_AUAmmo span").html(": "+player.AU[i].ammo);
+						$("#AF_AUAccu span").html(": "+player.AU[i].accuracy);
+						$("#AF_AUconceal span").html(": "+player.AU[i].conc);
+						$("#AF_AUarmor span").html(": "+player.AU[i].armor);
+						$("#AF_AUspeed span").html(": "+player.AU[i].speed);
+						$("#AF_AUcargo span").html(": "+player.AU[i].cargo);
+						//reset build info
+						$("#AF_numPpl").val("").keyup(); 
 					});
-					 //update build info
-					$("#BUI_numPpl").keyup();
-				});
+				} else {
+					//code for displaying AUs
+					$(el).unbind('click').click(function(){
+						//swap the classes so that only this element has activeAU, the others have inactiveAU
+						$(this).removeClass('inactiveAU').addClass('activeAU').siblings('a').addClass('inactiveAU').removeClass('activeAU');
+						$("#AF_AUassignButton a").addClass('clear');
+						$("#AF_AUassignList").css("visibility", "hidden").change();
+						
+						var AUpic = "AIFrames/units/";
+						var rankPic = "AIFrames/units/";
+				
+						switch(player.AU[i].popSize) {
+							case 1: //soldier
+								AUpic += "soldier";
+								break;
+							case 5: //tank
+								AUpic += "tank";
+								break;
+							case 10: //juggernaut
+								AUpic += "juggernaut";
+								break;
+							case 20: //bomber
+								AUpic += "bomber";
+								rankPic += "bomb";
+								break;
+						}
+						AUpic += "renderSMALL.png";
+						$("#AF_AUpic").attr("src",AUpic);
+						rankPic += "insig" + (player.AU[i].graphicNum+1) + ".png";
+						$("#AF_rankPic").attr("src",rankPic);
+						
+						$("#AF_AUweapStats").html("<div id='AF_AUFP'><img src='AIFrames/icons/firepower.png' title='Unit Firepower' alt='Unit Firepower' /> <span class='stat'>???</span></div>"
+												+ "<div id='AF_AUAmmo'><img src='AIFrames/icons/ammo.png' title='Unit Ammunition' alt='Unit Ammunition' /> <span class='stat'>???</span></div>"
+												+ "<div id='AF_AUAccu'><img src='AIFrames/icons/accuracy.png' title='Unit Accuracy' alt='Unit Accuracy' /> <span class='stat'>???</span></div>");
+						
+						var classType = '';
+						switch(player.AU[i].graphicNum) {
+							case 0:
+								classType = "Destroyer Class";
+								break;
+							case 1:
+								classType = "Havoc Class";
+								break;
+							case 2:
+								if(player.AU[i].popSize==20) classType = "Devastator Class";
+								else classType = "Defender Class";
+								break;
+							case 3:
+								if(player.AU[i].popSize==20) classType = "Mayhem Class";
+								else classType = "Devastator Class";
+								break;
+							case 4:
+								if(player.AU[i].popSize==20) classType = "Armageddon Class";
+								else classType = "Mayhem Class";
+								break;
+							case 5:
+								classType = "Battlehard Class";
+								break;
+							case 6:
+								classType = "Stonewall Class";
+								break;
+							case 7:
+								classType = "Ironside Class";
+								break;
+							case 8:
+								classType = "Impervious Class";
+								break;
+							case 9:
+								classType = "Conqueror Class";
+								break;
+						}
+						//display unit information
+						$("#AF_AUname").html(player.AU[i].name);
+						$("#AF_AUrank").html(classType);
+						$("#AF_AUFP span").html(player.AU[i].firepower);
+						$("#AF_AUAmmo span").html(player.AU[i].ammo);
+						$("#AF_AUAccu span").html(player.AU[i].accuracy);
+						$("#AF_AUconceal span").html(player.AU[i].conc);
+						$("#AF_AUarmor span").html(player.AU[i].armor);
+						$("#AF_AUspeed span").html(player.AU[i].speed);
+						$("#AF_AUcargo span").html(player.AU[i].cargo);
+						
+						var weapPics = "";
+						
+						$.each(player.AU[i].weap, function(i, x) {
+							weapPics += "<img src='images/client/weapons/" 
+										+ UTCC.weapons[x].name.toLowerCase().replace(/\s/g,"-") + ".png' title='"
+										+ UTCC.weapons[x].name + "' />";
+						});
+						 //update build info
+						$("#BUI_numPpl").keyup();
+					});
+				}
 			}
+			if(i == 0) {$(el).click();} //select the first AU
 		}
-		if(i == 0) $(el).click(); //select the first AU
 	});
 	
 	$("#AF_AUassignList").html(function() {

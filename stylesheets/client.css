@@ -474,7 +474,6 @@ a#fdbk_tab:hover {
 	}
 .textFrameB{
 	height: 16px;
-	/*background: url(../AIFrames/TextFrame/Bottom.png) repeat-x center bottom;*/
 	border-bottom: 1px solid #FFF;
 	margin: 0px 16px;
 	}
@@ -495,7 +494,6 @@ a#fdbk_tab:hover {
 	}
 .blackFrameB{
 	height: 16px;
-	/*background: url(../AIFrames/TextFrame/Bottom-black.png) repeat-x center bottom;*/
 	border-bottom: 1px solid #000;
 	margin: 0px 16px;
 	}

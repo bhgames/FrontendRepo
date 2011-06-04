@@ -17,35 +17,23 @@ function build_league_UI() {
 		$("#window").html(HTML).fadeIn();
 	} else {
 		HTML += "<div id='CC_leagueRoster'><div class='textFrameT-L-R'><div class='textFrameT'><div class='textFrameL'><div class='textFrameR'><div class='textFramed'><div style='border-bottom: 1px solid #AAAAAA;'>League Roster:</div><dl>";
-		if(player.league) { //if the player is currently viewing the league player
-			player.TPR.sort(function(a,b){
-				return b.type - a.type;
-			});
-			$.each(player.TPR,function(i,v){
+		player.TPR.sort(function(a,b){
+			return b.type - a.type;
+		});
+		$.each(player.TPR,function(i,v){
+			if(v.type>-1) {
 				HTML +="<dt>"+v.player+"</dt><dd>"+v.rank+"</dd><dd>Tax: "+v.taxRate*100+"%</dd>";
-			});
-		} else { //player is in league, and not viewing the league player
-			$.each(messages.UG,function(i,v){
-				if(v.name=="league") {
-					$.each(v.usernames,function(j,w){
-						HTML +="<dt>"+w+"</dt>";
-					});
-					return false;
-				}
-			});
-		}
-		HTML += "</dl></div></div></div></div></div><div class='textFrameB-BL-BR'><div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div></div></div><div id='CC_info'><a href='javascript:;' id='CC_leagueAdmin'></a><div id='CC_leagueInfo'></div><div id='CC_playerInfo'><div class='textFrameT-L-R'><div class='textFrameT'><div class='textFrameL'><div class='textFrameR'><div class='textFramed'>Player Info:<h3>";
-		if(player.league) {
-			HTML += player.origUN+"</h3><span id='CC_playerRank'>Rank: ";
-			$.each(player.TPR,function(i,v){
-				if(v.player ==player.origUN) {
-					HTML += v.rank+"</span><span id='CC_playerTax'>Tax: "+v.taxRate*100+"%";
-					return false;
-				}
-			});
-		} else {
-			HTML += player.username +"</h3><span id='CC_playerRank'>"+ player.TPR.rank+"</span><span id='CC_playerTax'>Tax: "+player.TPR.taxRate*100+"%";
-		}
+			}
+		});
+		var UN = player.league ? player.origUN : player.username;
+		HTML += "</dl></div></div></div></div></div><div class='textFrameB-BL-BR'><div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div></div></div><div id='CC_info'><a href='javascript:;' id='CC_leagueAdmin'></a><div id='CC_leagueInfo'></div><div id='CC_playerInfo'><div class='textFrameT-L-R'><div class='textFrameT'><div class='textFrameL'><div class='textFrameR'><div class='textFramed'>Player Info:<h3>"
+				+ UN + "</h3><span id='CC_playerRank'>Rank: ";
+		$.each(player.TPR,function(i,v){
+			if(v.player == UN) {
+				HTML += v.rank+"</span><span id='CC_playerTax'>Tax: "+v.taxRate*100+"%";
+				return false;
+			}
+		});
 		HTML += "</span></div></div></div></div></div><div class='textFrameB-BL-BR'><div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div></div></div></div></div><div class='darkFrameBL-BR-B'><div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div></div></div>";
 		$("#window").html(HTML);
 		var getLeagueInfo = new make_AJAX();
@@ -65,7 +53,7 @@ function build_league_UI() {
 				var isAdmin = false;
 				$.each(player.TPR,function(i,v){
 					if(v.player == player.origUN) {
-						if(v.type==2) isAdmin = true;
+						if(v.type==2) {isAdmin = true;}
 						return false;
 					}
 				});
@@ -73,7 +61,9 @@ function build_league_UI() {
 				if(!isAdmin) HTML += "<div id='CC_adminBlocker'></div>";
 				HTML += "<div id='CC_memberAdmin'><div class='textFrameT-L-R'><div class='textFrameT'><div class='textFrameL'><div class='textFrameR'><div class='textFramed'><h3>Member Managment</h3><select id='CC_TPRList'><option disabled='disabled'>Choose Player:</option><option disabled='disabled'>--------------</option>";
 				$.each(player.TPR,function(i,v){
-					HTML += "<option>"+v.player+"</option>";
+					if(v.type > -1) {
+						HTML += "<option>"+v.player+"</option>";
+					}
 				});
 				HTML += "</select><input type='text' id='CC_memberRankName' placeholder='title'><select id='CC_memberRankLvl'><option disabled='disabled'>Rank:</option><option disabled='disabled'>----------</option><option>Member</option><option>Officer</option><option>Admin</option></select><br/><label for='CC_TPRRate'>Tax Rate:</label><input type='";
 				if(Modernizr.inputtypes.range) {
@@ -94,7 +84,12 @@ function build_league_UI() {
 				$.each(player.towns, function(i,v) {
 					HTML += "<option value='"+v.townID+"'>"+v.townName+"</option>";
 				});
-				HTML +="</select></span><br/><a href='javascript:;' id='CC_kickMember'></a><a href='javascript:;' id='CC_saveInfo'></a></div></div></div></div></div><div class='textFrameB-BL-BR'><div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div></div></div><div id='CC_invitePlayer'><div class='textFrameT-L-R'><div class='textFrameT'><div class='textFrameL'><div class='textFrameR'><div class='textFramed'><h3>Invite Player</h3><label for='CC_playerName'>Player:</label><input type='text' id='CC_playerName' /><hr/>Invite Message:<br/><textarea id='CC_inviteMessage'>Please click the link below to join our league.</textarea><a href='javascript:;' id='CC_sendInvite'></a></div></div></div></div></div><div class='textFrameB-BL-BR'><div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div></div></div>";
+				HTML +="</select></span><br/><a href='javascript:;' id='CC_kickMember'></a><a href='javascript:;' id='CC_saveInfo'></a></div></div></div></div></div><div class='textFrameB-BL-BR'><div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div></div></div><div id='CC_invitePlayer'><div class='textFrameT-L-R'><div class='textFrameT'><div class='textFrameL'><div class='textFrameR'><div class='textFramed'><h3>Invite Player</h3><label for='CC_playerName'>Player:</label><input type='text' id='CC_playerName' /><hr/>Invite Message:<br/><textarea id='CC_inviteMessage'>Please click the link below to join our league.</textarea><a href='javascript:;' id='CC_sendInvite'></a></div></div></div></div></div><div class='textFrameB-BL-BR'><div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div></div></div><div id='CC_inviteList'><div class='textFramed'><ul id='CC_invitees'>";
+				$.each(player.TPR,function(i,v){
+					if(v.type < 0) {
+						HTML += "<li>"+v.player+" <input type='checkbox'></li>";
+					}
+				});
 			} else {
 				HTML += "<a href='javascript:;' id='CC_leaveLeague'></a>";
 				if(player.TPR.type >0) HTML +="<a href='javascript:;' id='CC_switchLeague'></a>";
@@ -119,6 +114,20 @@ function build_league_UI() {
 				if(w == $(v).attr("value")) $(v).attr("selected","true");
 			});
 		});
+		var otherAdmins = false;
+		$.each(player.TPR,function(i,v){
+			if(v.player != player.origUN && v.type==2) {
+				otherAdmins = true;
+				return false;
+			}
+		});
+		var disabled = "";
+		if(player.TPR.length < 2 || !otherAdmins) {
+			disabled = "disabled";
+		}
+		var ranks = $("#CC_memberRankLvl option");
+		ranks[2].disabled = disabled;
+		ranks[3].disabled = disabled;
 	});
 	$("#CC_kickMember").die("click").live("click",function() {
 		display_message("Confirmation","Are you sure you want to kick this player?",function() {

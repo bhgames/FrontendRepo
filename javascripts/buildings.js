@@ -26,7 +26,6 @@ function draw_bldg_UI() {
 	$("#window").html(BUI.head);
 	$("#BUI_tutorial").unbind();
 	
-	$("#BUI_bldgContent").html(BUI.active.HTML);
 	$("#BUI_bldgName").html(bldgInfo.type);
 	$("#BUI_bldgLvl").html(" - Level " + bldgInfo.lvl);
 	
@@ -183,7 +182,17 @@ function draw_bldg_UI() {
 	});
 	
 	if(bldgInfo.lvl>0) {
-		BUI.active.build(bldgInfo);
+		if(BUI.active.HTML) {
+			$("#BUI_bldgContent").html(BUI.active.HTML);
+			BUI.active.build(bldgInfo);
+		} else {
+			$.get("/light/menus/"+BUI.active.abbr+".html",
+				function(response) {
+					BUI.active.HTML = response;
+					$("#BUI_bldgContent").html(BUI.active.HTML);
+					BUI.active.build(bldgInfo);
+				});
+		}
 	} else {
 		$("#BUI_bldgContent").html("");
 		$("#BUI_deconButton").unbind("click").css("opacity",".5");

@@ -33,11 +33,13 @@ var BUI = { //the Building Universal Interface object will hold everything our v
 	active : {},
 	AF : 	{//Arms Factory
 				name : ["Arms Factory"],
-				build : AF_UI
+				build : AF_UI,
+				abbr : "AF"
 			},
 	AP : 	{
 				name : ["Airstrip"],
-				build : AP_UI
+				build : AP_UI,
+				abbr : "AP"
 			},
 	CC : 	{//Command Center
 				name : ["Command Center"],
@@ -57,7 +59,8 @@ var BUI = { //the Building Universal Interface object will hold everything our v
 				y : 0,
 				startTab : "",
 				build : CC_UI,
-				bldgServer : []
+				bldgServer : [],
+				abbr : "CC"
 			},
 	Fort : 	{
 				name: ["Fortifications"],
@@ -66,35 +69,126 @@ var BUI = { //the Building Universal Interface object will hold everything our v
 	IN :	{	//Institute
 				name : ["Institute"],
 				build : IN_UI,
-				activeTab : 0
+				activeTab : 0,
+				abbr : "IN",
+				research : {
+								firearmResearch :	{
+														cost : 50,
+														lvld : true
+													},
+								ordinanceResearch :	{
+														cost : 50,
+														lvld : true
+													},
+								teslaTech :	{
+												cost : 50,
+												lvld : true
+											},
+								bloodMetalPlating :	{
+														cost : 75,
+														lvld : true
+													},
+								bodyArmor :	{
+												cost : 50,
+												lvld : true
+											},
+								bloodMetalArmor :	{
+														cost : 750,
+														lvld : false
+													},
+								personalShields :	{
+														cost : 1000,
+														lvld : false
+													},
+								hydraulicAssistors :	{
+															cost : 500,
+															lvld : false
+														},
+								thrustVectoring :	{
+														cost : 600,
+														lvld : false
+													},
+								clockworkAugments :	{
+														cost : 300,
+														lvld : false
+													},
+								clockworkComputers :	{
+															cost : 25,
+															lvld : true
+														},
+								architecture :	{
+													cost : 25,
+													lvld : true
+												},
+								airshipTech :	{
+													cost : 2000,
+													lvld : false
+												},
+								advancedFortifications :	{
+																cost : 1000,
+																lvld : false
+															},
+								structuralIntegrity :	{
+														cost : 10,
+														lvld : true
+													},
+								infrastructureTech :	{
+														cost : 20,
+														lvld : true
+													},
+								townTech :	{
+														cost : 200,
+														lvld : true
+													},
+								constructionResearch :	{
+														cost : 10,
+														lvld : true
+													},
+								scoutTech :	{
+														cost : 25,
+														lvld : true
+													},
+								soldier : 50,
+								tank : 150,
+								golem : 450,
+								lightAircraft : 250,
+								heavyAircraft : 250
+							}
 			},
 	Mine : 	{	//Mines
 				name : ["Metal Mine", "Crystal Mine", "Timber Field", "Farm"],
-				build : mine_UI						
+				build : mine_UI,
+				abbr : "mine"
 			},
 	MP : 	{
 				name : ["Manufacturing Plant"],
-				build : function() {}
+				build : function() {},
+				abbr : "MP"
 			},
 	MS : 	{
 				name : ["Missile Silo"],
-				build : MS_UI
+				build : MS_UI,
+				abbr : "MS"
 			},
 	Refinery : 	{
 					name : ["Foundry","Sawmill","Crystal Refinery","Hydroponics Bay"],
-					build : refinery_UI
+					build : refinery_UI,
+					abbr : "refinery"
 				},
 	RecC : 	{
 				name : ["Recycling Center"],
-				build : RY_UI
+				build : RY_UI,
+				abbr : "RecC"
 			},
 	ResC :	{
 				name : ["Resource Cache"],
-				build : function() {}
+				build : function() {},
+				abbr : "ResC"
 			},
 	SY :	{
 				name : ["Storage Yard"],
-				build : function() {}
+				build : function() {},
+				abbr : "SY"
 			},
 	TC : 	{//Trade Center
 				name : ["Trade Center"],
@@ -108,10 +202,12 @@ var BUI = { //the Building Universal Interface object will hold everything our v
 						interval: 0,
 						numIntervals:1
 					},
-				build : TC_UI
+				build : TC_UI,
+				abbr : "TC"
 			},
 	Warehouse : {//Warehouses
 					name : ["Metal Warehouse","Crystal Repository","Lumber Yard","Granary"],
-					build : warehouse_UI
+					build : warehouse_UI,
+					abbr : "warehouse"
 				}
 	};
