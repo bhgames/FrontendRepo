@@ -86,14 +86,64 @@
 			<div class='popFrameBL'><div class='popFrameBR'><div class='popFrameB'></div></div></div>
 		</div>
 	</div>
+	<!-- Chatbox -->
 	<a id="chatbox_tab" href="#">CHATBOX</a>
 	<div id='chat_box'>
 		<div id='chat_titlebar'>
-			<a href='javascript:;' id='chat_close'></a>
+			<a href='#' id='chat_close'></a>
 			<span>Chatbox</span>
 		</div>
 		<div id='chat_innerbox'></div>
 	</div>
+	<!-- Twitter -->
+	<a id="twitter_tab" href="#">TWITTER</a>
+	<div id='twitter_box'>
+		<a href='#' id='twitter_close'></a>
+		<script src="http://widgets.twimg.com/j/2/widget.js"></script>
+		<script>
+			new TWTR.Widget({
+			  version: 2,
+			  type: 'profile',
+			  rpp: 4,
+			  interval: 6000,
+			  width: 230,
+			  height: 320,
+			  theme: {
+				shell: {
+				  background: 'transparent',//'#f64200'
+				  color: '#fff'
+				},
+				tweets: {
+				  background: 'transparent',
+				  color: '#fff',
+				  links: '#ccc'
+				}
+			  },
+			  features: {
+				scrollbar: false,
+				loop: false,
+				live: true,
+				hashtags: false,
+				timestamp: true,
+				avatars: false,
+				behavior: 'all'
+			  }
+			}).render().setUser('BattlehardGames').start();
+		</script>
+	</div>
+	<!-- Forum -->
+	<a id="forum_tab" href="#">FORUM</a>
+	<div id='forum_box'>
+		<a href='#' id='forum_close'></a>
+		<iframe id='forum_frame' src="http://forum.aiwars.org"></iframe>
+	</div>
+	<!-- Blog -->
+	<a id="blog_tab" href="#">BLOG</a>
+	<div id='blog_box'>
+		<a href='#' id='blog_close'></a>
+		<iframe id='blog_frame' src="http://blog.aiwars.org"></iframe>
+	</div>
+	<!-- Client -->
 	<div id="header"><img src='AIFrames/Header.png' alt='BattleHard: AI Wars' /></div>
 	<div id="content">
 		<div id="client">
@@ -244,13 +294,13 @@
 			</div>
 		</noscript>
 	<!-- End of StatCounter Code -->
-	<!-- GetSatisfaction code -->
+	<!-- GetSatisfaction code --
 	<script type="text/javascript" charset="utf-8">
 	  var is_ssl = ("https:" == document.location.protocol);
 	  var asset_host = is_ssl ? "https://s3.amazonaws.com/getsatisfaction.com/" : "http://s3.amazonaws.com/getsatisfaction.com/";
 	  document.write(unescape("%3Cscript src='" + asset_host + "javascripts/feedback-v2.js' type='text/javascript'%3E%3C/script%3E"));
-	</script>
-
+	</script>-->
+	<script src="http://s3.amazonaws.com/getsatisfaction.com/javascripts/feedback-v2.js" type="text/javascript"></script>
 	<script type="text/javascript" charset="utf-8">
 	  var feedback_widget_options = {};
 

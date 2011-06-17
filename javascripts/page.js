@@ -89,4 +89,46 @@ $(document).ready(function() {
 		$("#menu").click();
 		do_fade(draw_support_UI);
 	});
+	$("#twitter_tab").unbind('click').click(function() {
+		if(Modernizr.csstransitions) {
+			$("#twitter_box").addClass("open");
+		} else {
+			$("#twitter_box").animate({"margin-left":"-4px"},100);
+		}
+	});
+	$("#twitter_close").unbind("click").click(function() {
+		if(Modernizr.csstransitions) {
+			$("#twitter_box").removeClass("open");
+		} else {
+			$("#twitter_box").animate({"margin-left":"-310px"},100);
+		}
+	});
+	$("#forum_tab").unbind('click').click(function() {
+		if(Modernizr.csstransitions) {
+			$("#forum_box").addClass("open");
+		} else {
+			$("#forum_box").animate({"margin-left":"0px"},100);
+		}
+	});
+	$("#forum_close").unbind("click").click(function() {
+		if(Modernizr.csstransitions) {
+			$("#forum_box").removeClass("open");
+		} else {
+			$("#forum_box").animate({"margin-left":"-100%"},100);
+		}
+	});
+	$("#blog_tab").unbind('click').click(function() {
+		if(Modernizr.csstransitions) {
+			$("#blog_box").addClass("open");
+		} else {
+			$("#blog_box").animate({"margin-left":"0px"},100);
+		}
+	});
+	$("#blog_close").unbind("click").click(function() {
+		if(Modernizr.csstransitions) {
+			$("#blog_box").removeClass("open");
+		} else {
+			$("#blog_box").animate({"margin-left":"-100%"},100);
+		}
+	});
 });
