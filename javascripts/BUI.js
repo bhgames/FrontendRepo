@@ -16,7 +16,6 @@ var BUI = { //the Building Universal Interface object will hold everything our v
 						<div class='BUI_up'><div id='BUI_upSteel' class='noRes upSteel'></div></div>\
 						<div class='BUI_up'><div id='BUI_upWood' class='noRes upWood'></div></div>\
 						<div class='BUI_up'><div id='BUI_upManMade' class='noRes upManMade'></div></div>\
-						<div class='BUI_up'><div id='BUI_upFood' class='noRes upFood'></div></div>\
 						<div class='BUI_up'><div id='BUI_upTime' class='noRes upTime'>??:??:??</div></div>\
 						<div id='BUI_upButton' class='noUp'>Upgrade</div><div id='BUI_deconButton'>Destruct</div>\
 					</div>\
@@ -134,11 +133,13 @@ var BUI = { //the Building Universal Interface object will hold everything our v
 													},
 								infrastructureTech :	{
 														cost : 20,
-														lvld : true
+														lvld : true,
+														max : 19
 													},
 								townTech :	{
 														cost : 200,
-														lvld : true
+														lvld : true,
+														max : 999
 													},
 								constructionResearch :	{
 														cost : 10,
@@ -146,7 +147,8 @@ var BUI = { //the Building Universal Interface object will hold everything our v
 													},
 								scoutTech :	{
 														cost : 25,
-														lvld : true
+														lvld : true,
+														max : 10
 													},
 								soldier : 50,
 								tank : 150,

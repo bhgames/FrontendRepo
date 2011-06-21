@@ -12,97 +12,9 @@ function IN_UI(bldgInfo) {
 	$("#BUI_numCivs").html("Current Staff: <span class='pplTown' title='Scholars in this Town'>"
 							+ scTotal + "</span>/<span class='totalTown' title='Total Scholars this town can hold'>" + scTotalCap + "</span> (<span class='pplBldg' title='Available Traders'>"
 							+ bldgInfo.peopleInside + "</span>/<span class='totalBldg' title='Total allowed'>" + bldgInfo.cap + "</span>)");
-	$("#BUI_tutorial").unbind("click").click(function() {
-			display_message("Institute Tutorial","Would you like to play the Institute Tutorial?",
-							function() 	{
-								tutorialRunning = true;
-								display_tutorial_entity({	"text":"The Institute is the heart and soul of your civilization. From here you can research everything from the mundane Lot Tech researches that give you more building spaces in your cities to the soaring technological marvels that are the Airships.<br/><br/>Click 'Next' to continue.",
-															"css":{"top":"200px","left":"200px","width":"300px"}
-														}
-									,function() {
-										display_tutorial_entity({	"text":"To purchase a research, you can click purchase next to the name of the research. If you do not have enough Knowledge Points, or KP, instead that button will become some text like Need 29 Points. <br/><br/>Click 'Next' to continue.",
-																	"css":{"top":"200px","left":"200px","width":"300px"},
-																	"arrows":	{
-																					"arrow1":{"dir":"down","css":{"top":"260px","right":"115px"}}
-																				}
-																}
-											,function() {
-												display_tutorial_entity({	"text":"  Your Scholars work together across all of your Institutes to generate these points on a daily basis, so if you run out, you can always make more! The amount of scholars you have is denoted by the Current Staff label. Each Institute has a capacity for Scholars and upgrading that Institute allows higher capacities.<br/><br/>Click 'Next' to continue.",
-																			"css":{"top":"200px","left":"200px","width":"300px"},
-																			"arrows":	{
-																							"arrow1":{"dir":"down","css":{"top":"525px","right":"60px"}}
-																						}
-																		}
-													,function() {
-														display_tutorial_entity({	"text":" There are two different types of researches: One-Time Researches and Leveled Researches. One-Time Researches are things like Advanced Rocketry: They can only be researched once and unlock some new building, ability, or unit. <br /><br /> The Leveled Researches can be purchased multiple times, and improve the overall infrastructure of your civilization. An example would be Building Slot Tech - Every time it's purchased, you can build or level up another building concurrently. Also, the prices for Leveled Researches rise each time you buy them.<br/><br/>Click 'Next' to continue.",
-																					"css":{"top":"200px","left":"200px","width":"300px"}
-																				}
-															,function() {
-																display_tutorial_entity({	"text":" There are tons of different researches for you to explore in A.I. Wars. The Institute groups these different researches based on their effects in five different areas, denoted by the tabs above. You can explore the researches in each group by clicking the tab associated with it. <br/><br/>Click 'Next' to continue.",
-																							"css":{"top":"400px","left":"400px","width":"300px"},
-																							"arrows":	{
-																											"arrow1":{"dir":"down","css":{"top":"200px","right":"510px"}},
-																											"arrow2":{"dir":"down","css":{"top":"200px","right":"685px"}},
-																											"arrow3":{"dir":"down","css":{"top":"200px","right":"335px"}},
-																											"arrow4":{"dir":"down","css":{"top":"200px","right":"200px"}},
-																											"arrow5":{"dir":"down","css":{"top":"200px","right":"75px"}}
-																										}
-																						}					
-																	,function() {
-																		display_tutorial_entity({	"text":" Click the Civilian Infrastructure tab to view the researches here. The most prosaic of all the research groups, Civilian Infrastructure provides upgrades to how efficient your scholars, traders, and engineers are and allow you to add extra building lots to your cities and slots to your building server. You can also research Town Tech here, each level of which allows you to add another city to your Empire.<br/><br/>Click 'Next' to continue.",
-																									"css":{"top":"0px","left":"400px","width":"300px"},
-																									"arrows":	{
-																													"arrow1":{"dir":"down","css":{"top":"200px","right":"685px"}}
-																												}
-																								}
-																			,function() {
-																				display_tutorial_entity({	"text":" Click the Military Infrastructure tab. Most of the researches in this group improve your military's abilities in a variety of ways, but Manufacturing Tech is an important research to remember, as it opens up another slot in your Arms Factory, to a maximum of six slots. With empty slots in your Arms Factory, you can insert new unit blueprints that you have unlocked and build those unit types! <br/><br/>Click 'Next' to continue.",
-																											"css":{"top":"0px","left":"500px","width":"300px"},
-																											"arrows":	{
-																															"arrow1":{"dir":"down","css":{"top":"200px","right":"510px"}}
-																														}
-																										}
-																					,function() {
-																						display_tutorial_entity({	"text":" Click the Advanced Technologies tab. These new technologies are both volatile and difficult to unlock and open up new avenues of exploration and destruction for your civilization. Consider these technologies the pinnacle of success. Only the best will get even one of them.<br/><br/>Click 'Next' to continue.",
-																													"css":{"top":"0px","left":"100px","width":"300px"},
-																													"arrows":	{
-																																	"arrow1":{"dir":"down","css":{"top":"200px","right":"335px"}}
-																																}
-																												}
-																							,function() {
-																								display_tutorial_entity({	"text":" Click the Military Units tab. There are 12 unlockable unit blueprints in A.I. Wars, each representing one type of combat unit. Each one has it's weaknesses and it's strengths. In order to turn each blueprint into actual units in your army, you need an open slot in the Arms Factory, which can be obtained via Manufacturing Tech in the Military Infrastructure tab. Then you can load a blueprint you unlocked into the slot from the Arms Factory menu, and begin queuing up units of that type to be built. <br/><br/>Click 'Next' to continue.",
-																															"css":{"top":"0px","left":"100px","width":"300px"},
-																															"arrows":	{
-																																			"arrow4":{"dir":"down","css":{"top":"200px","right":"200px"}}
-																																		}
-																														}
-																									,function() {
-																										display_tutorial_entity({	"text":" Click the AI Research tab. In A.I. Wars, you have the option of using a powerful backend Artifical Intelligence system named E.V.E., a Revelations class AI. However, while Eve theoretically has the ability to control and run every aspect of your civilization for you, you need to unlock those abilities before you can use them in your AI. Each chunk is represented by an API research below, and each API gives you access to new sets of commands for Eve.<br/><br/>Click 'Next' to continue.",
-																																	"css":{"top":"0px","left":"100px","width":"300px"},
-																																	"arrows":	{
-																																					"arrow5":{"dir":"down","css":{"top":"200px","right":"75px"}}
-																																				}
-																																}
-																											,function() {
-																													display_tutorial_entity({	"text":" This concludes the Institute tutorial. <br/><br/>Click 'Next' to continue.",
-																																				"css":{"top":"0px","left":"100px","width":"300px"}
-																																			});
-																														});// Closing exit message.
-																												});// Closing AI Research explanation
-																										});// Closing Military Units explanation
-																								});// Closing Advanced Technologies explanation
-																						});// Closing Military Infrastructure explanation
-																				});// Closing Civil Infrastructure explanation
-																		});// Closing Tab explanation
-																});// closing different tech type explanation
-														});// closing one-time vs level-up explanation
-												});// closing scholars explanation
-										});// closing Purchase explanation
-	});//closing intro function
-														
-													
-												
-											
+							
+	$("#BUI_tutorial").unbind("click").click(IN_tut);
+	
 	$("#IN_numKnowledge span").text(Math.floor(player.research.knowledge));
 	$("#IN_ppd span").text(Math.floor(86400/player.research.scholTicksTotal));
 	
@@ -126,24 +38,7 @@ function IN_UI(bldgInfo) {
 			$(".researchTree.open").removeClass("open").animate({"opacity":"toggle"},"fast"); //close any open research Trees
 			
 			$(this).addClass("open");
-			var api;
-			switch(index) { //and open the new one
-				case 0:
-					api = $("#IN_civInf").addClass("open").data('jsp');
-					break;
-				case 1:
-					api = $("#IN_milInf").addClass("open").data('jsp');
-					break;
-				case 2:
-					api = $("#IN_advTech").addClass("open").data('jsp');
-					break;
-				case 3:
-					api = $("#IN_milUnits").addClass("open").data('jsp');
-					break;
-				case 4:
-					api = $("#IN_aiRes").addClass("open").data('jsp');
-					break;
-			}
+			var api = $(".researchTree").eq(index).addClass("open").data('jsp');
 			$(".researchTree.open").animate({"opacity":"toggle"},"fast");
 			api.reinitialise();
 		}
@@ -550,21 +445,29 @@ function help_re(e) { //which is the type of research to display the description
 function update_research() {
 	var KP = Math.floor(player.research.knowledge);
 	$(".researches .name").each(function(i,v) {
-		var name = $(v).text(), research = BUI.IN.researches[name];
+		var name = $(v).text(), research = BUI.IN.research[name];
 		if(research) {
-			var lvl = player.research[name], cost = research.cost;
+			var lvl = player.research[name], cost=false;
 			if(research.lvld) {
-				if(name == "infrastructureTech") {
-					lvl -= 8;
-				}
-				cost *= Math.pow(2,lvl/2);
-				$(v).siblings(".level").text("[Level " + lvl + "]");
-				if(KP >= cost) {
-					$(v).siblings(".research").text("Upgrade").removeClass("noBuy");
+				var max = research.max || 20;
+				if(lvl < max) {
+					if(name == "infrastructureTech") {
+						lvl -= 8;
+					} else if(name == "townTech") {
+						cost = Math.floor(research.cost * Math.pow(2,lvl-1));
+					}
+					cost = cost || Math.floor(research.cost * Math.pow(2,lvl/2));
+					$(v).siblings(".level").text("[Level " + lvl + "]");
+					if(KP >= cost) {
+						$(v).siblings(".research").text("Upgrade").removeClass("noBuy");
+					} else {
+						$(v).siblings(".research").text("Need " + (cost-KP)+" KP");
+					}
 				} else {
-					$(v).siblings(".research").text("Need " + (cost-KP)+" KP");
+					$(v).siblings(":not(.fullName, .info, .level)").css("display","none");
 				}
 			} else {
+				cost = research.cost;
 				$(v).siblings(".level").text((lvl?"[Unl":"[L") + "ocked]");
 				if(!lvl) {
 					if(KP >= 800) {
@@ -615,7 +518,7 @@ function update_research() {
 									}
 									return w.type == 3;
 								}).length;
-					if(player.towns<3) {unlockable = false:}
+					if(player.towns<3) {unlockable = false;}
 					break;
 					
 				case "Gunship":
@@ -649,13 +552,16 @@ function update_research() {
 			if(unlocked) {
 				$(v).siblings(".level").text("[Unlocked]").siblings(":not(.fullName, .info)").css("display","none");
 			} else {
-				cost*=Math.pow(2,lvl);
+				cost *= Math.pow(2,lvl);
 				if(!unlockable) {
 					$(v).text("[Locked]");
-				} else if(KP>=cost) {
-					 $(v).siblings(".research").text("Purchase").removeClass("noBuy");
 				} else {
-					$(v).siblings(".research").text("Need "+ (cost-KP) +" KP");
+					if(KP>=cost) {
+						$(v).siblings(".research").text("Purchase").removeClass("noBuy");
+					} else {
+						$(v).siblings(".research").text("Need "+ (cost-KP) +" KP");
+					}
+					$(v).siblings(".points").text(cost + " KP");
 				}
 			}
 		}

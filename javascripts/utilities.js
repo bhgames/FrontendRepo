@@ -447,7 +447,7 @@ var bldgs = {
 				all : "empty",
 				buildable : "empty"
 			};
-function get_bldgs(async ,bldgList) {
+function get_bldgs(async, bldgList) {
 	try {
 		if(async) {
 			display_output(false,"Loading Buildings...");
@@ -455,10 +455,12 @@ function get_bldgs(async ,bldgList) {
 			getBldgs.callback = function(response) {
 									get_bldgs(false,response);
 								};
-			getBldgs.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".getBuildings();");
+			getBldgs.get("reqtype=command&command="+player.command+".getBuildings();");
 		} else {
-			bldgs.all = $.parseJSON(bldgList);
-			get_buildable();
+			bldgs = $.parseJSON(bldgList);
+			$.each(bldgs, function(i,x) {
+				x.path = x.type.replace(/\s/g, "");
+			});
 			display_output(false,"Buildings Loaded!");
 		}
 	} catch(e) {
@@ -469,61 +471,41 @@ function get_bldgs(async ,bldgList) {
 	}
 }
 
-function get_buildable() {
+function get_buildable(async, bldable) {
 	try {
-		bldgs.buildable = $.grep(bldgs.all, function(v, i) {
-								var canBuild = true;
-								$.each(player.curtown.bldg, function(i, x) {
-									if(v.type == x.type && x.type == "Headquarters") {
-										canBuild = false;
-									}
-								});
-								//this checks for mines as well as locked buildings
-								if(	(v.type == "Metal Mine" || v.type == "Timber Field" || v.type == "Manufactured Materials Plant" || v.type == "Food Farm") ||
-									(!player.research.zeppTech && v.type == "Airship Platform") || (!player.research.missileSiloTech && v.type == "Missile Silo") ||
-									(!player.research.recyclingTech && v.type == "Recycling Center") || (!player.research.metalRefTech && v.type == "Metal Refinery") ||
-									(!player.research.timberRefTech && v.type == "Timber Processing Plant") || (!player.research.manMatRefTech && v.type == "Materials Research Center") ||
-									(!player.research.foodRefTech && v.type == "Hydroponics Lab")) canBuild = false;
-								return canBuild;
-							});
+			if(async || !bldable) {
+				var getBuildable = new make_AJAX();
+				getBuildable.callback = function(response) {
+											get_buildable(false,$.parseJSON(response));
+										};
+				getBuildable.get("reqtype=command&command=bf.buildableBuildings("+player.curtown.townID+");");
+			} else {
+				player.curtown.bldableBldgs = $.grep(bldgs, function(x,i) {
+													var found = false;
+													$.each(bldable, function(j, y) {
+														if(x.type == y) {
+															found = true;
+															return false;
+														}
+													});
+													return found;
+												});
+				player.curtown.lockedBldgs = $.grep(bldgs, function(x,i) {
+													var found = false;
+													$.each(bldable, function(j, y) {
+														if(x.type == y || x.type == "Metal Mine"||x.type == "Crystal Mine"||x.type == "Timber Field"||x.type == "Farm") {
+															found = true;
+															return false;
+														}
+													});
+													return !found;
+												});
+			}
 	} catch(e) {
-		get_bldgs(true);
-	}
-}
-
-function get_weapons(async,weapons) {
-	try {
-		if(async) {
-			display_output(false,"Loading Weapons...");
-			getWeps = new make_AJAX();
-			getWeps.callback = function(response) {
-									get_weapons(false,response);
-								};
-			getWeps.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".getWeapons();");
-		} else {
-			UTCC.weapons = $.parseJSON(weapons);
-			$.each(UTCC.weapons, function(i, v) {
-				switch(true) {
-					case i < 6:
-						v.tier = 1;
-						break;
-					case i < 12:
-						v.tier = 2;
-						break;
-					case i < 18:
-						v.tier = 3;
-						break;
-					default: //anything else will be treated as t4
-						v.tier = 4;
-				}
-			});
-			display_output(false,"Weapons Loaded!");
-		}
-	} catch(e) {
-		display_output(true,"Error loading Weapons!",true);
+		display_output(true,"Error loading Buildable Buildings!",true);
 		display_output(true,e);
 		display_output(false,"Retrying...");
-		get_weapons(true);
+		get_buildable(true);
 	}
 }
 

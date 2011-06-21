@@ -517,7 +517,12 @@ a#fdbk_tab:hover {
 .lightFrameB {
 	height: 20px;
 	background: url("../AIFrames/Content Frame Elements/Light-BottomTile.png") repeat-x center bottom;
-	margin: 0px 13px;
+	}
+.lightFrameBL .lightFrameB {
+	margin-left: 13px;
+	}
+.lightFrameBR .lightFrameB {
+	margin-right: 13px;
 	}
 .lightFrameBL {
 	background: url("../AIFrames/Content Frame Elements/Light-Left-Lowcorner.png") no-repeat left bottom;
@@ -528,17 +533,17 @@ a#fdbk_tab:hover {
 .lightButton {
 	cursor: pointer;
 	}
-.lightButton:active  .lightFrameBody {
+.lightButton:active  .lightFrameBody, .lightButton.open  .lightFrameBody {
 	background: url("../../light/AIFrames/Content Frame Elements/Dark-body.png");
 	color: #FFF;
 	}
-.lightButton:active  .lightFrameB  {
+.lightButton:active  .lightFrameB, .lightButton.open  .lightFrameB  {
 	background-image: url("../../light/AIFrames/Content Frame Elements/Dark-BottomTile.png");
 	}
-.lightButton:active  .lightFrameBL  {
+.lightButton:active  .lightFrameBL, .lightButton.open  .lightFrameBL  {
 	background-image: url("../../light/AIFrames/Content Frame Elements/Dark-Left-Lowcorner.png");
 	}
-.lightButton:active  .lightFrameBR  {
+.lightButton:active  .lightFrameBR, .lightButton.open  .lightFrameBR  {
 	background-image: url("../../light/AIFrames/Content Frame Elements/Dark-Right-Lowcorner.png");
 	}
 /************************************************************************************************************************************************
@@ -556,6 +561,12 @@ a#fdbk_tab:hover {
 	height: 20px;
 	background: url("../AIFrames/Content Frame Elements/Dark-BottomTile.png") repeat-x center bottom;
 	margin: 0px 13px;
+	}
+.darkFrameBL .darkFrameB {
+	margin-left: 13px;
+	}
+.darkFrameBR .darkFrameB {
+	margin-right: 13px;
 	}
 .darkFrameBL {
 	background: url("../AIFrames/Content Frame Elements/Dark-Left-Lowcorner.png") no-repeat left bottom;

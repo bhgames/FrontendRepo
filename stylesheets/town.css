@@ -87,7 +87,7 @@ img.lvlImage  {
 	background: transparent !important;
 	z-index: 1;
 	}
-.airship#pos0,.airship#pos1,.airship#pos2,.airship#pos3 {
+.zeppelin #pos0,.zeppelin #pos1,.zeppelin #pos2,.zeppelin #pos3 {
 	display: none;
 	}
 #pos4{
@@ -95,7 +95,7 @@ img.lvlImage  {
 	left: 419px;
 	z-index: 2;
 	}
-.airship#pos4 {
+.zeppelin #pos4 {
 	top: 195px;
 	left: 311px;
 	filter:alpha(opacity=0);
@@ -106,7 +106,7 @@ img.lvlImage  {
 	left: 327px;
 	z-index: 2;
 	}
-.airship#pos5 {
+.zeppelin #pos5 {
 	top: 269px;
 	left: 316px;
 	}
@@ -115,7 +115,7 @@ img.lvlImage  {
 	left: 421px;
 	z-index: 4;
 	}
-.airship#pos6 {
+.zeppelin #pos6 {
 	top: 299px;
 	left: 367px;
 	}
@@ -124,7 +124,7 @@ img.lvlImage  {
 	left: 510px;
 	z-index: 2;
 	}
-.airship#pos7 {
+.zeppelin #pos7 {
 	top: 237px;
 	left: 367px;
 	}
@@ -133,7 +133,7 @@ img.lvlImage  {
 	left: 421px;
 	z-index: 3;
 	}
-.airship#pos8 {
+.zeppelin #pos8 {
 	top: 269px;
 	left: 415px;
 	}
@@ -142,7 +142,7 @@ img.lvlImage  {
 	left: 210px;
 	z-index: 2;
 	}
-.airship#pos9 {
+.zeppelin #pos9 {
 	top: 324px;
 	left: 458px;
 	}
@@ -197,17 +197,14 @@ img.lvlImage  {
 #town_buildBldgMenu {
 	position: absolute;
 	top: 0px;
-	left: -200px;
+	left: -802px;
 	color: #FFF;
 	z-index: 100;
 	}
-#town_buildBldgMenu .darkFrameB {
-	margin-left: 0px;
-	}
 #town_buildBldgList {
-	height: 480px;
-	width: 150px;
-	overflow: auto;
+	height: 493px;
+	width: 771px;
+	overflow: hidden;
 	}
 #town_buildBldgList li{
 	position: relative;
@@ -216,43 +213,51 @@ img.lvlImage  {
 	min-height: 50px;
 	margin-left: 5px;
 	}
+#town_buildingListTabs {
+	border-bottom: 1px solid #FFF;
+	}
+.flexbox #town_buildingListTabs {
+	display: -webkit-box;
+	-webkit-box-orient: horizontal;
+	-webkit-box-pack: start;
+	-webkit-box-align: start;
+
+	display: -moz-box;
+	-moz-box-orient: horizontal;
+	-moz-box-pack: start;
+	-moz-box-align: start;
+	
+	display: box;
+	box-orient: horizontal;
+	box-pack: start;
+	box-align: start;
+	}
+.no-flexbox #town_buildingListTabs {
+	height: 40px;
+	}
+.no-flexbox #town_buildingListTabs > div {
+	float: left;
+	}
 .bldgPic {
 	display: block;
+	float: left;
 	}
 a.buildBldgButton {
 	position: absolute;
-	bottom: 0px;
-	right: 0px;
+	bottom: 5px;
+	right: 5px;
 	display: block;
-	height: 25px;
-	width: 75px;
-	background: url("../../images/client/buildings/Build_Ppl-button.png") no-repeat 0 0;
+	height: 41px;
+	width: 94px;
+	background: url(../AIFrames/buttons/build.png) no-repeat 0 0;
 	}
 a:hover.buildBldgButton {
-	background-position: 0 -25px;
+	background-position: 0 -41px;
 	}
 a:active.buildBldgButton {
-	background-position: 0 -50px;
+	background-position: 0 -82px;
 	}
-#town_buildBldgPopup {
-	position: absolute;
-	top: 100px;
-	left: 250px;
-	display: none;
-	color: #FFF;
-	z-index: 100;
-	}
-#town_buildBldgPopup .popFrameBody {
-	height: 190px;
-	width: 300px;
-	}
-#town_error {
-	position: absolute;
-	top: 180px;
-	left: 20px;
-	color: red;
-	}
-#town_cancelPopup {
+#town_closeBldgList {
 	position: absolute;
 	top: 0px;
 	right: 0px;
@@ -260,26 +265,26 @@ a:active.buildBldgButton {
 	width: 28px;
 	height: 33px;
 	background: url("../AIFrames/Content Frame Elements/close.png") no-repeat 0 0;
-	}	
+	cursor: "pointer";
+	}
+#town_buildableList, #town_notBuildableList {
+	height: 440px;
+	}
 #town_bldgRes {
 	position: absolute;
-	top: 25px;
-	left: 100px;
+	top: 5px;
+	right: 5px;
 	display: block;
 	height: 70px;
-	width: 180px;
 	text-align: right;
 	}
 #town_bldgResMetal, #town_bldgResManMade, #town_bldgResTimber, #town_bldgResFood  {
 	display:block;
-	float: left;
+	float: right;
 	width: 50px;
 	height: 25px;
 	padding: 5px 5px 0px 30px;
 	border: 1px solid #FFFFFF;
-	}
-#town_bldgResMetal, #town_bldgResManMade {
-	clear: left;
 	}
 #town_bldgResMetal {
 	background: url(../AIFrames/icons/MetalIcon.png) no-repeat 2px 2px;
@@ -290,23 +295,10 @@ a:active.buildBldgButton {
 #town_bldgResTimber {
 	background: url(../AIFrames/icons/TimberIcon.png) no-repeat 2px 2px;
 	}
-#town_bldgResFood {
-	background: url(../AIFrames/icons/FoodIcon.png) no-repeat 2px 2px;
-	}
-#town_bldgPic {
-	max-height: 80px;
-	}
-#town_bldgDesc {
-	position: absolute;
-	top: 100px;
-	height: 80px;
-	width: 300px;
+.bldgDesc {
+	height: 100px;
+	width: 415px;
 	overflow: auto;
-	}
-#town_buildBldg {
-	position: absolute;
-	bottom: 20px;
-	right: 5px;
 	}
 /************************************************************************************************************************************************
  * Town list CSS Code

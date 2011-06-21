@@ -1,38 +1,402 @@
 /* *********************************************************************
- * Communication Center CSS
+ * Command Center CSS
 ***********************************************************************/
-#CC_tabs {
+/*
+ * Tab Bar
+*/
+.flexbox #CC_tabBar {
+	display: -webkit-box;
+	-webkit-box-orient: horizontal;
+	-webkit-box-pack: start;
+	-webkit-box-align: start;
+
+	display: -moz-box;
+	-moz-box-orient: horizontal;
+	-moz-box-pack: start;
+	-moz-box-align: start;
+	
+	display: box;
+	box-orient: horizontal;
+	box-pack: start;
+	box-align: start;
+	}
+.no-flexbox #CC_tabBar {
+	height: 40px;
+	}
+#CC_tabBar > div {
 	position: relative;
-	top: -15px;
-	height: 30px;
-	width: 100%;
+	left: 10px;
+	text-align: center;
+	font-size: 1.2em;
+	font-family: Verdana, Tahoma, sans-sarif;
+	cursor: pointer;
 	}
-#CC_tabs a {
-	position: absolute;
-	top: 0px;
-	display: block;
-	height: 41px;
-	width: 159px;
-	z-index: 1;
-	background-position: 0 -41px;
-	background-repeat: no-repeat;
+#CC_tabBar > div .lightFrameBody {
+	height: 25px;
+	padding: 5px 10px;
 	}
-#CC_overviewTab {
-	left: 5px;
-	background-image: url(../AIFrames/buttons/Overview-League.png);
+.no-flexbox #CC_tabBar > div {
+	float: left;
 	}
-#CC_leagueTab {
+#CC_control {
 	display: none;
 	}
-#CC_supportTab {
-	left: 164px;
-	background-image: url(../AIFrames/buttons/Support-League.png);
+ #CC_tabBar > div.open .lightFrameBody, #CC_launchAttack[class='']:active .lightFrameBody {
+	background: url("../AIFrames/Content Frame Elements/Dark-body.png");
+	color: #FFFFFF;
 	}
-#CC_overviewTab:hover, #CC_supportTab:hover {
+ #CC_tabBar > div.open .lightFrameB, #CC_launchAttack[class='']:active .lightFrameB {
+	background-image: url("../AIFrames/Content Frame Elements/Dark-BottomTile.png");
+	}
+ #CC_tabBar > div.open .lightFrameBL, #CC_launchAttack[class='']:active .lightFrameBL {
+	background-image: url("../AIFrames/Content Frame Elements/Dark-Left-Lowcorner.png");
+	}
+ #CC_tabBar > div.open .lightFrameBR, #CC_launchAttack[class='']:active .lightFrameBR {
+	background-image: url("../AIFrames/Content Frame Elements/Dark-Right-Lowcorner.png");
+	}
+	
+/*
+ * Window
+*/
+#CC_EngTab, #CC_milOverTab, #CC_airshipControlTab, #CC_sendTab {
+	display: none;
+	}
+#CC_EngTab.open, #CC_milOverTab.open, #CC_airshipControlTab.open, #CC_sendTab.open {
+	display: block;
+	}
+#CC_info {
+	position: absolute;
+	top: 60px;
+	left: 130px;
+	}
+#CC_info .lightFrameBody {
+	width: 500px;
+	}
+#CC_townID {
+	float: right;
+	font-size: 20px;
+	}
+#CC_buildingInfo {
+	width: 315px;
+	}
+#CC_buildingInfoHeader {
+	border-bottom: 1px solid #000;
+	font-size: 16px;
+	}
+.buildingInfo {
+	list-style: none;
+	border-bottom: 1px solid #AAA;
+	}
+.buildingInfo span {
+	float: right;
+	}
+.bldgTicksToFinish, .bldgName, .cancelButton {
+	display: inline;
+	margin: 0px 5px;
+	}
+.bldgID, .bldgListID {
+	display: none;
+	}
+.bldgTicksToFinish {
+	position: relative;
+	top: 10px;
+	float: right;
+	}
+.cancelButton a {
+	position: relative;
+	top: 5px;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	background: url("../../images/client/buildings/Cancel-button.png") no-repeat 0 0;
+	}
+.cancelButton a:active{
+	background: url("../../images/client/buildings/Cancel-button.png") no-repeat 0 -20px;
+	}
+.noCancel a {
+	background: transparent !important;
+	cursor: default;
+	}
+#CC_instaBuild {
+	top: 10px;
+	right: 375px;
+	background-color: #000000;
+	z-index: 1;
+	}
+#CC_ultraBuild {
+	top: -180px;
+	left: 180px;
+	}
+#CC_AUinput, .supportAU, .troop {
+	text-align: center;
+	}
+#CC_supportAUbox, #CC_civilianAUbox {
+	position: absolute;
+	top: 150px;
+	right: 5px;
+	color: #FFF;
+	}
+#CC_civilianAUbox {
+	display: none;
+	}
+#CC_supportAU {
+	height: 225px;
+	width: 390px;
+	overflow: auto;
+	}
+#CC_civilianAU {
+	height: 60px;
+	width: 390px;
+	}
+#CC_AUinput {
+	margin: 5px;
+	color: #FFF;
+	}
+#CC_AUinput .darkFrameBody {
+	height: 60px;
+	}
+#CC_AUinput .darkFrameBody > div, .supportAU, .troop {
+	width: 120px;
+	height: 70px;
+	padding: 3px;
+	float: left;
+	}
+#CC_civAU {
+	margin: 0 auto;
+	float: none;
+	}
+.AUinput, #CC_civInput {
+	margin: 0px;
+	width: 40px;
+	}
+#CC_AUinput img, .supportAUpic, .auPic {
+	float: left;
+	}
+#CC_AUinput a, .supportAU a, #CC_civNumber{
+	display: block;
+	color: #CCCCCC;
+	}
+.flexbox #CC_tacOverview {
+	display: -webkit-box;
+	-webkit-box-orient: horizontal;
+	-webkit-box-pack: center;
+	-webkit-box-align: start;
+
+	display: -moz-box;
+	-moz-box-orient: horizontal;
+	-moz-box-pack: center;
+	-moz-box-align: start;
+	
+	display: box;
+	box-orient: horizontal;
+	box-pack: center;
+	box-align: start;
+	}
+.no-flexbox #CC_tacOverview {
+	height: 85px;
+	width: 370px;
+	margin: 0 auto;
+	}
+.no-flexbox #CC_tacOverview > div {
+	float: left;
+	}
+#CC_SAS {
+	position: absolute;
+	top: 150px;
+	left: 207px;
+	text-align: center;
+	}
+#CC_CSinfo {
+	display: inline;
+	text-align: center;
+	}
+#CC_CSinfo .textFramed {
+	height: 55px;
+	}
+#CC_civWeaponSelect {
+	position: relative;
+	top:20px;
+}
+#CC_civWeapon {
+	display: none;
+	width: 218px;
+	margin-left: 5px;
+	}
+#CC_civWeapon .textFramed {
+	height: 55px;
+	}
+#CC_save {
+	display: block;
+	position:relative;
+	height: 41px;
+	width: 86px;
+	top: -43px;
+	left: 124px;
+	margin-bottom: -10px;
+	background: url(../AIFrames/buttons/Save-League.png) no-repeat 0 -41px;
+	}
+#CC_save:hover {
 	background-position: 0 0;
 	}
-	/* add psudo and true active classes*/
-#CC_window {
-	position: relative;
+#CC_save:active {
+	background-position: 0 -82px;
+	}
+#CC_killMe {
+	position: absolute;
+	top: 75px;
+	right: 25px;
+	height: 35px;
+	width: 97px;
+	background: url(../AIFrames/buttons/Kill.png) no-repeat 0 -35px;
+	}
+#CC_killMe:hover {
+	background-position: 0 0;
+	}
+#CC_killMe:active {
+	background-position: 0 -70px;
+	}
+#CC_targetSelect input{
+	width: 35px;
+	border-color: #000 !important;
+	color: #000 !important;
+	}
+#CC_missionSelectList {
+	position: absolute;
+	top: 140px;
 	left: 5px;
+	width: 196px;
+	color: black;
+	}
+#CC_missionSelectList .lightFrameBody {
+	height: 125px;
+	}
+.missionSelect {
+	float: left;
+	min-width: 93px;
+	}
+#CC_bombingTarget, #CC_supportType {
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+	display: none;
+	}
+#CC_targetSelect {
+	position: absolute;
+	top: 300px;
+	left: 5px;
+	}
+#CC_isValid {
+	position: absolute;
+	top: 10px;
+	left: 250px;
+	color: red;
+	}
+#CC_launchAttack {
+	position: absolute;
+	top: 315px;
+	left: 120px;
+	font-size: 20px;
+	text-align: center;
+	cursor: pointer;
+	}
+#CC_launchAttack .lightFrameBody {
+	height: 10px;
+	padding: 5px 10px;
+	}
+.noAttack, .noMove {
+	filter:alpha(opacity=50);
+	opacity: 0.5;
+	cursor: default;
+	}
+#CC_missionDescBox {
+	position: absolute;
+	top: 205px;
+	left: 201px;
+	}
+#CC_missionDesc {
+	height: 75px;
+	width: 160px;
+	border-top: 1px solid #FFF;
+	overflow: auto;
+	}
+#CC_ferocity {
+	top: 0px;
+	left: 470px;
+	}
+#CC_airshipControl {
+	position: absolute;
+	top: 140px;
+	left: 150px;
+	}
+#CC_moveError {
+	color: red;
+	}
+#CC_moveTo {
+	margin-top: 10px;
+	}
+#CC_moveX, #CC_moveY {
+	width: 50px;
+	margin-left: 5px;
+	text-align: right;
+	}
+#CC_moveAirship {
+	width: 70px;
+	margin-top: 20px;
+	float: right;
+	text-align: center;
+	}
+#CC_airshipInfo {
+	position: absolute;
+	top: 150px;
+	right: 150px;
+	}
+#CC_scrollBox {
+	height: 360px;
+	width: 776px;
+	margin-left: 5px;
+	overflow: auto;
+	}
+#CC_missionList > div {
+	margin: 10px 0;
+	}
+#CC_troops, .aSupportRow, .fSupportRow {
+	position: relative;
+	height: 100px;
+	padding: 0px;
+	text-align: center;
+	color: #FFF;
+	}
+.aSupportRow, .fSupportRow {
+	height: 80px;
+	text-align: left;
+	}
+.supportAUbox {
+	padding-left: 10px;
+	text-align: center;
+	}
+.sendHome, .callHome {
+	color: #AAAAAA !important;
+	float: right;
+	}
+.incoming {
+	padding-top: 15px;
+	}
+.mission {
+	position: relative;
+	padding: 15px 0 0;
+	color: #FFF;
+	}
+.recallRaid {
+	position: relative;
+	top: 5px;
+	left: 5px;
+	display: inline-block;
+	color: #CCC;
+	text-decoration: underline;
+	cursor: pointer;
+	}
+.raidInfo {
+	position: absolute;
+	top: 5px;
+	right: 5px;
 	}

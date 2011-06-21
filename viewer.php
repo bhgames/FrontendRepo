@@ -28,8 +28,6 @@
 		insertScript("BUI","css");
 		insertScript("bunker","css");
 		insertScript("CC","css");
-		insertScript("CY","css");
-		insertScript("HQ","css");
 		insertScript("IN","css");
 		insertScript("league","css");
 		insertScript("login","css");
@@ -186,8 +184,6 @@
 		insertScript("AP","js");
 		insertScript("bnkr","js");
 		insertScript("CC","js");
-		insertScript("CY","js");
-		insertScript("HQ","js");
 		insertScript("IN","js");
 		insertScript("MS","js");
 		insertScript("RY","js");
@@ -212,6 +208,7 @@
 		insertScript("rank","js");
 		insertScript("support","js");
 		insertScript("towns","js");
+		insertScript("tutorial","js");
 		insertScript("worldmap","js");
 		//midend files
 		insertScript("login","js");
@@ -245,12 +242,7 @@
 		</noscript>
 	<!-- End of StatCounter Code -->
 	<!-- GetSatisfaction code -->
-	<script type="text/javascript" charset="utf-8">
-	  var is_ssl = ("https:" == document.location.protocol);
-	  var asset_host = is_ssl ? "https://s3.amazonaws.com/getsatisfaction.com/" : "http://s3.amazonaws.com/getsatisfaction.com/";
-	  document.write(unescape("%3Cscript src='" + asset_host + "javascripts/feedback-v2.js' type='text/javascript'%3E%3C/script%3E"));
-	</script>
-
+	<script src="http://s3.amazonaws.com/getsatisfaction.com/javascripts/feedback-v2.js" type="text/javascript></script>
 	<script type="text/javascript" charset="utf-8">
 	  var feedback_widget_options = {};
 

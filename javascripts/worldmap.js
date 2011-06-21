@@ -373,13 +373,13 @@ function city_select(city, box) {
 		$("#sendMission,#moveTo").unbind('click').click(function() {
 			var town = map.displayedTowns[$("#townIndex").text()];
 			var that = this;
-			BUI.HQ.x = town.x;
-			BUI.HQ.y = town.y;
+			BUI.CC.x = town.x;
+			BUI.CC.y = town.y;
 			$.each(player.curtown.bldg, function(i, x) {
 				if(x.type == "Headquarters") {
 					BUI.set(x.type, x.lotNum);
 					do_fade(draw_bldg_UI);
-					BUI.HQ.startTab = $(that).is("#moveTo")?"control":"send";
+					BUI.CC.startTab = $(that).is("#moveTo")?"control":"send";
 					return false;
 				}
 			});

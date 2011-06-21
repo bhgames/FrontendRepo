@@ -1,5 +1,5 @@
 function build_bldg_UIs() { //set up everything the various UIs will need
-	BUI.CY.bldgServer = $.grep(player.curtown.bldg, function(v, i) {
+	BUI.CC.bldgServer = $.grep(player.curtown.bldg, function(v, i) {
 						return (v.deconstruct || v.lvlUps != 0);
 					});
 	
@@ -101,7 +101,6 @@ function draw_bldg_UI() {
 		$("#BUI_upSteel").html(Math.ceil(cost[0])).format({format:"###,###,###", locale:"us"});
 		$("#BUI_upWood").html(Math.ceil(cost[1])).format({format:"###,###,###", locale:"us"});
 		$("#BUI_upManMade").html(Math.ceil(cost[2])).format({format:"###,###,###", locale:"us"});
-		$("#BUI_upFood").html(Math.ceil(cost[3])).format({format:"###,###,###", locale:"us"});
 		
 		if(!info[2].match(/^false/)) {		//if canUpgrade is true
 			$("#BUI_upSteel").removeClass('noRes');
@@ -204,19 +203,23 @@ function get_bldg(v) {
 }
 
 function set_active(name, lotNum) {
-	clearInterval(BUI.active.timer);
-	BUI.active = new Object();
-	$.each(BUI, function(i,v) {
-		if(typeof(v.name) != "undefined") {
-			$.each(v.name, function(j, w) {
-				if(name == w) {
-					BUI.active = v;
-				}
-			});
-		}
-	});
-	BUI.active.lotNum = lotNum;
-	BUI.active.timer = update_time_displays(BUI.active);
+	if(name && lotNum) {
+		clearInterval(BUI.active.timer);
+		BUI.active = new Object();
+		$.each(BUI, function(i,v) {
+			if(typeof(v.name) != "undefined") {
+				$.each(v.name, function(j, w) {
+					if(name == w) {
+						BUI.active = v;
+					}
+				});
+			}
+		});
+		BUI.active.lotNum = lotNum;
+		BUI.active.timer = update_time_displays(BUI.active);
+	} else {
+		log("name or lotNum not given");
+	}
 }
 
 function update_time_displays(menu) {		//this function is fairly complicated since there's a lot going on
@@ -282,7 +285,6 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 					case "Arms Factory":
 						var time = 0;
 						$(".time").each(function(i, el) {
-							
 							if(i > 0) { //if we're on anything after the extra .time for the first element 
 											//we have to subtract one from i to get the right queue item
 								time += (bldgInfo.Queue[i-1].ticksPerUnit * bldgInfo.Queue[i-1].AUNumber);
@@ -299,7 +301,7 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 								var hours = Math.floor((currTicks / 3600)%24);
 								var mins = Math.floor((currTicks % 3600) / 60);
 								var secs = Math.floor((currTicks % 3600) % 60);
-								time -= currTicks; //this is so that time displays correctly for the first element
+								time -= (bldgInfo.Queue[i].currTicks+player.time.timeFromNow(1000)); //this is so that time displays correctly for the first element
 							}
 							
 							$(el).html(((days)?days + " d ":"") + hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime());

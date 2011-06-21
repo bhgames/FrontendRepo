@@ -18,7 +18,9 @@ function show_town() {
 			return noUpdate;
 		}
 	});
-	get_buildable();
+	if(!player.curtown.bldableBldgs) {
+		get_buildable(true);
+	}
 	$("#cityname").html(function() { 
 								if(player.curtown.townID == player.capitaltid) {
 									return "&#171;" + player.curtown.townName + "&#187;";
@@ -27,11 +29,25 @@ function show_town() {
 								}
 							});
 	var HTML = "	<div id='town_buildBldgMenu'>\
-						<div id='town_buildBldgList' class='darkFrameBody'></div>\
-						<div class='darkFrameBR'><div class='darkFrameB'></div></div>\
+						<div id='town_buildBldgList' class='darkFrameBody'>\
+							<div id='town_buildingListTabs'>\
+								<div id='town_unlocked' class='lightButton'>\
+									<div class='lightFrameBody'>Unlocked</div>\
+									<div class='lightFrameBL'><div class='lightFrameB'></div></div>\
+								</div>\
+								<div id='town_locked' class='lightButton'>\
+									<div class='lightFrameBody'>Locked</div>\
+									<div class='lightFrameBR'><div class='lightFrameB'></div></div>\
+								</div>\
+							</div>\
+							<div id='town_bldError'></div>\
+							<div id='town_closeBldgList'></div>\
+							<div id='town_buildableList'></div>\
+							<div id='town_notBuildableList'></div>\
+						</div>\
+						<div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>\
 					</div>\
-					<div id='town_buildBldgPopup'></div>\
-					<div id='townview'>\
+					<div id='townview'"+(player.curtown.zeppelin ? " class='zeppelin'" : "")+">\
 						<div id='town_warehousePopup'>\
 							<div id='town_warehouseBar'>Resource Overview</div>\
 							<div id='town_warehouseMenu'>\
@@ -56,40 +72,37 @@ function show_town() {
 						<div id='town_bldgBldgsPopup'>\
 							<div id='town_bldgBldgsBar'>Building Server</div>\
 							<div id='town_bldgBldgsList' class='darkFrameBody'></div>\
-						</div>";
+						</div>\
+						<img src='AIFrames/buildings/Base";
+	var numLotsOpen = player.research.infrastructureTech;
 	if(player.curtown.zeppelin) {
-		HTML += "<img src='AIFrames/buildings/AirshipView.png' id='townback' alt=''/><img src='AIFrames/buildings/enginespin.gif' id='enginespin1' alt=''/><img src='AIFrames/buildings/enginespin.gif' id='enginespin2' alt=''/>";
-		$.each(player.curtown.bldg, function(i,v) {
-			HTML+="<div id='pos"+i+"' class='airship bldg'><img src='AIFrames/buildings/Air"+v.path+".png' id='pos"+i+"_building' alt='"+v.type+"' title='Level "+v.lvl+" "+v.type+"'/></div>"
-		});
+		var townNum = "Zeppelin";
 	} else {
-		HTML += "<img src='AIFrames/buildings/Base";
-		var numLotsOpen = player.research.lotTech;
 		if(player.capitaltid == player.curtown.townID)  numLotsOpen += 4;
 		var townNum = Math.floor((numLotsOpen+1)/5);
 		if(townNum>3)townNum=3;
-		HTML += townNum+".png' id='townback' alt=''/><div id='pos0' class='bldg'><img src='AIFrames/buildings/MetalMine.png' id='pos0_building' alt='Metal Mine'/></div><div id='pos1' class='bldg'><img src='AIFrames/buildings/TimberField.png' id='pos1_building' alt='Timber Field'/></div><div id='pos2' class='bldg'><img src='AIFrames/buildings/ManufacturedMaterialsPlant.png' id='pos2_building' alt='Manufactured Materials Plant'/></div><div id='pos3' class='bldg'><img src='AIFrames/buildings/FoodFarm.png' id='pos3_building' alt='Food Farm'/></div>";
-		for(i = 4; i <= 18; i++) {
-			
-			HTML += "<div id='pos" + i + "' class='emptylot notMine " + ((i > numLotsOpen)?"locked ":"")
-					+ "bldg'><img src='../../images/trans.gif' id='pos" + i + "_building' alt=''/></div>";
-		}
+	}
+	HTML += townNum+".png' id='townback' alt=''/><div id='pos0' class='bldg'><img src='AIFrames/buildings/MetalMine.png' id='pos0_building' alt='Metal Mine'/></div><div id='pos1' class='bldg'><img src='AIFrames/buildings/TimberField.png' id='pos1_building' alt='Timber Field'/></div><div id='pos2' class='bldg'><img src='AIFrames/buildings/CrystalMine.png' id='pos2_building' alt='Crystal Mine'/></div><div id='pos3' class='bldg'><img src='AIFrames/buildings/Farm.png' id='pos3_building' alt='Farm'/></div>";
+	for(i = 4; i <= 18; i++) {
+		
+		HTML += "<div id='pos" + i + "' class='emptylot notMine " + ((i > numLotsOpen)?"locked ":"")
+				+ "bldg'><img src='../../images/trans.gif' id='pos" + i + "_building' alt=''/></div>";
 	}
 	$("#window").html(HTML+"</div>").fadeIn("fast");
 	
 	
-	if(BUI.CY.bldgServer.length>0) {
+	if(BUI.CC.bldgServer.length>0) {
 		clearInterval(player.townUpdate);
 		player.townUpdate = update_bldg_timers();
 		$("#town_bldgBldgsBar").css("display","block");
 		
 		$("#town_bldgBldgsPopup").unbind("mouseenter").mouseenter(function() {
-			$("#town_bldgBldgsList").stop(true).slideDown();
+			$("#town_bldgBldgsList").stop(true,true).slideDown();
 		}).unbind("mouseleave").mouseleave(function() {
-			$("#town_bldgBldgsList").stop(true).slideUp();
+			$("#town_bldgBldgsList").stop(true,true).slideUp();
 		});
 		var list = "<ul>";
-		$.each(BUI.CY.bldgServer, function(i,x) {
+		$.each(BUI.CC.bldgServer, function(i,x) {
 			var ticksTotal = 0;
 			$.each(x.ticksToFinishTotal,function(j,y) {
 				ticksTotal += y;
@@ -120,38 +133,68 @@ function show_town() {
 		}
 	}
 	
-	if(!player.curtown.zeppelin) {
-		$.each(player.curtown.bldg, function(i, x) { //set up tooltips and background images for building lots
-			var lot = x.lotNum;
-			$("#pos" + lot + "_building").attr("title","Level " + x.lvl + " " + x.type);
-			if(lot > 3) {
-				var back = "AIFrames/buildings/" + x.path + ".png";
-				$("#pos" + lot).removeClass("emptylot locked").addClass("buildlot");
-				$("#pos" + lot + "_building").attr({"src":back,"alt":x.type});
-			} else if(player.league) {
-				$("#pos" + lot + "_building").parent().css("display","none");
+	$.each(player.curtown.bldg, function(i, x) { //set up tooltips and background images for building lots
+		var lot = x.lotNum;
+		$("#pos" + lot + "_building").attr("title","Level " + x.lvl + " " + x.type);
+		if(lot > 3) {
+			var back = "AIFrames/buildings/" + x.path + ".png";
+			$("#pos" + lot).removeClass("emptylot locked").addClass("buildlot");
+			$("#pos" + lot + "_building").attr({"src":back,"alt":x.type});
+		} else if(player.league) {
+			$("#pos" + lot + "_building").parent().css("display","none");
+		}
+		var show = false, image = '';
+		if(x.deconstruct) {
+			show = true; image = 'destruct';
+		} else if(x.lvlUps>0) {
+			if(x.lvl==0) {
+				image = 'construct';
+			} else {
+				image = 'upgrade';
 			}
-			var show = false, image = '';
-			if(x.deconstruct) {
-				show = true; image = 'destruct';
-			} else if(x.lvlUps>0) {
-				if(x.lvl==0) {
-					image = 'construct';
+			show = true;
+		}
+		if(lot < 4) {
+			if(lot == 0) image+="MM";
+			else if(lot == 2) image+="MMP";
+			else image+="Large";
+		}
+		if(show) {
+			$("#pos"+lot).append("<img src='AIFrames/buildings/"+image+"Tile.png' class='lvlImage'/>");
+		}
+	});
+	
+	$("#town_unlocked").unbind("click").click(function() {
+		if(!$(this).hasClass("open")) {
+			$("#town_locked").removeClass("open");
+			$(this).addClass("open");
+			$("#town_notBuildableList").fadeOut(100);
+			$("#town_buildableList").fadeIn(100,function() {
+				var api = $(this).data('jsp');
+				if(!api) {
+					$(this).jScrollPane({showArrows:true,hideFocus:true});
 				} else {
-					image = 'upgrade';
+					api.reinitialise();
 				}
-				show = true;
-			}
-			if(lot < 4) {
-				if(lot == 0) image+="MM";
-				else if(lot == 2) image+="MMP";
-				else image+="Large";
-			}
-			if(show) {
-				$("#pos"+lot).append("<img src='AIFrames/buildings/"+image+"Tile.png' class='lvlImage'/>");
-			}
-		});
-	}
+			});
+		}
+	});
+	
+	$("#town_locked").unbind("click").click(function() {
+		if(!$(this).hasClass("open")) {
+			$("#town_unlocked").removeClass("open");
+			$(this).addClass("open");
+			$("#town_buildableList").fadeOut(100);
+			$("#town_notBuildableList").fadeIn(100,function() {
+				var api = $(this).data('jsp');
+				if(!api) {
+					$(this).jScrollPane({showArrows:true,hideFocus:true});
+				} else {
+					api.reinitialise();
+				}
+			});
+		}
+	});
 	
 	$(".bldg").unbind('click').click(function() {
 		var index = $(this).index(".bldg");
@@ -164,78 +207,79 @@ function show_town() {
 						return false;
 					}
 				});
-			} else if(bldgs.buildable != "empty") {
-				var HTML = '<ul>';
-				/* Notes:
-					The HQ can only be built on lot 5
-					first if determines if skipping needs to occur 
-						(if lot != 5 and the current building is the HQ, or if lot is 5 and the current building is not the HQ)
-						Remember, indexes are base-0.  So lot 5 is at index 4.
-					the next if is just to grab the HQ info for lot 5
-				*/
-				$.each(bldgs.buildable, function(i, v) {
-					var classes = ''
-					if((index!=4&&v.type=="Headquarters")||(index==4&&v.type!="Headquarters")) classes+="noShow ";
-					if(i==0) classes+="topBor";
-					HTML += "<li class='"+classes+"'><span>" + v.type + "</span><img src='AIFrames/buildings/" + v.type.replace(/\s/g,"") 
-								+ ".png' title='" + v.type + "' class='bldgPic' /><a href='javascript:;' class='buildBldgButton'></a></li>";
-				});
-				var api = $('#town_buildBldgList').data('jsp');
-				if(!api) {
-					$('#town_buildBldgList').html(HTML+"</ul>").jScrollPane({showArrows:true,hideFocus:true,autoReinitialise:true});
-					setTimeout(function(){$('#town_buildBldgList').data('jsp').reinitialise({showArrows:true,hideFocus:true});},2000);
-				} else {
-					api.getContentPane().html(HTML+"</ul>");
-					api.reinitialise({showArrows:true,hideFocus:true});
-				}
-				$("#town_buildBldgMenu").animate({"left":"0px"}, "normal");
-				$("a.buildBldgButton").one('click', function() {
-					$("#townview").unbind('click');
-					
-					var i = $(this).index("a.buildBldgButton");
-					$("#town_buildBldgPopup").html(function() {
-						return "<div class='popFrame'><div class='popFrameTop'><div class='popFrameLeft'><div class='popFrameRight'><div class='popFrameBody'><a href='javascript:;' id='town_cancelPopup'></a><div id='town_bldgRes'><div id='town_bldgResMetal'></div><div id='town_bldgResTimber'></div><div id='town_bldgResManMade'></div><div id='town_bldgResFood'></div></div><img src='AIFrames/buildings/" 
-								+ bldgs.buildable[i].type.replace(/\s/g,"")
-								+ ".png' title='" + bldgs.buildable[i].type + "' id='town_bldgPic' /><div id='town_bldgDesc'>" + bldgs.buildable[i].desc + "</div><span id='town_error'></span><a href='javascript:;' id='town_buildBldg' class='bldButton'></a></div></div></div></div></div><div class='popFrameBL-BR-B'><div class='popFrameBL'><div class='popFrameBR'><div class='popFrameB'></div></div></div></div>";
-						
-					});
-					$('#town_bldgResMetal').html(bldgs.buildable[i].cost[0]);
-					$('#town_bldgResTimber').html(bldgs.buildable[i].cost[1]);
-					$('#town_bldgResManMade').html(bldgs.buildable[i].cost[2]);
-					$('#town_bldgResFood').html(bldgs.buildable[i].cost[3]);
-					
-					var canBuild = new make_AJAX();
-					canBuild.callback = function(response) {
-						if(response.match(/^false/i) != null) {
-							$("#town_buildBldg").addClass('noBld');
-							$("#town_error").text(response.split(":")[1]);
+			} else if(player.curtown.bldableBldgs) {
+				var bldgMenu = $("#town_buildBldgMenu")
+				bldgMenu.css("display","none");
+				if(index==4) { //Only the Command Center can be built on this lot
+					var HTML = '<ul>';
+					$.each(bldgs, function(i, v) {
+						if(v.type=="Command Center") {
+							HTML += "<li><div>" + v.type + "</div><img src='AIFrames/buildings/" + v.path + ".png' title='" 
+										+ v.type + "' class='bldgPic' /><div id='town_bldgRes'><div id='town_bldgResMetal'>" + v.cost[0]
+										+ "</div><div id='town_bldgResTimber'>"+ v.cost[1] +"</div><div id='town_bldgResManMade'>"+ v.cost[2] 
+										+ "</div></div><div class='bldgDesc'>" + v.desc + "</div><a href='javascript:;' class='buildBldgButton"+
+										((player.curtown.res[0]<v.cost[0]||player.curtown.res[1]<v.cost[1]||player.curtown.res[2]<v.cost[2])?" noBld":"")+"'></a></li>";
+							return false;
 						}
-					};
-					canBuild.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command + ".canBuild(" 
-								+ bldgs.buildable[i].type + "," + index + "," + player.curtown.townID
-								+ ");");
-					
-					$("#town_cancelPopup").unbind('click').click(function() {
-						$("#town_buildBldgPopup").fadeOut("fast",function(){
-							$(this).html("");
-						});
-						
-							//unbind click handlers
-						$(this).unbind('click');
-						$("#town_buildBldg").unbind('click');
 					});
+					$('#town_buildableList').html(HTML+"</ul>");
 					
-					$("#town_buildBldg").click(function() {
+					HTML = '<ul>';
+					$.each(bldgs, function(i, v) {
+						if(v.type !="Command Center") {
+							HTML += "<li><div>" + v.type + "</div><img src='AIFrames/buildings/" + v.path + ".png' title='" + v.type + "' class='bldgPic' /><div id='town_bldgRes'><div id='town_bldgResMetal'>" + v.cost[0]
+										+ "</div><div id='town_bldgResTimber'>"+ v.cost[1] +"</div></div><div id='town_bldgResManMade'>"+ v.cost[2] 
+										+ "</div></div><div class='bldgDesc'>" + v.desc + "</div></li>";
+						}
+					});
+					$('#town_notBuildableList').html(HTML+"</ul>");
+				} else {
+					//Create Unlocked Building List 
+					var HTML = '<ul>';
+					$.each(player.curtown.bldableBldgs, function(i, v) {
+						HTML += "<li"+(v.type=="Command Center"?" class='noShow'":"")+"><div>" + v.type + "</div><img src='AIFrames/buildings/" + v.path 
+									+ ".png' title='" + v.type + "' class='bldgPic' /><div id='town_bldgRes'><div id='town_bldgResMetal'>" + v.cost[0]
+									+ "</div><div id='town_bldgResTimber'>"+ v.cost[1] +"</div><div id='town_bldgResManMade'>"+ v.cost[2] 
+									+ "</div></div><div class='bldgDesc'>" + v.desc + "</div><a href='javascript:;' class='buildBldgButton"+
+									((player.curtown.res[0]<v.cost[0]||player.curtown.res[1]<v.cost[1]||player.curtown.res[2]<v.cost[2])?" noBld":"")+"'></a></li>";
+					});
+					$('#town_buildableList').html(HTML+"</ul>");
+					
+					//Create Locked Building List
+					HTML = '<ul>';
+					$.each(player.curtown.lockedBldgs, function(i, v) {
+						HTML += "<li"+(v.type=="Command Center"?" class='noShow'":"")+"><div>" + v.type + "</div><img src='AIFrames/buildings/" + v.path 
+									+ ".png' title='" + v.type + "' class='bldgPic' /><div id='town_bldgRes'><div id='town_bldgResMetal'>" + v.cost[0]
+									+ "</div><div id='town_bldgResTimber'>"+ v.cost[1] +"</div><div id='town_bldgResManMade'>"+ v.cost[2] 
+									+ "</div></div><div class='bldgDesc'>" + v.desc + "</div></li>";
+					});
+					$('#town_notBuildableList').html(HTML+"</ul>");
+				}
+				
+				bldgMenu.css("display","").animate({"left":"0px"}, "normal");
+				
+				$(".bldgDesc").each(function(i,v) {
+					$(this).jScrollPane({showArrows:true,hideFocus:true});
+				});
+				
+				$("#town_unlocked").click();
+					
+				$("#town_closeBldgList").unbind('click').click(function() {
+					bldgMenu.animate({"left":"-802px"},"normal");
+				});
+				
+				$(".buildBldgButton").click(function() {
+					
 						if(!$(this).hasClass("noBld")) {
 							buildBldg = new make_AJAX();
 							
 							buildBldg.callback = function(response) {
 								if(response.match(/^false/) == null) {
-									$("#town_buildBldgPopup").fadeOut("fast",function() {
+									bldgMenu.animate({"left":"-802px"},"normal",function() {
 										load_player(player.league, true, true);
 									});
 								} else {
-									$("#town_error").html(response.split(":")[1]);
+									$("#town_bldError").html(response.split(":")[1]);
 								}
 							};
 							
@@ -243,19 +287,7 @@ function show_town() {
 											+ bldgs.buildable[i].type + "," + index + "," + player.curtown.townID 
 											+ ");");
 						}
-					});
-					
-					$("#town_buildBldgMenu").animate({"left":"-200px"}, "normal");
-					$("#town_buildBldgPopup").fadeIn("fast");
-					$("#town_bldgDesc").jScrollPane({showArrows:true,hideFocus:true});
 				});
-				setTimeout(function(){
-								$("#townview").one('click', function() {
-									if($("#town_buildBldgMenu").css("left").match(/^0/) != null) {
-										$("#town_buildBldgMenu").animate({"left":"-220px"}, "normal");
-									}
-								});
-							}, 0);
 			}
 		}
 	});	
@@ -263,7 +295,7 @@ function show_town() {
 	$(".cancelButton").unbind("click").click(function() {
 		var ele = $(this);		//so that I always have access to the button itself
 		if(!ele.hasClass("noCancel")) {	//this is to catch people clicking on the invisible cancel buttons
-			$.each(BUI.CY.bldgServer, function(i,x) {
+			$.each(BUI.CC.bldgServer, function(i,x) {
 				if(ele.next().text() == x.type) {
 					cancelQueue = new make_AJAX();
 					
@@ -370,7 +402,7 @@ function update_bldg_timers() {
 			var iter = 0;
 			var ticksTotal = 0;
 			$(".bldgListID").each(function(i,v){
-				$.each(BUI.CY.bldgServer, function(ind, x) {
+				$.each(BUI.CC.bldgServer, function(ind, x) {
 					//do update check
 					if(x.update) load_player(player.league, true,true);
 					
@@ -417,7 +449,7 @@ function update_bldg_timers() {
 						return false;	//pops us out of the loop
 						
 					//if we didn't find any matches (building has finished)
-					} else if(ind == BUI.CY.bldgServer.length - 1) $(v).parent().remove();	//remove the line completely
+					} else if(ind == BUI.CC.bldgServer.length - 1) $(v).parent().remove();	//remove the line completely
 				});
 			});
 		} catch(e) {}

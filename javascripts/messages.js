@@ -114,14 +114,14 @@ function build_message_UI() {
 		$(".groupSelect").each(function(i, v) {
 			if(v.checked) {
 				$.each(messages.messages[i], function(j, w) {
-					getPath += player.command + ".markReadMessage(" + w.messageID + ");";
+					getPath += player.command + ".markReadMessage(" + w.id + ");";
 					w.read = true;
 				});
 				$(v).siblings(".messages").find("a").addClass("read");
 			} else {
 				$(v).siblings(".messages").find(".messSelect").each(function(j, w) {
 					if(w.checked) {
-						getPath += player.command + ".markReadMessage(" + messages.messages[i][j].messageID + ");";
+						getPath += player.command + ".markReadMessage(" + messages.messages[i][j].id + ");";
 						messages.messages[i][j].read = true;
 						$(w).siblings("a").addClass("read");
 					}
@@ -148,7 +148,7 @@ function build_message_UI() {
 			$(".groupSelect").each(function(i, v) {
 				if(v.checked) {
 					$.each(messages.messages[i], function(j, w) {
-						getPath += player.command + ".markDeletedMessage(" + w.messageID + ");";
+						getPath += player.command + ".markDeletedMessage(" + w.id + ");";
 					});
 					deletedGroup.push(i);
 					elementGroup.push($(v));
@@ -157,7 +157,7 @@ function build_message_UI() {
 					var element = [];
 					$(v).siblings(".messages").find(".messSelect").each(function(j, w) {
 						if(w.checked) {
-							getPath += player.command + ".markDeletedMessage(" + messages.messages[i][j].messageID + ");";
+							getPath += player.command + ".markDeletedMessage(" + messages.messages[i][j].id + ");";
 							element.push($(w));
 							deleted.push(j);
 						}
@@ -292,7 +292,7 @@ function build_message_UI() {
 		HTML += "</h2><div id='mess_convo'>";
 		var getPath = "/AIWars/GodGenerator?reqtype=command&command=";
 		$.each(messages.messages[messages.currGroup], function(i, v) {
-			if(!v.read) {getPath += player.command + ".markReadMessage(" + v.messageID + ");";v.read=true;}
+			if(!v.read) {getPath += player.command + ".markReadMessage(" + v.id + ");";v.read=true;}
 			HTML += "<div class='convoMessage" + ((v.usernameFrom == player.username)?" fromSelf'":"'") + "><a href='javascript:;' class='deleteMess' title='Delete Message'></a><div class='messSender'>" 
 					+ v.usernameFrom + "</div><div class='messSubject'>" + v.subject.replace(/<u44>/ig,",").replace(/<u3B>/g,";").replace(/<script/g,"") + "</div><div class='messBodyBox'><div class='messBodyGrad'><div class='messBodyTop'><div class='messBodyBottom'><div class='messBody'>" 
 					+ v.body.replace(/<u44>/ig,",").replace(/<u3B>/g,";").replace(/<script/g,"");
@@ -360,7 +360,7 @@ function build_message_UI() {
 					display_output(false,"Message Marked Read!");
 					check_for_unread();
 				};
-				markRead.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command + ".markReadMessage(" + messages.curr.messageID + ");");
+				markRead.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command + ".markReadMessage(" + messages.curr.id + ");");
 				messages.curr.read = true;
 			}
 		});
@@ -381,13 +381,13 @@ function build_message_UI() {
 			display_output(false,"Message Deleted!");
 			get_messages(true);
 		};
-		delMess.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command + ".markDeletedMessage(" + messages.curr.messageID + ");");
+		delMess.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command + ".markDeletedMessage(" + messages.curr.id + ");");
 	});
 	$("#mess_deleteConvo").die('click').live('click',function() {
 		var getPath = "/AIWars/GodGenerator?reqtype=command&command=";
 		display_output(false,"Deleting Messages...");
 		$.each(messages.messages[messages.currGroup], function(j, w) {
-			getPath += player.command + ".markDeletedMessage(" + w.messageID + ");";
+			getPath += player.command + ".markDeletedMessage(" + w.id + ");";
 		});
 		messages.messages.splice(messages.currGroup, 1);
 		messages.currGroup = 0;

@@ -166,15 +166,15 @@ function build_SR_menu() {
 			$(".reportSelect:checked").each(function(i, v) {
 				var index = $(v).index(".reportSelect");
 				var report = SR.dispReports[index];
-				getPath += player.command + ".deleteUserSR(" + report.sid + ");"
-				deletedSIDs.push(report.sid);
+				getPath += player.command + ".deleteUserSR(" + report.id + ");"
+				deletedSIDs.push(report.id);
 			});
 			deleteReports = new make_AJAX();
 			deleteReports.get(getPath);
 			
 			$.each(deletedSIDs, function(i, x) {
 				$.each(SR.reports, function(ind, y) {
-					if(x == y.sid) {
+					if(x == y.id) {
 						SR.reports.splice(ind, 1);
 						return false;
 					}
@@ -207,15 +207,15 @@ function build_SR_menu() {
 			$(".reportSelect:checked").each(function(i, v) {
 				var index = $(v).index(".reportSelect");
 				var report = SR.dispReports[index];
-				getPath += player.command + ".markReadUserSR(" + report.sid + ");"
-				readSIDs.push(report.sid);
+				getPath += player.command + ".markReadUserSR(" + report.id + ");"
+				readSIDs.push(report.id);
 			});
 			readReports = new make_AJAX();
 			readReports.get(getPath);
 			
 			$.each(readSIDs, function(i, x) {
 				$.each(SR.reports, function(ind, y) {
-					if(x == y.sid) {
+					if(x == y.id) {
 						SR.reports[ind].read = true;
 						return false;
 					}
@@ -248,15 +248,15 @@ function build_SR_menu() {
 			$(".reportSelect:checked").each(function(i, v) {
 				var index = $(v).index(".reportSelect");
 				var report = SR.dispReports[index];
-				getPath += player.command + ".archiveUserSR(" + report.sid + ");"
-				archiveSIDs.push(report.sid);
+				getPath += player.command + ".archiveUserSR(" + report.id + ");"
+				archiveSIDs.push(report.id);
 			});
 			archiveReports = new make_AJAX();
 			archiveReports.get(getPath);
 			
 			$.each(archiveSIDs, function(i, x) {
 				$.each(SR.reports, function(ind, y) {
-					if(x == y.sid) {
+					if(x == y.id) {
 						SR.reports[ind].archived = true;
 						return false;
 					}
@@ -288,15 +288,15 @@ function build_SR_menu() {
 			$(".reportSelect:checked").each(function(i, v) {
 				var index = $(v).index(".reportSelect");
 				var report = SR.dispReports[index];
-				getPath += player.command + ".unarchiveUserSR(" + report.sid + ");"
-				unarchiveSIDs.push(report.sid);
+				getPath += player.command + ".unarchiveUserSR(" + report.id + ");"
+				unarchiveSIDs.push(report.id);
 			});
 			unarchiveReports = new make_AJAX();
 			unarchiveReports.get(getPath);
 			
 			$.each(unarchiveSIDs, function(i, x) {
 				$.each(SR.reports, function(ind, y) {
-					if(x == y.sid) {
+					if(x == y.id) {
 						SR.reports[ind].archived = false;
 						return false;
 					}
@@ -447,6 +447,7 @@ function build_SR_menu() {
 							+ report.offBegin[i] + "</span><span class='offNumE'>"
 							+ report.offEnd[i] + "</span></div>";		
 				});
+			}
 			HTML += "</div><div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div>\
 					</div></div>";	//close #SR_offense
 			
@@ -550,17 +551,17 @@ function build_SR_menu() {
 			SR.api.reinitialise();
 			markRead = new make_AJAX();
 			markRead.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command 
-							+ ".markReadUserSR(" + report.sid + ");");
+							+ ".markReadUserSR(" + report.id + ");");
 			report.read = true;
 			check_for_unread();
 			
 			$("#SR_delete").unbind('click').click(function() {
 				deleteSR = new make_AJAX();
 				deleteSR.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command 
-								+ ".deleteUserSR(" + report.sid + ");");
+								+ ".deleteUserSR(" + report.id + ");");
 				
 				$.each(SR.reports,function(i, v) {
-					if(report.sid == v.sid) SR.reports.splice(i, 1);
+					if(report.id == v.id) SR.reports.splice(i, 1);
 				});
 				$("#SR_allTab").click();
 			});
@@ -568,20 +569,20 @@ function build_SR_menu() {
 			$("#SR_archive").unbind('click').click(function() {
 				archiveSR = new make_AJAX();
 				archiveSR.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command 
-								+ ".archiveUserSR(" + report.sid + ");");
+								+ ".archiveUserSR(" + report.id + ");");
 				
 				$.each(SR.reports,function(i, v) {
-					if(report.sid == v.sid) SR.reports[i].archived = true;
+					if(report.id == v.id) SR.reports[i].archived = true;
 				});
 				$("#SR_allTab").click();
 			});	
 			$("#SR_unarchive").unbind('click').click(function() {
 				unarchiveSR = new make_AJAX();
 				unarchiveSR.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command 
-								+ ".unarchiveUserSR(" + report.sid + ");");
+								+ ".unarchiveUserSR(" + report.id + ");");
 				
 				$.each(SR.reports,function(i, v) {
-					if(report.sid == v.sid) SR.reports[i].archived = false;
+					if(report.id == v.id) SR.reports[i].archived = false;
 				});
 				$("#SR_allTab").click();
 			});
@@ -675,7 +676,7 @@ function build_SR_menu() {
 																				});\
 																				var reward = new make_AJAX();\
 																				reward.callback = function() {display_output(true,reward.responseText);};\
-																				reward.get('/AIWars/GodGenerator?reqtype=FBBlast&fuid="+response.session.uid+"&rewardChoice='+$(this).index('.fbBlastReward')+'&SID="+report.sid+"');\
+																				reward.get('/AIWars/GodGenerator?reqtype=FBBlast&fuid="+response.session.uid+"&rewardChoice='+$(this).index('.fbBlastReward')+'&id="+report.id+"');\
 																				$('#AIW_alertButton').click();\
 																			});</script>");
 									} else {

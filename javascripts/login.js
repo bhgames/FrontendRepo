@@ -410,7 +410,7 @@ function load_client(type, reloadTown, reloadUI) {
 					if(!player.towns) throw "No Towns";
 					if(player.towns.length < 1) throw "No Towns";
 					player.username = player.username.replace(/\u003c/g,"&#60;").replace(/\u003e/g,"&#62;");
-					player.command = (player.league)?"bf.getLeague()":"bf";
+					player.command = "bf";
 					player.time = new Date();
 					
 					//get chatbox
@@ -460,6 +460,45 @@ function load_client(type, reloadTown, reloadUI) {
 					player.research.fTimer *= player.gameClockFactor;
 					
 					player.research.knowledge += (player.research.scholTicks/player.research.scholTicksTotal);
+					
+					$.each(player.AU,function(i,x) {
+						switch(x.type) {
+							case 1:
+								x.rank = "soldier";
+								break;
+							case 2:
+								x.rank = "tank";
+								break;
+							case 3:
+								x.rank = "juggernaut";
+								break;
+							case 4:
+							case 5:
+								x.rank = "bomber";
+								break;
+						}
+						
+						switch(x.armorType) {
+							case 1:
+								x.armorType = "light";
+								break;
+							case 2:
+								x.armorType = "heavy";
+								break;
+						}
+						
+						switch(x.attackType) {
+							case 1:
+								x.attackType = "physical";
+								break;
+							case 2:
+								x.attackType = "explosive";
+								break;
+							case 3:
+								x.attackType = "electrical";
+								break;
+						}
+					});
 					
 						//normalize town values to seconds from ticks and sort support
 					$.each(player.towns,function(i,x) {
@@ -538,9 +577,9 @@ function load_client(type, reloadTown, reloadUI) {
 							get_bldgs(false,info[i++]);
 							get_raids(false,info[i++]);
 							get_messages(false,info[i++], info[i++]);
-							player.TPR = (info[i].match(/^false/i))?false:$.parseJSON(info[i++]);
+							player.TPR = (info[i].match(/^false/i))?false:$.parseJSON(info[i]); i++;
 							get_quests(false,info[i++]);
-							get_achievements(info[i++]);
+							get_achievements(true,info[i++]);
 							display_output(false,"Player Data Loaded!");
 							
 							get_ranks(false,info[i++],info[i++],info[i++]);
@@ -617,7 +656,7 @@ function load_client(type, reloadTown, reloadUI) {
 									+ '.getBuildings();' + player.command + '.getUserRaids();' + player.command 
 									+ '.getMessages();' + player.command + '.getUserGroups();' + player.command 
 									+ ((!type&&player.league_pid)?'.getLeague()':'') + '.getUserTPRs();'
-									+ player.command + '.getQuests()' + player.command 
+									+ player.command + '.getQuests();' + player.command 
 									+ '.getAchievements();bf.getPlayerRanking();bf.getLeagueRanking();bf.getBattlehardRanking();');
 				}
 				catch(e) {
@@ -632,7 +671,7 @@ function load_client(type, reloadTown, reloadUI) {
 			}
 		};
 		
-		playerget.get("/AIWars/GodGenerator?reqtype=" + ((type)?"league":"player"));
+		playerget.get("/AIWars/GodGenerator?reqtype=player");
 	}
 }
 
@@ -669,7 +708,7 @@ function load_player(type, reloadTown, reloadUI) {
 					if(!player.towns) throw "No Towns";
 					if(player.towns.length < 1) throw "No Towns";
 					player.username = player.username.replace(/\u003c/g,"&#60;").replace(/\u003e/g,"&#62;");
-					player.command = (player.league)?"bf.getLeague()":"bf";
+					player.command = "bf";
 					player.time = new Date();
 
 						//sort towns alphabetically for display in list
@@ -695,6 +734,45 @@ function load_player(type, reloadTown, reloadUI) {
 					player.research.fTimer *= player.gameClockFactor;
 					
 					player.research.knowledge += (player.research.scholTicks/player.research.scholTicksTotal);
+					
+					$.each(player.AU,function(i,x) {
+						switch(x.type) {
+							case 1:
+								x.rank = "soldier";
+								break;
+							case 2:
+								x.rank = "tank";
+								break;
+							case 3:
+								x.rank = "juggernaut";
+								break;
+							case 4:
+							case 5:
+								x.rank = "bomber";
+								break;
+						}
+						
+						switch(x.armorType) {
+							case 1:
+								x.armorType = "light";
+								break;
+							case 2:
+								x.armorType = "heavy";
+								break;
+						}
+						
+						switch(x.attackType) {
+							case 1:
+								x.attackType = "physical";
+								break;
+							case 2:
+								x.attackType = "explosive";
+								break;
+							case 3:
+								x.attackType = "electrical";
+								break;
+						}
+					});
 					
 						//normalize town values to seconds from ticks and sort support
 					$.each(player.towns,function(i,x) {
@@ -792,7 +870,7 @@ function load_player(type, reloadTown, reloadUI) {
 			}
 		};
 		
-		playerget.get("/AIWars/GodGenerator?reqtype=" + ((type)?"league":"player"));
+		playerget.get("/AIWars/GodGenerator?reqtype=player");
 	}
 }
 

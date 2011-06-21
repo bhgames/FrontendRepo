@@ -25,7 +25,7 @@ function get_raids(async, raids) {
 			build_raid_list();
 			display_output(false,"Raids Loaded!");
 			gettingRaids = false;
-			if(currUI===draw_bldg_UI&&BUI.active.name[0]=="Headquarters"&&($("#HQ_Overview").hasClass("open")||BUI.HQ.reload)) currUI();
+			if(currUI===draw_bldg_UI&&BUI.active.name[0]=="Headquarters"&&($("#HQ_Overview").hasClass("open")||BUI.CC.reload)) currUI();
 		}
 	} catch(e) {
 		display_output(true,"Error loading Raids!",true);
@@ -42,7 +42,7 @@ function build_raid_list() {
 		get_SRs();
 	}
 
-	BUI.HQ.numRaidsOut = 0;
+	BUI.CC.numRaidsOut = 0;
 
 	$("#IO").removeClass("incomingE incomingF outgoing");
 
@@ -52,7 +52,7 @@ function build_raid_list() {
 								return true;
 							}
 							if((v.attackingTown == player.curtown.townName && v.raidOver) || (v.defendingTown == player.curtown.townName && (v.raidType.match(/support/i) && !v.debris))) {
-								if(!v.raidType.match(/support/i) && v.attackingTown != player.curtown.townName) BUI.HQ.numRaidsOut++; //incoming support shouldn't be counted
+								if(!v.raidType.match(/support/i) && v.attackingTown != player.curtown.townName) BUI.CC.numRaidsOut++; //incoming support shouldn't be counted
 								$("#IO").addClass("incomingF");
 								return true;
 							}
@@ -62,7 +62,7 @@ function build_raid_list() {
 									});
 	player.curtown.outgoingRaids = $.grep(player.raids, function(v, i) {
 							if(v.attackingTown == player.curtown.townName && !v.raidOver) {
-								BUI.HQ.numRaidsOut++;
+								BUI.CC.numRaidsOut++;
 								$("#IO").addClass("outgoing");
 								return true;
 							}
@@ -74,7 +74,7 @@ function build_raid_list() {
 	//this is here just to make sure that numRaidsOut is always correct.
 	if(player.curtown.supportAbroad) {
 		$.each(player.curtown.supportAbroad, function() {
-					BUI.HQ.numRaidsOut++;
+					BUI.CC.numRaidsOut++;
 				});
 	}
 	

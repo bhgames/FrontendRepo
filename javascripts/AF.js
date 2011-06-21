@@ -27,14 +27,7 @@ function AF_UI(bldgInfo) {
 		}
 	});
 	
-	var getEffect = new make_AJAX();
-	getEffect.callback = function(response) {
-		$("#BUI_extras").text(response);
-	};
-	getEffect.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command 
-					+ ".getAFEffectToString(" + player.curtown.townID + ");");
-	
-	var list = ["<ul>Build Queue:"]; //begin constructing the build queue
+	var list = "<ul>Build Queue:"; //begin constructing the build queue
 	var time = 0;		//we have to add up the time as we go so the displays are correct
 	var slotsUsed = 0;
 	$.each(bldgInfo.Queue, function(i, x) {
@@ -51,216 +44,36 @@ function AF_UI(bldgInfo) {
 	list += "</ul><div id='AF_queueCap'>Available Slots: <span>" + (bldgInfo.cap-slotsUsed) + "</span></div>";
 	$("#AF_queueList").html(list); //display the list
 	
-	$("#AF_AUbar > a").each(function(i, el){	//set up display of AU bar
-		$(el).css("left", (55 * i) + "px");
-		if(!player.AU[i]) {
-			$(el).css("display", "none)");
-		} else if(player.AU[i].type == 1) { //the Arms Factory only builds Soldiers
-			var path = "url(AIFrames/units/";
+	$.each(player.AU, function(i, x){	//set up display of AU bar
+		if(x.rank = "soldier") {
+			var el = $("#AF_AUbar").append("<a href='javascript:;' slot='"+i+"' class='inactiveAU'>???</a>").children(":last-child");
+			log(el);
+			$(el).text(player.curtown.au[i]);
 			
-			
-			$(el).attr("title", player.AU[i].name); //this sets the tooltip to the name of the AU
-			
-			if(player.AU[i].name != "locked") { //you can't select locked slots
-				if(player.AU[i].name == "empty") {
-					//code for assinging AUs
-					$(el).unbind('click').click(function(){
-						//swap the classes so that only this element has activeAU, the others have inactiveAU
-						$(this).removeClass('inactiveAU').addClass('activeAU').siblings('a').addClass('inactiveAU').removeClass('activeAU');
-						$("#AF_AUassignButton a").removeClass('clear');
-						$("#AF_AUassignList").css("visibility", "visible").change();
-						
-						//reset displays
-						$("#AF_AUpic").attr("src","../../images/trans.gif");
-						
-						$("#AF_AUweapStats").html("<div id='AF_AUFP'><img src='AIFrames/icons/firepower.png' title='Unit Firepower' alt='Unit Firepower' /> <span class='stat'>???</span></div>"
-												+ "<div id='AF_AUAmmo'><img src='AIFrames/icons/ammo.png' title='Unit Ammunition' alt='Unit Ammunition' /> <span class='stat'>???</span></div>"
-												+ "<div id='AF_AUAccu'><img src='AIFrames/icons/accuracy.png' title='Unit Accuracy' alt='Unit Accuracy' /> <span class='stat'>???</span></div>");
-						
-						//reset unit information
-						$("#AF_AUname").html("");
-						$("#AF_AUrank").html("");
-						$("#AF_AUFP span").html(": "+player.AU[i].firepower);
-						$("#AF_AUAmmo span").html(": "+player.AU[i].ammo);
-						$("#AF_AUAccu span").html(": "+player.AU[i].accuracy);
-						$("#AF_AUconceal span").html(": "+player.AU[i].conc);
-						$("#AF_AUarmor span").html(": "+player.AU[i].armor);
-						$("#AF_AUspeed span").html(": "+player.AU[i].speed);
-						$("#AF_AUcargo span").html(": "+player.AU[i].cargo);
-						//reset build info
-						$("#AF_numPpl").val("").keyup(); 
-					});
-				} else {
-					//code for displaying AUs
-					$(el).unbind('click').click(function(){
-						//swap the classes so that only this element has activeAU, the others have inactiveAU
-						$(this).removeClass('inactiveAU').addClass('activeAU').siblings('a').addClass('inactiveAU').removeClass('activeAU');
-						$("#AF_AUassignButton a").addClass('clear');
-						$("#AF_AUassignList").css("visibility", "hidden").change();
-						
-						var AUpic = "AIFrames/units/";
-						var rankPic = "AIFrames/units/";
+			$(el).css({"background-image": "url(AIFrames/units/"+x.rank+"renderTHUMB.png","left": (55 * i) + "px"});
+			$(el).attr("title", x.name); //this sets the tooltip to the name of the AU
+		
+			//code for displaying AUs
+			$(el).unbind('click').click(function(){
+				//swap the classes so that only this element has activeAU, the others have inactiveAU
+				$(this).removeClass('inactiveAU').addClass('activeAU').siblings('a').addClass('inactiveAU').removeClass('activeAU');
 				
-						switch(player.AU[i].popSize) {
-							case 1: //soldier
-								AUpic += "soldier";
-								break;
-							case 5: //tank
-								AUpic += "tank";
-								break;
-							case 10: //juggernaut
-								AUpic += "juggernaut";
-								break;
-							case 20: //bomber
-								AUpic += "bomber";
-								rankPic += "bomb";
-								break;
-						}
-						AUpic += "renderSMALL.png";
-						$("#AF_AUpic").attr("src",AUpic);
-						rankPic += "insig" + (player.AU[i].graphicNum+1) + ".png";
-						$("#AF_rankPic").attr("src",rankPic);
-						
-						$("#AF_AUweapStats").html("<div id='AF_AUFP'><img src='AIFrames/icons/firepower.png' title='Unit Firepower' alt='Unit Firepower' /> <span class='stat'>???</span></div>"
-												+ "<div id='AF_AUAmmo'><img src='AIFrames/icons/ammo.png' title='Unit Ammunition' alt='Unit Ammunition' /> <span class='stat'>???</span></div>"
-												+ "<div id='AF_AUAccu'><img src='AIFrames/icons/accuracy.png' title='Unit Accuracy' alt='Unit Accuracy' /> <span class='stat'>???</span></div>");
-						
-						var classType = '';
-						switch(player.AU[i].graphicNum) {
-							case 0:
-								classType = "Destroyer Class";
-								break;
-							case 1:
-								classType = "Havoc Class";
-								break;
-							case 2:
-								if(player.AU[i].popSize==20) classType = "Devastator Class";
-								else classType = "Defender Class";
-								break;
-							case 3:
-								if(player.AU[i].popSize==20) classType = "Mayhem Class";
-								else classType = "Devastator Class";
-								break;
-							case 4:
-								if(player.AU[i].popSize==20) classType = "Armageddon Class";
-								else classType = "Mayhem Class";
-								break;
-							case 5:
-								classType = "Battlehard Class";
-								break;
-							case 6:
-								classType = "Stonewall Class";
-								break;
-							case 7:
-								classType = "Ironside Class";
-								break;
-							case 8:
-								classType = "Impervious Class";
-								break;
-							case 9:
-								classType = "Conqueror Class";
-								break;
-						}
-						//display unit information
-						$("#AF_AUname").html(player.AU[i].name);
-						$("#AF_AUrank").html(classType);
-						$("#AF_AUFP span").html(player.AU[i].firepower);
-						$("#AF_AUAmmo span").html(player.AU[i].ammo);
-						$("#AF_AUAccu span").html(player.AU[i].accuracy);
-						$("#AF_AUconceal span").html(player.AU[i].conc);
-						$("#AF_AUarmor span").html(player.AU[i].armor);
-						$("#AF_AUspeed span").html(player.AU[i].speed);
-						$("#AF_AUcargo span").html(player.AU[i].cargo);
-						
-						var weapPics = "";
-						
-						$.each(player.AU[i].weap, function(i, x) {
-							weapPics += "<img src='images/client/weapons/" 
-										+ UTCC.weapons[x].name.toLowerCase().replace(/\s/g,"-") + ".png' title='"
-										+ UTCC.weapons[x].name + "' />";
-						});
-						 //update build info
-						$("#BUI_numPpl").keyup();
-					});
-				}
-			}
-			if(i == 0) {$(el).click();} //select the first AU
-		}
-	});
-	
-	$("#AF_AUassignList").html(function() {
-		var HTML = "";
-		var unusedAU = $.grep(player.AUTemplates, function(v, i) {
-			var exists = false;
-			$.each(player.AU, function(ind, val) {
-				if(val.name == v.name) exists = true;
+				$("#AF_AUpic").attr("src","AIFrames/units/"+x.rank+"renderSMALL.png");
+				
+				//display unit information
+				$("#AF_AUname").html(x.name);
+				$("#AF_AUAttackPower span").html(x.attackDamage);
+				$("#AF_AUAattackType span").html(x.attackType);
+				$("#AF_AUarmor span").html(x.armor);
+				$("#AF_AUarmorType span").html(x.armorType);
+				$("#AF_AUspeed span").html(x.speed);
+				$("#AF_AUcargo span").html(x.cargo);
+				
+				 //update build info
+				$("#BUI_numPpl").keyup();
 			});
-			return exists;
-		}, true);
-		$.each(unusedAU, function(i, v) {
-			HTML += "<option>" + v.name + "</option>";
-		});
-		return HTML;
-	}).change(function(){
-		var slot;
-		$("#AF_AUbar > a").each(function(i, el) {
-						if($(el).hasClass('activeAU')) {
-							slot = i;
-						}
-					});
-		var canChange = new make_AJAX();
-		
-		canChange.callback = function(response) {
-				if(response.match(/true/)) {
-					$("#AF_AUassignButton a").removeClass('noAss');
-				} else {
-					$("#AF_AUassignButton a").addClass('noAss');
-					$("#AF_bFail").html(response.split(":")[1]);
-				}
-			};
-		
-		var URL = "/AIWars/GodGenerator?reqtype=command&command=" + player.command 
-					+ ".canCreateCombatUnit(" + slot + ",";
-		if($("#AF_AUassignButton a").hasClass("clear")) { //if an AU is selected
-			URL += "empty);";
-		} else {
-			URL += $(this).children(':selected').text() + ");";
-		}
-		canChange.get(URL);
-	});
-	
-	$("#AF_AUassignButton a").click(function(){
-		if(!$(this).hasClass('noAss')) {
-			var assign = new make_AJAX();
-			var slot;
-			$("#AF_AUbar > a").each(function(i, el) {
-							if($(el).hasClass('activeAU')) slot = i;
-						});
-			var URL = "/AIWars/GodGenerator?reqtype=command&command=" + player.command 
-						+ ".createCombatUnit(" + slot + ",";
-			if($(this).hasClass('clear')) { //if we have an AU selected, we're clearing
-				URL += "empty);";
-			} else {						//otherwise, we're assigning a new one
-				URL += $("#AF_AUassignList option:selected").text() + ");";
-			}
 			
-			assign.callback = function(response) {
-				if(response.match(/true/)) {
-					$.each(player.AUTemplates,function(i,v){
-						if(v.name == $("#AF_AUassignList option:selected").text()) {
-							player.AU[slot] = v;
-							if(bldgInfo.cap==0) bldgInfo.cap = 5;
-							load_player(player.league,true,true);
-							return false;
-						}
-					});
-					currUI();
-				} else {
-					$("#AF_bFail").html(response.split(":")[1]);
-					$(this).addClass('noAss');
-				}
-			};
-			assign.get(URL);
+			if(i == 0) {$(el).click();} //select the first AU
 		}
 	});
 	
@@ -289,24 +102,11 @@ function AF_UI(bldgInfo) {
 			$("#BUI_bFail").html("");
 			var slot;
 			$("#AF_AUbar > a").each(function(i, el) {
-							if($(el).hasClass('activeAU')) slot = BUI.queue.AUtoBuild = i;
+							if($(el).hasClass('activeAU')) slot = BUI.queue.AUtoBuild = parseInt($(el).attr("slot"));
 						});
 						
 			var numPpl = parseInt($("#BUI_numPpl").val());
 			if(!isNaN(numPpl) && player.AU[slot].name != "empty") {
-				var size = 0;
-				switch(player.AU[slot].popSize) {
-					case 1:
-						size += numPpl;
-						break;
-					case 5:
-					case 20:
-						size += 10*numPpl;
-						break;
-					case 10:
-						size += 40*numPpl;
-						break;
-				}
 				var currentCap = 0;
 				$.each(bldgInfo.Queue, function(i,v) {
 					switch(player.AU[v.AUtoBuild].popSize) {
@@ -343,10 +143,10 @@ function AF_UI(bldgInfo) {
 					$('#BUI_pplFood').html(Math.ceil(parseFloat(pplCost[3]))).format({format:"###,###,###", locale:"us"}).addClass("noRes");
 					$('#BUI_pplTime').html(((hours<10)?"0"+hours:hours) + ":" + ((mins<10)?"0"+mins:mins) + ":" + ((secs<10)?"0"+secs:secs)).removeClass("noRes");
 					
-					$("#AF_capNeeded span").text(size);
+					$("#AF_capNeeded span").text(numPpl);
 												
 					var canBuild = pplInfo[2];
-					if(!canBuild.match(/^false/) && size+currentCap <= bldgInfo.cap) {
+					if(!canBuild.match(/^false/) && numPpl+currentCap <= bldgInfo.cap) {
 						$('#BUI_pplSteel').removeClass("noRes");
 						$('#BUI_pplWood').removeClass("noRes");
 						$('#BUI_pplManMade').removeClass("noRes");
@@ -359,7 +159,7 @@ function AF_UI(bldgInfo) {
 				getPplInfo.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command 
 								+ ".returnPrice(" + player.AU[slot].name + "," + numPpl + "," 
 								+ player.curtown.townID + ");" + player.command + ".getTicksPerAttackUnit(" 
-								+ player.AU[slot].popSize + "," + player.curtown.townID + ");" + player.command + ".canBuy(" 
+								+ player.AU[slot].type + "," + player.curtown.townID + ");" + player.command + ".canBuy(" 
 								+ player.AU[slot].name + "," + numPpl + "," + bldgInfo.lotNum + "," 
 								+ player.curtown.townID + ");");
 								
@@ -383,20 +183,8 @@ function AF_UI(bldgInfo) {
 			$.each(BUI.queue.cost, function(i,v){
 				player.curtown.res[i] -= v;
 			});
-			var slotsOpen = parseInt($("#AF_queueCap span").text()), slotsNeeded = 0;
-			switch(player.AU[BUI.queue.AUtoBuild].popSize) {
-				case 1:
-					slotsNeeded = numPpl;
-					break;
-				case 5:
-				case 20:
-					slotsNeeded =10*numPpl;
-					break;
-				case 10:
-					slotsNeeded = 40*numPpl;
-					break;
-			}
-			$("#AF_queueCap span").text(slotsOpen-slotsNeeded);
+			var slotsOpen = parseInt($("#AF_queueCap span").text());
+			$("#AF_queueCap span").text(slotsOpen-numPpl);
 			
 			BUI.queue.currTicks = 0;
 			var i = bldgInfo.Queue.push(BUI.queue);
