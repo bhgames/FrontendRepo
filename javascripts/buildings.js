@@ -290,7 +290,7 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 								var hours = Math.floor((currTicks / 3600)%24);
 								var mins = Math.floor((currTicks % 3600) / 60);
 								var secs = Math.floor((currTicks % 3600) % 60);
-								time -= currTicks; //this is so that time displays correctly for the first element
+								time -= (bldgInfo.Queue[i].currTicks+player.time.timeFromNow(1000)); //this is so that time displays correctly for the first element
 							}
 							
 							$(el).html(((days)?days + " d ":"") + hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime());
