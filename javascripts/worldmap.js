@@ -53,13 +53,15 @@ function get_map() {
 					display_output(false,"Retrying...");
 					throw "No Towns";
 				}
-				var maxX = , maxY
+				var maxX = 0, maxY = 0;
 				$.each(map.tiles, function(i, v) {
 					//map.leftX = map.rightX.max(v.centerx-4);
 					map.rightX = map.rightX.min(v.centerx+4);
 					map.bottomY = map.bottomY.max(v.centery-4);
 					//map.topY = map.bottomY.min(v.centery+4);
 					
+					maxX = maxX.min(Math.abs(v.centerx));
+					maxY = maxY.min(Math.abs(v.centery));
 				});
 				var j = 0;
 				var temp = [];
