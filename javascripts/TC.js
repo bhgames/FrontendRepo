@@ -26,9 +26,9 @@ function TC_UI(bldgInfo) {
 			$(this).addClass("open");
 			var that = this;
 			$("#TC_window").fadeOut(100, function() {
+			$("#TC_window > div").css("display","none");
 				if($(that).is("#TC_Overview")) {
-					$("#TC_window").html(BUI.TC.OHTML);
-					
+					$("#TC_overview").css("display","block");
 					$("#TC_activeTrades .tradeList").html(function() {
 						var HTML = '';
 						if(!gettingTrades) {
@@ -164,7 +164,7 @@ function TC_UI(bldgInfo) {
 					$(".tradeList").jScrollPane({showArrows:true,hideFocus:true});
 					
 				} else if($(that).is("#TC_Trade")) {
-					$("#TC_window").html(BUI.TC.THTML);
+					$("#TC_sendTrade").css("display","block");
 					
 					$.each(player.towns, function(i,v) {
 						if(v.townID != player.curtown.townID) {
@@ -381,9 +381,11 @@ function TC_UI(bldgInfo) {
 					
 					$("#TC_window").fadeIn(100);
 					
+				} else if($(that).is("#TC_Caravan")) {
+					$("#TC_caravans").css("display","block");
+					
 				} else {
-					$("#TC_window").html(BUI.TC.MHTML);
-					$("#TC_trades").jScrollPane({showArrows:true,hideFocus:true});
+					$("#TC_marketplace").css("display","block");
 					$("#TC_refreshTrades").unbind("click").click(function() {
 						var getMarket = new make_AJAX();
 						getMarket.callback = function(response) {
@@ -455,6 +457,8 @@ function TC_UI(bldgInfo) {
 						
 						getMarket.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".getOpenTwoWays("+player.curtown.townID+");");
 					}).click();
+					
+					$("#TC_trades").jScrollPane({showArrows:true,hideFocus:true});
 					
 					$(".marketTrade").die("click").live("click",function(){
 						$(".active").removeClass("active");
@@ -621,7 +625,7 @@ function TC_UI(bldgInfo) {
 				if(response.match(/^false/) == null) {
 					$("#BUI_numPpl").keyup();
 					display_output(false,"Build Successful!");
-					load_player(player.league, true, true);				
+					load_player(false, true, true);				
 				} else {
 					var error = response.split(":")[1];
 					display_output(true, error);

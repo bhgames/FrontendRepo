@@ -1,6 +1,6 @@
 <?php
 	function insertScript($name, $type) {
-		$file = $name.".".$type;
+		$file = $name. "." .$type;
 		if($type == "js") {
 			echo '<script type="text/javascript" src="javascripts/'.$file.'"></script>';
 		} else if($type == "css") {
@@ -149,6 +149,32 @@
 						<div class='darkFrameBL'><div class='darkFrameB'></div></div>
 					</div>
 				</div>
+				<div id='town_infobar'>
+					<div id='town_warehouseMenu' class='darkFrameBody'>
+						<div id='town_metalInfo'>
+							<div class='capacityBarBorder'><div class='capacityBar'></div></div>
+							<div class='prod'>Production</div>
+							<div class='rph'></div>
+						</div>
+						<div id='town_timberInfo'>
+							<div class='capacityBarBorder'><div class='capacityBar'></div></div>
+							<div class='prod'>Production</div>
+							<div class='rph'></div>
+						</div>
+						<div id='town_crystalInfo'>
+							<div class='capacityBarBorder'><div class='capacityBar'></div></div>
+							<div class='prod'>Production</div>
+							<div class='rph'></div>
+						</div>
+						<div id='town_foodInfo'>
+							<div class='capacityBarBorder'><div class='capacityBar'></div></div>
+							<div class='prod'>Production</div>
+							<div class='rph'></div>
+						</div>
+					</div>
+					<div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>
+				</div>
+				<div id='town_infobarOpen'></div>
 				<div id="window"></div>
 			</div>
 			<ul id="bottomlinks">
@@ -185,7 +211,9 @@
 		insertScript("bnkr","js");
 		insertScript("CC","js");
 		insertScript("IN","js");
+		insertScript("Fort","js");
 		insertScript("MS","js");
+		insertScript("RC","js");
 		insertScript("RY","js");
 		insertScript("refinery","js");
 		insertScript("SR","js");

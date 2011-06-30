@@ -10,8 +10,31 @@
 /**************************************************************************************************************\
 *************************************************Map Object*****************************************************
 \**************************************************************************************************************/
-var map = {};
-
+var map = {
+			origHTML : "<div id='townMenuPopup'>\
+							</div>\
+							<div id='mapHelpButton' class='pplHelp'></div>\
+							<div id='mapAirshipToggle'></div>\
+							<div id='mapTileSwitchBox'>\
+								<div id='mapTileSwitchButton'></div>\
+								<div id='mapTileSwitcher'>\
+									<div class='lightFrameBody'>\
+										<div id='mapTileUp' class='tileDir'></div>\
+										<div id='mapTileDown' class='tileDir'></div>\
+										<div id='mapTileLeft' class='tileDir'></div>\
+										<div id='mapTileRight' class='tileDir'></div>\
+										<div id='mapTileDisplay'></div>\
+									</div>\
+									<div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>\
+								</div>\
+							</div>\
+							<div id='mapbox'></div>",
+			box : {},
+			territoryHTML : $(document.createElement('div')).attr("id","map_territories"),
+			tilesWide : 0,
+			rightX : 0,
+			bottomY : 0
+		};
 /**************************************************************************************************************\
 *************************************************Map Functions**************************************************
 \**************************************************************************************************************/
@@ -24,24 +47,25 @@ function get_map() {
 			var mapget = new make_AJAX();
 			
 			mapget.callback = function(response) {
-				map = $.parseJSON(response);
+				$.extend(map, $.parseJSON(response));
 				if(map.towns.length < 1) {
 					display_output(true,"Error Loading Worldmap!",true);
 					display_output(false,"Retrying...");
 					throw "No Towns";
 				}
-				var maxX = 0;
-				var maxY = 0;
+				var maxX = , maxY
 				$.each(map.tiles, function(i, v) {
-					maxX = Math.max(maxX,Math.abs(v.centerx));
-					maxY = Math.max(maxY,Math.abs(v.centery));
+					//map.leftX = map.rightX.max(v.centerx-4);
+					map.rightX = map.rightX.min(v.centerx+4);
+					map.bottomY = map.bottomY.max(v.centery-4);
+					//map.topY = map.bottomY.min(v.centery+4);
+					
 				});
-				map.tilesWide = 0;
 				var j = 0;
 				var temp = [];
-				for(var y = maxY;y >= (-maxY);y -= 9) {
+				for(var y = map.topY;y >= map.bottomY;y -= 9) {
 					temp[j] = [];
-					for(var x = (-maxX);x <= maxX;x += 9) {
+					for(var x = map.leftX;x <= map.rightX;x += 9) {
 						$.each(map.tiles, function(i, v) {
 							if(v.centerx == x && v.centery == y) {
 								temp[j].push(v);
@@ -49,37 +73,18 @@ function get_map() {
 							}
 						});
 					}
-					map.tilesWide = Math.max(map.tilesWide,temp[j].length);
+					map.tilesWide = map.tilesWide.min(temp[j].length);
 					if(temp[j].length>0) j++;
 				}
 				map.tiles = temp;
 				map.x = 0;
 				map.y = 0;
-				
-				map.origHTML = "<div id='townMenuPopup'>\
-								</div>\
-								<div id='mapHelpButton' class='pplHelp'></div>\
-								<div id='mapAirshipToggle'></div>\
-								<div id='mapTileSwitchBox'>\
-									<div id='mapTileSwitchButton'></div>\
-									<div id='mapTileSwitcher'>\
-										<div class='lightFrameBody'>\
-											<div id='mapTileUp' class='tileDir'></div>\
-											<div id='mapTileDown' class='tileDir'></div>\
-											<div id='mapTileLeft' class='tileDir'></div>\
-											<div id='mapTileRight' class='tileDir'></div>\
-											<div id='mapTileDisplay'></div>\
-										</div>\
-										<div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>\
-									</div>\
-								</div>\
-								<div id='mapbox'></div>";
-				map.box = {};
 							
 				$("#wm").unbind('click').click(function() {
 					map.focus = false;
 					do_fade(build_map, "amber");
 				});
+				build_territories();
 				gettingMap = false;
 				display_output(false,"Worldmap Loaded!");
 			};
@@ -96,11 +101,12 @@ function get_map() {
 
 function build_map() { 
 	currUI = build_map;
-	$("#window").html(map.origHTML);
-	map.box.id = $("#mapbox");
 	
 	//do update checks
 	if(map.update) get_map();
+	
+	$("#window").html(map.origHTML);
+	map.box.id = $("#mapbox");
 	
 	var x = player.curtown.x;
 	var y = player.curtown.y;
@@ -211,56 +217,13 @@ function build_map() {
 		}
 	});
 	
-	$("#mapHelpButton").unbind("click").click(function(){
-		var message = "Are you sure you want to play the World Map Tutorial?";
-		display_message("World Map Tutorial",message,
-				function() {
-					display_tutorial_entity({	"text":"From your World Map, you can view nearby cities and Airships as well as initiate attacks and one-way trades. You can also view interesting information about other cities that will be helpful to you in your decision making.",
-												"css":{"top":"200px","left":"200px","width":"300px"}
-											},
-						function() {
-							display_tutorial_entity({	"text":" Let's start with some basic navigation. To view information about any city, hover your mouse over it. Information about it should pop up on your left. When a player's AI is active, the AI active marker on the information screen will tell you so, for strategic purposes. Someone who is using AI excessively may become predictable, and thus vulnerable, to your attacks. <br /><br /> You can also view the Scout Size Limit from this window, which is the optimal number of soldiers you need to send on a scouting mission to this city to get the best possible scout report.<br /><br /> Finally, production modifiers allow you to see how much extra resources you generate per hour in mines if you owned this city. Last Report will show a link to any Status Reports you possess that represent a mission to this city, so that you'll know when you've been there before.",
-														"css":{"top":"200px","left":"600px","width":"300px"},
-														"arrows":	{
-																		
-																		"arrow1":{"dir":"left","css":{"top":"200px","right":"575px"}}
-																	}
-													},	
-								function() {
-									display_tutorial_entity({	"text":"Next, click one of the cities. You'll notice a tab shows up beneath the city. By pressing Send Mission, you will be brought to the Headquarters menu where you can send a mission to the city you opened the tab on, easy! If you want to ship resources one-way to this city, you can hit Send Trade. Close the tab when you're finished.",
-																"css":{"top":"200px","left":"200px","width":"300px"}
-															
-															},	
-										function() {
-											display_tutorial_entity({	"text":" This small parcel of land is not the only land in A.I. Wars. There are other little parcels surrounding yours. To navigate between them, open the Tile Switcher menu here.",
-																		"css":{"top":"200px","left":"200px","width":"300px"},
-																		"arrows":	{
-																						"arrow1":{"dir":"left","css":{"top":"140px","right":"-30px"}}
-																					}
-																	},	
-												function() {
-													display_tutorial_entity({	"text":" You can only see parcels of land that have cities that your Communications Centers can pick up. As you level up your Communications Center buildings, you'll be able to see more parcels. The Tile Switcher menu can hold a max of 9 tiles in the square at any one time. If you see any other tiles, click on one and watch the map load that parcel. To navigate beyond the nine tiles surrounding your own, you can press the directional buttons on all sides of the Menu. These buttons will not function if you can't see any more than nine tiles.",
-																				"css":{"top":"200px","left":"200px","width":"300px"}
-																			
-																			},
-														function() {
-																display_tutorial_entity({	"text":" This concludes the World Map Tutorial.",
-																							"css":{"top":"200px","left":"200px","width":"300px"},
-																						});
-														});// Closing Conclusion
-												});// closing parcel explanation
-										});// closing tile switcher menu
-								});// city tab menu
-						});// city info
-				});// map intro
-	});
+	$("#mapHelpButton").unbind("click").click(WM_tut);
 
-	
 }
 	
 function city_hover(city, box) {
 	var display = setTimeout( function() {
-		var town = map.displayedTowns[city.index(".town")];
+		var town = map.towns[city.attr("index")];
 		
 		box.html(function() {
 			var HTML = "Player:<ul>" + town.owner + "</ul><br/>Town:<ul>" +(town.capital?"&#171;" + town.townName + "&#187;":town.townName)
@@ -339,8 +302,8 @@ function city_hover(city, box) {
 }
 
 function city_select(city, box) {
-	var index=city.index(".town");
-	var town = map.displayedTowns[index];
+	var index=city.attr("index");
+	var town = map.towns[index];
 	//build our popup text	
 	box.children().unbind().die();
 	box.animate({"height":"0px","width":"0px","opacity":"0"},250,function() {
@@ -366,12 +329,12 @@ function city_select(city, box) {
 		
 		$("#viewCity").unbind('click').click(function() {
 			player.curtown = $.grep(player.towns, function(v) {
-					return map.displayedTowns[$("#townIndex").text()].townName == v.townName;
+					return map.towns[$("#townIndex").text()].townName == v.townName;
 				})[0];
 			show_town($("#window"));
 		});
 		$("#sendMission,#moveTo").unbind('click').click(function() {
-			var town = map.displayedTowns[$("#townIndex").text()];
+			var town = map.towns[$("#townIndex").text()];
 			var that = this;
 			BUI.CC.x = town.x;
 			BUI.CC.y = town.y;
@@ -385,7 +348,7 @@ function city_select(city, box) {
 			});
 		});
 		$("#sendTrade").unbind('click').click(function() {
-			var town = map.displayedTowns[$("#townIndex").text()];
+			var town = map.towns[$("#townIndex").text()];
 			BUI.TC.DT.x = town.x;
 			BUI.TC.DT.y = town.y;
 			var lotNum = -1;
@@ -413,15 +376,16 @@ function city_select(city, box) {
 
 function rebuild(tile) {
 	map.box.id.fadeOut(function() {
-		var mapTile = map.tiles[tile[0]][tile[1]];
+		var mapTile = map.tiles[tile[0]][tile[1]], townInfo = $("#towninfo")
+			WIDTH = 65, HEIGHT = 36; //width and height of a town
 		map.x = mapTile.centerx;
 		map.y = mapTile.centery;
-		map.displayedTowns = [];
-		map.HTML = "<div id='towninfo'>\
-						<div class='darkFrameBody'>\
+		map.HTML = "<div id='towninfo'>"
+					+ (townInfo.length>0 ? townInfo.html() :
+						"<div class='darkFrameBody'>\
 						</div>\
-						<div class='darkFrameBL'><div class='darkFrameB'></div></div>\
-					</div>\
+						<div class='darkFrameBL'><div class='darkFrameB'></div></div>")
+					+"</div>\
 					<div id='coordsY' class='darkFrameBody'>";
 		for(var i = map.y+4;i>map.y-5;i--) {
 			map.HTML += "<div>"+i+"</div>";
@@ -434,8 +398,7 @@ function rebuild(tile) {
 		map.HTML +="</div></div>";
 		$.each(map.towns, function(i, x) {
 			if(Math.abs(x.x-map.x)>4||Math.abs(x.y-map.y)>4) return true;
-			map.displayedTowns.push(x);
-			var type = Math.abs(x.x%x.y);
+			var type = x.y==0 ? x.x : Math.abs(x.x%x.y);
 			map.HTML += "<div class='town "+(x.zeppelin?"airship":"type"+((type%2)+1)+(x.owner=="Id"?" idTown":(x.owner==player.username?" playerTown":"")));
 			if(x.dig) map.HTML += " missionC";
 			$.each(player.raids, function(j, y) {
@@ -448,17 +411,64 @@ function rebuild(tile) {
 				}
 			});
 			
-			var bottom = ((x.y-map.y)*36) + (x.zeppelin?141:156);
-			var right = ((map.x-x.x)*65) + (x.zeppelin?223:257);
-			map.HTML +="' style='bottom:" + bottom + "px; right:" + right + "px;'><div class='inc'></div></div>";
+			var bottom = ((x.y-(map.y-4))*HEIGHT) /*+ (x.zeppelin?141:156)*/;
+			var right = (((map.x+4)-x.x)*WIDTH) /*+ (x.zeppelin?223:257)*/;
+			map.HTML +="' index='"+i+"' style='bottom:" + bottom + "px; right:" + right + "px;'><div class='inc'></div></div>";
 		});
-		map.box.id.html(map.HTML).css("background-image","url(AIFrames/WM/"+mapTile.mapName+(mapTile.irradiated?"2":"")+".png)").fadeIn();
+		map.box.id.html(map.HTML).css("background-image","url(AIFrames/WM/"+mapTile.mapName+(mapTile.irradiated?"2":"")+".png)").append(map.territoryHTML.clone()).fadeIn();
+		$("#map_territories").css({"bottom":(((map.y-4)-map.bottomY)*WIDTH)+"px","right":(((map.x+4)-map.right)*HEIGHT)+"px"});
 		$(".airship").each(float_airship);
 	});
 }
 
-function float_airship(airship) {
+function float_airship(i,airship) {
 	$(airship).animate({"bottom":"+=5"},"slow", function() {
 		$(this).animate({"bottom":"-=5"},"slow",float_airship(this));
 	});
+}
+
+function build_territories() {
+	
+	if(Modernizr.webworkers) {
+		if(!map.territoryBldr) {
+			map.territoryBldr = new Worker('/light/javascripts/territoryWorker.js');
+			
+			map.territoryBldr.addEventListener('message',function(e) {
+				if(!e.error) {
+					map.territoryHTML.html(e.data);
+				} else {
+					log(e.data);
+				}
+			}, false);
+		}
+		
+		map.territoryBldr.postMessage({"territories":map.territories, "rightX":map.rightX, "bottomY":map.bottomY});
+		
+	} else {
+		var i = 0,
+			WIDTH = 65, HEIGHT = 36; //width and height of a town
+		map.territoryBldr = setInterval(function() {
+			if(i == map.territories.length) {
+				clearInterval(map.territoryBldr);
+				return false;
+			}
+			
+			var territory = map.territories[i++].corners, bottom = 0, right = 0;
+			var HTML = "<div class='territoryBox' index='"+i+"' style='bottom:"+((territory.start[1]-map.bottomY)*WIDTH)+"px; right:"
+						+((map.rightX-territory.start[0])*HEIGHT)+";'>";
+			
+			$.each(territory.sides, function(j,v) {
+				HTML += "<div class='territory ";
+				if(j%2) { //y shift
+					bottom += (HEIGHT*v);
+					HTML += "vert' style='height: "+(HEIGHT*Math.abs(v))+"px; width: "+WIDTH+"px; bottom: "+(v>0?bottom-(HEIGHT*v):bottom)+ "px; right: "+right+"px;";
+				} else { //x shift
+					right += (WIDTH*v);
+					HTML += "horz' style='height: "+HEIGHT+"px; width: "+(WIDTH*Math.abs(v))+"px; bottom: "+bottom+"px; right: "+(v<0?right+(WIDTH*v):right)+"px;";
+				}
+				HTML += "'></div>";
+			});
+			map.territoryHTML.append(HTML + "</div>");
+		}, 100);
+	}
 }

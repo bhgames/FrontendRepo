@@ -32,13 +32,44 @@ $(document).ready(function() {
 		});
 	} catch(e) {} //browser doesn't support appcache
 
-	FB.init({appId: '164327976933647', status: true, cookie: false,
+	FB.init({appId: '164101923624047', status: true, cookie: false,
 			 xfbml: true});
 	FB.Canvas.setSize();
 	
-	//preload();
 	set_sidebar_anim();
 	get_session();
+	
+	$("body").bind("resUpdate", display_res);
+	
+	$("body").bind("resUpdate", function() {
+		var info = $("#town_warehouseMenu").clone();
+		$.each(player.curtown.res, function(i,x) {
+			if(i>3) {return false;}
+			var perc = Math.round((x/player.curtown.resCaps[i]) * 100);
+			var bar = info.find(".capacityBar").eq(i).css("width",perc+"%");
+			switch(true) {
+				case perc > 90:
+					bar.css("background-color","red");
+					break;
+				case perc > 60:
+					bar.css("background-color","yellow");
+					break;
+				default:
+					bar.css("background-color","lime-green");
+			}
+			info.find(".rph").eq(i).text(Math.ceil(player.curtown.actualInc[i]*3600) + " per hour");
+		});
+		$("#town_warehouseMenu").replaceWith(info);
+	});
+	
+	$("#town_infobarOpen").unbind("click").click(function() {
+		$("#town_infobar").slideDown(100);
+	});
+	
+	$("#town_infobar").unbind("mouseleave").mouseleave(function() {
+		$(this).slideUp(100);
+	});
+	
 	$("#menu").unbind("click").click(function() {
 		$("#dropdown_menu").animate({"opacity":"toggle"},"fast");
 	});

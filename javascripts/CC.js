@@ -10,7 +10,7 @@ function CC_UI(bldgInfo) {
 	$.each(player.curtown.bldg, function(i,v) {
 		if(v.type == "Arms Factory") {
 			$.each(v.Queue, function(j,w) {
-				if(w.update) load_player(player.league, true, true);
+				if(w.update) load_player(false, true, true);
 			});
 		}
 	});
@@ -55,543 +55,47 @@ function CC_UI(bldgInfo) {
 	$("#BUI_extras").text(BUI.CC.numRaidsOut + " of " + bldgInfo.lvl + " mission slots used.");
 	$("#CS").addClass("open").mouseover();
 	
-	$("#CC_construct").unbind("click").click(function() {
+	$("#CC_tabBar > div").unbind('click').click(function() {
 		if(!$(this).hasClass("open")) {
-			$("#CC_tabBar > div").removeClass("open");
+			$(".open").removeClass("open");
 			$(this).addClass("open");
+			var that = this;
 			$("#CC_window").fadeOut(100,function() {
-				$(this).children(".open").removeClass("open");
-				$("#CC_EngTab").addClass("open");
-				$(this).fadeIn(100);
-			});
-		}
-	});
-	
-	$("#CC_sendMission").unbind("click").click(function() {
-		if(!$(this).hasClass("open")) {
-			$("#CC_tabBar > div").removeClass("open");
-			$(this).addClass("open");
-			$("#CC_window").fadeOut(100,function() {
-				$(this).children(".open").removeClass("open");
-				$("#CC_sendTab").addClass("open");
+				/////////////////////////////////////////////////////////////////////Construct Tab//////////////////////////////////////////////////////////////////////
+				if($(that).is("#CC_construct")) {
+					$("#CC_EngTab").addClass("open");
+					$(this).fadeIn(100);					
+				} //////////////////////////////////////////////////////////////////Send Mission Tab////////////////////////////////////////////////////////////////////
+				else if ($(that).is("#CC_sendMission")) {
+					$("#CC_sendTab").addClass("open");
+					
+					$(this).fadeIn(100);
+					
+					$("#CC_supportAU").data('jsp').reinitialise();
+					$("#CC_missionDesc").data('jsp').reinitialise();
+					canSendAttack();
+				}//////////////////////////////////////////////////////////////////Airship Control Tab//////////////////////////////////////////////////////////////////
+				else if($(that).is("#CC_control")) {
+					$("#CC_airshipControlTab").addClass("open");
 				
-				$.each(player.AU, function(i, v) {
-					$("#CC_AU"+ (i+1) +"name").text(v.name);
-					$("#CC_AU"+ (i+1) +"pic").attr("src",function(){
-							var path = 'AIFrames/units/';
-							switch(v.popSize) {
-									case 1: //soldier
-										path += "soldierrenderTHUMB.png";
-										break;
-									case 5: //tank
-										path += "tankrenderTHUMB.png";
-										break;
-									case 10: //juggernaught
-										path += "juggernautrenderTHUMB.png";
-										break;
-									case 20: //bomber
-										path += "bomberrenderTHUMB.png";
-										break;
-									default: //anything else should be either empty or locked
-									path = "../images/client/buildings/AF-" + v.name + "AU.png";
-								}
-							return path;
-							
-						});
-					$("#CC_AU"+ (i+1) +"number").text(player.curtown.au[i]).click(function(){
-																				var input = $(this).siblings(".AUinput")
-																				if(input.val() == $(this).text()) {
-																					input.val(0);
-																				} else {
-																					input.val($(this).text());
-																				}
-																				input.keyup();
-																			});
-				});
-				$.each(player.curtown.supportAU, function(i, v) {	
-					if(v.support == 2) {
-						var classes = "supportAU";
-						if(i % 3 == 0) classes += " firstcol";
-						
-						var path = 'AIFrames/units/';
-						switch(v.popSize) {
-								case 1: //soldier
-									path += "soldierrenderTHUMB.png";
-									break;
-								case 5: //tank
-									path += "tankrenderTHUMB.png";
-									break;
-								case 10: //juggernaught
-									path += "juggernautrenderTHUMB.png";
-									break;
-								case 20: //bomber
-									path += "bomberrenderTHUMB.png";
-									break;
-								default: //anything else should be either empty or locked
-								path = "../images/client/buildings/AF-" + v.name + "AU.png";
-							}
-						
-						$("#CC_supportAU").append("	<div class='" + classes + "'>\
-														<div class='supportAUname'>" + v.name + "</div>\
-														<img src='" + path + "' class='supportAUpic' />\
-														<a href='javascript:;' class='supportAUnumber'>" + v.size + "</a>\
-														<input type='text' class='AUinput supportAUinput' maxlength='4' value='0'/>\
-													</div>");
-					}
-				});
-				
-				$("#CC_supportAU").jScrollPane({showArrows:true,hideFocus:true});
-				
-				$('#CC_targetX').val(BUI.CC.x);
-				$('#CC_targetY').val(BUI.CC.y);
-				BUI.CC.selectedIndex = 0;
-				$("#CC_missionDesc").html(BUI.CC.missionDesc[0]).jScrollPane({showArrows:true,hideFocus:true});
-				
-				$(this).fadeIn(100);
-				canSendAttack();
-			});
-		}
-	});
-	
-	$("#CC_control").unbind("click").click(function() {
-		if(!$(this).hasClass("open")) {
-			$("#CC_tabBar > div").removeClass("open");
-			$(this).addClass("open");
-			$("#CC_window").fadeOut(100, function() {
-				$(this).children(".open").removeClass("open");
-				$("#CC_airshipControlTab").addClass("open");
-				
-				$("#CC_moveX").val(BUI.CC.x);
-				$("#CC_moveY").val(BUI.CC.y);
-				
-				$("#CC_moveTo input").unbind('keyup').keyup(function() {
-					BUI.CC.x = $('#CC_moveX').val();
-					BUI.CC.y = $('#CC_moveY').val();
-					var dist = Math.floor(Math.sqrt(Math.pow((BUI.CC.x-player.curtown.x),2)+Math.pow((BUI.CC.y-player.curtown.y),2)))
-					if(dist>player.curtown.fuelCells) {
-						$("#CC_moveAirship").addClass("noMove");
-						$("#CC_moveError").html("Insufficient Fuel");
-					} else {
-						$("#CC_moveAirship").removeClass("noMove");
-						$("#CC_moveError").html("");
-					}
-				}).unbind("click").click(function() {
-					$(this).keyup();
-				}).keyup();
-				
-				$("#CC_currPos span").text(player.curtown.x+", "+player.curtown.y);
-				
-				if(player.curtown.x != player.curtown.destX || player.curtown.y != player.curtown.destY) {
-					$("#CC_airshipHeading span").text(player.curtown.destX+", "+player.curtown.destY);
-					$("#CC_airshipETA span").text(player.curtown.movementTicks);
-					$("#CC_moveAirship").addClass("noMove");
-				} else {
-					$("#CC_airshipHeading span, #CC_airshipETA span").text("N/A");
+					$(this).fadeIn(100);
+				}/////////////////////////////////////////////////////////////////Military Overview Tab/////////////////////////////////////////////////////////////////
+				else if($(that).is("#CC_overview")) {
+					$("#CC_milOverTab").addClass("open");
+					
+					$(this).fadeIn(100);
+					
+					$("#CC_scrollBox").data('jsp').reinitialise();
+					setTimeout(function() { $("#CC_scrollBox").data('jsp').reinitialise();},2000);
 				}
-				
-				$("#CC_airshipFuel span").text(player.curtown.fuelCells+" Cells");
-				
-				$(this).fadeIn(100);
-				
-				$("#CC_moveAirship").unbind("click").click(function() {
-					if(!$(this).hasClass("noMove")) {
-						var moveAirship = make_AJAX();
-						
-						moveAirship.callback = function(response) {
-							if(response.match(/false/)) {
-								var error = response.split(":")[1];
-								$("#CC_moveError").html(error);
-								display_output(true,error);
-							} else {
-								$("#CC_airshipHeading span").text($("#CC_moveX").val()+", "+$("#CC_moveY").val());
-								$("#CC_airshipETA span").text("updating");
-								load_player(player.league,true,true);
-							}
-						};
-						
-						moveAirship.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".moveAirship("+BUI.CC.x+","
-										+BUI.CC.y+","+player.curtown.townID+");");
-					}
-				});
 			});
 		}
 	});
 	
-	$("#CC_overview").unbind("click").click(function() {
-		if(!$(this).hasClass("open")) {
-			$("#CC_tabBar > div").removeClass("open");
-			$(this).addClass("open");
-			$("#CC_window").fadeOut(100, function() {
-				$(this).children(".open").removeClass("open");
-				$("#CC_milOverTab").addClass("open");
-				
-				$("#CC_armySizeTotal span").text(function() {
-					var coverSize = 0;
-					$.each(player.curtown.au, function(i,v) {
-						switch(player.AU[i].popSize) {
-							case 1:
-								coverSize += v;
-								break;
-							case 5:
-							case 20:
-								coverSize += 10*v;
-								break;
-							case 10:
-								coverSize += 40*v;
-								break;
-						}
-					});
-					$.each(player.curtown.supportAU, function(i,v) {
-						switch(v.popSize) {
-							case 1:
-								coverSize += v.size;
-								break;
-							case 5:
-							case 20:
-								coverSize += 10*v.size;
-								break;
-							case 10:
-								coverSize += 40*v.size;
-								break;
-						}
-					});
-					return coverSize;
-				});
-				
-				$("#CC_CSL span").text(player.curtown.CSL);
-				
-				$("#CC_incomingMissions").html(function() {
-					var HTML = '<h3>Incoming Missions</h3>';
-					$.each(player.curtown.incomingRaids, function(i, v) {
-						if(v.raidOver) {
-							HTML += "<div class='incoming friendly mission darkFrameBody'>\
-										<div class='raidInfo'>\
-											<span class='raidTitle'>Return from " + v.defendingTown;
-						} else {
-							var type = (v.raidType.match(/^off/i))? "offensive support":v.raidType;
-							if(v.name!="noname") type+= ' "'+v.name+'"';
-							HTML += "<div class='incoming"+(type.match(/support/)?"friendly":"hostile")+" mission darkFrameBody' style='height:"+(Math.ceil(v.auNames.length/6)*70)+">\
-										<div class='raidInfo'>\
-											<span class='raidTitle'>" + type + " from " + v.attackingTown;
-						}
-						HTML += "</span> - <span class='raidETA'>" + v.eta + "</span>\
-										</div>\
-										<div id='incomingTroops' style='height:"+(Math.ceil(v.auNames.length/6)*70)+"px'>";
-									
-						$.each(v.auNames, function(j,w) {
-							HTML+="<div class='troop"+(j%6==0?" firstcol":"")+"'><div class='auName'>"+w+"</div><img class='auPic' src='";
-							var path = 'AIFrames/units/';
-							switch(w) {
-								case "Shock Trooper": //soldier
-								case "Pillager":
-								case "Vanguard":
-									path += "soldierrenderTHUMB.png";
-									break;
-								case "Wolverine": //tank
-								case "Seeker":
-								case "Damascus":
-									path += "tankrenderTHUMB.png";
-									break;
-								case "Punisher": //juggernaught
-								case "Dreadnaught":
-								case "Collossus":
-									path += "juggernautrenderTHUMB.png";
-									break;
-								case "Helios": //bomber
-								case "Horizon":
-								case "Hades":
-									path += "bomberrenderTHUMB.png";
-									break;
-								default: //anything else should be either empty or locked
-								path = "../images/client/buildings/AF-lockedAU.png";
-							}
-							HTML+=path+"' alt='"+w+"'/><div class='auAmnt'>"+v.auAmts[j]+"</div></div>";
-						});
-						HTML +=		"</div>\
-								</div>\
-								<div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>";
-					});
-					return HTML;
-				});
-				$("#CC_troopsHere").html(function() {
-					var HTML = "<h3>Troops Here</h3><div id='CC_troops' class='darkFrameBody'>";
-					$.each(player.AU,function(i,v) {
-						if(i<6) {
-							HTML+="<div class='troop'><div class='auName'>"+v.name+"</div><img class='auPic' src='";
-							var path = 'AIFrames/units/';
-							switch(v.popSize) {
-								case 1: //soldier
-									path += "soldierrenderTHUMB.png";
-									break;
-								case 5: //tank
-									path += "tankrenderTHUMB.png";
-									break;
-								case 10: //juggernaught
-									path += "juggernautrenderTHUMB.png";
-									break;
-								case 20: //bomber
-									path += "bomberrenderTHUMB.png";
-									break;
-								default: //anything else should be either empty or locked
-								path = "../images/client/buildings/AF-" + v.name + "AU.png";
-							}
-							HTML+=path+"' alt='"+v.name+"'/><div class='auAmnt'>"+player.curtown.au[i]+"</div><input type='text' id='CC_AU"+i+"input' class='AUinput' maxlength='4' value='0'/></div>";
-						}
-					});
-					HTML += "<div id='CC_killMe'></div>"
-					if(player.curtown.supportAU.length > 0) {
-						HTML += "</div><div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div><div id='CC_supporters'><h3>Support Here</h3>";
-						$.each(player.curtown.sortedSupport, function(i, v) {
-							HTML += "	<div class='fSupportRow' class='darkFrameBody'><span class='supportPlayer'>Support from " + v.player + "</span><a href='javascript:;' class='sendHome'>Send Home</a><div class='supportAUbox'>";
-							$.each(v.indexes, function(j, w) {
-								var supportAU = player.curtown.supportAU[w];
-								HTML += "	<div class='supportAU troop'><div class='supportAUname'>" + supportAU.name + "</div><a href='javascript:;' class='supportAUnumber'>" + supportAU.size + "</a><input type='text' class='AUinput supportAUinput' maxlength='4' value='0'/></div>"
-							});
-							HTML += "</div></div>";
-						});
-					}
-					return HTML+"</div><div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>";
-				});
-				$("#CC_outgoingMissions").html(function() {
-					var HTML = "<h3>Outgoing Missions</h3>";
-					$.each(player.curtown.outgoingRaids, function(i, v) {
-						var type = (v.raidType.match(/^off/i))? "offensive support":v.raidType;
-						if(v.name!="noname") type+= ' "'+v.name+'"';
-						var to = (type.match(/(support|debris)/i))? " to ":((type.match(/inva/i))? " of ":" on ");
-						HTML += "<div class='outgoing mission darkFrameBody'>\
-									<div class='recallRaid'>Recall</div>\
-									<div class='raidInfo'>\
-										<span class='raidTitle'>" + type + to + v.defendingTown + "</span> - <span class='raidETA'>" + v.eta + "</span>\
-										<span class='raidID'>" + v.rid + "</span>\
-									</div>\
-									<div class='outgoingTroops' style='height:"+((v.auNames.length/6)*70)+"px'>";
-						$.each(v.auNames, function(j,w) {
-							HTML+="<div class='troop"+(j%6==0?" firstcol":"")+"'><div class='auName'>"+w+"</div><img class='auPic' src='";
-							var path = 'AIFrames/units/';
-							switch(w) {
-								case "Shock Trooper": //soldier
-								case "Pillager":
-								case "Vanguard":
-									path += "soldierrenderTHUMB.png";
-									break;
-								case "Wolverine": //tank
-								case "Seeker":
-								case "Damascus":
-									path += "tankrenderTHUMB.png";
-									break;
-								case "Punisher": //juggernaught
-								case "Dreadnaught":
-								case "Collossus":
-									path += "juggernautrenderTHUMB.png";
-									break;
-								case "Helios": //bomber
-								case "Horizon":
-								case "Hades":
-									path += "bomberrenderTHUMB.png";
-									break;
-								default: //anything else should be either empty or locked
-								path = "../images/client/buildings/AF-lockedAU.png";
-							}
-							HTML+=path+"' alt='"+w+"'/><div class='auAmnt'>"+v.auAmts[j]+"</div></div>";
-						});
-						HTML +=		"</div></div><div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>";
-					});
-					return HTML;
-				});
-				
-				$("#CC_supportAbroad").html(function(){
-					var HTML = '<h3>Support Abroad</h3>';
-					if(player.curtown.supportAbroad) {
-						if(player.curtown.supportAbroad.length > 0) {
-							$.each(player.curtown.supportAbroad, function(i, v) {
-								HTML += "	<div class='aSupportRow darkFrameBody'><span class='supportPlayer'>Support at " + v.townName + "</span><a href='javascript:;' class='callHome'>Recall</a><div class='supportAUbox'>";
-								$.each(v.supportAU, function(j, w) {
-									HTML += "<div class='supportAU troop'><div class='supportAUname'>" + w.name + "</div><img class='auPic' src='";
-									var path = 'AIFrames/units/';
-									switch(w.name) {
-										case "Shock Trooper": //soldier
-										case "Pillager":
-										case "Vanguard":
-										case "Scholar":
-										case "Engineer":
-										case "Trader":
-											path += "soldierrenderTHUMB.png";
-											break;
-										case "Wolverine": //tank
-										case "Seeker":
-										case "Damascus":
-											path += "tankrenderTHUMB.png";
-											break;
-										case "Punisher": //juggernaught
-										case "Dreadnaught":
-										case "Collossus":
-											path += "juggernautrenderTHUMB.png";
-											break;
-										case "Helios": //bomber
-										case "Horizon":
-										case "Hades":
-											path += "bomberrenderTHUMB.png";
-											break;
-										default: //this should never go, but just in case
-										path = "../images/client/buildings/AF-lockedAU.png";
-									}
-									HTML+=path+"' alt='"+w.name+"'/><a href='javascript:;' class='supportAUnumber'>" + w.size + "</a><input type='text' class='AUinput supportAUinput' maxlength='4' "+(w.name=="Scholar"?"style='visibility:hidden;'":"value='0'")+"/></div>";
-								});
-								HTML += "</div></div><div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>";
-							});
-						}
-					}
-					return HTML;
-				});
-				
-				$(".recallRaid").unbind('click').click(function() {
-					var rid = $(this).siblings(".raidInfo").find(".raidID").text();
-					recall = new make_AJAX();
-					recall.callback = function(response) {
-						if(response.match(/true/)) {
-							get_raids(true);
-							currUI();
-						} else {
-							var error = response.split(":");
-							if(error.length==2)error=error[1];
-							display_output(true,error,true);
-						}
-					};
-					recall.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command + ".recall(" + rid + ");");
-				});
-				
-				$(".supportAUnumber").die('click').live('click',function() {
-					var sibling = $(this).siblings('.AUinput');
-					if($(this).text() == sibling.val()) {
-						sibling.val(0);
-					} else {
-						sibling.val($(this).text());
-					}
-				});
-				
-				$(".callHome").die('click').live('click', function() {
-					var AUtoRecall = [0,0,0,0,0,0];
-					var index = $(this).parent('.aSupportRow').index('.aSupportRow');
-					var callAll = true;
-					
-					$(this).siblings('.supportAUbox').children('.troop').children('.AUinput').each(function(i, v) {
-						if($(this).css("visibility") != "hidden") {
-							var j = player.curtown.supportAbroad[index].supportAU[i].originalSlot;
-							var val = parseInt($(v).val());
-							if(val != 0 && val != "") {
-								callAll = false;
-							} else if(val == "") val = 0;
-							AUtoRecall[j] = val;
-						}
-					});
-					
-					if(callAll) AUtoRecall = [0];
-					
-					var recall = new make_AJAX();
-					recall.callback = function(response) {						
-						if(!response.match(/false/i)) {
-							get_raids(true);
-							get_support_abroad();
-							$("body").css("cursor","wait");
-							setTimeout(function() {$("body").css("cursor","auto");currUI();},1000);
-						}
-					};
-					recall.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command 
-									+ ".recall([" + AUtoRecall.join(",") + "]," 
-									+ player.curtown.supportAbroad[index].townID + "," 
-									+ player.curtown.supportAbroad[index].pid + ","
-									+ player.curtown.townID + ");");
-				});
-				
-				$('.sendHome').die('click').live('click', function() {
-					var AUtoSend = [0,0,0,0,0,0];
-					var index = $(this).parent('.fSupportRow').index('.fSupportRow');
-					var sendAll = true;
-					
-					$(this).siblings('.supportAUbox').children('.troop').children('.AUinput').each(function(i, v) {
-						var j = player.curtown.sortedSupport[index].indexes[i];
-						var val = parseInt($(v).val());
-						if(val != 0 && val != "") {
-							sendAll = false;
-						} else if(val == "") val = 0;
-						AUtoSend[player.curtown.supportAU[j].originalSlot] = val;
-					});
-					if(sendAll) AUtoSend = [0];
-					var sendHome = new make_AJAX();
-					sendHome.callback = function(response) {						
-						if(!response.match(/false/i)) {
-							get_raids(true);
-							get_support_abroad();
-							$("body").css("cursor","wait");
-							setTimeout(function() {$("body").css("cursor","auto");currUI();},1000);
-						}
-					};
-					sendHome.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command 
-									+ ".sendHome([" + AUtoSend.join(",") + "]," + player.curtown.townID 
-									+ "," + player.curtown.sortedSupport[index].pid + ");");
-				});
-				
-				$("#CC_save").unbind('click').click(function() {
-					var selectedWeap = $("#CC_civWeaponSelect option:selected").index("#CC_civWeaponSelect option");
-					if(selectedWeap != player.civWeapChoice) {
-						var changeWeap = new make_AJAX();
-						
-						changeWeap.callback = function(response) {
-								if(response.match(/true/i)) {
-									player.civWeapChoice = selectedWeap;
-									display_output(false,"Civilian Weapon Changed!");
-								} else {
-									var error = response.split(":");
-									if(error.length==2) error=error[1];
-									display_output(true,error);
-									$("#CC_isValid").text(error);
-								}
-							};
-						
-						changeWeap.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command 
-										+ ".changeCivWeap(" + selectedWeap + ");");
-					}
-				});
-				
-				$("#CC_killMe").unbind('click').click(function() {
-					display_message("Are you sure?","Killing units is permanent and you get no refund.  Are you sure you want to kill them?",function() {
-						display_output(false, "Killing units...");
-						var getPath = "/AIWars/GodGenerator?reqtype=command&command=";
-						var killedAU = [0,0,0,0,0,0];
-						$(".AUinput").each(function(i,v) {
-							if(i<6) {
-								if($(v).val() > 0 && player.AU[i].name != "locked" && player.AU[i].name != "empty") {
-									getPath += player.command + ".killMyself(" + player.AU[i].name + "," + $(v).val() + "," + player.curtown.townID + ");";
-									killedAU[i] = parseInt($(v).val());
-								}
-							}
-						});
-						var killEm = new make_AJAX();
-						killEm.callback = function(response) {
-							if(response.match(/false/i)) {
-								display_output(true, "Suicide Attempt Failed!",true);
-							} else if(currUI === draw_bldg_UI&&BUI.active.name[0]==bldgInfo.type) {
-								$.each(killedAU, function(i,v){
-									player.curtown.au[i] -= v;
-								});
-								currUI();
-							}
-							load_player(player.league, true, false);
-						};
-						if(getPath.match(/bf/i) != null) {
-							killEm.get(getPath);
-						}
-					});
-				});
-				
-				$("#CC_window").fadeIn(100);
-				
-				$("#CC_scrollBox").jScrollPane({showArrows:true,hideFocus:true});
-				setTimeout(function() { $("#CC_scrollBox").data('jsp').reinitialise();},2000);
-			});
-		}
-	});
-				
+	//------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	// Engineering Tab -------------------------------------------------------------------------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
 	$("#CC_civNumber").unbind("click").click(function() {
 		if(BUI.CC.selectedIndex != 8) {
 			var input = $(this).siblings("#CC_civInput");
@@ -601,166 +105,6 @@ function CC_UI(bldgInfo) {
 				input.val($(this).text());
 			}
 		}
-	});
-	
-	$(".supportAUnumber").unbind('click').click(function(){
-		var input = $(this).siblings(".AUinput")
-		if(input.val() == $(this).text()) {
-			input.val(0);
-		} else {
-			input.val($(this).text());
-		}
-		input.keyup();
-	});
-	
-	
-	$(".missionSelect input").unbind('change').change(function() {
-		BUI.CC.selectedIndex = $(this).index(".missionSelect input");
-		if(BUI.CC.selectedIndex == 2 || BUI.CC.selectedIndex == 3) $("#CC_bombingTarget").fadeIn("fast");
-		else $("#CC_bombingTarget").fadeOut("fast");
-		
-		if(BUI.CC.selectedIndex == 9 || BUI.CC.selectedIndex == 8) {
-			$("#CC_supportAUbox").fadeOut();
-			$("#CC_civilianAUbox").fadeIn();
-			var numCivs = 0;
-			var type = "";
-			if(BUI.CC.selectedIndex == 8) {
-				type = "Institute";
-				$("#CC_civName").text("Scholar");
-				$("#CC_civInput").val(10).attr("disabled","disabled");
-			} else {
-				type = "Construction Yard";
-				$("#CC_civName").text("Engineer");
-				$("#CC_civInput").val("").attr("disabled","false"); //this is to prevent older browsers from leaving the field disabled
-			}
-			$.each(player.curtown.bldg, function(i,v) {
-					if(v.type == type) {
-						numCivs += v.peopleInside;
-					}
-			});
-			$("#CC_civNumber").text(numCivs);
-		} else {
-			$("#CC_supportAUbox").fadeIn();
-			$("#CC_civilianAUbox").fadeOut();
-		}
-		
-		if(BUI.CC.selectedIndex == 6) $("#CC_supportType").fadeIn("fast");
-		else $("#CC_supportType").fadeOut("fast");
-		
-		canSendAttack();
-	});
-	
-	$("#CC_supportType").unbind("change").change(function() {
-		canSendAttack();
-	});
-	var typeCheck = 0;
-	$(".AUinput, #CC_civInput").unbind('keyup').keyup(function() {
-		clearTimeout(typeCheck);
-		typeCheck = setTimeout(function(){canSendAttack();get_attack_ETA();},250);
-		
-		var coverSize = 0;
-		$(".AUinput").each(function(i, v) {
-			var value = parseInt($(v).val());
-			value = (isNaN(value))?0:value;
-			if(i<6) {
-				switch(player.AU[i].popSize) {
-					case 1:
-						coverSize += value;
-						break;
-					case 5:
-					case 20:
-						coverSize += 10*value;
-						break;
-					case 10:
-						coverSize += 40*value;
-						break;
-				}
-			} else if(BUI.CC.selectedIndex != 7 && BUI.CC.selectedIndex != 8){
-				switch(player.curtown.supportAU[i-6].popSize) {
-					case 1:
-						coverSize += value;
-						break;
-					case 5:
-						coverSize += 10*value;
-						break;
-					case 10:
-						coverSize += 40*value;
-						break;
-					case 20:
-						coverSize += 10*value;
-						break;
-				}
-			} else {
-				coverSize += $("#CC_civInput").val();
-			}
-		});
-		$("#CC_armySize span").text(coverSize);
-	});
-	
-	$("#CC_targetSelect input").unbind('keyup').keyup(function() {
-		BUI.CC.x = $('#CC_targetX').val();
-		BUI.CC.y = $('#CC_targetY').val();
-		
-		clearTimeout(typeCheck);
-		typeCheck = setTimeout(function(){canSendAttack();get_attack_ETA();},250);
-	});
-	
-	$("#CC_launchAttack").unbind('click').click(function() {
-		if(!$(this).hasClass('noAttack')) {
-			var AUarray = [];
-			$(".AUinput").each(function(i, v) {
-				if(i<6) {
-					if($(v).val() > player.curtown.au[i]) $(v).val(player.curtown.au[i])
-				} else {
-					if($(v).val() > player.curtown.supportAU[i-6]) $(v).val(player.curtown.supportAU[i-6].size);
-				}
-				AUarray.push((($(v).val() == "")?0:$(v).val()));
-			});
-			
-			sendAttack = new make_AJAX();
-				
-			sendAttack.callback = function(response) {
-				if(response.match(/true/i)) {
-					BUI.CC.numRaidsOut++;
-					get_raids(true);
-					for(i in player.curtown.au) {
-						player.curtown.au[i] -= AUarray[i];
-					}
-					BUI.CC.reload=true;
-				} else {
-					var error = response.split(":");
-					if(error.length==2) error=error[1]
-					display_output(true,error);
-					$("#CC_isValid").text(error);
-				}
-			};
-			
-			sendAttack.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command + ".attack(" 
-							+ player.curtown.townID + "," + BUI.CC.x + "," + BUI.CC.y + ",[" + AUarray.join(",")
-							+ "]," + BUI.CC.attackType + "," + $("#CC_bombingTarget option:selected").index("#CC_bombingTarget option")
-							+ ");");
-		}
-	});
-	
-	$(".useBP").unbind("click").click(function() {
-		display_message("Use BP - Ferocity","Ferocity grants all your units a 10% combat bonus for one week.  Costs <span style='font-weight:bold;'>500BP</span><br/><br/>Are you sure?<div style='text-align: right;'>Current BP:"+player.research.bp+"</div>",
-						function() {
-							display_output(false,"Purchasing Ferocity...");
-							var useBP = new make_AJAX();
-							
-							useBP.callback = function(response) {
-												if(response.match(/true/)) {
-													display_output(false,"Success!");
-													load_player(player.league,true,false);
-												} else {
-													var error = response.split(":");
-													if(error.length==2) error = error[1];
-													display_output(true,error,true);
-												}
-											}
-							
-							useBP.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".useBP(ferocity);");
-						});
 	});
 
 	$("#CC_instaBuild").unbind("click").click(function(){
@@ -772,7 +116,7 @@ function CC_UI(bldgInfo) {
 							useBP.callback = function(response) {
 												if(response.match(/true/)) {
 													display_output(false,"Success!");
-													load_player(player.league,true,true);
+													load_player(false,true,true);
 												} else {
 													var error = response.split(":");
 													if(error.length==2) error=error[1];
@@ -784,7 +128,7 @@ function CC_UI(bldgInfo) {
 						});
 	});
 	
-	$("#CBUI_pplHelp").unbind("click").click(function() {
+	$("#BUI_pplHelp").unbind("click").click(function() {
 		display_message("Engineers","Engineers globally decrease build times allowing you to build more, faster.  The level of decrease differs between unit types and building levels.  Higher level buildings and higher tier units get less of an effect from your engineers.");
 	});
 	
@@ -873,6 +217,591 @@ function CC_UI(bldgInfo) {
 		}
 	});
 	
+	//------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	// Build Send Mission Tab ------------------------------------------------------------------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+	$.each(player.AU, function(i, v) {
+		$("#CC_AUinput .darkFrameBody").append("<div class='CC_AU'>\
+													<div class='CC_AUname'></div>\
+													<img class='CC_AUpic' />\
+													<a href='javascript:;' class='CC_AUnumber'></a>\
+													<input type='text' class='CC_AUinput' value='0'/>\
+												</div>");
+		var AUnode = $(".CC_AU").eq(i);
+		AUnode.children(".CC_AUname").text(v.name);
+		AUnode.children(".CC_AUpic").attr("src",'AIFrames/units/'+v.rank+'renderTHUMB.png');
+		AUnode.children(".CC_AUnumber").text(player.curtown.au[i])
+		.unbind('click').click(function(){
+									var $this = $(this);
+									var input = $this.siblings(".CC_AUinput")
+									if(input.val() == $this.text()) {
+										input.val(0);
+									} else {
+										input.val($this.text());
+									}
+									input.keyup();
+								});
+	});
+	$.each(player.curtown.supportAU, function(i, v) {	
+		if(v.support == 2) {
+			var classes = "supportAU";
+			if(i % 3 == 0) classes += " firstcol";
+			
+			var path = 'AIFrames/units/'+v.rank+'renderTHUMB.png';
+			
+			$("#CC_supportAU").append("	<div class='" + classes + "'>\
+											<div class='supportAUname'>" + v.name + "</div>\
+											<img src='" + path + "' class='supportAUpic' />\
+											<a href='javascript:;' class='supportAUnumber'>" + v.size + "</a>\
+											<input type='text' class='AUinput supportAUinput' maxlength='4' value='0'/>\
+										</div>");
+		}
+	});
+	
+	$("#CC_supportAU").jScrollPane({showArrows:true,hideFocus:true});
+	
+	$('#CC_targetX').val(BUI.CC.x);
+	$('#CC_targetY').val(BUI.CC.y);
+	BUI.CC.selectedIndex = 0;
+	$("#CC_missionDesc").html(BUI.CC.missionDesc[0]).jScrollPane({showArrows:true,hideFocus:true});
+	
+	// Send Tab Event Handlers -----------------------------------------------------------------------------------------------------------------------------------------
+	
+	$(".supportAUnumber").unbind('click').click(function(){
+		var input = $(this).siblings(".AUinput")
+		if(input.val() == $(this).text()) {
+			input.val(0);
+		} else {
+			input.val($(this).text());
+		}
+		input.keyup();
+	});
+	
+	$(".missionSelect input").unbind('change').change(function() {
+		BUI.CC.selectedIndex = $(this).index(".missionSelect input");
+		if(BUI.CC.selectedIndex == 2 || BUI.CC.selectedIndex == 3) $("#CC_bombingTarget").fadeIn("fast");
+		else $("#CC_bombingTarget").fadeOut("fast");
+		
+		if(BUI.CC.selectedIndex == 9 || BUI.CC.selectedIndex == 8) {
+			$("#CC_supportAUbox").fadeOut();
+			$("#CC_civilianAUbox").fadeIn();
+			var numCivs = 0;
+			var type = "";
+			if(BUI.CC.selectedIndex == 8) {
+				type = "Institute";
+				$("#CC_civName").text("Scholar");
+				$("#CC_civInput").val(10).attr("disabled","disabled");
+			} else {
+				type = "Construction Yard";
+				$("#CC_civName").text("Engineer");
+				$("#CC_civInput").val("").attr("disabled","false"); //this is to prevent older browsers from leaving the field disabled
+			}
+			$.each(player.curtown.bldg, function(i,v) {
+					if(v.type == type) {
+						numCivs += v.peopleInside;
+					}
+			});
+			$("#CC_civNumber").text(numCivs);
+		} else {
+			$("#CC_supportAUbox").fadeIn();
+			$("#CC_civilianAUbox").fadeOut();
+		}
+		
+		if(BUI.CC.selectedIndex == 6) $("#CC_supportType").fadeIn("fast");
+		else $("#CC_supportType").fadeOut("fast");
+		
+		canSendAttack();
+	});
+	
+	$("#CC_supportType").unbind("change").change(function() {
+		canSendAttack();
+	});
+	var typeCheck = 0;
+	$(".AUinput, #CC_civInput").unbind('keyup').keyup(function() {
+		clearTimeout(typeCheck);
+		typeCheck = setTimeout(function(){canSendAttack();get_attack_ETA();},250);
+		
+		var coverSize = 0;
+		$(".AUinput").each(function(i, v) {
+			var value = parseInt($(v).val());
+			value = (isNaN(value))?0:value;
+			var j = i-player.AU.length
+			if(j<0) {
+				switch(player.AU[i].rank) {
+					case "soldier":
+						coverSize += value;
+						break;
+					case "tank":
+					case "bomber":
+						coverSize += 10*value;
+						break;
+					case "juggernaught":
+						coverSize += 40*value;
+						break;
+				}
+			} else if(BUI.CC.selectedIndex != 7 && BUI.CC.selectedIndex != 8){
+				switch(player.curtown.supportAU[j].rank) {
+					case "soldier":
+						coverSize += value;
+						break;
+					case "tank":
+					case "bomber":
+						coverSize += 10*value;
+						break;
+					case "juggernaught":
+						coverSize += 40*value;
+						break;
+				}
+			} else {
+				coverSize += $("#CC_civInput").val();
+			}
+		});
+		$("#CC_armySize span").text(coverSize);
+	});
+	
+	$("#CC_targetSelect input").unbind('keyup').keyup(function() {
+		BUI.CC.x = $('#CC_targetX').val();
+		BUI.CC.y = $('#CC_targetY').val();
+		
+		clearTimeout(typeCheck);
+		typeCheck = setTimeout(function(){canSendAttack();get_attack_ETA();},250);
+	});
+	
+	$("#CC_launchAttack").unbind('click').click(function() {
+		if(!$(this).hasClass('noAttack')) {
+			var AUarray = [];
+			$(".AUinput").each(function(i, v) {
+				if(i<6) {
+					if($(v).val() > player.curtown.au[i]) $(v).val(player.curtown.au[i])
+				} else {
+					if($(v).val() > player.curtown.supportAU[i-6]) $(v).val(player.curtown.supportAU[i-6].size);
+				}
+				AUarray.push((($(v).val() == "")?0:$(v).val()));
+			});
+			
+			sendAttack = new make_AJAX();
+				
+			sendAttack.callback = function(response) {
+				if(response.match(/true/i)) {
+					BUI.CC.numRaidsOut++;
+					get_raids(true);
+					for(i in player.curtown.au) {
+						player.curtown.au[i] -= AUarray[i];
+					}
+					BUI.CC.reload=true;
+				} else {
+					var error = response.split(":");
+					if(error.length==2) error=error[1]
+					display_output(true,error);
+					$("#CC_isValid").text(error);
+				}
+			};
+			
+			sendAttack.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command + ".attack(" 
+							+ player.curtown.townID + "," + BUI.CC.x + "," + BUI.CC.y + ",[" + AUarray.join(",")
+							+ "]," + BUI.CC.attackType + "," + $("#CC_bombingTarget option:selected").index("#CC_bombingTarget option")
+							+ ");");
+		}
+	});
+	
+	//------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	// Build Airship Control Tab----------------------------------------------------------------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	$("#CC_moveX").val(BUI.CC.x);
+	$("#CC_moveY").val(BUI.CC.y);
+	
+	$("#CC_moveTo input").unbind('keyup').keyup(function() {
+		BUI.CC.x = $('#CC_moveX').val();
+		BUI.CC.y = $('#CC_moveY').val();
+		var dist = Math.floor(Math.sqrt(Math.pow((BUI.CC.x-player.curtown.x),2)+Math.pow((BUI.CC.y-player.curtown.y),2)))
+		if(dist>player.curtown.fuelCells) {
+			$("#CC_moveAirship").addClass("noMove");
+			$("#CC_moveError").html("Insufficient Fuel");
+		} else {
+			$("#CC_moveAirship").removeClass("noMove");
+			$("#CC_moveError").html("");
+		}
+	}).unbind("click").click(function() {
+		$(this).keyup();
+	}).keyup();
+	
+	$("#CC_currPos span").text(player.curtown.x+", "+player.curtown.y);
+	
+	if(player.curtown.x != player.curtown.destX || player.curtown.y != player.curtown.destY) {
+		$("#CC_airshipHeading span").text(player.curtown.destX+", "+player.curtown.destY);
+		$("#CC_airshipETA span").text(player.curtown.movementTicks);
+		$("#CC_moveAirship").addClass("noMove");
+	} else {
+		$("#CC_airshipHeading span, #CC_airshipETA span").text("N/A");
+	}
+	
+	$("#CC_airshipFuel span").text(player.curtown.fuelCells+" Cells");
+					
+	$("#CC_moveAirship").unbind("click").click(function() {
+		if(!$(this).hasClass("noMove")) {
+			var moveAirship = make_AJAX();
+			
+			moveAirship.callback = function(response) {
+				if(response.match(/false/)) {
+					var error = response.split(":")[1];
+					$("#CC_moveError").html(error);
+					display_output(true,error);
+				} else {
+					$("#CC_airshipHeading span").text($("#CC_moveX").val()+", "+$("#CC_moveY").val());
+					$("#CC_airshipETA span").text("updating");
+					load_player(false,true,true);
+				}
+			};
+			
+			moveAirship.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".moveAirship("+BUI.CC.x+","
+							+BUI.CC.y+","+player.curtown.townID+");");
+		}
+	});
+	
+	//------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	// Build Military Overview Tab -------------------------------------------------------------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+	$("#CC_armySizeTotal span").text(function() {
+		var coverSize = 0;
+		$.each(player.curtown.au, function(i,v) {
+			switch(player.AU[i].popSize) {
+				case 1:
+					coverSize += v;
+					break;
+				case 5:
+				case 20:
+					coverSize += 10*v;
+					break;
+				case 10:
+					coverSize += 40*v;
+					break;
+			}
+		});
+		$.each(player.curtown.supportAU, function(i,v) {
+			switch(v.popSize) {
+				case 1:
+					coverSize += v.size;
+					break;
+				case 5:
+				case 20:
+					coverSize += 10*v.size;
+					break;
+				case 10:
+					coverSize += 40*v.size;
+					break;
+			}
+		});
+		return coverSize;
+	});
+	
+	$("#CC_CSL span").text(player.curtown.CSL);
+	
+	$("#CC_incomingMissions").html(function() {
+		var HTML = '<h3>Incoming Missions</h3>';
+		$.each(player.curtown.incomingRaids, function(i, v) {
+			if(v.raidOver) {
+				HTML += "<div class='incoming friendly mission darkFrameBody'>\
+							<div class='raidInfo'>\
+								<span class='raidTitle'>Return from " + v.defendingTown;
+			} else {
+				var type = (v.raidType.match(/^off/i))? "offensive support":v.raidType;
+				if(v.name!="noname") type+= ' "'+v.name+'"';
+				HTML += "<div class='incoming"+(type.match(/support/)?"friendly":"hostile")+" mission darkFrameBody' style='height:"+(Math.ceil(v.auNames.length/6)*70)+">\
+							<div class='raidInfo'>\
+								<span class='raidTitle'>" + type + " from " + v.attackingTown;
+			}
+			HTML += "</span> - <span class='raidETA'>" + v.eta + "</span>\
+							</div>\
+							<div id='incomingTroops' style='height:"+(Math.ceil(v.auNames.length/6)*70)+"px'>";
+						
+			$.each(v.auNames, function(j,w) {
+				HTML+="<div class='troop"+(j%6==0?" firstcol":"")+"'><div class='auName'>"+w+"</div><img class='auPic' src='";
+				var path = 'AIFrames/units/';
+				switch(w) {
+					case "Shock Trooper": //soldier
+					case "Pillager":
+					case "Vanguard":
+						path += "soldierrenderTHUMB.png";
+						break;
+					case "Wolverine": //tank
+					case "Seeker":
+					case "Damascus":
+						path += "tankrenderTHUMB.png";
+						break;
+					case "Punisher": //juggernaught
+					case "Dreadnaught":
+					case "Collossus":
+						path += "juggernautrenderTHUMB.png";
+						break;
+					case "Helios": //bomber
+					case "Horizon":
+					case "Hades":
+						path += "bomberrenderTHUMB.png";
+						break;
+					default: //anything else should be either empty or locked
+					path = "../images/client/buildings/AF-lockedAU.png";
+				}
+				HTML+=path+"' alt='"+w+"'/><div class='auAmnt'>"+v.auAmts[j]+"</div></div>";
+			});
+			HTML +=		"</div>\
+					</div>\
+					<div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>";
+		});
+		return HTML;
+	});
+	$("#CC_troopsHere").html(function() {
+		var HTML = "<h3>Troops Here</h3><div id='CC_troops' class='darkFrameBody'>";
+		$.each(player.AU,function(i,v) {
+			if(i<6) {
+				HTML+="<div class='troop'><div class='auName'>"+v.name+"</div><img class='auPic' src='";
+				var path = 'AIFrames/units/';
+				switch(v.popSize) {
+					case 1: //soldier
+						path += "soldierrenderTHUMB.png";
+						break;
+					case 5: //tank
+						path += "tankrenderTHUMB.png";
+						break;
+					case 10: //juggernaught
+						path += "juggernautrenderTHUMB.png";
+						break;
+					case 20: //bomber
+						path += "bomberrenderTHUMB.png";
+						break;
+					default: //anything else should be either empty or locked
+					path = "../images/client/buildings/AF-" + v.name + "AU.png";
+				}
+				HTML+=path+"' alt='"+v.name+"'/><div class='auAmnt'>"+player.curtown.au[i]+"</div><input type='text' id='CC_AU"+i+"input' class='AUinput' maxlength='4' value='0'/></div>";
+			}
+		});
+		HTML += "<div id='CC_killMe'></div>"
+		if(player.curtown.supportAU.length > 0) {
+			HTML += "</div><div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div><div id='CC_supporters'><h3>Support Here</h3>";
+			$.each(player.curtown.sortedSupport, function(i, v) {
+				HTML += "	<div class='fSupportRow' class='darkFrameBody'><span class='supportPlayer'>Support from " + v.player + "</span><a href='javascript:;' class='sendHome'>Send Home</a><div class='supportAUbox'>";
+				$.each(v.indexes, function(j, w) {
+					var supportAU = player.curtown.supportAU[w];
+					HTML += "	<div class='supportAU troop'><div class='supportAUname'>" + supportAU.name + "</div><a href='javascript:;' class='supportAUnumber'>" + supportAU.size + "</a><input type='text' class='AUinput supportAUinput' maxlength='4' value='0'/></div>"
+				});
+				HTML += "</div></div>";
+			});
+		}
+		return HTML+"</div><div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>";
+	});
+	$("#CC_outgoingMissions").html(function() {
+		var HTML = "<h3>Outgoing Missions</h3>";
+		$.each(player.curtown.outgoingRaids, function(i, v) {
+			var type = (v.raidType.match(/^off/i))? "offensive support":v.raidType;
+			if(v.name!="noname") type+= ' "'+v.name+'"';
+			var to = (type.match(/(support|debris)/i))? " to ":((type.match(/inva/i))? " of ":" on ");
+			HTML += "<div class='outgoing mission darkFrameBody'>\
+						<div class='recallRaid'>Recall</div>\
+						<div class='raidInfo'>\
+							<span class='raidTitle'>" + type + to + v.defendingTown + "</span> - <span class='raidETA'>" + v.eta + "</span>\
+							<span class='raidID'>" + v.rid + "</span>\
+						</div>\
+						<div class='outgoingTroops' style='height:"+((v.auNames.length/6)*70)+"px'>";
+			$.each(v.auNames, function(j,w) {
+				HTML+="<div class='troop"+(j%6==0?" firstcol":"")+"'><div class='auName'>"+w+"</div><img class='auPic' src='AIFrames/units/";
+				switch(w) {
+					case "Shock Trooper": //soldier
+					case "Pillager":
+					case "Vanguard":
+						path += "soldierrenderTHUMB.png";
+						break;
+					case "Wolverine": //tank
+					case "Seeker":
+					case "Damascus":
+						path += "tankrenderTHUMB.png";
+						break;
+					case "Punisher": //juggernaught
+					case "Dreadnaught":
+					case "Collossus":
+						path += "juggernautrenderTHUMB.png";
+						break;
+					case "Helios": //bomber
+					case "Horizon":
+					case "Hades":
+						path += "bomberrenderTHUMB.png";
+						break;
+					default: //anything else should be either empty or locked
+					path = "../images/client/buildings/AF-lockedAU.png";
+				}
+				HTML+=path+"' alt='"+w+"'/><div class='auAmnt'>"+v.auAmts[j]+"</div></div>";
+			});
+			HTML +=		"</div></div><div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>";
+		});
+		return HTML;
+	});
+	
+	$("#CC_supportAbroad").html(function(){
+		var HTML = '<h3>Support Abroad</h3>';
+		if(player.curtown.supportAbroad) {
+			if(player.curtown.supportAbroad.length > 0) {
+				$.each(player.curtown.supportAbroad, function(i, v) {
+					HTML += "	<div class='aSupportRow darkFrameBody'><span class='supportPlayer'>Support at "
+						+ v.townName + "</span><a href='javascript:;' class='callHome'>Recall</a><div class='supportAUbox'>";
+					$.each(v.supportAU, function(j, w) {
+						HTML += "<div class='supportAU troop'><div class='supportAUname'>" + w.name 
+							+ "</div><img class='auPic' src='AIFrames/units/'+ w.rank + 'renderTHUMB.png' alt='"
+							+ w.name + "'/><a href='javascript:;' class='supportAUnumber'>" + w.size 
+							+ "</a><input type='text' class='AUinput supportAUinput' maxlength='4' "
+							+ (w.name=="Scholar"?"style='visibility:hidden;'":"value='0'") + "/></div>";
+					});
+					HTML += "</div></div><div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>";
+				});
+			}
+		}
+		return HTML;
+	});
+	
+	$(".recallRaid").unbind('click').click(function() {
+		var rid = $(this).siblings(".raidInfo").find(".raidID").text();
+		recall = new make_AJAX();
+		recall.callback = function(response) {
+			if(response.match(/true/)) {
+				get_raids(true);
+				currUI();
+			} else {
+				var error = response.split(":");
+				if(error.length==2)error=error[1];
+				display_output(true,error,true);
+			}
+		};
+		recall.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command + ".recall(" + rid + ");");
+	});
+	
+	$(".supportAUnumber").die('click').live('click',function() {
+		var sibling = $(this).siblings('.AUinput');
+		if($(this).text() == sibling.val()) {
+			sibling.val(0);
+		} else {
+			sibling.val($(this).text());
+		}
+	});
+	
+	$(".callHome").die('click').live('click', function() {
+		var AUtoRecall = [0,0,0,0,0,0];
+		var index = $(this).parent('.aSupportRow').index('.aSupportRow');
+		var callAll = true;
+		
+		$(this).siblings('.supportAUbox').children('.troop').children('.AUinput').each(function(i, v) {
+			if($(this).css("visibility") != "hidden") {
+				var j = player.curtown.supportAbroad[index].supportAU[i].originalSlot;
+				var val = parseInt($(v).val());
+				if(val != 0 && val != "") {
+					callAll = false;
+				} else if(val == "") val = 0;
+				AUtoRecall[j] = val;
+			}
+		});
+		
+		if(callAll) AUtoRecall = [0];
+		
+		var recall = new make_AJAX();
+		recall.callback = function(response) {						
+			if(!response.match(/false/i)) {
+				get_raids(true);
+				get_support_abroad();
+				$("body").css("cursor","wait");
+				setTimeout(function() {$("body").css("cursor","auto");currUI();},1000);
+			}
+		};
+		recall.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command 
+						+ ".recall([" + AUtoRecall.join(",") + "]," 
+						+ player.curtown.supportAbroad[index].townID + "," 
+						+ player.curtown.supportAbroad[index].pid + ","
+						+ player.curtown.townID + ");");
+	});
+	
+	$('.sendHome').die('click').live('click', function() {
+		var AUtoSend = [0,0,0,0,0,0];
+		var index = $(this).parent('.fSupportRow').index('.fSupportRow');
+		var sendAll = true;
+		
+		$(this).siblings('.supportAUbox').children('.troop').children('.AUinput').each(function(i, v) {
+			var j = player.curtown.sortedSupport[index].indexes[i];
+			var val = parseInt($(v).val());
+			if(val != 0 && val != "") {
+				sendAll = false;
+			} else if(val == "") val = 0;
+			AUtoSend[player.curtown.supportAU[j].originalSlot] = val;
+		});
+		if(sendAll) AUtoSend = [0];
+		var sendHome = new make_AJAX();
+		sendHome.callback = function(response) {						
+			if(!response.match(/false/i)) {
+				get_raids(true);
+				get_support_abroad();
+				$("body").css("cursor","wait");
+				setTimeout(function() {$("body").css("cursor","auto");currUI();},1000);
+			}
+		};
+		sendHome.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command 
+						+ ".sendHome([" + AUtoSend.join(",") + "]," + player.curtown.townID 
+						+ "," + player.curtown.sortedSupport[index].pid + ");");
+	});
+	
+	$("#CC_killMe").unbind('click').click(function() {
+		display_message("Are you sure?","Killing units is permanent and you get no refund.  Are you sure you want to kill them?",function() {
+			display_output(false, "Killing units...");
+			var getPath = "/AIWars/GodGenerator?reqtype=command&command=";
+			var killedAU = [0,0,0,0,0,0];
+			$(".AUinput").each(function(i,v) {
+				if(i<6) {
+					if($(v).val() > 0 && player.AU[i].name != "locked" && player.AU[i].name != "empty") {
+						getPath += player.command + ".killMyself(" + player.AU[i].name + "," + $(v).val() + "," + player.curtown.townID + ");";
+						killedAU[i] = parseInt($(v).val());
+					}
+				}
+			});
+			var killEm = new make_AJAX();
+			killEm.callback = function(response) {
+				if(response.match(/false/i)) {
+					display_output(true, "Suicide Attempt Failed!",true);
+				} else if(currUI === draw_bldg_UI&&BUI.active.name[0]==bldgInfo.type) {
+					$.each(killedAU, function(i,v){
+						player.curtown.au[i] -= v;
+					});
+					currUI();
+				}
+				load_player(false, true, false);
+			};
+			if(getPath.match(/bf/i) != null) {
+				killEm.get(getPath);
+			}
+		});
+	});
+	
+	$("#CC_scrollBox").jScrollPane({showArrows:true,hideFocus:true});
+	
+	//------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+	$(".useBP").unbind("click").click(function() {
+		display_message("Use BP - Ferocity","Ferocity grants all your units a 10% combat bonus for one week.  Costs <span style='font-weight:bold;'>500BP</span><br/><br/>Are you sure?<div style='text-align: right;'>Current BP:"+player.research.bp+"</div>",
+						function() {
+							display_output(false,"Purchasing Ferocity...");
+							var useBP = new make_AJAX();
+							
+							useBP.callback = function(response) {
+												if(response.match(/true/)) {
+													display_output(false,"Success!");
+													load_player(false,true,false);
+												} else {
+													var error = response.split(":");
+													if(error.length==2) error = error[1];
+													display_output(true,error,true);
+												}
+											}
+							
+							useBP.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".useBP(ferocity);");
+						});
+	});
+	
 	$("#BUI_tutorial").click(CC_tut);
 	
 	switch(BUI.CC.startTab) {
@@ -934,11 +863,9 @@ function canSendAttack() {
 			BUI.CC.attackType = "debris";
 			break;
 		case 8:
+		case 9:
 			BUI.CC.attackType = "dig";
 			break;
-		case 9:
-			BUI.CC.attackType = "mining";
-			//break;
 		case 0:
 		default:
 			BUI.CC.attackType = "attack";
@@ -947,10 +874,15 @@ function canSendAttack() {
 	api.getContentPane().html(desc);
 	api.reinitialise();
 	var AUarray = [];
-	$(".AUinput").each(function(i, v) {		
-		if(i<6) {
-			if($(v).val() > player.curtown.au[i]) $(v).val(player.curtown.au[i])
-		} else if($(v).val() > player.curtown.supportAU[i-6]) $(v).val(player.curtown.supportAU[i-6].size);
+	$(".CC_AUinput").each(function(i, v) {
+		var j = i-player.AU.length;
+		if(j<0) {
+			if($(v).val() > player.curtown.au[i]){
+			 $(v).val(player.curtown.au[i]);
+			}
+		} else if($(v).val() > player.curtown.supportAU[j]){ 
+			$(v).val(player.curtown.supportAU[j].size);
+		}
 		AUarray.push((($(v).val() == "")?0:$(v).val()));
 	});
 

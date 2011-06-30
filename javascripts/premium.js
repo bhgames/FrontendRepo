@@ -136,7 +136,7 @@ function draw_premium_UI() {
 							useBP.callback = function(response) {
 												if(response.match(/true/)) {
 													display_output(false,"Success!");
-													load_player(player.league,true,true);
+													load_player(false,true,true);
 												} else {
 													if(response.indexOf(":")>=0) response = response.split(":")[1];
 													display_output(true,response,true);

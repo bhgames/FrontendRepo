@@ -14,10 +14,10 @@ function draw_bldg_UI() {
 	var bldgInfo = $.grep(player.curtown.bldg, get_bldg)[0];
 	
 	//do update checks for this building
-	if(bldgInfo.update) load_player(player.league,true,true); //if an update is queued, update the player object, and reload the current UI
+	if(bldgInfo.update) load_player(false,true,true); //if an update is queued, update the player object, and reload the current UI
 	else {
 		$.each(bldgInfo.Queue, function(i,v) {
-			if(v.update) load_player(player.league,true,true);
+			if(v.update) load_player(false,true,true);
 		});
 	}
 	
@@ -143,7 +143,7 @@ function draw_bldg_UI() {
 									+ bldgInfo.lotNum + "," + player.curtown.townID + ");");
 									
 					display_output(false,"Success!");
-					load_player(player.league, player.curtown.townID, false);  //update the player object
+					load_player(false, player.curtown.townID, false);  //update the player object
 				} else {
 					var error=response.split(":")[1]; //we want what's after false:
 					display_output(true,error);
@@ -228,7 +228,7 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 		try { //this is to prevent the script from breaking if an error gets thrown.
 			var bldgInfo = $.grep(player.curtown.bldg, get_bldg)[0];
 			if(bldgInfo.update||player.curtown.update) {
-				load_player(player.league,true,true);
+				load_player(false,true,true);
 			} else {
 				switch(bldgInfo.type) {		//first, we have to determine if we even have updating displays
 					/*case "Construction Yard":
@@ -497,7 +497,7 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 				}
 			}
 			if(bldgInfo.update) {
-				load_player(player.league,true,true);
+				load_player(false,true,true);
 			}
 		} catch(e) {
 			//display_output(true,"Minor Error [update_time_displays()]:<br/>"+e);

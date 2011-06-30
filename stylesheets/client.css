@@ -206,7 +206,7 @@ a#fdbk_tab:hover {
 	width: 120px;
 	color: #F00;
 	}
-#signInBox input {
+#signIn_UN, #signIn_pass, #forgot_UN, #forgot_email, #reg_UN  {
 	background: transparent;
 	border: 1px solid #FFF;
 	color: #FFF;
@@ -228,10 +228,6 @@ a#fdbk_tab:hover {
 	}
 #reg_picktile, #reg_wait {
 	display: none;
-	}
-#reg input, #forgotPassBox input {
-	border: 1px solid #FFFFFF;
-	color: #FFFFFF;
 	}
 #reg label, #signIn label {
 	display: block;

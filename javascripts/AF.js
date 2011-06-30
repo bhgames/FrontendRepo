@@ -22,7 +22,7 @@ function AF_UI(bldgInfo) {
 	//do update check
 	$.each(bldgInfo.Queue, function(i,v) {
 		if(v.update) {
-			load_player(player.league,true,true);
+			load_player(false,true,true);
 			return false;
 		}
 	});
@@ -47,7 +47,6 @@ function AF_UI(bldgInfo) {
 	$.each(player.AU, function(i, x){	//set up display of AU bar
 		if(x.rank = "soldier") {
 			var el = $("#AF_AUbar").append("<a href='javascript:;' slot='"+i+"' class='inactiveAU'>???</a>").children(":last-child");
-			log(el);
 			$(el).text(player.curtown.au[i]);
 			
 			$(el).css({"background-image": "url(AIFrames/units/"+x.rank+"renderTHUMB.png","left": (55 * i) + "px"});
@@ -85,7 +84,7 @@ function AF_UI(bldgInfo) {
 							useBP.callback = function(response) {
 												if(response.match(/true/)) {
 													display_output(false,"Success!");
-													load_player(player.league,true,true);
+													load_player(false,true,true);
 												} else {
 													var error = response.split(":")[1];
 													if(error.length==2) error = error[1]; 
@@ -208,7 +207,7 @@ function AF_UI(bldgInfo) {
 				if(response.match(/true/)) {
 					$("#BUI_numPpl").keyup();
 					display_output(false,"Build Successful!");
-					load_player(player.league, true);			
+					load_player(false, true);			
 				} else {
 					var error = response.split(":");
 					if(error.length==2) error = error[1];
@@ -228,7 +227,7 @@ function AF_UI(bldgInfo) {
 				
 				cancelQueue.callback = function(response) {
 					if(response.match(/true/)) {
-						load_player(player.league, true, true);
+						load_player(false, true, true);
 					} else {
 						var error = response.split(":");
 						if(error.length==2) error = error[1];

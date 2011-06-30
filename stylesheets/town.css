@@ -267,6 +267,12 @@ a:active.buildBldgButton {
 	background: url("../AIFrames/Content Frame Elements/close.png") no-repeat 0 0;
 	cursor: "pointer";
 	}
+#town_bldError {
+	position: absolute;
+	top: 10px;
+	left: 160px;
+	color: red;
+	}
 #town_buildableList, #town_notBuildableList {
 	height: 440px;
 	}
@@ -398,4 +404,48 @@ a:active.buildBldgButton {
 	}
 #town_warehouseBar {
 	display: none;
+	}
+/************************************************************************************************************************************************
+ * Infobar CSS Code
+************************************************************************************************************************************************/
+#town_infobarOpen {
+	position: absolute;
+	top: 11px;
+	left: 385px;
+	height: 15px;
+	width:50px;
+	background: url("../AIFrames/Content Frame Elements/infobar-button.png") no-repeat top center;
+	cursor: pointer;
+	z-index: 1;
+	}
+#town_infobar {
+	position: absolute;
+	top: 11px;
+	left: 21px;
+	display: none;
+	z-index: 2;
+	}
+#town_warehouseMenu > div {
+	display: inline-block;
+	width: 155px;
+	padding: 5px;
+	}
+#town_timberInfo {
+	border: 1px solid #FFF;
+	border-width: 0px 1px;
+	}
+#town_crystalInfo {
+	border-right: 1px solid #FFF;
+	}
+.capacityBarBorder, .capacityBar {
+	border: 1px solid #fff;
+	border-radius: 5px;
+	height: 5px;
+	}
+.capacityBar {
+	margin: -1px 0 0 -1px;
+	border-color: transparent;
+	}
+.rph {
+	text-align: center;
 	}

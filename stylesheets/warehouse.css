@@ -1,5 +1,5 @@
 /* *********************************************************************
- * Warehouse CSS
+ * Warehouse & Storage Yard CSS
 ***********************************************************************/
 #Ware_resTotals {
 	position: absolute;
@@ -8,7 +8,7 @@
 	width: 400px;
 	text-align: center;
 	}
-#Ware_resDesc {
+#Ware_resDesc, .resDesc {
 	display: block;
 	text-align: left !important;
 	}
@@ -20,14 +20,16 @@
 	font-size: 20px;
 	text-shadow: 1px 1px 1px #000000;
 	}
-#Ware_resPercBarBox {
-	background: url(../../images/client/menus/Mine_Fillbox.png) no-repeat 0 0;
+#Ware_resPercBarBox, .resPercBarBox, .ResCFillBorder {
+	background: url("../AIFrames/Content Frame Elements/Mine_Fillbox.png") no-repeat 0 0;
 	width: 410px;
 	height: 42px;
 	}
-#Ware_resPercBar {
-	background: url(../../images/client/menus/Mine_Fillbar.png) no-repeat left center;
-	margin-left: 6px;
-	padding-top: 10px;
+#Ware_resPercBar, .resPercBar, .ResCFillBar {
+	background: url("../AIFrames/Content Frame Elements/Mine_Fillbar.png") no-repeat left center;
+	margin-left: 5px;
+	padding-top: 8px;
 	height: 32px;
+	border: 1px solid transparent;
+	border-radius: 16px;
 	}

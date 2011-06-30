@@ -111,7 +111,7 @@ function show_quests() {
 					display_quest(quest);
 					var noFlick = new make_AJAX();
 					noFlick.get("/AIWars/GodGenerator?reqtype=noFlick&league="+player.league);
-					load_player(player.league, player.curtown.townID, false);
+					load_player(false, player.curtown.townID, false);
 				} else {
 					display_message("Info",quest.info);
 				}

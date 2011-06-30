@@ -1,16 +1,17 @@
 function show_town() {
 	currUI = show_town;	//set current UI function to be called by the tickers
-	$("#window").contents().unbind();
+	var window = $("#window")
+	window.contents().unbind();
 	//do update check
 	$.each(player.curtown.bldg, function(i,v) {
 		if(v.update) {
-			load_player(player.league,true,true);
+			load_player(false,true,true);
 			return false;
 		} else {
 			var noUpdate = true;
 			$.each(v.Queue, function(j,w) {
 				if(w.update) {
-					load_player(player.league,true,true);
+					load_player(false,true,true);
 					noUpdate = false;
 					return false;
 				}
@@ -48,27 +49,6 @@ function show_town() {
 						<div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>\
 					</div>\
 					<div id='townview'"+(player.curtown.zeppelin ? " class='zeppelin'" : "")+">\
-						<div id='town_warehousePopup'>\
-							<div id='town_warehouseBar'>Resource Overview</div>\
-							<div id='town_warehouseMenu'>\
-								<div id='town_metalInfo'>\
-									<div class='capacityBar'></div>\
-									<div class='rph'></div>\
-								</div>\
-								<div id='town_timberInfo'>\
-									<div class='capacityBar'></div>\
-									<div class='rph'></div>\
-								</div>\
-								<div id='town_manmatInfo'>\
-									<div class='capacityBar'></div>\
-									<div class='rph'></div>\
-								</div>\
-								<div id='town_foodInfo'>\
-									<div class='capacityBar'></div>\
-									<div class='rph'></div>\
-								</div>\
-							</div>\
-						</div>\
 						<div id='town_bldgBldgsPopup'>\
 							<div id='town_bldgBldgsBar'>Building Server</div>\
 							<div id='town_bldgBldgsList' class='darkFrameBody'></div>\
@@ -88,8 +68,7 @@ function show_town() {
 		HTML += "<div id='pos" + i + "' class='emptylot notMine " + ((i > numLotsOpen)?"locked ":"")
 				+ "bldg'><img src='../../images/trans.gif' id='pos" + i + "_building' alt=''/></div>";
 	}
-	$("#window").html(HTML+"</div>").fadeIn("fast");
-	
+	window.html(HTML+"</div>").fadeIn("fast");
 	
 	if(BUI.CC.bldgServer.length>0) {
 		clearInterval(player.townUpdate);
@@ -269,23 +248,22 @@ function show_town() {
 				});
 				
 				$(".buildBldgButton").click(function() {
-					
 						if(!$(this).hasClass("noBld")) {
+							var i = $(this).index(".buildBldgButton");
 							buildBldg = new make_AJAX();
 							
 							buildBldg.callback = function(response) {
 								if(response.match(/^false/) == null) {
 									bldgMenu.animate({"left":"-802px"},"normal",function() {
-										load_player(player.league, true, true);
+										load_player(false, true, true);
 									});
 								} else {
 									$("#town_bldError").html(response.split(":")[1]);
 								}
 							};
 							
-							buildBldg.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command + ".build(" 
-											+ bldgs.buildable[i].type + "," + index + "," + player.curtown.townID 
-											+ ");");
+							buildBldg.get("/AIWars/GodGenerator?reqtype=command&command=bf.build(" + player.curtown.bldableBldgs[i].type 
+											+ "," + index + "," + player.curtown.townID + ");");
 						}
 				});
 			}
@@ -304,7 +282,7 @@ function show_town() {
 							ele.parent().remove();
 							x.lvlUps -= 1;
 							x.deconstruct = false;
-							load_player(player.league, true, false);
+							load_player(false, true, false);
 							if($("#town_bldgBldgsList li").length == 0) $("#town_bldgBldgsPopup").fadeOut();
 							if(x.lvlUps == 0) $("#pos"+x.lotNum+" .lvlImage").remove();
 						} else {
@@ -320,18 +298,6 @@ function show_town() {
 			});
 		}
 	});
-}
-
-function nav_town(direction, box){
-	box.top = parseInt(box.css("top")); //get the top of our box so we can work with it
-	if(direction == "up") {//figure out how to move the box
-		box.top += 138;
-	} else {
-		box.top -= 138;
-	}
-	if(box.top >= 0) box.top = 0;
-	if(box.top <= -276) box.top = -276;
-	box.animate({"top":box.top + "px"}, "fast"); //move the box
 }
 
 function town_list() {
@@ -404,7 +370,7 @@ function update_bldg_timers() {
 			$(".bldgListID").each(function(i,v){
 				$.each(BUI.CC.bldgServer, function(ind, x) {
 					//do update check
-					if(x.update) load_player(player.league, true,true);
+					if(x.update) load_player(false, true,true);
 					
 					if($(v).text() == x.lotNum) { 	//we found the building in bldgServer
 						var ticks;
@@ -436,7 +402,7 @@ function update_bldg_timers() {
 						}
 						if(ticks<1) { //if the time is less then 1 the building is finished
 							$(v).siblings(".bldgTicksToFinish").html("updating");
-							load_player(player.league,true,true);
+							load_player(false,true,true);
 						} else {
 								//format the times
 							var days = Math.floor((ticks / 3600)/24);

@@ -147,7 +147,7 @@ function update_raid_display() {
 							if(player.curtown.outgoingRaids[i].raidType.match(/invasion|support/)) {
 								map.update = true;
 								SR.update = true;
-								load_player(player.league,true);
+								load_player(false,true);
 							} else {
 								get_SRs();
 								get_raids(true);
@@ -172,7 +172,7 @@ function update_raid_display() {
 							});
 						} else {
 							$(this).html("updating");
-							load_player(player.league,true);
+							load_player(false,true);
 						}
 					});
 				}

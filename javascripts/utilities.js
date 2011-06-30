@@ -1,11 +1,3 @@
-function preload() {
-	var newImages = [];
-	for (x in images) {
-		newImages[x] = new Image();
-		newImages[x].src = images[x];
-	}
-	$("#preload").html(newImages.toString());
-}
 
 function make_AJAX() {
 	var temp = {};
@@ -37,7 +29,7 @@ function make_AJAX() {
 					};
 	
 		//send method repackagers to make my life easier
-	temp.get = function(URL, sync) {
+	temp.get = function(URL, sync, cachable) {
 								try {
 									var val = URL.split("&command="), data = "";
 									if(val.length == 2) { 
@@ -53,7 +45,7 @@ function make_AJAX() {
 										url : "/AIWars/GodGenerator",
 										data : data,
 										dataType : "text",
-										cache : false,
+										cache : !!cachable,
 										global : false,
 										error : temp.error,
 										success : temp.success
@@ -66,7 +58,7 @@ function make_AJAX() {
 									temp.clear();
 								}
 							};
-	temp.post = function(URL, data, sync) {
+	temp.post = function(URL, data, sync, cachable) {
 										try {
 											var val = data.split("&command=");
 											if(val.length == 2) { 
@@ -79,7 +71,7 @@ function make_AJAX() {
 												url : URL,
 												data : data,
 												dataType : "text",
-												cache : false,
+												cache : !!cachable,
 												global : false,
 												error : temp.error,
 												success : temp.success
@@ -437,10 +429,12 @@ function do_fade(nextUI, newBkgd, SBB) { //nextUI - the function to call after t
 }
 
 function display_res() {
-	$("#steel").text(player.curtown.res[0]).format({format:"###,###,###", locale:"us"});
-	$("#wood").text(player.curtown.res[1]).format({format:"###,###,###", locale:"us"});
-	$("#synth").text(player.curtown.res[2]).format({format:"###,###,###", locale:"us"});
-	$("#food").text(player.curtown.res[3]).format({format:"###,###,###", locale:"us"});
+	var res = $("#resourcebar").clone(true);
+	res.children().each(function(i,el) {
+		if(i>3) {return false;}
+		$(el).text(player.curtown.res[i]).format({format:"###,###,###", locale:"us"});
+	});
+	$("#resourcebar").replaceWith(res);
 }
 
 var bldgs = {
@@ -571,10 +565,6 @@ function get_all_trades() {
 							
 						});
 					}
-					// clearInterval(v.activeTrades.timer);
-					// clearInterval(v.tradeSchedules.timer);
-					// v.activeTrades.timer = tick_trades(v.activeTrades);
-					// v.tradeSchedules.timer = tick_trades(v.tradeSchedules);
 				});
 				display_output(false,"Trades Loaded!");
 				gettingTrades = false;
@@ -694,17 +684,6 @@ function clear_player_timers() {
 			try {
 				clearInterval(x.resTicker);
 			} catch(e) {}
-			/*$.each(x.bldg, function(j, y) {
-				try {
-					clearInterval(y.bldgTicker);
-					clearInterval(y.pplTicker);
-				} catch(e) {}
-					$.each(y.Queue, function(k, z) {
-						try {
-							clearInterval(z.queueTicker);
-						} catch(e) {}
-					});
-			});*/
 		});
 	display_output(false,"Tickers Cleared!");
 }
@@ -719,7 +698,6 @@ function clear_all_timers() {
 		
 		clearInterval(player.research.ticker);
 		
-		//clearInterval(player.raids.raidTicker);
 		
 		try {
 			clearInterval(player.curtown.incomingRaids.displayTimer);
@@ -733,23 +711,8 @@ function clear_all_timers() {
 		$.each(player.towns, function(i, x) {
 			try {
 				clearInterval(x.resTicker);
-				//clearInterval(x.activeTrades.timer);
-				//clearInterval(x.tradeSchedules.timer);
 			}
 			catch(e) {}
-			/*$.each(x.bldg, function(j, y) {
-				try {
-					clearInterval(y.bldgTicker);
-					clearInterval(y.pplTicker);
-				}
-				catch(e) {}
-					$.each(y.Queue, function(k, z) {
-						try {
-							clearInterval(z.queueTicker);
-						}
-						catch(e) {}
-					});
-			});*/
 		});
 	display_output(false,"Tickers Cleared!");
 }
@@ -851,7 +814,31 @@ window.log = function(){
  * @type Number
  */
 Number.prototype.clamp = function(min, max) {
-  return Math.min(Math.max(this, min), max);
+	return this.min(min).max(max);
+}
+
+/**
+ * Identical to .clamp(-Infinity,max);
+ * Returns a number whose value is less than or equal to max
+ *
+ * @param {Number} max The upper boundary of the output range
+ * @returns A number equal to or less than max
+ * @type Number
+ */
+Number.prototype.max = function(max) {
+	return Math.min(this, max);
+}
+
+/**
+ * Identical to .clamp(min,Infinity);
+ * Returns a number whose value is greater than or equal to min
+ *
+ * @param {Number} mine The lower boundary of the output range
+ * @returns A number equal to or greater than min
+ * @type Number
+ */
+Number.prototype.min = function(min) {
+	return Math.max(this, min);
 }
 
 /**
@@ -901,112 +888,6 @@ Date.prototype.timeFromNow = function(offset) {
 	return diff;
 }
 
-function inc_bldg_ticks(thingToTick) {
-	return setInterval(function() {
-					//increment the ticks
-				thingToTick.ticksToFinish++;
-				if(thingToTick.ticksToFinish >= thingToTick.ticksToFinishTotal[0] && thingToTick.lvlUps > 0) { //if the building has finished upgrading
-					thingToTick.lvlUps--;
-					thingToTick.lvl++;
-					thingToTick.ticksToFinish -= thingToTick.ticksToFinishTotal[0];
-					thingToTick.ticksToFinishTotal.shift();
-					thingToTick.update = true; //set update flag
-				} else if(thingToTick.ticksToFinish >= thingToTick.ticksToFinishTotal[0] && thingToTick.deconstruct) {
-					thingToTick.deconstruct = false;
-					thingToTick.lvl = 0;
-					thingToTick.lot = -1;
-					thingToTick.update = true; //set update flag
-				} else if(thingToTick.lvlUps < 1) {
-					BUI.build();
-					clearInterval(thingToTick.bldgTicker);
-				}
-			},1000);
-}
-
-function inc_ppl_ticks(thingToTick) {
-	return setInterval(function() {
-				thingToTick.ticksLeft++; //increment the ticks
-				if(thingToTick.ticksLeft >= thingToTick.ticksPerPerson && thingToTick.numLeftToBuild > 0) {  //if a unit has finished
-					thingToTick.numLeftToBuild--;
-					thingToTick.ticksLeft -= thingToTick.ticksPerPerson;
-					thingToTick.peopleInside++;
-					thingToTick.update = true;
-				}
-				else if(thingToTick.numLeftToBuild < 1) clearInterval(thingToTick.pplTicker);
-			}, 1000);
-}
-
-function inc_queue_ticks(thingToTick) {
-	return setInterval(function() {
-				thingToTick.currTicks++; //increment the ticks
-				if(thingToTick.currTicks >= thingToTick.ticksPerUnit && thingToTick.AUNumber > 0) {  //if a unit has finished
-					thingToTick.AUNumber--;
-					thingToTick.currTicks -= thingToTick.ticksPerUnit;
-					thingToTick.update = true;
-				} else if(thingToTick.AUnumber<1) clearInterval(thingToTick.queueTicker);
-			}, 1000);
-}
-
-function tick_raids(thingToTick) {
-	return setInterval(function() {
-				if(thingToTick.length > 0) {
-					$.each(thingToTick, function(i, v) {
-						if(typeof(v.eta) != "undefined") {
-							if(v.eta > 0 && v.eta != "updating") {
-								thingToTick[i].eta--;
-							} else if(v.eta != "updating") {
-								thingToTick[i].eta = "updating";
-								if(!SR.update) {
-									$.each(player.towns,function(j,w) {
-										if(w.townName == v.attackingTown || w.townName == v.defendingTown) {
-											SR.update = true;
-											return false;
-										}
-									});
-								}
-								if(!map.update) {
-									if(v.raidType.match(/invasion|debris/)) map.update = true;
-								}
-								thingToTick.update = true;
-							}
-						}
-					});
-				} else {
-					clearInterval(thingToTick.raidTicker);
-				}
-			}, 1000);
-}
-
-function tick_trades(thingToTick) {
-	return setInterval(function() {
-				if(thingToTick.length > 0) {
-					$.each(thingToTick, function(i, v) {
-						if(v.currTicks) {
-							if(v.currTicks != "Updating" && v.timesDone < v.timesToDo && v.destTown!="") {
-								thingToTick[i].currTicks--;
-								if(v.currTicks == 0 && !v.stockMarketTrade) {
-									thingToTick[i].currTicks = thingToTick[i].intervalTime;
-									thingToTick[i].timesDone++;
-									thingToTick.update = true;
-								}
-							} else if(v.timesDone >= v.timesToDo) {
-								thingToTick[i].currTicks = "-";
-							}
-						} else if(v.ticksToHit != "Updating") {
-							thingToTick[i].ticksToHit--;
-							if(v.ticksToHit <= 0) {
-								if(!v.tradeOver) {
-									thingToTick[i].ticksToHit = thingToTick[i].totalTicks;
-									thingToTick[i].tradeOver = true;
-								}
-								thingToTick.update = true;
-							}
-						}
-					});
-				}
-			}, 1000);
-}
-
 function tick_research(thingToTick) {
 	return setInterval(function() {	
 			player.research.knowledge+=(1/thingToTick.scholTicksTotal);
@@ -1039,22 +920,24 @@ function tick_research(thingToTick) {
 }
 
 function tick_res(thingToTick) {
-	var time = 9999999;
-	$.each(thingToTick.resInc, function(i,v) {
+	var time = Infinity;
+	$.each(thingToTick.actualInc, function(i,v) {
 		if(v > 0) {
-			if(time > 1/v) time = 1/v;
+			if(time > 1/v) time = (1/v).min(0.2);
 		}
 	});
-	if(time < 0.2) time = 0.2;
 	return setInterval(function() {
 				$.each(thingToTick.res, function(i, v) {
+					if(i>3) {return false;}
 					if(v >= thingToTick.resCaps[i]) {
 						thingToTick.res[i] = thingToTick.resCaps[i];
 					} else {
-						thingToTick.res[i] += (thingToTick.resInc[i]*time);
+						thingToTick.res[i] += thingToTick.actualInc[i]*time;
 					}
 				});
-				display_res();
+				if(thingToTick.townName === player.curtown.townName) {
+					$("body").trigger("resUpdate");
+				}
 			}, time*1000);
 }
 
@@ -1076,13 +959,13 @@ function check_all_for_updates() {
 									$.each(player.towns, function(i,v) {
 										$.each(v.bldg, function(j,w) {
 											if(w.update) {
-												load_player(player.league,true,false);
+												load_player(false,true,false);
 												updatePlayer = true;
 												return false;
 											} else {
 												$.each(w.Queue, function(k, x) {
 													if(x.update) {
-														load_player(player.league,true,false);
+														load_player(false,true,false);
 														updatePlayer = true;
 														return false;
 													}

@@ -271,3 +271,12 @@
 	border-right: 1px solid #FFF;
 	text-align: center;
 	}
+#map_territories, .territoryBox, .territory {
+	position: absolute;
+	}
+.territory.vert {
+	border-right: 2px solid #FFF;
+	}
+.territory.horz {
+	border-bottom: 2px solid #FFF;
+	}

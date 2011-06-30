@@ -97,11 +97,7 @@ function build_league_UI() {
 			$("#window").html(HTML+"</div><div class='darkFrameBL-BR-B'><div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div></div></div>").fadeIn();				
 		});
 	});
-	
-	$("#CC_switchLeague, #CC_switchPlayer").die("click").live("click",function(){
-		load_client(!player.league, true);
-		$("#window").fadeOut();
-	});
+
 	$("#CC_TPRList").die("change").live("change",function(){
 		var index = $("#CC_TPRList :selected").index("#CC_TPRList option");
 		var member = player.TPR[index-2];
@@ -137,7 +133,7 @@ function build_league_UI() {
 			kickPlayer.callback = function(response){
 				if(response.match(/true/)) {
 					display_output(false,"Player Kicked!");
-					load_player(player.league, true, false);
+					load_player(false, true, false);
 				} else {
 					var error = response.split(":");
 					if(error.length==2)error=error[1];
@@ -163,7 +159,7 @@ function build_league_UI() {
 		saveTPR.callback = function(response){
 			if(response.match(/true/)) {
 				display_output(false,"TPR Saved!");
-				load_player(player.league, true, false);
+				load_player(false, true, false);
 			} else { 
 				var error = response.split(":");
 				if(error.length==2)error=error[1];
@@ -181,7 +177,7 @@ function build_league_UI() {
 		sendMessage.callback = function(response){
 			if(response.match(/true/)) {
 				display_output(false, "Message Sent!");
-				load_player(player.league, true, false);
+				load_player(false, true, false);
 			} else {
 				display_output(true,"Error during message send!",true);
 				display_output(true,"Error: " + success);
@@ -201,7 +197,7 @@ function build_league_UI() {
 			leaveLeague.callback = function(response){
 				if(response.match(/true/)) {
 					display_output(false,"You've left your league.");
-					load_client(false);
+					load_player(true);
 				} else {
 					display_output(true,"Error while leaving your league!",true);
 					display_output(false,"Please try again in a moment.");

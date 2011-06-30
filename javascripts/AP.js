@@ -52,7 +52,7 @@ function AP_UI(bldgInfo) {
 				if(response.match(/false/)) {
 					$("#AP_error").val(response.split(":")[1]);
 				} else {
-					load_player(player.league,true,true);
+					load_player(false,true,true);
 				}
 			};
 			

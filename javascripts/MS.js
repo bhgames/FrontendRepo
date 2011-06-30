@@ -16,13 +16,13 @@ function MS_UI(bldgInfo) {
 			var launch = new make_AJAX();
 			launch.callback = function(response) {
 				if(response.match(/true/)) {
-					load_player(player.league,true,true);
+					load_player(false,true,true);
 				} else {
 					$("#MS_launch").addClass("noLaunch");
 					$("#MS_fail").html(response.split(":")[1]);
 				}
 			};
-			launch.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".launchNuke("+bldgInfo.bid+","+$("#MS_x").val()+","+$("#MS_y").val()
+			launch.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".launchNuke("+bldgInfo.id+","+$("#MS_x").val()+","+$("#MS_y").val()
 						+($("#MS_nukeMode").val()=="GroundBurst"?",false":",true")+");");
 		}
 	});
@@ -33,17 +33,17 @@ function MS_UI(bldgInfo) {
 		}
 		clearTimeout(typeCheck);
 		typeCheck = setTimeout(function() {
-			can_launch(bldgInfo.bid);
+			can_launch(bldgInfo.id);
 			},250);
 	}).unbind("mouseup").mouseup(function(){
 		$(this).keyup();
 	});
 	$("#MS_nukeMode").unbind("change").change(function(){
-		can_launch(bldgInfo.bid);
+		can_launch(bldgInfo.id);
 	});
 }
 
-function can_launch(bid) {
+function can_launch(id) {
 	var canLaunch = new make_AJAX();
 	canLaunch.callback = function(response) {
 		if(response.match(/true/i)) {
@@ -54,6 +54,6 @@ function can_launch(bid) {
 			$("#MS_fail").html(response.split(":")[1]);
 		}
 	};
-	canLaunch.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".canLaunchNuke("+bid+","+$("#MS_x").val()+","+$("#MS_y").val()
+	canLaunch.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".canLaunchNuke("+id+","+$("#MS_x").val()+","+$("#MS_y").val()
 						+($("#MS_nukeMode").val()=="GroundBurst"?",false":",true")+");");
 }

@@ -10,7 +10,7 @@ function HQ_UI(bldgInfo) {
 	$.each(player.curtown.bldg, function(i,v) {
 		if(v.type == "Arms Factory") {
 			$.each(v.Queue, function(j,w) {
-				if(w.update) load_player(player.league, true, true);
+				if(w.update) load_player(false, true, true);
 			});
 		}
 	});
@@ -259,7 +259,7 @@ function HQ_UI(bldgInfo) {
 									useBP.callback = function(response) {
 														if(response.match(/true/)) {
 															display_output(false,"Success!");
-															load_player(player.league,true,false);
+															load_player(false,true,false);
 														} else {
 															var error = response.split(":");
 															if(error.length==2) error = error[1];
@@ -323,7 +323,7 @@ function HQ_UI(bldgInfo) {
 							} else {
 								$("#HQ_airshipHeading span").text($("#HQ_moveX").val()+", "+$("#HQ_moveY").val());
 								$("#HQ_airshipETA span").text("updating");
-								load_player(player.league,true,true);
+								load_player(false,true,true);
 							}
 						};
 						
@@ -693,7 +693,7 @@ function HQ_UI(bldgInfo) {
 								});
 								currUI();
 							}
-							load_player(player.league, true, false);
+							load_player(false, true, false);
 						};
 						if(getPath.match(/bf/i) != null) {
 							killEm.get(getPath);

@@ -41,27 +41,14 @@
 #CC_control {
 	display: none;
 	}
- #CC_tabBar > div.open .lightFrameBody, #CC_launchAttack[class='']:active .lightFrameBody {
-	background: url("../AIFrames/Content Frame Elements/Dark-body.png");
-	color: #FFFFFF;
-	}
- #CC_tabBar > div.open .lightFrameB, #CC_launchAttack[class='']:active .lightFrameB {
-	background-image: url("../AIFrames/Content Frame Elements/Dark-BottomTile.png");
-	}
- #CC_tabBar > div.open .lightFrameBL, #CC_launchAttack[class='']:active .lightFrameBL {
-	background-image: url("../AIFrames/Content Frame Elements/Dark-Left-Lowcorner.png");
-	}
- #CC_tabBar > div.open .lightFrameBR, #CC_launchAttack[class='']:active .lightFrameBR {
-	background-image: url("../AIFrames/Content Frame Elements/Dark-Right-Lowcorner.png");
-	}
 	
 /*
  * Window
 */
-#CC_EngTab, #CC_milOverTab, #CC_airshipControlTab, #CC_sendTab {
+#CC_window > div {
 	display: none;
 	}
-#CC_EngTab.open, #CC_milOverTab.open, #CC_airshipControlTab.open, #CC_sendTab.open {
+#CC_window > .open {
 	display: block;
 	}
 #CC_info {
@@ -165,7 +152,7 @@
 	margin: 0 auto;
 	float: none;
 	}
-.AUinput, #CC_civInput {
+.CC_AUinput, #CC_civInput {
 	margin: 0px;
 	width: 40px;
 	}
@@ -288,7 +275,7 @@
 #CC_isValid {
 	position: absolute;
 	top: 10px;
-	left: 250px;
+	left: 350px;
 	color: red;
 	}
 #CC_launchAttack {
