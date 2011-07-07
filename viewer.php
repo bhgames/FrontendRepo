@@ -52,7 +52,7 @@
 		insertScript("town","css");
 		insertScript("warehouse","css");
 		insertScript("worldmap","css");
-		insertScript("modernizr-1.7.cust","js");
+		insertScript("modernizr-2.0","js");
 	?>
 </head>
 <?php flush(); ?>

@@ -65,9 +65,9 @@ function get_map() {
 				});
 				var j = 0;
 				var temp = [];
-				for(var y = map.topY;y >= map.bottomY;y -= 9) {
+				for(var y = maxY;y >= (-maxY);y -= 9) {
 					temp[j] = [];
-					for(var x = map.leftX;x <= map.rightX;x += 9) {
+					for(var x = (-maxX);x <= maxX;x += 9) {
 						$.each(map.tiles, function(i, v) {
 							if(v.centerx == x && v.centery == y) {
 								temp[j].push(v);
@@ -75,7 +75,7 @@ function get_map() {
 							}
 						});
 					}
-					map.tilesWide = map.tilesWide.min(temp[j].length);
+					map.tilesWide = Math.max(map.tilesWide,temp[j].length);
 					if(temp[j].length>0) j++;
 				}
 				map.tiles = temp;
@@ -341,7 +341,7 @@ function city_select(city, box) {
 			BUI.CC.x = town.x;
 			BUI.CC.y = town.y;
 			$.each(player.curtown.bldg, function(i, x) {
-				if(x.type == "Headquarters") {
+				if(x.type == "Command Center") {
 					BUI.set(x.type, x.lotNum);
 					do_fade(draw_bldg_UI);
 					BUI.CC.startTab = $(that).is("#moveTo")?"control":"send";
@@ -378,7 +378,7 @@ function city_select(city, box) {
 
 function rebuild(tile) {
 	map.box.id.fadeOut(function() {
-		var mapTile = map.tiles[tile[0]][tile[1]], townInfo = $("#towninfo")
+		var mapTile = map.tiles[tile[0]][tile[1]], townInfo = $("#towninfo"),
 			WIDTH = 65, HEIGHT = 36; //width and height of a town
 		map.x = mapTile.centerx;
 		map.y = mapTile.centery;
@@ -413,12 +413,12 @@ function rebuild(tile) {
 				}
 			});
 			
-			var bottom = ((x.y-(map.y-4))*HEIGHT) /*+ (x.zeppelin?141:156)*/;
+			var bottom = Math.round((x.y-(map.y-4.5))*HEIGHT) /*+ (x.zeppelin?141:156)*/;
 			var right = (((map.x+4)-x.x)*WIDTH) /*+ (x.zeppelin?223:257)*/;
 			map.HTML +="' index='"+i+"' style='bottom:" + bottom + "px; right:" + right + "px;'><div class='inc'></div></div>";
 		});
 		map.box.id.html(map.HTML).css("background-image","url(AIFrames/WM/"+mapTile.mapName+(mapTile.irradiated?"2":"")+".png)").append(map.territoryHTML.clone()).fadeIn();
-		$("#map_territories").css({"bottom":(((map.y-4)-map.bottomY)*WIDTH)+"px","right":(((map.x+4)-map.right)*HEIGHT)+"px"});
+		$("#map_territories").css({"bottom":Math.round((map.bottomY-(map.y-4.5))*HEIGHT)+"px","right":(((map.x+4)-map.rightX)*WIDTH)+"px"});
 		$(".airship").each(float_airship);
 	});
 }
@@ -435,13 +435,14 @@ function build_territories() {
 		if(!map.territoryBldr) {
 			map.territoryBldr = new Worker('/light/javascripts/territoryWorker.js');
 			
-			map.territoryBldr.addEventListener('message',function(e) {
-				if(!e.error) {
-					map.territoryHTML.html(e.data);
-				} else {
-					log(e.data);
-				}
-			}, false);
+			map.territoryBldr.onmessage = 	function(e) {
+												var mess = e.data;
+												if(!mess.error) {
+													map.territoryHTML.html(mess.data);
+												} else {
+													log(mess.data);
+												}
+											};
 		}
 		
 		map.territoryBldr.postMessage({"territories":map.territories, "rightX":map.rightX, "bottomY":map.bottomY});
@@ -455,9 +456,9 @@ function build_territories() {
 				return false;
 			}
 			
-			var territory = map.territories[i++].corners, bottom = 0, right = 0;
-			var HTML = "<div class='territoryBox' index='"+i+"' style='bottom:"+((territory.start[1]-map.bottomY)*WIDTH)+"px; right:"
-						+((map.rightX-territory.start[0])*HEIGHT)+";'>";
+			var territory = map.territories[i++], bottom = 0, right = 0;
+			var HTML = "<div class='territoryBox' index='"+i+"' style='bottom:"+((territory.start[1]-map.bottomY)*HEIGHT)+"px; right:"
+						+((map.rightX-territory.start[0])*WIDTH)+"px;'>";
 			
 			$.each(territory.sides, function(j,v) {
 				HTML += "<div class='territory ";
@@ -465,7 +466,7 @@ function build_territories() {
 					bottom += (HEIGHT*v);
 					HTML += "vert' style='height: "+(HEIGHT*Math.abs(v))+"px; width: "+WIDTH+"px; bottom: "+(v>0?bottom-(HEIGHT*v):bottom)+ "px; right: "+right+"px;";
 				} else { //x shift
-					right += (WIDTH*v);
+					right -= (WIDTH*v);
 					HTML += "horz' style='height: "+HEIGHT+"px; width: "+(WIDTH*Math.abs(v))+"px; bottom: "+bottom+"px; right: "+(v<0?right+(WIDTH*v):right)+"px;";
 				}
 				HTML += "'></div>";

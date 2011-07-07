@@ -371,11 +371,12 @@ function CC_UI(bldgInfo) {
 	$("#CC_launchAttack").unbind('click').click(function() {
 		if(!$(this).hasClass('noAttack')) {
 			var AUarray = [];
-			$(".AUinput").each(function(i, v) {
-				if(i<6) {
+			$(".CC_AUinput").each(function(i, v) {
+				var j = i-player.AU.length;
+				if(j<0) {
 					if($(v).val() > player.curtown.au[i]) $(v).val(player.curtown.au[i])
 				} else {
-					if($(v).val() > player.curtown.supportAU[i-6]) $(v).val(player.curtown.supportAU[i-6].size);
+					if($(v).val() > player.curtown.supportAU[j]) $(v).val(player.curtown.supportAU[j].size);
 				}
 				AUarray.push((($(v).val() == "")?0:$(v).val()));
 			});

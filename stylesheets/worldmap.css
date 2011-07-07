@@ -16,14 +16,14 @@
 	height: 36px;
 	width: 65px;
 	background: no-repeat center center;
-	z-index: 1;
+	z-index: 2;
 	cursor: crosshair;
 	}
 .airship.town {
 	height: 103px;
 	width: 129px;
 	background: url(../AIFrames/WM/airship.png) no-repeat center center;
-	z-index: 2;
+	z-index: 3;
 	filter:alpha(opacity=50);
 	opacity:0.50;
 	pointer-events: none;
@@ -273,6 +273,7 @@
 	}
 #map_territories, .territoryBox, .territory {
 	position: absolute;
+	z-index: 1;
 	}
 .territory.vert {
 	border-right: 2px solid #FFF;
