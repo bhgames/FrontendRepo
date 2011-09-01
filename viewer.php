@@ -1,6 +1,6 @@
 <?php
 	function insertScript($name, $type) {
-		$file = $name.".".$type;
+		$file = $name. "." .$type;
 		if($type == "js") {
 			echo '<script type="text/javascript" src="javascripts/'.$file.'"></script>';
 		} else if($type == "css") {
@@ -8,15 +8,15 @@
 		}
 	}
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html class='no-js'>
+<!DOCTYPE HTML>
+<html class='no-js' manifest='/manifest.php'>
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"> 
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW, NOARCHIVE">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	
-	<title>AI Wars Client</title>
+	<title>Steampunk Wars Test Server</title>
 	<?php
 		insertScript("client","css");
 		insertScript("topNav","css");
@@ -28,8 +28,7 @@
 		insertScript("BUI","css");
 		insertScript("bunker","css");
 		insertScript("CC","css");
-		insertScript("CY","css");
-		insertScript("HQ","css");
+		insertScript("Fort","css");
 		insertScript("IN","css");
 		insertScript("league","css");
 		insertScript("login","css");
@@ -54,51 +53,42 @@
 		insertScript("town","css");
 		insertScript("warehouse","css");
 		insertScript("worldmap","css");
-		insertScript("modernizr-1.7.cust","js");
+		insertScript("modernizr-2.0","js");
 	?>
 </head>
 <?php flush(); ?>
 <body>
 	<div id='quest_box'></div>
 	<div id='console_box'>
-		<div class='popFrame'>
-			<div class='popFrameTop'><div class='popFrameLeft'><div class='popFrameRight'>
-				<div class='popFrameBody'>
-					<div id='console_titlebar'>
-						<a href='javascript:;' id='console_close'></a>
-						<span>Output Window</span>
-					</div>
-					<div id='console_output'>
-					<p class='output'>This window can be moved by holding the left mouse button down on the titlebar and dragging.</p>
-					<p class='output'>For more information on <span class='error'>errors</span>, please stop by our <a href="http://battlehardalpha.xtreemhost.com/" id="forum" target="_forum">forum</a>.</p> 
-					</div>
-					<div id='console_expandBox'>
-						<input type='checkbox' id='console_expand' /><label for='console_expand'> Expand</label>
-					</div>
-					<div id='console_stopBox'>
-						<input type='checkbox' id='console_stop' /><label for='console_stop'> Freeze Output</label>
-					</div>
-					<a href='javascript:;' id='output_clear'></a>
-				</div>
-			</div></div></div>
+		<div id='console_titlebar'>
+			<a href='javascript:;' class='closeButton' id='console_close'></a>
+			<span>Output Window</span>
 		</div>
-		<div class='popFrameBL-BR-B'>
-			<div class='popFrameBL'><div class='popFrameBR'><div class='popFrameB'></div></div></div>
+		<div id='console_output'>
+		<p class='output'>This window can be moved by holding the left mouse button down on the titlebar and dragging.</p>
+		<p class='output'>For more information on <span class='error'>errors</span>, please stop by our <a href="http://forum.aiwars.org/" id="forum" target="_forum">forum</a> or <a href="http://getsatisfaction.com/battlehard_games" id="forum" target="_getSat">GetSatisfaction page</a>.</p> 
 		</div>
+		<div id='console_expandBox'>
+			<input type='checkbox' id='console_expand' /><label for='console_expand'> Expand</label>
+		</div>
+		<div id='console_stopBox'>
+			<input type='checkbox' id='console_stop' /><label for='console_stop'> Freeze Output</label>
+		</div>
+		<a href='javascript:;' id='output_clear'></a>
 	</div>
 	<!-- Chatbox -->
-	<a id="chatbox_tab" href="#">CHATBOX</a>
+	<a id="chatbox_tab" class='sideButton' href="#">CHATBOX</a>
 	<div id='chat_box'>
 		<div id='chat_titlebar'>
-			<a href='#' id='chat_close'></a>
+			<a href='#' class='closeButton' id='chat_close'></a>
 			<span>Chatbox</span>
 		</div>
 		<div id='chat_innerbox'></div>
 	</div>
 	<!-- Twitter -->
-	<a id="twitter_tab" href="#">TWITTER</a>
+	<a id="twitter_tab" class='sideButton' href="#">TWITTER</a>
 	<div id='twitter_box'>
-		<a href='#' id='twitter_close'></a>
+		<a href='#' class='closeButton' id='twitter_close'></a>
 		<script src="http://widgets.twimg.com/j/2/widget.js"></script>
 		<script>
 			new TWTR.Widget({
@@ -111,10 +101,12 @@
 			  theme: {
 				shell: {
 				  background: 'transparent',//'#f64200'
-				  color: '#fff'
+				  color: '#A9A098',
+				  font: '11pt "Trajan Pro", Trajan, serif',
+				  "text-shadow":"0 1px 1px rgba(0,0,0,0.8), 0 -1px 0 rgba(255,255,255,0.3)"
 				},
 				tweets: {
-				  background: 'transparent',
+				  background: 'rgba(0,0,0,0.5)',
 				  color: '#fff',
 				  links: '#ccc'
 				}
@@ -125,88 +117,88 @@
 				live: true,
 				hashtags: false,
 				timestamp: true,
-				avatars: false,
+				avatars: true,
 				behavior: 'all'
 			  }
 			}).render().setUser('BattlehardGames').start();
 		</script>
 	</div>
 	<!-- Forum -->
-	<a id="forum_tab" href="#">FORUM</a>
-	<div id='forum_box'>
-		<a href='#' id='forum_close'></a>
-		<iframe id='forum_frame' src="http://forum.aiwars.org"></iframe>
-	</div>
+	<a id="forum_tab" class='sideButton' href="http://forum.aiwars.org" target='_forum'>FORUM</a>
 	<!-- Blog -->
-	<a id="blog_tab" href="#">BLOG</a>
-	<div id='blog_box'>
-		<a href='#' id='blog_close'></a>
-		<iframe id='blog_frame' src="http://blog.aiwars.org"></iframe>
-	</div>
+	<a id="blog_tab" class='sideButton' href="http://blog.aiwars.org" target='_blog'>BLOG</a>
 	<!-- Client -->
-	<div id="header"><img src='AIFrames/Header.png' alt='BattleHard: AI Wars' /></div>
 	<div id="content">
 		<div id="client">
 			<a id="#"></a> <!-- this is to prevent the view from going to the top when a sidetab is clicked -->
 			<ul id="toplinks">
 				<li id="citybox"><a href="javascript:;" id="cityname"></a><a href="javascript:;" id="citydropdown"></a></li>
-				<li id="wm">World Map</li>
-				<li id="sr">Status Reports<div class='flicker'>Status Reports</div></li>
-				<li id="mailbox">Mailbox<div class='flicker'>Mailbox</div></li>
+				<li id="wm"></li>
+				<li id="sr"><div class='flicker'></div></li>
+				<li id="mailbox"><div class='flicker'></div></li>
 			</ul>
+			<ul id="townlist"></ul>
 			<ul id="resourcebar">
 				<li id="steel"><span class='value'>&nbsp;</span><div class='bar'></div></li>
 				<li id="wood"><span class='value'>&nbsp;</span><div class='bar'></div></li>
 				<li id="synth"><span class='value'>&nbsp;</span><div class='bar'></div></li>
 				<li id="food"><span class='value'>&nbsp;</span><div class='bar'></div></li>
-				<div id="menu">Menu</div>
 			</ul>
-			<div id="clientview" class="amber">
-				<div id="townlist"></div>
+			<div id="menu"></div>
+			<div id="dropdown_menu">
+				<ul>
+					<li id="refresh">Refresh</li>
+					<li id="support">Support</li>
+					<li id="premium">Premium</li>
+					<li id="options">Options</li>
+					<li id="tutorial">Tutorial</li>
+					<li id="forum"> <a href="http://battlehardalpha.xtreemhost.com/" target="_forum">Forum</a></li>
+					<li id="logout">Logout</li>
+				</ul>
+			</div>
+			<div id='viewerback'></div>
+			<div id="clientview">
 				<div id='accountPreferences'></div>
 				<div id="attacklist" style='display: none;'>
-					<div class='popFrame'>
-						<div class='popFrameTop'><div class='popFrameLeft'><div class='popFrameRight'>
-							<div class='popFrameBody'>
-								<div id='incomming_attacks'>
-									Incoming:
-									<ul>
-									</ul>
-								</div>
-								<div id='outgoing_attacks'>
-									Outgoing:
-									<ul>
-									</ul>
-								</div>
-							</div>
-						</div></div></div>
-					</div>
-					<div class='popFrameBL-BR-B'>
-						<div class='popFrameBL'><div class='popFrameBR'><div class='popFrameB'></div></div></div>
-					</div>
-				</div>
-				<div id="dropdown_menu">
-					<div class='darkFrameBody'>
+					<div id='incomming_attacks'>
+						Incoming:
 						<ul>
-							<li> <a href="javascript:;" id="refresh">Refresh</a></li>
-							<li> <a href="javascript:;" id="support">Support</a> |</li>
-							<li> <a href="javascript:;" id="premium">Battlehard</a> |</li>
-							<li> <a href="javascript:;" id="options">Account</a> |</li>
-							<li> <a href="javascript:;" id="tutorial">Tutorial</a> |</li>
-							<li> <a href="http://battlehardalpha.xtreemhost.com/" id="forum" target="_forum">Forum</a> |</li>
-							<li><a href="javascript:;" id="logout">Logout</a> |</li>
 						</ul>
 					</div>
-					<div class='darkFrameBL-BR-B'>
-						<div class='darkFrameBL'><div class='darkFrameB'></div></div>
+					<div id='outgoing_attacks'>
+						Outgoing:
+						<ul>
+						</ul>
+					</div>
+				</div>
+				<div id='town_infobar'>
+					<div id='town_warehouseMenu'>
+						<div id='town_metalInfo'>
+							<div class='capacityBarBorder'><div class='capacityBar'></div></div>
+							<div class='rph'></div>
+						</div>
+						<div id='town_timberInfo'>
+							<div class='capacityBarBorder'><div class='capacityBar'></div></div>
+							<div class='rph'></div>
+						</div>
+						<div id='town_crystalInfo'>
+							<div class='capacityBarBorder'><div class='capacityBar'></div></div>
+							<div class='rph'></div>
+						</div>
+						<div id='town_foodInfo'>
+							<div class='capacityBarBorder'><div class='capacityBar'></div></div>
+							<div class='rph'></div>
+						</div>
 					</div>
 				</div>
 				<div id="window"></div>
 			</div>
-			<ul id="bottomlinks">
+			<div id='rank_back'>
 				<div id='rankings'></div>
-				<li id="console"></li>
+			</div>
+			<ul id="bottomlinks">
 				<li id="IO"></li>
+				<li id="console"></li>
 				<li id='League' title="View League Page"></li>
 				<li id='Quests' title="View Quests"></li>
 				<li id="CS" title="Go to Headquarters"></li>
@@ -215,7 +207,7 @@
 		</div>
 	</div>
 	<div id="preload"></div>
-	<script type="text/javascript" src="http://code.jquery.com/jquery-1.5.1.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
 	<?php
 		flush();
 		//page function JS
@@ -227,8 +219,6 @@
 		insertScript("page","js");
 		//game globals
 		insertScript("globals","js");
-		insertScript("global_ASM","js");
-		insertScript("global_SR","js");
 		insertScript("global_UTCC","js");
 		//building files
 		insertScript("buildings","js");
@@ -236,10 +226,10 @@
 		insertScript("AP","js");
 		insertScript("bnkr","js");
 		insertScript("CC","js");
-		insertScript("CY","js");
-		insertScript("HQ","js");
 		insertScript("IN","js");
+		insertScript("Fort","js");
 		insertScript("MS","js");
+		insertScript("RC","js");
 		insertScript("RY","js");
 		insertScript("refinery","js");
 		insertScript("SR","js");
@@ -262,6 +252,7 @@
 		insertScript("rank","js");
 		insertScript("support","js");
 		insertScript("towns","js");
+		insertScript("tutorial","js");
 		insertScript("worldmap","js");
 		//midend files
 		insertScript("login","js");
@@ -294,22 +285,17 @@
 			</div>
 		</noscript>
 	<!-- End of StatCounter Code -->
-	<!-- GetSatisfaction code --
-	<script type="text/javascript" charset="utf-8">
-	  var is_ssl = ("https:" == document.location.protocol);
-	  var asset_host = is_ssl ? "https://s3.amazonaws.com/getsatisfaction.com/" : "http://s3.amazonaws.com/getsatisfaction.com/";
-	  document.write(unescape("%3Cscript src='" + asset_host + "javascripts/feedback-v2.js' type='text/javascript'%3E%3C/script%3E"));
-	</script>-->
+	<!-- GetSatisfaction code -->
 	<script src="http://s3.amazonaws.com/getsatisfaction.com/javascripts/feedback-v2.js" type="text/javascript"></script>
 	<script type="text/javascript" charset="utf-8">
-	  var feedback_widget_options = {};
-
-	  feedback_widget_options.display = "overlay";  
-	  feedback_widget_options.company = "battlehard_games";
-	  feedback_widget_options.placement = "left";
-	  feedback_widget_options.color = "#222";
-	  feedback_widget_options.style = "question";
-	  var feedback_widget = new GSFN.feedback_widget(feedback_widget_options);
+		var feedback_widget_options = {
+										display : "overlay",
+										company : "battlehard_games",
+										placement : "left",
+										color : "#222",
+										style : "question"
+										};
+		var feedback_widget = new GSFN.feedback_widget(feedback_widget_options);
 	</script>
 </body>
 </html>

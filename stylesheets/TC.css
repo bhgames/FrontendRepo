@@ -32,28 +32,6 @@
 .no-flexbox .TCtab {
 	float: left;
 	}
-.lightFrameBL > .lightFrameB {
-	margin-right: 0;
-	}
-.TCtab > .lightFrameB {
-	margin: 0;
-	}
-.TCtab > .lightFrameBR .lightFrameB {
-	margin-left: 0;
-	}
-.TCtab:active .lightFrameBody, .TCtab.open .lightFrameBody {
-	background: url("../AIFrames/Content Frame Elements/Dark-body.png");
-	color: #FFFFFF;
-	}
-.TCtab:active .lightFrameB, .TCtab.open .lightFrameB {
-	background-image: url("../AIFrames/Content Frame Elements/Dark-BottomTile.png");
-	}
-.TCtab:active .lightFrameBL, .TCtab.open .lightFrameBL {
-	background-image: url("../AIFrames/Content Frame Elements/Dark-Left-Lowcorner.png");
-	}
-.TCtab:active .lightFrameBR, .TCtab.open .lightFrameBR {
-	background-image: url("../AIFrames/Content Frame Elements/Dark-Right-Lowcorner.png");
-	}
 #TC_scrollBox {
 	height: 100%;
 	width: 780px;
@@ -71,7 +49,7 @@
 	font-size: 1.5em;
 	text-align: center;
 	}
-#TC_sendTrade, #TC_createTrade {
+#TC_directTrade, #TC_createTrade {
 	position: relative;
 	margin: 0 38px;
 	color: #FFF;
@@ -319,7 +297,7 @@
 	width: 70px;
 	border: none !important;
 	}
-.active {
+.marketTrade.active {
 	background-color: #FD3;
 	cursor: default;
 	}

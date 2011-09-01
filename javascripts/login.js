@@ -1,34 +1,44 @@
 /**************************************************************************************************************\
 ***********************************************Player Object****************************************************
 \**************************************************************************************************************/
-var player = {};
-var tiles = {};
+var player = {
+				getting 		: false,
+				chatLoaded 		: false,
+				loggedIn 		: false,
+				chatboxLoaded	: false,
+				activeTrades	: [],
+				tradeSchedules	: [],
+				supportAbroad	: []
+			};
 var userInfo = {};
 
 function get_session() {
-
 	var seshget = new make_AJAX();
 	
 	seshget.callback = function(response) {
+		log(response, "login,js:19");
 		if(!response.match(/invalid/)) {
-			load_client(false); //if the user entered a valid UN and Pass
+			load_player(); //if the user entered a valid UN and Pass
 			check_all_for_updates();
 		} else {
 			var inFB = FB._inCanvas;
 			FB.getLoginStatus(function(response) {
+				log(response, "login,js:25");
 				if(response.session) {
 					FB.api("/me",function(response) {
+						log(response, "login,js:28");
 						userInfo = response;
 						var login = new make_AJAX();
 						login.callback = function(response) {
+							log(response, "login,js:32");
 							if(response.match(/invalid/)) {
 								if(inFB) {
 									FB_login_window();
 								} else {
-									window.location.replace("/");
+									window.location.assign("/");
 								}
 							} else { 
-								load_client(false);
+								load_player();
 								check_all_for_updates();
 							}
 						};
@@ -37,7 +47,7 @@ function get_session() {
 				} else if(inFB) {
 					FB_login_window();
 				} else {
-					window.location.replace("/");
+					window.location.assign("/");
 				}
 			});
 		}
@@ -50,71 +60,19 @@ function FB_login_window() {
 	var HTML = "<div id='modal_window'>\
 					<div id='AIW_alertMod'></div>\
 					<div id='signInBox'>\
-						<div class='popFrame'>\
-							<div class='popFrameTop'><div class='popFrameLeft'><div class='popFrameRight'>\
-								<div class='popFrameBody'>\
-									<!--<div id='signIn_FBlogin'>\
-										<div id='signIn_fbLogin' class='fbButton'>Log In with Facebook</div>\
-										New accounts, click <a href='javascript:;' id='reg_switch'>here</a>.<br/>\
-										Non-linked account, click <a href='javascript:;' id='signIn_switch'>here</a>.\
-									</div>\
-									<div id='signIn_legacy'>\
-										<div id='signIn_error'></div>\
-										<div id='signIn'>\
-											<div id='signInHeader'>Sign In</div>\
-											<label for='signIn_UN'>Username:</label><input type='text' id='signIn_UN' maxlength='20'/>\
-											<label for='signIn_pass'>Password:</label><input type='password' id='signIn_pass' maxlength='20'/>\
-											<div id='forgotPass'>Forgotten Password?</div>\
-										</div>\
-										<div id='signIn_submit' class='lightButton'>\
-											<div class='lightFrameBody'>Submit</div>\
-											<div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>\
-										</div>\
-									</div>-->\
-									<div id='reg'>\
-										<label for='reg_UN'>Username*:</label><input type='text' id='reg_UN' maxlength='20'/>\
-										<div id='reg_fbInfo'>Linked Facebook profile required.</div>\
-										<div id='reg_fbConnect' class='fbButton'>Link with Facebook</div>\
-										<div id='reg_submit' class='lightButton noUN noFB'>\
-											<div class='lightFrameBody'>Continue</div>\
-											<div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>\
-										</div>\
-										<span>*Maximum Length: 20 characters</span>\
-										<span style='display:block;margin-top:5px;'>Registering a new account will also open our forum in a new window.</span>\
-									</div>\
-									<div id='reg_picktile'>\
-										<div id='tile_error'></div>\
-										<div id='tileSelectBox_close'></div>\
-										<div id='tileSelect_back'>&lt;&lt;&lt; Back</div>\
-										<div id='tileSelect_skip'>Skip &gt;&gt;&gt;</div>\
-										<p>Optional: Select a start tile.</p>\
-										<div id='tileSelect_playerTotal'>Total Players: <span></span></div>\
-										<div id='tileSelect_info'>\
-											Tile Info:\
-											<div id='tileSelect_type'>Type: <span></span></div>\
-											<div id='tileSelect_coords'>Center Coordinates: <span></span></div>\
-											<div id='tileSelect_activePlayers'>Active Players: <span></span></div>\
-											<div id='tileSelect_totalPlayers'>Total Players: <span></span></div>\
-										</div>\
-										<div id='tileSelector'>\
-											<div id='mapTileUp' class='tileDir'></div>\
-											<div id='mapTileDown' class='tileDir'></div>\
-											<div id='mapTileLeft' class='tileDir'></div>\
-											<div id='mapTileRight' class='tileDir'></div>\
-											<div id='mapTileDisplay'></div>\
-										</div>\
-										<div id='tileSelect_submit' class='lightButton noSubmit'>\
-											<div class='lightFrameBody'>Continue</div>\
-											<div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>\
-										</div>\
-									</div>\
-									<div id='reg_wait'>\
-										One moment please...\
-									</div>\
-								</div>\
-							</div></div></div>\
+						<div id='reg'>\
+							<label for='reg_UN'>Username*:</label><input type='text' id='reg_UN' maxlength='20'/>\
+							<div id='reg_fbConnect' class='fbButton'>Link with Facebook</div>\
+							<div id='reg_submit' class='lightButton noUN noFB'>\
+								<div class='lightFrameBody'>Continue</div>\
+								<div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>\
+							</div>\
+							<span>*Maximum Length: 20 characters</span>\
+							<span style='display:block;margin-top:5px;'>Registering a new account will also open our forum in a new window.</span>\
 						</div>\
-						<div class='popFrameBL'><div class='popFrameBR'><div class='popFrameB'></div></div></div>\
+						<div id='reg_wait'>\
+							One moment please...\
+						</div>\
 					</div>\
 				</div>";
 	$("body").append(HTML);
@@ -124,120 +82,7 @@ function FB_login_window() {
 		$("#reg_submit").removeClass("noFB");
 	}
 	$("#signInBox").fadeIn("fast");
-	/*Tile Select JS --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	var getTiles = new make_AJAX();
-	getTiles.callback = function(response) {
-							tiles = $.parseJSON(response);
-							
-							$("#tileSelect_playerTotal span").html(function() {
-								var players = 0;
-								$.each(tiles, function(i,v) {
-									players += v.players.length;
-								});
-								return players;
-							});
-							
-							var maxX = 0;
-							var maxY = 0;
-							$.each(tiles, function(i, v) {
-								if(Math.abs(v.centerx) > maxX) maxX = Math.abs(v.centerx);
-								if(Math.abs(v.centery) > maxY) maxY = Math.abs(v.centery);
-							});
-							tilesWide = 0;
-							var j = 0;
-							var temp = [];
-							for(var y = maxY;y >= (-maxY);y -= 9) {
-								temp[j] = [];
-								for(var x = (-maxX);x <= maxX;x += 9) {
-									$.each(tiles, function(i, v) {
-										if(v.centerx == x && v.centery == y) {
-											temp[j].push(v);
-											return false;
-										}
-									});
-								}
-								if(temp[j].length>tilesWide) tilesWide = temp[j].length
-								j++;
-							}
-							tiles = temp;
-							var tileHTML = "<div id='tileBox'>";
-							var tile = [0.0];
-							$.each(tiles, function(i,v){
-								$.each(v, function(j,w) {
-									if(w.centerx == 0 && w.centery == 0) tile = [i,j];
-									tileHTML += "<div class='maptile "+w.mapName+"' style='top:"+(i*35)+"px;left:"+(j*40)+"px;'>"+w.centerx+", "+w.centery+"</div>";
-								});
-							});
-							$("#mapTileDisplay").html(tileHTML+"</div>");
-							$("#tileBox").css({	"top":function(){
-															if(tile[0]<2) return 0;
-															else {
-																return (tile[0]-1)*-35;
-															}
-														},
-												"left":function(){
-															if(tile[1]<2) return 0;
-															else {
-																return (tile[1]-1)*-40;
-															}
-														}});
-							
-							$(".maptile").unbind("click").click(function(){
-								$("#tileSelect_submit").removeClass("noSubmit");
-								var index = $(this).index(".maptile");
-								$(".maptile.active").removeClass("active");
-								$(this).addClass("active");
-								selectedTile = {};
-								$.each(tiles, function(i,v) {
-									if(v.length <= index) index-=v.length
-									else {
-										selectedTile = tiles[i][index];
-										return false;
-									}
-								});
-								$("#tileSelect_type span").html(selectedTile.mapName);
-								$("#tileSelect_coords span").html(selectedTile.centerx+", "+selectedTile.centery);
-								$("#tileSelect_activePlayers span").html(selectedTile.weeklyActives);
-								$("#tileSelect_totalPlayers span").html(selectedTile.players.length);
-							});
-							
-							$(".tileDir").unbind("click").click(function() {
-								if($(this).is("#mapTileUp")) {
-									$("#tileBox").css("top",function(i,v){
-																var newV = parseInt(v)+35;
-																if(newV>0) return v;
-																return newV+"px";
-															});
-									return true;
-								}
-								if($(this).is("#mapTileDown")) {
-									$("#tileBox").css("top",function(i,v){
-																var newV = parseInt(v)-35;
-																if(-newV>(tiles.length-3)*35) return v;
-																return newV+"px";
-															});
-									return true;
-								}
-								if($(this).is("#mapTileLeft")) {
-									$("#tileBox").css("left",function(i,v){
-																var newV = parseInt(v)+40;
-																if(newV>0) return v;
-																return newV+"px";
-															});
-									return true;
-								}
-								if($(this).is("#mapTileRight")) {
-									$("#tileBox").css("left",function(i,v){
-																var newV = parseInt(v)-40;
-																if(-newV>(tilesWide-3)*40) return v;
-																return newV+"px";
-															});
-									return true;
-								}
-							});
-						};
-	getTiles.get("/AIWars/GodGenerator?reqtype=getTiles");
-	//end Tile Select JS ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+	
 	//Sign In JS --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	$("#signIn_switch").unbind("click").click(function() {
 		$("#signIn_facebook").fadeOut("fast",function() {
@@ -309,7 +154,7 @@ function FB_login_window() {
 											$("#reg_submit").addClass("noUN");
 											$("#reg_error").html("That username is taken");
 										}
-									}
+									};
 				UNvalid.get("/AIWars/GodGenerator?reqtype=username&username="+$(that).val());
 			} else $("#reg_error").html("Please enter a username");
 		},400);
@@ -347,7 +192,7 @@ function FB_login_window() {
 						skipMe : true,
 						centerx : 0,
 						centery : 0
-						}
+						};
 			register(form);
 			$("#reg").css("display","block");
 			$("#reg_wait").css("display","none");
@@ -361,7 +206,7 @@ function FB_login_window() {
 						skipMe : true,
 						centerx : 0,
 						centery : 0
-						}
+						};
 			register(form);
 		$("#signInBox").fadeOut("fast",function() {
 			$("#reg_wait").css("display","block");
@@ -377,7 +222,7 @@ function FB_login_window() {
 						skipMe : false,
 						centerx : selectedTile.centerx,
 						centery : selectedTile.centery
-						}
+						};
 			register(form);
 		$("#signInBox").fadeOut("fast",function() {
 			$("#reg_wait").css("display","block");
@@ -388,34 +233,50 @@ function FB_login_window() {
 	});
 }
 
-var gettingPlayer = false, chatboxLoaded = false;
-function load_client(type, reloadTown, reloadUI) {
-	if(!gettingPlayer) {
-		gettingPlayer = true;
-		if(loggedIn) {
-			if(type != player.league) {
-				loggedIn=false; //this is so show_town will be called when switching to league towns
-				clear_all_timers();
-			}
-		}
-		display_output(false,"Loading Client");
+function load_player(forceReload, reloadTown, reloadUI) {
+	if(!player.getting) {
+		player.getting = true;
+		forceReload = forceReload || !player.loggedIn;
 		display_output(false,"Loading Player Data");
 		var playerget = new make_AJAX();
 		playerget.callback = function(response) {
+			display_output(false,"Checking for valid session...");
 			if(!response.match(/invalid/i)) { //if the user entered a valid UN and Pass
+				display_output(false,"Session validated!");
 				try {
-					if(loggedIn) clear_all_timers();
-					$.extend(player, $.parseJSON(response));
+					if(!forceReload) {
+						//update checks
+						try {
+							if(player.raids.update && !SR.update) {
+								get_raids(true);
+							}	
+						} catch(e) {}
+						try {
+							if(SR.update) {
+								get_SRs();
+								get_raids(true);
+							}	
+						} catch(e) {}
+						try {
+							if(map.update) {
+								map.update = false;
+								get_map();
+							}					
+						} catch(e) {}
+					}
 					
-					if(!player.towns) throw "No Towns";
-					if(player.towns.length < 1) throw "No Towns";
-					player.username = player.username.replace(/\u003c/g,"&#60;").replace(/\u003e/g,"&#62;");
-					player.command = (player.league)?"bf.getLeague()":"bf";
-					player.time = new Date();
+					if(player.loggedIn) {
+						if(forceReload) {
+							clear_all_timers();
+						} else {
+							clear_player_timers();
+						}
+					}
+					parse_player(response, forceReload);
 					
 					//get chatbox
-					if(!chatboxLoaded) { //chatbox only has to load once
-						chatboxLoaded = true;
+					if(!player.chatboxLoaded) { //chatbox only has to load once
+						player.chatboxLoaded = true;
 						display_output(false,"Loading Chatbox...");
 						$("#chat_innerbox").load("/PHP/chatBox.php","UN="+player.username, 
 											function(response,status,xhr) {
@@ -430,88 +291,12 @@ function load_client(type, reloadTown, reloadUI) {
 													if(Modernizr.csstransitions) {
 														$("#chat_box").removeClass("open");
 													} else {
-														$("#chat_box").animate({"margin-left":"-310px"},100);
+														$("#chat_box").animate({"margin-left":"-320px"},100);
 													}
 												});
 												display_output(false,"Chatbox Loaded!");
 											});
 					}
-						//sort towns alphabetically for display in list
-					player.towns.sort(function(a, b) {
-						if(b.townID == player.capitaltid) {return 1}
-						if(a.townID == player.capitaltid) {return -1}
-						var nameA = a.townName.toLowerCase();
-						var nameB = b.townName.toLowerCase();
-						if (nameA < nameB) {return -1}
-						if (nameA > nameB) {return 1}
-						return 0;
-					});
-					
-						// normalize  research values to seconds from ticks
-					player.research.scholTicks *= player.gameClockFactor;
-					player.research.scholTicksTotal *= player.gameClockFactor;
-					player.research.feroTimer *= player.gameClockFactor;
-					player.research.mineTimer *= player.gameClockFactor;
-					player.research.mmTimer *= player.gameClockFactor;
-					player.research.premiumTimer *= player.gameClockFactor;
-					player.research.timberTimer *= player.gameClockFactor;
-					player.research.revTimer *= player.gameClockFactor;
-					player.research.ubTimer *= player.gameClockFactor;
-					player.research.fTimer *= player.gameClockFactor;
-					
-					player.research.knowledge += (player.research.scholTicks/player.research.scholTicksTotal);
-					
-						//normalize town values to seconds from ticks and sort support
-					$.each(player.towns,function(i,x) {
-						//these have to be set to avoid errors in the TC
-						x.activeTrades = {};
-						x.tradeSchedules = {};
-						x.townName = x.townName.replace(/\u003c/g,"&#60;").replace(/\u003e/g,"&#62;");
-						x.movementTicks *= player.gameClockFactor;
-						x.movementTicks += player.time.timeFromNow(1000)+player.gameClockFactor;
-						for(y in x.resInc) {
-							if(x.resInc.hasOwnProperty(y)) x.resInc[y] /= player.gameClockFactor;
-						}
-						$.each(x.bldg,function(j,y) {
-							y.path = y.type.replace(/\s/g, "");
-							if(y.type == "Airship Platform") y.numLeftToBuild = 99999; //this is to make sure that APs get ticked properly
-							for(z in y.ticksToFinishTotal) {
-								if(y.ticksToFinishTotal.hasOwnProperty(z)) y.ticksToFinishTotal[z] *= player.gameClockFactor;
-							}
-							if(y.lvlUps != 0) {
-								y.ticksToFinish *= player.gameClockFactor;
-								y.ticksToFinish -= player.time.timeFromNow(1000)+player.gameClockFactor;
-							}
-							y.ticksPerPerson *= player.gameClockFactor;
-							if(y.numLeftToBuild > 0) {
-								y.ticksLeft *= player.gameClockFactor;
-								y.ticksLeft -= player.time.timeFromNow(1000)+player.gameClockFactor;
-							}
-							$.each(y.Queue,function(k, z) {
-								z.currTicks *= player.gameClockFactor;
-								z.currTicks -= player.time.timeFromNow(1000)+player.gameClockFactor;
-								z.ticksPerUnit *= player.gameClockFactor;
-							});
-						});
-						
-						var sortedSupport = [];
-						$.each(x.supportAU, function(j, y) {
-							var exists = false;
-							$.each(sortedSupport, function(k, z) {
-								if(y.originalPlayer == z.player) {
-									exists = k;
-									return false;
-								}
-							});
-							
-							if(exists) {
-								sortedSupport[exists].indexes.push(j);
-							} else {
-								sortedSupport.push({player : y.originalPlayer, pid: y.originalPlayerID, indexes : [j]});
-							}
-						});
-						player.towns[i].sortedSupport = sortedSupport;
-					});
 					
 						//assign curtown
 					if(reloadTown) {
@@ -522,278 +307,372 @@ function load_client(type, reloadTown, reloadUI) {
 						player.curtown = player.towns[0];
 					}
 					
-					//these functions have to be done separately, atm
-					get_SRs();
-					get_all_trades();
-					get_map();
-					get_support_abroad();
-							
 					display_output(false,"Loading Other Data...");
-					miscAJAX = new make_AJAX();
-					miscAJAX.callback = function(response) {
-						try {
-							//see get call below for call order (it explains the numbering)
-							var info = response.split(";");
-							get_bldgs(false,info[0]);
-							get_weapons(false,info[1]);
-							get_raids(false,info[2]);
-							get_messages(false,info[3], info[4]);
-							player.TPR = (info[5].match(/^false/i))?false:$.parseJSON(info[5]);
-							get_quests(false,info[6]);
-							get_achievements(info[10]);
-							display_output(false,"Player Data Loaded!");
-							
-							get_ranks(false,info[7],info[8],info[9]);
-							
-							BUI.build();
-							set_tickers();	
-							display_res();
-							
-							if(player.research.premiumTimer==0 && player.research.bp==0) $("body").addClass("notBH");
-							else $("body").removeClass("notBH");
-							
-							$("#cityname").html(function() { 
-								if(player.curtown.townID == player.capitaltid) {
-									return "&#171;" + player.curtown.townName + "&#187;";
-								} else {
-									return player.curtown.townName;
-								}
-							});
+					if(forceReload) {
+						//these functions have to be done separately, atm
+						get_SRs();
+						get_all_trades();
+						get_map();
+						get_support_abroad();
 								
-							if(!loggedIn) { //so that this only happens the first time a player logs in
-								do_fade(show_town, "amber");
-								loggedIn = true;
-							} else if(reloadUI) {
-								currUI();
-							}								
-							
-								//set up the dropdown and city view buttons
-							$("#cityname").click(function() {	
-								do_fade(show_town, "amber");
-							});
-							$("#citydropdown").click(function() {
-								town_list(player);
-							});
-							
-							$("#logout").unbind('click').click(function() {
-								do_fade(logout);
-							});
-							
-							$("#options").unbind('click').click(function() {
-								build_ASM();
-								$("#menu").click();
-							});
-							
-							$("#premium").unbind("click").click(function() {
-								do_fade(draw_premium_UI, "amber");
-								$("#menu").click();
-							});
-							
-							$("#refresh").unbind('click').click(function() {
-								load_client(player.league, true, true);
-								$("#menu").click();
-							});
-							
-							$("#tutorial").unbind('click').click(function() {
-								run_tutorial();
-								$("#menu").click();
-							});
-							
-								//set up bottom UI
-							set_bottom_links();
-							display_output(false,"Client Initialized!");
-							gettingPlayer = false;
-						}
-						catch(e) {
-							display_output(true,"Error loading other data!",true);
-							display_output(true,e,true);
-							display_output(false,"Retrying...");
-							gettingPlayer = false;
-							load_client(type);
-						}
-					};
+						miscAJAX = new make_AJAX();
+						miscAJAX.callback = function(response) {
+							try {
+								//see get call below for call order (it explains the numbering)
+								var info = response.split(";");
+								var i = 0;
+								get_bldgs(false,info[i++]);
+								get_raids(false,info[i++]);
+								get_messages(false,info[i++], info[i++]);
+								player.TPR = (info[i].match(/^false/i))?false:$.parseJSON(info[i]); i++;
+								get_quests(false,info[i++]);
+								get_achievements(false,info[i++]);
+								display_output(false,"Player Data Loaded!");
+								
+								get_ranks(false,info[i++],info[i++],info[i++]);
+								
+								//set actualInc[] for each town.  actualInc[] holds the actual increase, per second, while resInc[] holds mine output.
+								$.each(player.towns, function(i,x) {
+									x.actualInc = [];
+									$.each(x.resInc, function(j,y) {
+										if(j>3) {return false;}
+										var tax = 0;
+										if(player.TPR) {
+											$.each(player.TPR, function(k,z) {
+												if(z.player == player.username) {
+													tax = z.taxRate;
+													return false;
+												}
+											});
+										}
+										x.actualInc[j] = y-(y*tax)-(j==3?x.foodConsumption/3600:0);
+									});
+								});
+								
+								BUI.build();
+								set_tickers();
+								$("body").trigger("resUpdate");
+								
+								if(player.research.premiumTimer==0 && player.research.bp==0) $("body").addClass("notBH");
+								else $("body").removeClass("notBH");
+								
+								$("#cityname").html(function() { 
+									if(player.curtown.townID == player.capitaltid) {
+										return "&#171;" + player.curtown.townName + "&#187;";
+									}
+									return player.curtown.townName;
+								});
 									
-					miscAJAX.get('/AIWars/GodGenerator?reqtype=command&command=' + player.command 
-									+ '.getBuildings();' + player.command + '.getWeapons();' + player.command 
-									+ '.getUserRaids();' + player.command + '.getMessages();' + player.command 
-									+ '.getUserGroups();' + player.command + ((!type)?'.getUserTPR();':'.getUserTPRs();')
-									+ player.command + '.getQuests();bf.getPlayerRanking();bf.getLeagueRanking();bf.getBattlehardRanking();'
-									+ player.command + '.getAchievements();');
-				}
-				catch(e) {
+								if(!player.loggedIn) { //so that this only happens the first time a player logs in
+									do_fade(show_town);
+									player.loggedIn = true;
+									$("#citybox").addClass("open");
+								} else if(reloadUI) {
+									currUI();
+								}								
+								
+									//set up the dropdown and city view buttons
+								$("#cityname").click(function() {
+									do_fade(show_town, $("#citybox"));
+								});
+								$("#citydropdown").click(function() {
+									town_list(player);
+								});
+								
+								$("#logout").unbind('click').click(function() {
+									do_fade(logout);
+								});
+								
+								$("#options").unbind('click').click(function() {
+									build_ASM();
+									$("#menu").click();
+								});
+								
+								$("#premium").unbind("click").click(function() {
+									do_fade(draw_premium_UI);
+									$("#menu").click();
+								});
+								
+								$("#refresh").unbind('click').click(function() {
+									load_player(true, true, true);
+									$("#menu").click();
+								});
+								
+								$("#tutorial").unbind('click').click(function() {
+									run_tutorial();
+									$("#menu").click();
+								});
+								
+									//set up bottom UI
+								set_bottom_links();
+								display_output(false,"Client Initialized!");
+								player.getting = false;
+							}
+							catch(e) {
+								display_output(true,"Error loading other data!",true);
+								display_output(true,e,true);
+								display_output(false,"Retrying...");
+								player.getting = false;
+								load_player(forceReload, reloadTown, reloadUI);
+							}
+						};
+										
+						miscAJAX.get('reqtype=command&command=bf.getBuildings();bf.getUserRaids();bf.getMessages();'
+									+ 'bf.getUserGroups();bf.getUserTPRs();bf.getQuests();bf.getAchievements();bf.getPlayerRanking();'
+									+ 'bf.getLeagueRanking();bf.getBattlehardRanking();');
+					} else {
+					
+						get_all_trades();
+						get_support_abroad();
+					
+						get_ranks(true);
+						get_messages(true);
+						get_quests(true);
+						build_raid_list();
+						BUI.build();
+						set_tickers();	
+						display_res();
+						set_bottom_links();
+						
+						if(player.research.premiumTimer==0 && player.research.bp==0) $("body").addClass("notBH");
+						else $("body").removeClass("notBH");
+						
+						if(reloadUI) {
+							currUI();
+						}
+						player.getting=false;
+						display_output(false,"Player Data Loaded!");
+					}
+				} catch(e) {
 					display_output(true,"Error during Player load!", true);
 					display_output(true,e,true);
+					log(e,this,arguments);
 					display_output(false,"Retrying...");
-					gettingPlayer = false;
-					load_client(type);
+					player.getting = false;
+					load_player(forceReload, reloadTown, reloadUI);
 				}
 			} else {
-				window.location.replace("/");
+				get_session(); //this will double check the session and also pull up the login form for facebook users
 			}
 		};
 		
-		playerget.get("/AIWars/GodGenerator?reqtype=" + ((type)?"league":"player"));
+		playerget.get("/AIWars/GodGenerator?reqtype=player");
 	}
 }
 
-function load_player(type, reloadTown, reloadUI) {
-	if(!gettingPlayer) {
-		gettingPlayer = true;
-		display_output(false,"Loading Player Data");
-		var playerget = new make_AJAX();
-		playerget.callback = function(response) {
-			if(!response.match(/invalid/i)) { //if the user entered a valid UN and Pass
-				try {
-					//update checks
-					try {
-						if(player.raids.update && !SR.update) {
-							get_raids(true);
-						}	
-					} catch(e) {}
-					try {
-						if(SR.update) {
-							get_SRs();
-							get_raids(true);
-						}	
-					} catch(e) {}
-					try {
-						if(map.update) {
-							map.update = false;
-							get_map();
-						}					
-					} catch(e) {}
-					
-					clear_player_timers();
-					$.extend(player, $.parseJSON(response));
-					
-					if(!player.towns) throw "No Towns";
-					if(player.towns.length < 1) throw "No Towns";
-					player.username = player.username.replace(/\u003c/g,"&#60;").replace(/\u003e/g,"&#62;");
-					player.command = (player.league)?"bf.getLeague()":"bf";
-					player.time = new Date();
+function parse_player(data, reloadForced) {
+	display_output(false,"Parsing player data....");
+	$.extend(player, $.parseJSON(data));
+				
+	if(!player.towns || player.towns.length < 1) throw "No Towns";
+	player.username = player.username.replace(/\u003c/g,"&#60;").replace(/\u003e/g,"&#62;");
+	player.command = "bf";
+	player.time = new Date();
 
-						//sort towns alphabetically for display in list
-					player.towns.sort(function(a, b) {
-						if(b.townID == player.capitaltid) {return 1}
-						if(a.townID == player.capitaltid) {return -1}
-						var nameA = a.townName.toLowerCase();
-						var nameB = b.townName.toLowerCase();
-						if (nameA < nameB) {return -1}
-						if (nameA > nameB) {return 1}
-						return 0;
-					});
-						// normalize  research values to seconds from ticks
-					player.research.scholTicks *= player.gameClockFactor;
-					player.research.scholTicksTotal *= player.gameClockFactor;
-					player.research.feroTimer *= player.gameClockFactor;
-					player.research.mineTimer *= player.gameClockFactor;
-					player.research.mmTimer *= player.gameClockFactor;
-					player.research.premiumTimer *= player.gameClockFactor;
-					player.research.timberTimer *= player.gameClockFactor;
-					player.research.revTimer *= player.gameClockFactor;
-					player.research.ubTimer *= player.gameClockFactor;
-					player.research.fTimer *= player.gameClockFactor;
-					
-					player.research.knowledge += (player.research.scholTicks/player.research.scholTicksTotal);
-					
-						//normalize town values to seconds from ticks and sort support
-					$.each(player.towns,function(i,x) {
-						//these have to be set to avoid errors in the TC
-						x.activeTrades = {};
-						x.tradeSchedules = {};
-						x.townName = x.townName.replace(/\u003c/g,"&#60;").replace(/\u003e/g,"&#62;");
-						x.movementTicks *= player.gameClockFactor;
-						x.movementTicks += player.time.timeFromNow(1000)+player.gameClockFactor;
-						for(y in x.resInc) {
-							if(x.resInc.hasOwnProperty(y)) x.resInc[y] /= player.gameClockFactor;
-						}
-						$.each(x.bldg,function(j,y) {
-							y.path = y.type.replace(/\s/g, "");
-							if(y.type == "Airship Platform") y.numLeftToBuild = 99999; //this is to make sure that APs get ticked properly
-							for(z in y.ticksToFinishTotal) {
-								if(y.ticksToFinishTotal.hasOwnProperty(z)) y.ticksToFinishTotal[z] *= player.gameClockFactor;
-							}
-							if(y.lvlUps != 0) {
-								y.ticksToFinish *= player.gameClockFactor;
-								y.ticksToFinish -= player.time.timeFromNow(1000)+player.gameClockFactor;
-							}
-							y.ticksPerPerson *= player.gameClockFactor;
-							if(y.numLeftToBuild > 0) {
-								y.ticksLeft *= player.gameClockFactor;
-								y.ticksLeft -= player.time.timeFromNow(1000)+player.gameClockFactor;
-							}
-							$.each(y.Queue,function(k, z) {
-								z.currTicks *= player.gameClockFactor;
-								z.currTicks -= player.time.timeFromNow(1000)+player.gameClockFactor;
-								z.ticksPerUnit *= player.gameClockFactor;
-							});
-						});
-						
-						var sortedSupport = [];
-						$.each(x.supportAU, function(j, y) {
-							var exists = false;
-							$.each(sortedSupport, function(k, z) {
-								if(y.originalPlayer == z.player) {
-									exists = k;
-									return false;
-								}
-							});
-							
-							if(exists) {
-								sortedSupport[exists].indexes.push(j);
-							} else {
-								sortedSupport.push({player : y.originalPlayer, pid: y.originalPlayerID, indexes : [j]});
-							}
-						});
-						player.towns[i].sortedSupport = sortedSupport;
-					});
-					
-					// rebuild some info that gets lost
-					get_all_trades();
-					get_support_abroad();
-					
-						//assign curtown
-					if(reloadTown) {
-						player.curtown = $.grep(player.towns,function(v,i){
-											return v.townID == player.curtown.townID;
-										})[0];
-					} else {
-						player.curtown = player.towns[0];
-					}
-					
-					get_ranks(true);
-					get_messages(true);
-					get_quests(true);
-					build_raid_list();
-					BUI.build();
-					set_tickers();	
-					display_res();
-					set_bottom_links();
-					
-					if(player.research.premiumTimer==0 && player.research.bp==0) $("body").addClass("notBH");
-					else $("body").removeClass("notBH");
-					
-					if(reloadUI) {
-						currUI();
-					}
-					
-					gettingPlayer=false;
-					display_output(false,"Player Data Loaded!");
-				}
-				catch(e) {
-					display_output(true,"Error during Player load!", true);
-					display_output(true,e,true);
-					display_output(false,"Retrying...");
-					gettingPlayer = false;
-					load_player(type, reloadTown, reloadUI);
-				}
-			} else {
-				window.location.replace("/");
-			}
-		};
+		//sort towns alphabetically for display in list
+	player.towns.sort(function(a, b) {
+		if(b.townID == player.capitaltid) {return 1;}
+		if(a.townID == player.capitaltid) {return -1;}
+		var nameA = a.townName.toLowerCase();
+		var nameB = b.townName.toLowerCase();
+		if (nameA < nameB) {return -1;}
+		if (nameA > nameB) {return 1;}
+		return 0;
+	});
+		// normalize  research values to seconds from ticks
+	player.research.scholTicks *= player.gameClockFactor;
+	player.research.scholTicksTotal *= player.gameClockFactor;
+	player.research.feroTimer *= player.gameClockFactor;
+	player.research.mineTimer *= player.gameClockFactor;
+	player.research.mmTimer *= player.gameClockFactor;
+	player.research.premiumTimer *= player.gameClockFactor;
+	player.research.timberTimer *= player.gameClockFactor;
+	player.research.revTimer *= player.gameClockFactor;
+	player.research.ubTimer *= player.gameClockFactor;
+	player.research.fTimer *= player.gameClockFactor;
+	
+	player.research.knowledge += (player.research.scholTicks/player.research.scholTicksTotal);
+	
+	$.each(player.AU,function(i,x) {
+		switch(x.type) {
+			case 1:
+				x.rank = "soldier";
+				break;
+			case 2:
+				x.rank = "tank";
+				break;
+			case 3:
+				x.rank = "golem";
+				break;
+			case 4:
+			case 5:
+				x.rank = "bomber";
+				break;
+		}
 		
-		playerget.get("/AIWars/GodGenerator?reqtype=" + ((type)?"league":"player"));
+		switch(x.armorType) {
+			case 1:
+				x.armorType = "light";
+				break;
+			case 2:
+				x.armorType = "heavy";
+				break;
+		}
+		
+		switch(x.attackType) {
+			case 1:
+				x.attackType = "physical";
+				break;
+			case 2:
+				x.attackType = "explosive";
+				break;
+			case 3:
+				x.attackType = "electrical";
+				break;
+		}
+	});
+	
+		//normalize town values to seconds from ticks and sort support
+	$.each(player.towns,function(i,x) {
+		x.activeTrades = player.activeTrades[i] || {};
+		x.tradeSchedules = player.tradeSchedules[i] || {};
+		x.supportAbroad = player.supportAbroad[i] || {};
+		x.townName = x.townName.replace(/\u003c/g,"&#60;").replace(/\u003e/g,"&#62;");
+		x.movementTicks *= player.gameClockFactor;
+		x.movementTicks += player.time.timeFromNow(1000)+player.gameClockFactor;
+		for(y in x.resInc) {
+			if(x.resInc.hasOwnProperty(y)) x.resInc[y] /= player.gameClockFactor;
+		}
+		
+		if(player.loggedIn && !reloadForced) {
+			//set actualInc[] for each town.  actualInc[] holds the actual increase, per second, while resInc[] holds mine output.
+			$.each(player.towns, function(i,x) {
+				x.actualInc = [];
+				$.each(x.resInc, function(j,y) {
+					var tax = 0;
+					if(player.TPR) {
+						$.each(player.TPR, function(k,z) {
+							if(z.player == player.username) {
+								tax = z.taxRate;
+								return false;
+							}
+						});
+					}
+					x.acutalInc[j] = (y*(1-tax))-(i==4 ? x.foodConsumption/3600 : 0);
+				});
+			});
+		}
+		
+		$.each(x.bldg,function(j,y) {
+			y.path = $.trim(y.type).replace(/\s/g, "-");
+			if(y.type == "Airship Platform") y.numLeftToBuild = 99999; //this is to make sure that APs get ticked properly
+			for(z in y.ticksToFinishTotal) {
+				if(y.ticksToFinishTotal.hasOwnProperty(z)) y.ticksToFinishTotal[z] *= player.gameClockFactor;
+			}
+			if(y.lvlUps != 0) {
+				y.ticksToFinish *= player.gameClockFactor;
+				y.ticksToFinish -= player.time.timeFromNow(1000)+player.gameClockFactor;
+			}
+			y.ticksPerPerson *= player.gameClockFactor;
+			if(y.numLeftToBuild > 0) {
+				y.ticksLeft *= player.gameClockFactor;
+				y.ticksLeft -= player.time.timeFromNow(1000)+player.gameClockFactor;
+			}
+			$.each(y.Queue,function(k, z) {
+				z.currTicks *= player.gameClockFactor;
+				z.currTicks -= player.time.timeFromNow(1000)+player.gameClockFactor;
+				z.ticksPerUnit *= player.gameClockFactor;
+			});
+		});
+		
+		var sortedSupport = [];
+		$.each(x.supportAU, function(j, y) {
+			switch(y.type) {
+				case 1:
+					y.rank = "soldier";
+					break;
+				case 2:
+					y.rank = "tank";
+					break;
+				case 3:
+					y.rank = "golem";
+					break;
+				case 4:
+				case 5:
+					y.rank = "bomber";
+					break;
+			}
+			
+			switch(y.armorType) {
+				case 1:
+					y.armorType = "light";
+					break;
+				case 2:
+					y.armorType = "heavy";
+					break;
+			}
+			
+			switch(y.attackType) {
+				case 1:
+					y.attackType = "physical";
+					break;
+				case 2:
+					y.attackType = "eyplosive";
+					break;
+				case 3:
+					y.attackType = "electrical";
+					break;
+			}
+			var exists = false;
+			$.each(sortedSupport, function(k, z) {
+				if(y.originalPlayer == z.player) {
+					exists = k;
+					return false;
+				}
+			});
+			
+			if(exists) {
+				sortedSupport[exists].indexes.push(j);
+			} else {
+				sortedSupport.push({player : y.originalPlayer, pid: y.originalPlayerID, indexes : [j]});
+			}
+		});
+		player.towns[i].sortedSupport = sortedSupport;
+	});
+	
+	
+	//no need for a town list if we only have one town, right?
+	if(player.towns.length > 1) {
+		$("#citydropdown").css("display","block");
+		var list = $("#townlist");
+		var HTML = "";
+		$.each(player.towns, function(i, x) { //build the actual town list
+			HTML += "<li><div index='" + i + "'>" + (x.townID == player.capitaltid ? "&#171;" + x.townName + "&#187;": x.townName) + "</div></li>";
+		});
+		
+		list.html(HTML);
+		
+		list.css("top",(68-list.outerHeight())+"px");
+		
+		$("#townlist div").unbind('click').click(function() {
+			var list = $("#townlist");
+			player.curtown = player.towns[$(this).attr("index")];
+			list.animate({"top":"-="+list.outerHeight()},200*player.towns.length);
+			$("body").unbind('click');
+			BUI.build();
+			clearInterval(BUI.active.timer);
+			get_buildable();
+			$("body").trigger("resUpdate");
+			build_raid_list();
+			show_town();
+			
+			$("#citydropdown").unbind('click').click(function() { //reset the dropdown click event
+				town_list();
+			});
+		});
 	}
+	
+	display_output(false,"Player Data Parsed!")
 }
 
 function register(form) {
@@ -824,7 +703,7 @@ function login(form) {
 				$(this).find().unbind();
 				$(this).remove();
 			});
-			load_client(false);
+			load_player();
 		}
 	};
 	loginget.post("/AIWars/GodGenerator","reqtype=login&fuid="+userInfo.id);

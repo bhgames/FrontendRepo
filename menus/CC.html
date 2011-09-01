@@ -1,0 +1,203 @@
+<div id='CC_tabBar'>
+	<div id='CC_construct' class='textTab'>Town Info</div>
+	<div id='CC_overview' class='textTab'>Military<br/>Overview</div>
+	<div id='CC_control' class='textTab'>Airship<br/>Control</div>
+	<div id='CC_sendMission' class='textTab last'>Send Mission</div>
+</div>
+<div id='CC_window'>
+	<!-- Engineering Tab HTML -->
+	<div id='CC_EngTab'>
+		<div id='BUI_bFail'></div>
+		<input type='text' id='BUI_numPpl' autofocus='autofocus' maxlength='4' />
+		<div id='BUI_bldPplButton' class='noBld'></div>
+		<div id='CC_info'>
+			<div id='CC_townID'>Town ID: <span></span></div>
+			<div id='CC_buildingInfo'>
+				<div id="CC_buildingInfoHeader">
+					<span class='lotKey'>Lot:</span>
+					<span class='nameKey'>Name:</span>
+					<span class='lvlKey'>Level:</span>
+					<span class='lotKey'>Lot:</span>
+					<span class='nameKey'>Name:</span>
+					<span class='lvlKey'>Level:</span>
+				</div>
+				<ol start='0'>
+					<li class="buildingInfo"><span class='buildingName'>Locked</span><span class='buildingLvl'></span></li>
+					<li class="buildingInfo"><span class='buildingName'>Locked</span><span class='buildingLvl'></span></li>
+					<li class="buildingInfo"><span class='buildingName'>Locked</span><span class='buildingLvl'></span></li>
+					<li class="buildingInfo"><span class='buildingName'>Locked</span><span class='buildingLvl'></span></li>
+					<li class="buildingInfo"><span class='buildingName'>Locked</span><span class='buildingLvl'></span></li>
+					<li class="buildingInfo"><span class='buildingName'>Locked</span><span class='buildingLvl'></span></li>
+					<li class="buildingInfo"><span class='buildingName'>Locked</span><span class='buildingLvl'></span></li>
+					<li class="buildingInfo"><span class='buildingName'>Locked</span><span class='buildingLvl'></span></li>
+					<li class="buildingInfo"><span class='buildingName'>Locked</span><span class='buildingLvl'></span></li>
+					<li class="buildingInfo"><span class='buildingName'>Locked</span><span class='buildingLvl'></span></li>
+				</ol>
+				<ol start='10'>
+					<li class="buildingInfo"><span class='buildingName'>Locked</span><span class='buildingLvl'></span></li>
+					<li class="buildingInfo"><span class='buildingName'>Locked</span><span class='buildingLvl'></span></li>
+					<li class="buildingInfo"><span class='buildingName'>Locked</span><span class='buildingLvl'></span></li>
+					<li class="buildingInfo"><span class='buildingName'>Locked</span><span class='buildingLvl'></span></li>
+					<li class="buildingInfo"><span class='buildingName'>Locked</span><span class='buildingLvl'></span></li>
+					<li class="buildingInfo"><span class='buildingName'>Locked</span><span class='buildingLvl'></span></li>
+					<li class="buildingInfo"><span class='buildingName'>Locked</span><span class='buildingLvl'></span></li>
+					<li class="buildingInfo"><span class='buildingName'>Locked</span><span class='buildingLvl'></span></li>
+					<li class="buildingInfo"><span class='buildingName'>Locked</span><span class='buildingLvl'></span></li>
+				</ol>
+			</div>
+		</div>
+	</div>
+	<!-- Military Overview HTML -->
+	<div id='CC_milOverTab'>
+		<div id='CC_scrollBox'>
+			<h2>Tactical Overview</h2>
+			<div id='CC_tacOverview'>
+				<div id='CC_CSinfo'>
+					<div class='textFramed'>
+						<div id='CC_CSL'>
+							<div>Cover Soft Limit:</div>
+							<span>0</span>
+						</div>
+						<div id='CC_armySizeTotal'>
+							<div>Total Army Size:</div>
+							<span>0</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<h2>Missions Overview</h2>
+			<div id='CC_missionList'>
+				<div id='CC_incomingMissions'></div>
+				<div id='CC_troopsHere'></div>
+				<div id='CC_outgoingMissions'></div>
+				<div id='CC_supportAbroad'></div>
+			</div>
+		</div>
+	</div>
+	<!-- Airship Control HTML -->
+	<div id='CC_airshipControlTab'>
+		<div id='CC_airshipControl'>
+			<div class='darkFrameBody'>
+				<h3>Movement Controls</h3>
+				<div id='CC_currPos'>Current Position: <span></span></div>
+				<div id='CC_moveError'></div>
+				<div id='CC_moveAirship'>Move</div>
+				<div id='CC_moveTo'>Move to:<br/>
+					<input type='number' id='CC_moveX' value='0' /><input type='number' id='CC_moveY' value='0' />
+				</div>
+			</div>
+		</div>
+		<div id='CC_airshipInfo'>
+			<div class='lightFrameBody'>
+				<h3>Airship Status</h3>
+				<div id='CC_airshipHeading'>Current Heading: <span></span></div>
+				<div id='CC_airshipETA'>ETA: <span></span></div>
+				<div id='CC_airshipFuel'>Fuel Reserves: <span></span></div>
+			</div>
+		</div>
+	</div>
+	<!-- Send Mission HTML-->
+	<div id='CC_sendTab'>
+		<div id='CC_AUinput'>
+			<div class='darkFrameBody'>
+			</div>
+		</div>
+		<div id='CC_supportAUbox'>
+			<div class='darkFrameBody'>
+				<span>Support:</span>
+				<div id='CC_supportAU'>
+				</div>
+			</div>
+		</div>
+		<div id='CC_civilianAUbox'>
+			<div class='darkFrameBody'>
+				<span>Civilian:</span>
+				<div id='CC_civilianAU'>
+					<div id='CC_civAU' class='troop'>
+						<div id='CC_civName'></div>
+						<a href='javascript:;' id='CC_civNumber'></a>
+						<input type='text' id='CC_civInput' />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id='CC_SAS'>
+			<div id='CC_armySize' class='textFramed'>
+				<div>Selected Army Size:</div>
+				<span>0</span>
+			</div>
+		</div>
+		<div id='CC_missionSelectList'>
+			<div class='lightFrameBody'>
+				<div>Mission Select:</div>
+				<div class='missionSelect'>
+					<input type='radio' id='CC_mission1' name='missionRadio' checked='checked'/><label for='CC_mission1'>Attack</label>
+				</div>
+				<div class='missionSelect'>
+					<input type='radio' id='CC_mission2' name='missionRadio' /><label for='CC_mission2'>Siege</label>
+				</div>
+				<div class='missionSelect'>
+					<input type='radio' id='CC_mission3' name='missionRadio' /><label for='CC_mission3'>Strafe</label>
+				</div>
+				<div class='missionSelect'>
+					<input type='radio' id='CC_mission4' name='missionRadio' /><label for='CC_mission4'>Glass</label>
+				</div>
+				<div class='missionSelect'>
+					<input type='radio' id='CC_mission7' name='missionRadio' /><label for='CC_mission7'>Scout</label>
+				</div>
+				<div class='missionSelect'>
+					<input type='radio' id='CC_mission8' name='missionRadio' /><label for='CC_mission8'>Invasion</label>
+				</div>
+				<div class='missionSelect'>
+					<input type='radio' id='CC_mission5' name='missionRadio' /><label for='CC_mission5'>Support</label>
+				</div>
+				<div class='missionSelect'>
+					<input type='radio' id='CC_mission6' name='missionRadio' /><label for='CC_mission6'>Debris</label>
+				</div>
+				<div class='missionSelect'>
+					<input type='radio' id='CC_mission9' name='missionRadio' /><label for='CC_mission9'><abbr title='Archaeological'>Arch.</abbr> Dig</label>
+				</div>
+				<div class='missionSelect'>
+					<input type='radio' id='CC_mission10' name='missionRadio'/><label for='CC_mission10'>Harvest</label>
+				</div>
+				<div class='missionSelect'>
+					<input type='radio' id='CC_mission11' name='missionRadio'/><label for='CC_mission11'>Blockade</label>
+				</div>
+				<select id='CC_supportType'>
+					<option>Defensive</option>
+					<option>Offensive</option>
+				</select>
+				<select id='CC_bombingTarget'>
+					<option>All Buildings</option>
+					<option>Airstrips</option>
+					<option>Arms Factories</option>
+					<option>Command Center</option>
+					<option>Crystal Refineries</option>
+					<option>Fortifications</option>
+					<option>Foundries</option>
+					<option>Institutes</option>
+					<option>Manufacturing Plants</option>
+					<option>ReCCcling Yards</option>
+					<option>Resource Caches</option>
+					<option>Sawmills</option>
+					<option>Storage Yards</option>
+					<option>Trade Centers</option>
+					<option>Warehouses</option>
+				</select>
+			</div>
+		</div>
+		<div id='CC_missionDescBox'>
+			<div class='textFramed'>Mission Description:
+				<div id='CC_missionDesc'></div>
+			</div>
+		</div>
+		<div id='CC_targetSelect'>
+			<div>Target Coordinates:</div>
+			x:<input type='text' id='CC_targetX' maxlength='3' />
+			y:<input type='text' id='CC_targetY' maxlength='3' />
+			<div id='CC_ETA'></div>
+		</div>
+		<div id='CC_isValid'></div>
+		<div id='CC_launchAttack'>Send</div>
+	</div>
+</div>

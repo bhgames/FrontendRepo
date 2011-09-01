@@ -1,0 +1,10 @@
+#Fort_AUlist, #Fort_protectedAU {
+	position: absolute;
+	width: 250px;
+}
+
+#Fort_protectAU {
+	position: aboslute;
+	bottom: 0px;
+	right: 0px
+}

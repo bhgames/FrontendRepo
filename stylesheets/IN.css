@@ -81,32 +81,6 @@
 	-moz-box-flex: 1;
 	box-flex: 1;
 	}
-.expand .lightFrameBody {
-	height: 30px;
-	}
-.expand:active .lightFrameBody, .expand.open .lightFrameBody {
-	background: url("../AIFrames/Content Frame Elements/Dark-body.png");
-	color: #FFFFFF;
-	}
-.expand:active .lightFrameB, .expand.open .lightFrameB {
-	background-image: url("../AIFrames/Content Frame Elements/Dark-BottomTile.png");
-	}
-.expand:active .lightFrameBL, .expand.open .lightFrameBL {
-	background-image: url("../AIFrames/Content Frame Elements/Dark-Left-Lowcorner.png");
-	}
-.expand:active .lightFrameBR, .expand.open .lightFrameBR {
-	background-image: url("../AIFrames/Content Frame Elements/Dark-Right-Lowcorner.png");
-	}
-
-.expand .lightFrameBL > .lightFrameB {
-	margin-right: 0px;
-	}
-.expand  > .lightFrameB {
-	margin: 0px;
-	}
-.expand > .lightFrameBR > .lightFrameB {
-	margin-left: 0px;
-	}
 
 .researches > div {
 	height: 20px;

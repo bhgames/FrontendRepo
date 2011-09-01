@@ -1,0 +1,215 @@
+<div id='TC_tabBar'>
+	<div id='TC_Overview' class='TCtab lightButton'>
+		<div class='lightFrameBody'>Overview</div>
+		<div class='lightFrameBL'><div class='lightFrameB'></div></div>
+	</div>
+	<div id='TC_Trade' class='TCtab lightButton'>
+		<div class='lightFrameBody'>Trade</div>
+		<div class='lightFrameB'></div>
+	</div>
+	<div id='TC_Caravan' class='TCtab lightButton'>
+		<div class='lightFrameBody'>Caravans</div>
+		<div class='lightFrameB'></div>
+	</div>
+	<div id='TC_Market' class='TCtab lightButton'>
+		<div class='lightFrameBody'>Market</div>
+		<div class='lightFrameBR'><div class='lightFrameB'></div></div>
+	</div>
+</div>
+<div id='TC_window'>
+	<!-- Overview HTML -->
+	<div id='TC_overview'>
+		<div id='TC_activeTrades' class='textFramed'>
+			<div class='keys'>
+				<span class='numTradersKey'>Traders</span>
+				<span class='destinationKey'>Destination</span>
+				<span class='originKey'>Origin</span>
+				<span class='resourcesKey'>Outgoing/Incoming</span>
+				<span class='etaKey'>ETA</span>
+			</div>
+			<div class='tradeList'></div>
+		</div>
+		<div id='TC_tradeSchedules' class='textFramed'>
+			<div class='keys'>
+				<span class='destinationKey'>Destination</span>
+				<span class='originKey'>Origin</span>
+				<span class='resourcesKey'>Outgoing/Incoming</span>
+				<span class='intervalKey'>Next in</span>
+				<span class='remainingKey'>Remaining</span>
+			</div>
+			<div class='tradeList'></div>
+		</div>
+		<div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div>
+	</div>
+	<!-- Trading HTML -->
+	<div id='TC_sendTrade'>
+		<div id='TC_directTrade'>
+			<div class='darkFrameBody'>
+				<h2>Direct Trade</h2>
+				<div id='TC_dtResSend'>
+					<label for='TC_dtResSendAmnt'>Outgoing </label><input type='number' id='TC_dtResSendAmnt' min='1'/>
+					<select id='TC_dtResSendType'>
+						<option>Metal</option>
+						<option>Timber</option>
+						<option>Man. Mat.</option>
+						<option>Food</option>
+					</select>
+				</div>
+				<div id='TC_dtTradersNeeded'></div>
+				<div id='TC_dtTimesToDo'>
+					<label for='TC_dtNumToDo'>Trade Cap </label><input type='number' id='TC_dtNumToDo' min='-1' value='1'/>
+				</div>
+				<div id='TC_dtInt'>
+					<label for='TC_dtInterval'>Interval </label><input type='number' id='TC_dtInterval' min='0' value='0'/>
+				</div>
+				<div id='TC_dtTradeTo'>
+					<select id='TC_yourTowns'>
+						<option disabled='disabled'>Choose a town</option>
+						<option disabled='disabled'>-------------</option>
+					</select>
+					<div>-OR-</div>
+					<label for='TC_dtX'>X: </label><input type='number' id='TC_dtX' value='0'/><label for='TC_dtY'>Y: </label><input type='number' id='TC_dtY' value='0'/>
+				</div>
+				<div id='TC_dtETA'></div>
+				<div id='TC_dtSend' class='noTrade'>
+					<div class='lightFrameBody'>Send Trade</div>
+					<div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>
+				</div>
+			</div>
+			<div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>
+		</div>
+		<div id='TC_createTrade'>
+			<div class='darkFrameBody'>
+				<h2>List Trade</h2>
+				<div id='TC_ltResSend'>
+					<label for='TC_ltResSendAmnt'>Outgoing </label><input type='number' id='TC_ltResSendAmnt' min='1'/>
+					<select id='TC_ltResSendType'>
+						<option>Metal</option>
+						<option>Timber</option>
+						<option>Man. Mat.</option>
+						<option>Food</option>
+					</select>
+				</div>
+				<div id='TC_ltTradersNeeded'></div>
+				<div id='TC_ltResRec'>
+					<label for='TC_ltResRecAmnt'>Incoming </label><input type='number' id='TC_ltResRecAmnt' min='1'/>
+					<select id='TC_ltResRecType'>
+						<option>Metal</option>
+						<option>Timber</option>
+						<option>Man. Mat.</option>
+						<option>Food</option>
+					</select>
+				</div>
+				<div id='TC_ltSend' class='noTrade'>
+					<div class='lightFrameBody'>Publish</div>
+					<div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>
+				</div>
+			</div>
+			<div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>
+		</div>
+	</div>
+	<!-- Caravan HTML -->
+	<div id='TC_caravans'>
+		<div id='TC_caravanList' class='textFramed'>
+			<div class='keys'>
+				<span class='destinationKey'>Destination</span>
+				<span class='originKey'>Origin</span>
+				<span class='valueKey'>Value</span>
+				<span class='originKey'>Itinerary</span>
+				<span class='etaKey'>ETA</span>
+			</div>
+			<div class='tradeList'></div>
+		</div>
+		<div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div>
+	</div>
+	<!-- Marketplace HTML -->
+	<div id='TC_marketplace'>
+		<div id='TC_refreshTrades'></div>
+		<div id='TC_marketBox'>
+			<div id='TC_tradeListBox' class='textFramed'>
+				<div id='TC_tradeList'>
+					<div id='TC_filterBar'>Filter:
+						<div id='TC_filterRes'>
+							<select id='TC_recRes'>
+								<option>Any</option>
+								<option>Metal</option>
+								<option>Timber</option>
+								<option>Man. Mat.</option>
+								<option>Food</option>
+							</select>
+							for 
+							<select id='TC_sendRes'>
+								<option>Any</option>
+								<option>Metal</option>
+								<option>Timber</option>
+								<option>Man. Mat.</option>
+								<option>Food</option>
+							</select>
+						</div>
+						<div id='TC_filterAmnt'>
+							<label for='TC_sendAmnt'>Max. Amount:</label>
+							<input type='number' id='TC_sendAmnt' min='0'/>
+						</div>
+					</div>
+					<div id='TC_keys'>
+						<div id='TC_playerKey'>Player</div>
+						<div id='TC_townKey'>Town</div>
+						<div id='TC_resKey'>Outgoing/Incoming</div>
+						<div id='TC_distKey'>Distance</div>
+					</div>
+					<div id='TC_trades'></div>
+				</div>
+				<div id='TC_tradeInfo'>
+					<h1 id='TC_infoHeader'>Trade Info</h1>
+					<div id='TC_isssuePlayer'><h2>Player:</h2><div></div></div>
+					<div id='TC_issueTown'><h2>Town:</h2><div></div></div>
+					<div id='TC_issueRes'><h2>Incoming:</h2><div></div></div>
+					<div id='TC_issueCost'><h2>Outgoing:</h2><div></div></div>
+					<div id='TC_issueDist'><h2>ETA:</h2><div></div></div>
+					<div id='TC_purchaseTrade' class='noBld'>
+						<div class='lightFrameBody'>Purchase</div>
+						<div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>
+					</div>
+				</div>
+			</div>
+			<div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div>
+		</div>
+	</div>
+</div>
+<div id='BUI_bFail'></div>
+<div id='BUI_bldPplBox'>
+<div id='BUI_bldPplHeader'>Build Traders<div id='BUI_pplHelp' class='pplHelp'></div><span id='BUI_numCivs'></span></div>
+<div id='BUI_bldPpl'>
+	<label for='BUI_numPpl'>Units:</label><input type='text' id='BUI_numPpl' autofocus='autofocus' maxlength='4' />
+	<div id='BUI_straightArrow'></div>
+	<div id='BUI_bentArrow'></div>
+	<div id='BUI_bldPplButton' class='noBld'>
+		<div class='darkFrameBody'>Build</div>
+		<div class='darkFrameB'></div>
+	</div>
+	<div id='BUI_pplBldgInfo'>
+		<div id='BUI_pplBldg'>Number Building: <span id='BUI_numPplBldg'>0</span></div>
+		<div id='BUI_pplNext'>Next in: <span id='BUI_ticksTillNext'>??:??:??</span></div>
+	</div>
+</div>
+<div id='BUI_bldPplCost'>
+	<div class='BUI_bldPpl totalCost'>
+		Total Cost
+	</div>
+	<div class='BUI_bldPpl'>
+		<div id='BUI_pplSteel' class='noRes upSteel'>???</div>
+	</div>
+	<div class='BUI_bldPpl'>
+		<div id='BUI_pplWood' class='noRes upWood'>???</div>
+	</div>
+	<div class='BUI_bldPpl'>
+		<div id='BUI_pplTime' class='noRes upTime'>??:??:??</div>
+	</div>
+	<div class='BUI_bldPpl'>
+		<div id='BUI_pplManMade' class='noRes upManMade'>???</div>
+	</div>
+	<div class='BUI_bldPpl'>
+		<div id='BUI_pplFood' class='noRes upFood'>???</div>
+	</div>
+</div>
+</div>

@@ -43,13 +43,13 @@ function CY_UI(bldgInfo) {
 							useBP.callback = function(response) {
 												if(response.match(/true/)) {
 													display_output(false,"Success!");
-													load_player(player.league,true,true);
+													load_player(false,true,true);
 												} else {
 													var error = response.split(":");
 													if(error.length==2) error=error[1];
 													display_output(true,error,true);
 												}
-											}
+											};
 							
 							useBP.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".useBP(buildingFinish);");
 						});

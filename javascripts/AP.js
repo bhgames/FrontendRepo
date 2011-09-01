@@ -1,3 +1,12 @@
+/*
+ *	TODO:
+ *		Redesign for the new function of this building
+ *			This building now handles Air Unit construction in addition to its current functions.
+ *			The layout of this menu will be similar to that of the AF and MP, but will include a tab bar.
+ *			The two tabs will be "Units" (default) and "Airship".
+ *			The Airship tab is only usable once the Airship blueprint has been researched.
+ *			The Airship tab will contain basically what it does now.
+*/
 function AP_UI(bldgInfo) {
 	//handling for non-HTML5 compliant browsers
 	if(!Modernizr.input.placeholder) {
@@ -34,6 +43,8 @@ function AP_UI(bldgInfo) {
 		}
 	});
 	
+	$("#BUI_bldgContent").fadeIn();
+	
 	$("#AP_buildAirship").unbind("click").click(function() {
 		if($("#AP_airshipName").val() != "" && $("#AP_airshipName").val() != "Airship Name") {
 			$("#AP_error").val("");
@@ -43,7 +54,7 @@ function AP_UI(bldgInfo) {
 				if(response.match(/false/)) {
 					$("#AP_error").val(response.split(":")[1]);
 				} else {
-					load_player(player.league,true,true);
+					load_player(false,true,true);
 				}
 			};
 			

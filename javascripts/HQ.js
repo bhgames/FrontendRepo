@@ -10,7 +10,7 @@ function HQ_UI(bldgInfo) {
 	$.each(player.curtown.bldg, function(i,v) {
 		if(v.type == "Arms Factory") {
 			$.each(v.Queue, function(j,w) {
-				if(w.update) load_player(player.league, true, true);
+				if(w.update) load_player(false, true, true);
 			});
 		}
 	});
@@ -50,7 +50,7 @@ function HQ_UI(bldgInfo) {
 							
 						});
 					$("#HQ_AU"+ (i+1) +"number").text(player.curtown.au[i]).click(function(){
-																				var input = $(this).siblings(".AUinput")
+																				var input = $(this).siblings(".AUinput");
 																				if(input.val() == $(this).text()) {
 																					input.val(0);
 																				} else {
@@ -112,7 +112,7 @@ function HQ_UI(bldgInfo) {
 				$(this).fadeIn(100);
 				
 				$(".supportAUnumber").unbind('click').click(function(){
-					var input = $(this).siblings(".AUinput")
+					var input = $(this).siblings(".AUinput");
 					if(input.val() == $(this).text()) {
 						input.val(0);
 					} else {
@@ -218,7 +218,7 @@ function HQ_UI(bldgInfo) {
 						var AUarray = [];
 						$(".AUinput").each(function(i, v) {
 							if(i<6) {
-								if($(v).val() > player.curtown.au[i]) $(v).val(player.curtown.au[i])
+								if($(v).val() > player.curtown.au[i]) $(v).val(player.curtown.au[i]);
 							} else {
 								if($(v).val() > player.curtown.supportAU[i-6]) $(v).val(player.curtown.supportAU[i-6].size);
 							}
@@ -237,7 +237,7 @@ function HQ_UI(bldgInfo) {
 								BUI.HQ.reload=true;
 							} else {
 								var error = response.split(":");
-								if(error.length==2) error=error[1]
+								if(error.length==2) error=error[1];
 								display_output(true,error);
 								$("#HQ_isValid").text(error);
 							}
@@ -259,13 +259,13 @@ function HQ_UI(bldgInfo) {
 									useBP.callback = function(response) {
 														if(response.match(/true/)) {
 															display_output(false,"Success!");
-															load_player(player.league,true,false);
+															load_player(false,true,false);
 														} else {
 															var error = response.split(":");
 															if(error.length==2) error = error[1];
 															display_output(true,error,true);
 														}
-													}
+													};
 									
 									useBP.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".useBP(ferocity);");
 								});
@@ -285,7 +285,7 @@ function HQ_UI(bldgInfo) {
 				$("#HQ_moveTo input").unbind('keyup').keyup(function() {
 					BUI.HQ.x = $('#HQ_moveX').val();
 					BUI.HQ.y = $('#HQ_moveY').val();
-					var dist = Math.floor(Math.sqrt(Math.pow((BUI.HQ.x-player.curtown.x),2)+Math.pow((BUI.HQ.y-player.curtown.y),2)))
+					var dist = Math.floor(Math.sqrt(Math.pow((BUI.HQ.x-player.curtown.x),2)+Math.pow((BUI.HQ.y-player.curtown.y),2)));
 					if(dist>player.curtown.fuelCells) {
 						$("#HQ_moveAirship").addClass("noMove");
 						$("#HQ_moveError").html("Insufficient Fuel");
@@ -323,7 +323,7 @@ function HQ_UI(bldgInfo) {
 							} else {
 								$("#HQ_airshipHeading span").text($("#HQ_moveX").val()+", "+$("#HQ_moveY").val());
 								$("#HQ_airshipETA span").text("updating");
-								load_player(player.league,true,true);
+								load_player(false,true,true);
 							}
 						};
 						
@@ -377,16 +377,6 @@ function HQ_UI(bldgInfo) {
 				
 				$("#HQ_CSL span").text(player.curtown.CSL);
 				
-				$("#HQ_civWeaponSelect").html(function() {
-					var list = "";
-					$.each(UTCC.weapons, function(i, v) {
-						if(v.tier == 1) {
-							list += "<option " + ((i == player.civWeapChoice)?"selected='selected'":"") 
-									+ ((player.research.weap[i])?"":"disabled='disabled'") + ">" + v.name + "</option>";
-						}
-					});
-					return list;
-				});
 				$("#HQ_incomingMissions").html(function() {
 					var HTML = '<h3>Incoming Missions</h3>';
 					$.each(player.curtown.incomingRaids, function(i, v) {
@@ -465,14 +455,14 @@ function HQ_UI(bldgInfo) {
 							HTML+=path+"' alt='"+v.name+"'/><div class='auAmnt'>"+player.curtown.au[i]+"</div><input type='text' id='HQ_AU"+i+"input' class='AUinput' maxlength='4' value='0'/></div>";
 						}
 					});
-					HTML += "<div id='HQ_killMe'></div>"
+					HTML += "<div id='HQ_killMe'></div>";
 					if(player.curtown.supportAU.length > 0) {
 						HTML += "</div><div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div><div id='HQ_supporters'><h3>Support Here</h3>";
 						$.each(player.curtown.sortedSupport, function(i, v) {
 							HTML += "	<div class='fSupportRow' class='darkFrameBody'><span class='supportPlayer'>Support from " + v.player + "</span><a href='javascript:;' class='sendHome'>Send Home</a><div class='supportAUbox'>";
 							$.each(v.indexes, function(j, w) {
 								var supportAU = player.curtown.supportAU[w];
-								HTML += "	<div class='supportAU troop'><div class='supportAUname'>" + supportAU.name + "</div><a href='javascript:;' class='supportAUnumber'>" + supportAU.size + "</a><input type='text' class='AUinput supportAUinput' maxlength='4' value='0'/></div>"
+								HTML += "	<div class='supportAU troop'><div class='supportAUname'>" + supportAU.name + "</div><a href='javascript:;' class='supportAUnumber'>" + supportAU.size + "</a><input type='text' class='AUinput supportAUinput' maxlength='4' value='0'/></div>";
 							});
 							HTML += "</div></div>";
 						});
@@ -703,7 +693,7 @@ function HQ_UI(bldgInfo) {
 								});
 								currUI();
 							}
-							load_player(player.league, true, false);
+							load_player(false, true, false);
 						};
 						if(getPath.match(/bf/i) != null) {
 							killEm.get(getPath);
@@ -878,7 +868,7 @@ function canSendAttack() {
 	var AUarray = [];
 	$(".AUinput").each(function(i, v) {		
 		if(i<6) {
-			if($(v).val() > player.curtown.au[i]) $(v).val(player.curtown.au[i])
+			if($(v).val() > player.curtown.au[i]) $(v).val(player.curtown.au[i]);
 		} else if($(v).val() > player.curtown.supportAU[i-6]) $(v).val(player.curtown.supportAU[i-6].size);
 		AUarray.push((($(v).val() == "")?0:$(v).val()));
 	});

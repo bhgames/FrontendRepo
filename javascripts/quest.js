@@ -9,8 +9,7 @@ function get_quests(async, quests) {
 		} else {
 			player.quests = $.parseJSON(quests);
 			$("#Quests").unbind("click").click(function(){
-				$(this).addClass("open");
-				do_fade(show_quests, "blue", $(this));
+				do_fade(show_quests, $(this));
 			});
 			display_output(false,"Quests Loaded!");
 			clearTimeout(player.flickTimer);
@@ -52,7 +51,7 @@ function do_flick(async) {
 			duration = 900000; //15 minutes
 		}
 	}
-	player.flickTimer = setTimeout(function() {do_flick(true)},duration);
+	player.flickTimer = setTimeout(function() {do_flick(true);},duration);
 }
 
 function show_quests() {
@@ -111,7 +110,7 @@ function show_quests() {
 					display_quest(quest);
 					var noFlick = new make_AJAX();
 					noFlick.get("/AIWars/GodGenerator?reqtype=noFlick&league="+player.league);
-					load_player(player.league, player.curtown.townID, false);
+					load_player(false, player.curtown.townID, false);
 				} else {
 					display_message("Info",quest.info);
 				}
@@ -127,7 +126,8 @@ function display_quest(quest) {
 	var getQuestInfo = new make_AJAX();
 	getQuestInfo.callback = function(response) {
 		var questText = $.parseJSON(response);
-		$("#quest_box").html("<div class='popFrame'><div class='popFrameTop'><div class='popFrameLeft'><div class='popFrameRight'><div class='popFrameBody'><div id='quest_titlebar'><div id='quest_status'>" + ((quest.status==1)?"In Progress":"Completed")+"</div><span>Quest Dialog</span><a href='javascript:;' id='quest_close'></a></div><div id='quest_text'><div id='quest_video'>"+(questText[2]?"<div id='video_title'>Instruction Video</div>"+questText[2]:"")+"</div>"+ questText[0] + "</div><a href='javascript:;' id='quest_leave'>Leave Quest</a></div></div></div></div></div><div class='popFrameBL-BR-B'><div class='popFrameBL'><div class='popFrameBR'><div class='popFrameB'></div></div></div></div>").attr("style","").fadeIn();
+		$("#quest_box").html("<div class='popFrame'><div class='popFrameTop'><div class='popFrameLeft'><div class='popFrameRight'><div class='popFrameBody'><div id='quest_titlebar'><div id='quest_status'>" + ((quest.status==1)?"In Progress":"Completed")+"</div><span>Quest Dialog</span><a href='javascript:;' id='quest_close'></a></div><div id='quest_text'><div id='quest_video'>"+(questText[2]?"<div id='video_title'>Instruction Video</div>"+questText[2]:"")+"</div>"+ questText[0] + "</div><a href='javascript:;' id='quest_leave'>Leave Quest</a></div></div></div></div></div><div class='popFrameBL-BR-B'><div class='popFrameBL'><div class='popFrameBR'><div class='popFrameB'></div></div></div></div>")
+			.attr("style","").fadeIn();
 		$("#quest_text").jScrollPane({showArrows:true,hideFocus:true});
 		display_output(false,"Quest Info Loaded!");
 	};

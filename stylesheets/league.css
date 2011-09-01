@@ -5,37 +5,37 @@
 #League_outerbox .darkFrameBody {
 	height: 490px;
 	}	
-#CC_createLeagueBox {
+#League_createLeagueBox {
 	position: relative;
 	display: inline-block;
 	left: 200px;
 	padding: 10px;
 	}
-#CC_noCreate, #CC_noCreateBlock {
+#League_noCreate, #League_noCreateBlock {
 	height: 100%;
 	width: 100%;
 	}
-#CC_noCreate {
+#League_noCreate {
 	position: absolute;
 	top: 0px;
 	left:0px;
 	}
-#CC_noCreateBlock .darkFrameBody {
+#League_noCreateBlock .darkFrameBody {
 	height: 200px;
 	}
-#CC_noCreateText {
+#League_noCreateText {
 	position: absolute;
 	top: 75px;
 	left: 10px;
 	}
-#CC_createLeagueName {
+#League_createLeagueName {
 	width: 218px;
 	}
-#CC_createLeagueInitials {
+#League_createLeagueInitials {
 	width: 60px;
 	margin-left: 5px;
 	}
-#CC_createLeagueDesc {
+#League_createLeagueDesc {
 	display: block;
 	height: 100px;
 	width: 324px;
@@ -43,52 +43,52 @@
 	background-color: transparent;
 	border: 2px solid #FFFFFF;
 	}
-#CC_createLeagueSite {
+#League_createLeagueSite {
 	width: 218px;
 	}
-#CC_createLeagueButton { /*Still need button*/
+#League_createLeagueButton { /*Still need button*/
 	display: block;
 	width: 100px;
 	height: 25px;
 	background: url(../../images/client/menus/create-button.png) no-repeat 0 0;
 	}
-#CC_createLeagueButton:hover {
+#League_createLeagueButton:hover {
 	background-position: -100px 0;
 	}
-#CC_createLeagueButton:active {
+#League_createLeagueButton:active {
 	background-position: -200px 0;
 	}
-#CC_leagueRoster { 
+#League_leagueRoster { 
 	display: inline-block;
 	float: left;
 	font-size: 15px;
 	}
-#CC_leagueRoster dl {
+#League_leagueRoster dl {
 	height: 430px;
 	width: 200px;
 	overflow: auto;
 	}
-#CC_playerInfo {
+#League_playerInfo {
 	position: absolute;
 	bottom: 5px;
 	right: 50px;
 	width: 200px;
 	}
-#CC_playerInfo h3 {
+#League_playerInfo h3 {
 	margin: 5px;
 	}
-#CC_playerRank, #CC_playerTax {
+#League_playerRank, #League_playerTax {
 	display: block;
 	text-align: right;
 	}
-#CC_info {
+#League_info {
 	position: relative;
 	display: inline-block;
 	height: 350px;
 	width: 440px;
 	padding-left: 5px;
 	}
-#CC_leagueAdmin {
+#League_leagueAdmin {
 	position: absolute;
 	top: 5px;
 	right: 5px;
@@ -97,21 +97,21 @@
 	height: 41px;
 	background: url(../AIFrames/buttons/Admin-League.png) no-repeat 0 -41px;
 	}
-#CC_leagueAdmin:hover {
+#League_leagueAdmin:hover {
 	background-position: 0 0;
 	}
-#CC_leagueAdmin:active {
+#League_leagueAdmin:active {
 	background-position: 0 -82px;
 	}
-#CC_leagueInfoTag {
+#League_leagueInfoTag {
 	display: block;
 	text-align: right;
 	}
-#CC_leagueDesc .textFramed {
+#League_leagueDesc .textFramed {
 	height: 80px;
 	overflow: auto;
 	}
-#CC_switchLeague, #CC_switchPlayer {
+#League_switchLeague, #League_switchPlayer {
 	position: relative;
 	float: right;
 	display: block;
@@ -119,13 +119,13 @@
 	width: 159px;
 	background: url(../AIFrames/buttons/switch-League.png) no-repeat 0 -41px;
 	}
-#CC_switchLeague:hover, #CC_switchPlayer:hover {
+#League_switchLeague:hover, #League_switchPlayer:hover {
 	background-position: 0 0;
 	}
-#CC_switchLeague:active, #CC_switchPlayer:active {
+#League_switchLeague:active, #League_switchPlayer:active {
 	background-position: 0 -82px;
 	}
-#CC_leaveLeague {
+#League_leaveLeague {
 	position: relative;
 	float: right;
 	display: block;
@@ -133,73 +133,73 @@
 	width: 159px;
 	background: url(../AIFrames/buttons/Leave-League.png) no-repeat 0 -41px;
 	}
-#CC_leaveLeague:hover {
+#League_leaveLeague:hover {
 	background-position: 0 0;
 	}
-#CC_leaveLeague:active {
+#League_leaveLeague:active {
 	background-position: 0 -82px;
 	}
-#CC_memberAdmin {
+#League_memberAdmin {
 	display: inline-block;
 	left: 50px;
 	padding: 5px;
 	position: relative;
 	top: 45px;
 	}
-#CC_memberAdmin .textFramed {
+#League_memberAdmin .textFramed {
 	height: 125px;
 	}
-#CC_memberTownAdmin {
+#League_memberTownAdmin {
 	position: absolute;
 	top: 115px;
 	left: 30px;
 	height: 35px;
 	}
-#CC_kickMember, #CC_saveInfo {
+#League_kickMember, #League_saveInfo {
 	display: block;
 	height: 41px;
 	float: right;
 	background: no-repeat 0 -41px;
 	}
-#CC_kickMember {
+#League_kickMember {
 	clear: right;
 	width: 81px;
 	background-image: url(../AIFrames/buttons/Kick-League.png);
 	}
-#CC_saveInfo {
+#League_saveInfo {
 	width: 86px;
 	background-image: url(../AIFrames/buttons/Save-League.png);
 	}
-#CC_kickMember:hover, #CC_saveInfo:hover{
+#League_kickMember:hover, #League_saveInfo:hover{
 	background-position: 0 0px;
 	}
-#CC_kickMember:active, #CC_saveInfo:active{
+#League_kickMember:active, #League_saveInfo:active{
 	background-position: 0 -82px;
 	}
-#CC_invitePlayer {
+#League_invitePlayer {
 	display: inline-block;
 	left: 440px;
 	padding: 5px;
 	position: absolute;
 	top: 55px;
 	}
-#CC_inviteMessage {
+#League_inviteMessage {
 	height: 100px;
 	width: 200px;
 	color: #FFFFFF;
 	background-color: transparent;
 	border: 2px solid #FFFFFF;
 	}
-#CC_sendInvite { /*Need button*/
+#League_sendInvite { /*Need button*/
 	display: block;
 	width: 100px;
 	height: 25px;
 	float: right;
 	background: url(../../images/client/menus/send_message-button.png) no-repeat 0 0;
 	}
-#CC_sendInvite :hover {
+#League_sendInvite :hover {
 	background-position: -100px 0;
 	}
-#CC_sendInvite :active {
+#League_sendInvite :active {
 	background-position: -200px 0;
 	}

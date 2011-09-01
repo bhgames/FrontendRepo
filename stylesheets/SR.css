@@ -6,13 +6,9 @@
 	top: 0px;
 	left: 0px;
 	height: 520px;
-	width: 768px;
+	width: 738px;
 	padding-left: 6px;
 	padding-top: 5px;
-	}
-#SR_reports .darkFrameBody {
-	padding-top: 0px;
-	height: 495px;
 	}
 #SR_mainTabs {
 	position: relative;
@@ -21,15 +17,9 @@
 	}
 #SR_window {
 	height: 465px;
-	width: 100%;
+	width: 732px;
 	overflow: auto;
 	color: #FFF;
-	}
-#SR_window a {
-	color: #AAAAAA;
-	}
-#SR_window a:active {
-	color: #CCCCCC;
 	}
 .timeStamp {
 	float: right;
@@ -43,20 +33,13 @@
 	margin-bottom: 25px;
 	min-height: 436px;
 	}
-a#SR_allTab {
+#SR_allTab {
 	position: absolute;
 	bottom: 0px;
 	left: 0px;
 	display: block;
 	height: 41px;
 	width: 91px;
-	background: url(../AIFrames/buttons/All-parent.png) no-repeat 0 -41px;
-	}
-#SR_allTab:hover {
-	background-position: 0 0;
-	}
-#SR_allTab:active, #SR_allTab.active {
-	background-position: 0 -82px;
 	}
 #SR_attackTab {
 	position: absolute;
@@ -65,13 +48,6 @@ a#SR_allTab {
 	display: block;
 	height: 41px;
 	width: 151px;
-	background: url(../AIFrames/buttons/Attacks-parent.png) no-repeat 0 -41px;
-	}
-#SR_attackTab:hover {
-	background-position: 0 0;
-	}
-#SR_attackTab:active, #SR_attackTab.active {
-	background-position: 0 -82px;
 	}
 #SR_spyTab {
 	position: absolute;
@@ -80,13 +56,6 @@ a#SR_allTab {
 	display: block;
 	height: 41px;
 	width: 94px;
-	background: url(../AIFrames/buttons/spy.png) no-repeat 0 -41px;
-	}
-#SR_spyTab:hover {
-	background-position: 0 0;
-	}
-#SR_spyTab:active, #SR_spyTab.active {
-	background-position: 0 -82px;
 	}
 #SR_supportTab {
 	position: absolute;
@@ -95,13 +64,6 @@ a#SR_allTab {
 	display: block;
 	height: 41px;
 	width: 151px;
-	background: url(../AIFrames/buttons/support.png) no-repeat 0 -41px;
-	}
-#SR_supportTab:hover {
-	background-position: 0 0;
-	}
-#SR_supportTab:active {
-	background-position: 0 -82px;
 	}
 #SR_archiveTab {
 	position: absolute;
@@ -110,13 +72,6 @@ a#SR_allTab {
 	display: block;
 	height: 41px;
 	width: 151px;
-	background: url(../AIFrames/buttons/archive.png) no-repeat 0 -41px;
-	}
-#SR_archiveTab:hover {
-	background-position: 0 0;
-	}
-#SR_archiveTab:active, #SR_archiveTab.active {
-	background-position: 0 -82px;
 	}
 #SR_searchTab {
 	position: absolute;
@@ -125,18 +80,11 @@ a#SR_allTab {
 	display: block;
 	height: 41px;
 	width: 118px;
-	background: url(../AIFrames/buttons/search.png) no-repeat 0 -41px;
-	}
-#SR_searchTab:hover {
-	background-position: 0 0;
-	}
-#SR_searchTab:active, #SR_searchTab.active {
-	background-position: 0 -82px;
 	}
 	
 #SR_secondaryTabs {
 	position: relative;
-	top: -5px;
+	top: 0px;
 	height: 41px;
 	width: 100%;
 	z-index: 1;
@@ -144,6 +92,7 @@ a#SR_allTab {
 #SR_sWindow {
 	display: none;
 	height: 424px;
+	width: 730px;
 	}
 #SR_sWindow #SR_reportList {
 	min-height: 395px;
@@ -155,13 +104,6 @@ a#SR_allTab {
 	display: block;
 	height: 41px;
 	width: 76px;
-	background: url(../AIFrames/buttons/All-child.png) no-repeat 0 -41px;
-	}
-#SR_sAllTab:hover {
-	background-position: 0 0;
-	}
-#SR_sAllTab:active, #SR_sAllTab.active {
-	background-position: 0 -82px;
 	}
 #SR_sAttackTab {
 	position: absolute;
@@ -170,13 +112,6 @@ a#SR_allTab {
 	display: block;
 	height: 41px;
 	width: 128px;
-	background: url(../AIFrames/buttons/Attacks-child.png) no-repeat 0 -41px;
-	}
-#SR_sAttackTab:hover {
-	background-position: 0 0;
-	}
-#SR_sAttackTab:active, #SR_sAttackTab.active {
-	background-position: 0 -82px;
 	}
 #SR_sGenocideTab {
 	position: absolute;
@@ -185,13 +120,6 @@ a#SR_allTab {
 	display: block;
 	height: 41px;
 	width: 91px;
-	background: url(../AIFrames/buttons/siege.png) no-repeat 0 -41px;
-	}
-#SR_sGenocideTab:hover {
-	background-position: 0 0;
-	}
-#SR_sGenocideTab:active, #SR_sGenocideTab.active {
-	background-position: 0 -82px;
 	}
 #SR_sInvadeTab {
 	position: absolute;
@@ -200,13 +128,6 @@ a#SR_allTab {
 	display: block;
 	height: 41px;
 	width: 156px;
-	background: url(../AIFrames/buttons/invasions.png) no-repeat 0 -41px;
-	}
-#SR_sInvadeTab:hover {
-	background-position:  0 0;
-	}
-#SR_sInvadeTab:active, #SR_sInvadeTab.active {
-	background-position:  0 -82px;
 	}
 #SR_sStrafeTab {
 	position: absolute;
@@ -215,28 +136,18 @@ a#SR_allTab {
 	display: block;
 	height: 41px;
 	width: 111px;
-	background: url(../AIFrames/buttons/strafe.png) no-repeat 0 -41px;
 	}
-#SR_sStrafeTab:hover {
-	background-position:  0 0;
-	}
-#SR_sStrafeTab:active, #SR_sStrafeTab.active {
-	background-position:  0 -82px;
-	}
-a#SR_sGlassTab {
+#SR_sGlassTab {
 	position: absolute;
 	bottom: 0px;
 	left: 562px;
 	display: block;
 	height: 41px;
 	width: 142px;
-	background: url(../AIFrames/buttons/glassing.png) no-repeat 0 -41px;
+	background: transparent;
 	}
-#SR_sGlassTab:hover {
-	background-position:  0 0;
-	}
-#SR_sGlassTab:active, #SR_sGlassTab.active {
-	background-position:  0 -82px;
+#SR_sGlassTab:hover, #SR_sGlassTab:active, #SR_sGlassTab.open {
+	background: url(../SPFrames/open-tab.png) no-repeat center bottom;
 	}
 .offNumE li {
 	list-style: none;
@@ -246,24 +157,48 @@ a#SR_sGlassTab {
 	}
 #SR_reportList li {
 	height: 20px;
+	padding: 2px;
+	border: 0px solid #000;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	}
+#SR_reportList li:nth-child(even) {
+	background: rgba(0, 0, 0, 0.5);
+	}
+#SR_reportList li:nth-child(odd) {
+	background: rgba(0, 0, 0, 0.3);
 	}
 #SR_reportBody {
-	display: table;
 	margin: 0 auto;
-	padding-bottom: 60px;
+	padding: 5px 5px 30px;
+	width: 700px;
+	min-height: 370px;
+	border: 3px solid #A8A495;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+	-webkit-box-shadow: inset 0px 2px 10px rgba(0,0,0,0.8), 0px 2px 10px rgba(0,0,0,0.8);
+	-moz-box-shadow: inset 0px 2px 10px rgba(0,0,0,0.8), 0px 2px 10px rgba(0,0,0,0.8);
+	box-shadow: inset 0px 2px 10px rgba(0,0,0,0.8), 0px 2px 10px rgba(0,0,0,0.8);
+	background: url(../SPFrames/rusted-metal.jpg) no-repeat left top;
 	}
 #SR_reportBody .textFramed {
 	padding: 0px;
 	}
 #SR_repHeader {
-	font-size: 24px;
 	margin-bottom: 15px;
+	color: #282415;
+	font: 24px Bold "Trajan Pro", Trajan, serif;
+	text-shadow: 0 1px 1px rgba(240, 225, 163, 0.7);
 	}
 #SR_BPgained {
 	position: absolute;
-	top: 25px;
+	top: 20px;
 	right: 5px;
-	font-size: 16px;
+	color: #282415;
+	font: 16px Bold "Trajan Pro", Trajan, serif;
+	text-shadow: 0 1px 1px rgba(240, 225, 163, 0.7);
 	}
 #SR_offMain, #SR_defMain, .offSupp, .defSupp {
 	margin-bottom: 5px;
@@ -276,30 +211,33 @@ a#SR_sGlassTab {
 	}
 .offAU, .defAU, .legend {
 	display: table-cell;
-	height: 45px;
+	height: 100px;
 	padding: 4px;
-	border: solid #FFFFFF;
+	border: solid #FFF;
 	border-width: 0 1px;
+	}
+.offAU, .defAU {
+	background: rgba(0,0,0,0.3);
 	}
 .legend  {
 	border: none;
-	color: #AAAAAA;
-	filter:alpha(opacity=50);
-	opacity: .50;
+	color: #AAA;
 	}
 .offAU span, .defAU span{
+	position: relative;
+	top: 20px;
 	display: block;
 	text-align: center;
 	}
 .offNumE, .defNumE {
-	border-top: 1px solid #FFFFFF;
+	border-top: 1px solid #FFF;
 	}
 #SR_bldgAmts {
 	padding: 20px;
 	}
 #SR_buttons {
 	position: absolute;
-	right: 0px;
+	right: 30px;
 	bottom: 0px;
 	height: 30px;
 	}
@@ -311,6 +249,7 @@ a#SR_sGlassTab {
 	clear: right;
 	}
 #SR_combatInfoBox {
+	display: none;
 	width: 680px;
 	margin-top: 10px;
 	color: #000000;

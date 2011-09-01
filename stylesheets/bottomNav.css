@@ -3,106 +3,86 @@
 ************************************************************************************************************************************************/
 #bottomlinks {
 	position: absolute;
-	top: 0px;
-	left: 0px;
-	width: 175px;
-	height: 700px;
+	top: 667px;
+	left: 1px;
+	width: 763px;
+	height: 47px;
 	margin: 0;
 	padding: 0;
-	background: url(../AIFrames/AI-Frames-Sidebar.png) no-repeat 5px 10px;
-	}
-#rankings {
-	position: absolute;
-	top: 34px;
-	left: 40px;
-	height: 50px;
-	width: 70px;
-	background: url(../AIFrames/buttons/rankings.png) no-repeat left top;
-	cursor: pointer;
+	z-index: 4;
 	}
 #bottomlinks li {
-	position: relative;
-	top: 111px;
-	left: 26px;
-	display: block;
-	height: 73px;
-	width: 109px;
+	display: inline-block;
+	height: 47px;
+	width: 162px;
 	cursor: pointer;
+	background-image: url(../SPFrames/bottom-nav.png);
 	}
-#console, #IO {
-	display: inline-block !important;
-	height: 58px !important;
-	width: 53px !important;
+	/*Note: Add additional top padding to IO on active/open.  See #citybox:active in topNav*/
+li#IO {
+	height: 52px;
+	width: 44px;
+	background: url(../SPFrames/IO-button.png) no-repeat 0 0;
+	color: #a9a098;
+	font: 14px "Trajan Pro",Trajan,serif;
+	text-align: center;
+	text-shadow: 0 1px rgba(0,0,0,0.8);
 	}
-#console {
-	background: url(../AIFrames/buttons/console-off.png) no-repeat 0 0;
+li#IO:hover {
+	background-position: -44px 0;
 	}
-#console.active {
-	background-image: url(../AIFrames/buttons/Console-ON.png)
+li#IO:active, li#IO.open {
+	background-position: -88px 0;
 	}
-#IO {
-	background: url(../AIFrames/buttons/io0.png) no-repeat 0 0;
+	
+li#console{
+	height: 46px;
+	width: 43px;
+	background: url(../SPFrames/console-button.png) no-repeat 0 0;
 	}
-#IO.incomingE {
-	background-image: url(../AIFrames/buttons/io1a.png);
+li#console:hover {
+	background-position: -43px 0;
 	}
-#IO.incomingF {
-	background-image: url(../AIFrames/buttons/io1b.png);
+li#console:active, li#console.active {
+	background-position: -86px 0;
 	}
-#IO.outgoing {
-	background-image: url(../AIFrames/buttons/io2b.png);
-	}
-#IO.outgoing.incomingF {
-	background-image: url(../AIFrames/buttons/io3bb.png);
-	}
-#IO.outgoing.incomingE {
-	background-image: url(../AIFrames/buttons/io3ab.png);
-	}
+	
 #League {
-	background: url(../AIFrames/buttons/LEAGUESsheet.png) no-repeat 0 0;
+	background-position: 0 -141px;
 	}
+#League:hover {
+	background-position: -162px -141px;
+	}
+#League:active, #League.open {
+	background-position: -324px -141px;
+	}
+	
 #Quests {
-	background: url(../AIFrames//buttons/QUESTsheet.png) no-repeat 0 0;
+	background-position: 0 -94px;
 	}
+#Quests:hover {
+	background-position: -162px -94px;
+	}
+#Quests:active, #Quests.open {
+	background-position: -324px -94px;
+	}
+	
 #CS {
-	background: url(../AIFrames//buttons/CSsheet.png) no-repeat 0 0;
+	background-position: 0 -47px;
 	}
-#UTCC {
-	background: url(../AIFrames//buttons/UTCCsheet.png) no-repeat 0 0;
+#CS:hover {
+	background-position: -162px -47px;
 	}
+#CS:active, #CS.open {
+	background-position: -324px -47px;
+	}
+	
 #EVE {
-	background: url(../AIFrames//buttons/EVEsheet.png) no-repeat 0 0;
+	background-position: 0 0;
 	}
-#bottomlinks li.frame01 {
-	background-position: -111px 0;
+#EVE:hover {
+	background-position: -162px 0;
 	}
-#bottomlinks li.frame02 {
-	background-position: -222px 0;
-	}
-#bottomlinks li.frame03 {
-	background-position: -333px 0;
-	}
-#bottomlinks li.frame04 {
-	background-position: -444px 0;
-	}
-#bottomlinks li.frame05 {
-	background-position: -555px 0;
-	}
-#bottomlinks li.frame06 {
-	background-position: -666px 0;
-	}
-#bottomlinks li.frame07 {
-	background-position: -777px 0;
-	}
-#bottomlinks li.frame08 {
-	background-position: -888px 0;
-	}
-#bottomlinks li.frame09 {
-	background-position: -999px 0;
-	}
-#bottomlinks li.frame10 {
-	background-position: -1110px 0;
-	}
-#bottomlinks li.frame11 {
-	background-position: -1221px 0;
+#EVE:active, #EVE.open {
+	background-position: -324px 0;
 	}

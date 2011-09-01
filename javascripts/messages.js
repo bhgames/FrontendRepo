@@ -1,6 +1,14 @@
-var messages = {};
+var messages = {
+					HTML : "<div id='Mess_outerBox'>\
+								<div id='mess_inbox' class='textTab'>Inbox</div>\
+								<div id='mess_groups' class='textTab'>User Groups</div>\
+								<div id='mess_newMess' class='textTab last'>New Message</div>\
+								<div id='mess_notepad' title='notepad'></div>\
+								<div id='mess_window'></div>\
+							</div>"
+				};
 
-function get_messages(async,mess, UG) {
+function get_messages(async,mess,UG) {
 	try {
 		if(async) {
 			getMess = new make_AJAX();
@@ -8,16 +16,16 @@ function get_messages(async,mess, UG) {
 									response = response.split(";");
 									get_messages(false,response[0],response[1]);
 								};
-			getMess.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".getMessages();" + player.command + ".getUserGroups();");
+			getMess.get("reqtype=command&command="+player.command+".getMessages();" + player.command + ".getUserGroups();");
 		} else {
 			if(messages.curr) {
 				var temp = messages.curr; 
 				var temp2 = messages.currGroup;
 			}
 			var reload = messages.reload;
-			messages.messages = $.parseJSON(mess).reverse();
+			messages.messages = ((mess) ? $.parseJSON(mess).reverse() : messages.messages || {});
 			display_output(false,"Messages Loaded!");
-			messages.UG = $.parseJSON(UG);
+			messages.UG = ((UG) ? $.parseJSON(UG) : messages.UG || {});
 			display_output(false,"User Groups Loaded!");
 			if(temp){
 				messages.curr=temp;
@@ -26,7 +34,7 @@ function get_messages(async,mess, UG) {
 			if(reload&&currUI===build_message_UI) currUI();
 			check_for_unread();
 			$("#mailbox").unbind('click').click(function() {
-				do_fade(build_message_UI,"amber");
+				do_fade(build_message_UI,$(this));
 			});
 		}
 	} catch(e) {}
@@ -36,7 +44,8 @@ function build_message_UI() {
 	display_output(false,"Launchinig Dragonfyre Mail Client...");
 	currUI = build_message_UI;
 	$("#window").contents().unbind();
-	$("#window").html("<div id='Mess_outerBox'><div class='darkFrameBody'><a href='javascript:;' id='mess_newMess'></a><a href='javascript:;' id='mess_notepad' title='notepad'></a><a href='javascript:;' id='mess_inbox'></a><a href='javascript:;' id='mess_groups'></a><div id='mess_window'></div></div><div class='darkFrameBL-BR-B'><div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div></div></div>");
+	$("#window").html(messages.HTML);
+	$("#viewerback").css({"background-image":"url(SPFrames/Buildings/UI/menu-back.jpg)"}).html("").fadeIn();
 	
 	$("#mess_window").jScrollPane({showArrows:true,hideFocus:true});
 	messages.api = $("#mess_window").data('jsp');
@@ -44,26 +53,31 @@ function build_message_UI() {
 	
 	display_output(false,"Connecting to DMS Servers...");
 	$("#mess_inbox").unbind('click').click(function() {
-		var HTML = "<div id='mess_innerbox'>";
-		$.each(messages.messages, function(i, v) {
-			var unreadInGroup = false;
-			$.each(v, function(j,w){
-				if(!w.read){unreadInGroup=true;return false;}
+		if(!$(this).hasClass("open")) {
+			$(".textTab.open").removeClass("open");
+			$(this).addClass("open");
+			var HTML = "<div id='mess_innerbox'>";
+			$.each(messages.messages, function(i, v) {
+				var unreadInGroup = false;
+				$.each(v, function(j,w){
+					if(!w.read){unreadInGroup=true;return false;}
+				});
+				HTML += "<div class='messGroup'><span class='messExpand'>" + v[0].subject.replace(/<u44>/ig,",").replace(/<u3B>/g,";").replace(/</g,"&lt;").replace(/>/g,"&gt;") +(unreadInGroup?" *NEW*":"") + "</span><input type='checkbox' class='groupSelect' /><a href='javascript:;' class='viewConvo'></a><div class='messages'><ul>";
+				$.each(v, function(j, w) {
+					HTML += "<li><a href='javascript:;' class='message" + ((w.read)?" read":"") + "'>" + w.subject.replace(/<u44>/ig,",").replace(/<u3B>/g,";").replace(/</g,"&lt;").replace(/>/g,"&gt;") + "</a><span class='names'> " + ((w.usernameFrom == player.username)?"To: " + w.usernameTo:"From: " + w.usernameFrom) + "</span><input type='checkbox' class='messSelect' /></li>";
+				});
+				HTML += "</ul></div></div>";
 			});
-			HTML += "<div class='messGroup'><a href='javascript:;' class='messExpand'></a><span>" + v[0].subject.replace(/<u44>/ig,",").replace(/<u3B>/g,";").replace(/</g,"&lt;").replace(/>/g,"&gt;") +(unreadInGroup?" *NEW*":"") + "</span><input type='checkbox' class='groupSelect' /><a href='javascript:;' class='viewConvo'></a><div class='messages'><ul>";
-			$.each(v, function(j, w) {
-				HTML += "<li><a href='javascript:;' class='message" + ((w.read)?" read":"") + "'>" + w.subject.replace(/<u44>/ig,",").replace(/<u3B>/g,";").replace(/</g,"&lt;").replace(/>/g,"&gt;") + "</a><span class='names'> " + ((w.usernameFrom == player.username)?"To: " + w.usernameTo:"From: " + w.usernameFrom) + "</span><input type='checkbox' class='messSelect' /></li>";
+			
+			HTML += "</div><div id='mess_addNav'><a href='javascript:;' id='mess_markAll'>Mark All</a><a href='javascript:;' id='mess_markRead'> Mark Read </a><a href='javascript:;' id='mess_delete'> Delete </a></div>";
+			
+			$("#mess_window").fadeOut('fast', function() {
+				$("#viewerback").html("<div id='mess_addNavBack'></div>");
+				messages.api.getContentPane().html(HTML);
+				$(this).fadeIn('fast');
+				messages.api.reinitialise();
 			});
-			HTML += "</ul></div></div>";
-		});
-		
-		HTML += "</div><div id='mess_addNav'><a href='javascript:;' id='mess_markAll'>Mark All</a><a href='javascript:;' id='mess_markRead'> Mark Read </a><a href='javascript:;' id='mess_delete'> Delete </a></div>";
-		
-		$("#mess_window").fadeOut('fast', function() {
-			messages.api.getContentPane().html(HTML);
-			$(this).fadeIn('fast');
-			messages.api.reinitialise();
-		});
+		}
 	}).click();
 	
 	$("#mess_window a").unbind('click').click(function() {
@@ -114,14 +128,14 @@ function build_message_UI() {
 		$(".groupSelect").each(function(i, v) {
 			if(v.checked) {
 				$.each(messages.messages[i], function(j, w) {
-					getPath += player.command + ".markReadMessage(" + w.messageID + ");";
+					getPath += player.command + ".markReadMessage(" + w.id + ");";
 					w.read = true;
 				});
 				$(v).siblings(".messages").find("a").addClass("read");
 			} else {
 				$(v).siblings(".messages").find(".messSelect").each(function(j, w) {
 					if(w.checked) {
-						getPath += player.command + ".markReadMessage(" + messages.messages[i][j].messageID + ");";
+						getPath += player.command + ".markReadMessage(" + messages.messages[i][j].id + ");";
 						messages.messages[i][j].read = true;
 						$(w).siblings("a").addClass("read");
 					}
@@ -148,7 +162,7 @@ function build_message_UI() {
 			$(".groupSelect").each(function(i, v) {
 				if(v.checked) {
 					$.each(messages.messages[i], function(j, w) {
-						getPath += player.command + ".markDeletedMessage(" + w.messageID + ");";
+						getPath += player.command + ".markDeletedMessage(" + w.id + ");";
 					});
 					deletedGroup.push(i);
 					elementGroup.push($(v));
@@ -157,7 +171,7 @@ function build_message_UI() {
 					var element = [];
 					$(v).siblings(".messages").find(".messSelect").each(function(j, w) {
 						if(w.checked) {
-							getPath += player.command + ".markDeletedMessage(" + messages.messages[i][j].messageID + ");";
+							getPath += player.command + ".markDeletedMessage(" + messages.messages[i][j].id + ");";
 							element.push($(w));
 							deleted.push(j);
 						}
@@ -188,16 +202,22 @@ function build_message_UI() {
 	});
 	//*************************************User Groups********************************************************************************************************
 	$("#mess_groups").unbind('click').click(function() {
-		var HTML = "<select id='mess_groupSelect' size='10'>";
-		$.each(messages.UG, function(i,v) {
-			HTML += "<option>" + v.name + "</option>";
-		});
-		HTML += "</select><input type='text' id='mess_groupName' value='New User Group' maxlength='20' /><textarea id='mess_groupPlayers'>Put a semicolon separated list of player names here.\nEx. Player1;Player2;Player3</textarea><a href='javascript:;' id='mess_newGroup'></a><a href='javascript:;' id='mess_saveGroup'></a><a href='javascript:;' id='mess_loadGroup'></a><a href='javascript:;' id='mess_deleteGroup'></a>";
-		$("#mess_window").fadeOut("fast",function(){
-			messages.api.getContentPane().html(HTML);
-			$(this).fadeIn('fast');
-			messages.api.reinitialise();
-		});
+		if(!$(this).hasClass("open")) {
+			$(".textTab.open").removeClass("open");
+			$(this).addClass("open");
+			
+			var HTML = "<select id='mess_groupSelect' size='10'>";
+			$.each(messages.UG, function(i,v) {
+				HTML += "<option>" + v.name + "</option>";
+			});
+			HTML += "</select><input type='text' id='mess_groupName' value='New User Group' maxlength='20' /><textarea id='mess_groupPlayers'>Put a semicolon separated list of player names here.\nEx. Player1;Player2;Player3</textarea><a href='javascript:;' id='mess_newGroup'></a><a href='javascript:;' id='mess_saveGroup'></a><a href='javascript:;' id='mess_loadGroup'></a><a href='javascript:;' id='mess_deleteGroup'></a>";
+			$("#mess_window").fadeOut("fast",function(){
+				$("#viewerback").html("");
+				messages.api.getContentPane().html(HTML);
+				$(this).fadeIn('fast');
+				messages.api.reinitialise();
+			});
+		}
 	});
 	$("#mess_groupName").die('focus').live("focus",function() {
 		if($(this).val() == "New User Group") $(this).val("");
@@ -237,7 +257,7 @@ function build_message_UI() {
 			messages.UG.push(newUG);
 			$('#mess_groupSelect').append("<option>"+newUG.name+"</option>");
 		} else {
-			getPath += player.command+".deleteUserGroup("+newUG.name+");"
+			getPath += player.command+".deleteUserGroup("+newUG.name+");";
 		}
 		getPath += player.command+".createUserGroup("+newUG.name+",["+newUG.usernames+"]);";
 		saveGroup.callback = function(response) {
@@ -292,7 +312,7 @@ function build_message_UI() {
 		HTML += "</h2><div id='mess_convo'>";
 		var getPath = "/AIWars/GodGenerator?reqtype=command&command=";
 		$.each(messages.messages[messages.currGroup], function(i, v) {
-			if(!v.read) {getPath += player.command + ".markReadMessage(" + v.messageID + ");";v.read=true;}
+			if(!v.read) {getPath += player.command + ".markReadMessage(" + v.id + ");";v.read=true;}
 			HTML += "<div class='convoMessage" + ((v.usernameFrom == player.username)?" fromSelf'":"'") + "><a href='javascript:;' class='deleteMess' title='Delete Message'></a><div class='messSender'>" 
 					+ v.usernameFrom + "</div><div class='messSubject'>" + v.subject.replace(/<u44>/ig,",").replace(/<u3B>/g,";").replace(/<script/g,"") + "</div><div class='messBodyBox'><div class='messBodyGrad'><div class='messBodyTop'><div class='messBodyBottom'><div class='messBody'>" 
 					+ v.body.replace(/<u44>/ig,",").replace(/<u3B>/g,";").replace(/<script/g,"");
@@ -322,6 +342,7 @@ function build_message_UI() {
 			check_for_unread();
 		};
 		markRead.get(getPath);
+		$("#viewerback").html("");
 	});
 	//**********************************Message View***************************************************************************************************************
 	$(".message").die('click').live('click',function(){
@@ -350,6 +371,7 @@ function build_message_UI() {
 		HTML += "</div></div></div></div></div><div id='mess_addMessNav'><a href='javascript:;' id='mess_reportMess'></a><a href='javascript:;' id='mess_deleteMess'></a>  <a href='javascript:;' id='mess_replyMess'></a></div>";
 					
 		$("#mess_window").fadeOut('fast', function() {
+			$("#viewerback").html("");
 			messages.api.getContentPane().html(HTML);
 			$(this).fadeIn('fast');
 			messages.api.reinitialise();
@@ -360,7 +382,7 @@ function build_message_UI() {
 					display_output(false,"Message Marked Read!");
 					check_for_unread();
 				};
-				markRead.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command + ".markReadMessage(" + messages.curr.messageID + ");");
+				markRead.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command + ".markReadMessage(" + messages.curr.id + ");");
 				messages.curr.read = true;
 			}
 		});
@@ -369,10 +391,8 @@ function build_message_UI() {
 	$("#mess_deleteMess, .deleteMess").die('click').live('click', function() {
 		var delMess = new make_AJAX();
 		display_output(false,"Deleting Message...");
-		var reloadUI = true;
 		if($(this).is(".deleteMess")) {
 			messages.curr = messages[messages.currGroup][$(this).index(".deleteMess")];
-			reloadUI = false;
 			$(this).parent().animate({'opacity':'toggle','height':'toggle'},'normal', function() {
 				$(this).remove();
 			});
@@ -381,13 +401,13 @@ function build_message_UI() {
 			display_output(false,"Message Deleted!");
 			get_messages(true);
 		};
-		delMess.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command + ".markDeletedMessage(" + messages.curr.messageID + ");");
+		delMess.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command + ".markDeletedMessage(" + messages.curr.id + ");");
 	});
 	$("#mess_deleteConvo").die('click').live('click',function() {
 		var getPath = "/AIWars/GodGenerator?reqtype=command&command=";
 		display_output(false,"Deleting Messages...");
 		$.each(messages.messages[messages.currGroup], function(j, w) {
-			getPath += player.command + ".markDeletedMessage(" + w.messageID + ");";
+			getPath += player.command + ".markDeletedMessage(" + w.id + ");";
 		});
 		messages.messages.splice(messages.currGroup, 1);
 		messages.currGroup = 0;
@@ -401,24 +421,30 @@ function build_message_UI() {
 	});
 	//**********************************Write Message***************************************************************************************************************
 	$("#mess_newMess, #mess_replyMess").die('click').live('click', function() {
-		if($(this).is("#mess_newMess")) {
-			messages.curr = false;
-		}
-		
-		$("#mess_window").fadeOut('fast', function() {
-			messages.api.getContentPane().html("<div id='mess_recipBox'><label for='mess_recip'>To:</label> <input type='text' id='mess_recip' /></div><div id='mess_subjectBox'><label for='mess_subject'>Subject:</label> <input type='text' id='mess_subject' maxlength='100' /></div><div class='messBodyBox' id='Mess_newMessBox'><div class='messBodyGrad'><div class='messBodyTop'><div class='messBodyBottom'><div class='messBody'><textarea id='mess_bodyText'></textarea></div></div></div></div></div><a href='javascript:;' id='mess_sendMess'></a>");
-			$(this).fadeIn('fast');
-			messages.api.reinitialise();
-			
-			if(messages.curr) {
-				var participants = messages.curr.usernameTo.concat(messages.curr.usernameFrom);
-				$.each(participants, function(i,v) {
-					if(v == player.username) {participants.splice(i, 1); return false;}
-				});
-				$("#mess_recip").val(participants);
-				$("#mess_subject").val(messages.curr.subject.replace(/<u44>/ig,","));
+		if(!$(this).hasClass("open")) {
+			$(".textTab.open").removeClass("open");
+			$("#mess_newMess").addClass("open");
+	
+			if($(this).is("#mess_newMess")) {
+				messages.curr = false;
 			}
-		});
+			
+			$("#mess_window").fadeOut('fast', function() {
+				$("#viewerback").html("");
+				messages.api.getContentPane().html("<div id='mess_recipBox'><label for='mess_recip'>To:</label> <input type='text' id='mess_recip' /></div><div id='mess_subjectBox'><label for='mess_subject'>Subject:</label> <input type='text' id='mess_subject' maxlength='100' /></div><div class='messBodyBox' id='Mess_newMessBox'><div class='messBodyGrad'><div class='messBodyTop'><div class='messBodyBottom'><div class='messBody'><textarea id='mess_bodyText'></textarea></div></div></div></div></div><a href='javascript:;' id='mess_sendMess'></a>");
+				$(this).fadeIn('fast');
+				messages.api.reinitialise();
+				
+				if(messages.curr) {
+					var participants = messages.curr.usernameTo.concat(messages.curr.usernameFrom);
+					$.each(participants, function(i,v) {
+						if(v == player.username) {participants.splice(i, 1); return false;}
+					});
+					$("#mess_recip").val(participants);
+					$("#mess_subject").val(messages.curr.subject.replace(/<u44>/ig,","));
+				}
+			});
+		}
 	});
 	
 	$("#mess_sendMess").die('click').live('click', function() {
@@ -520,7 +546,7 @@ function build_message_UI() {
 				} else {
 					messages.reload = true;
 				}
-				load_player(player.league,true,false); //automatically grabs messages
+				load_player(false,true,false); //automatically grabs messages
 			} else {
 				var error = response.split(":");
 				if(error.length==2)error=error[1];
@@ -542,7 +568,7 @@ function build_message_UI() {
 				} else {
 					messages.reload = true;
 				}
-				load_player(player.league,true,false); //automatically grabs messages
+				load_player(false,true,false); //automatically grabs messages
 			} else {
 				var error = response.split(":");
 				if(error.length==2)error=error[1];

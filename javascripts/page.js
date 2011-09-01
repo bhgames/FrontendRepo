@@ -20,25 +20,40 @@ Modernizr.addTest('pointerEvents', function () {
     return ret;
 });
 
-$(document).ready(function() {	
-	try {
-		window.applicationCache.addEventListener('updateready', function(e) {
-			if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
-				window.applicationCache.swapCache();
-			  display_message('Update','A new version of this site is available. Load it?',function() {
-				window.location.reload();
-			  });
-			}
-		});
-	} catch(e) {} //browser doesn't support appcache
+$(document).ready(function() {
 
-	FB.init({appId: '164327976933647', status: true, cookie: false,
-			 xfbml: true});
+	FB.init({appId: '164101923624047', status: true, cookie: false, xfbml: true});
 	FB.Canvas.setSize();
 	
-	//preload();
-	set_sidebar_anim();
+	//set jScrollPane global defaults
+	
+	$.extend($.fn.jScrollPane.defaults,{verticalDragMinHeight:24,verticalDragMaxHeight:24,showArrows:false,hideFocus:true});
+	
 	get_session();
+	
+	$("body").bind("resUpdate", display_res);
+	
+	$("body").bind("resUpdate.warehouseMenu", function() {
+		var info = $("#town_warehouseMenu").clone();
+		$.each(player.curtown.res, function(i,x) {
+			if(i>3) {return false;}
+			var perc = Math.round((x/player.curtown.resCaps[i]) * 100);
+			var bar = info.find(".capacityBar").eq(i).css("width",perc+"%");
+			info.find(".rph").eq(i).text(Math.ceil(player.curtown.actualInc[i]*3600) + " per hour");
+		});
+		$("#town_warehouseMenu").replaceWith(info);
+	});
+	
+	$("#town_infobarOpen").unbind("click").click(function() {
+		if($(this).hasClass("open")) {
+			$("#town_infobar").slideUp(100);
+			$(this).removeClass("open");
+		} else {
+			$("#town_infobar").slideDown(100);
+			$(this).addClass("open");
+		}
+	});
+	
 	$("#menu").unbind("click").click(function() {
 		$("#dropdown_menu").animate({"opacity":"toggle"},"fast");
 	});
@@ -101,34 +116,6 @@ $(document).ready(function() {
 			$("#twitter_box").removeClass("open");
 		} else {
 			$("#twitter_box").animate({"margin-left":"-310px"},100);
-		}
-	});
-	$("#forum_tab").unbind('click').click(function() {
-		if(Modernizr.csstransitions) {
-			$("#forum_box").addClass("open");
-		} else {
-			$("#forum_box").animate({"margin-left":"0px"},100);
-		}
-	});
-	$("#forum_close").unbind("click").click(function() {
-		if(Modernizr.csstransitions) {
-			$("#forum_box").removeClass("open");
-		} else {
-			$("#forum_box").animate({"margin-left":"-100%"},100);
-		}
-	});
-	$("#blog_tab").unbind('click').click(function() {
-		if(Modernizr.csstransitions) {
-			$("#blog_box").addClass("open");
-		} else {
-			$("#blog_box").animate({"margin-left":"0px"},100);
-		}
-	});
-	$("#blog_close").unbind("click").click(function() {
-		if(Modernizr.csstransitions) {
-			$("#blog_box").removeClass("open");
-		} else {
-			$("#blog_box").animate({"margin-left":"-100%"},100);
 		}
 	});
 });

@@ -33,3 +33,19 @@ a:active#Bnkr_assign {
 	left: 5px;
 	display: block;
 }
+/* *********************************************************************
+ * Resource Cache CSS
+***********************************************************************/
+#ResC_protectedAmnts {
+	margin: 40px 160px;
+	}
+#ResC_protectedAmnts > div {
+	border: 1px solid white;
+	width: 408px;
+	padding: 5px;
+	margin: 5px 0;
+	}
+.ResCResAmounts {
+	float: right;
+	font-size: 19px;
+	}

@@ -8,7 +8,7 @@ function build_UTCC() {
 	//populate select boxes
 		//populate Weapon Select Box and apply event handlers
 	$("#UTCC_weaponSelect").html(function() {
-		var list;
+		var list="";
 		$.each(UTCC.weapons, function(i, v) {
 			list += "<option>" + v.name + "</option>";
 		});
@@ -22,13 +22,13 @@ function build_UTCC() {
 				switch(UTCC.weapons[i].tier) {
 					case 4:
 					case 1:
-						points = 100
+						points = 100;
 						break;
 					case 2:
-						points = 200
+						points = 200;
 						break;
 					case 3:
-						points = 400
+						points = 400;
 						break;
 				}
 				$("#UTCC_weaponInfo").html(function() {
@@ -48,7 +48,7 @@ function build_UTCC() {
 		$(this).change();
 	});
 	$("#UTCC_AUlist").html(function() {
-		var list;
+		var list="";
 		$.each(player.AUTemplates, function(i, v) {
 			list += "<option>" + v.name + "</option>";
 		});
@@ -69,7 +69,7 @@ function build_UTCC() {
 			if(v.selected && $(v).val() == "Bomber") {
 				$("#UTCC_AUgraphicNum").html(function() {
 					var HTML = "";
-					for(x = 1; x < 6; x++) {
+					for(var x = 1; x < 6; x++) {
 						HTML += "<option>" + x + "</option>";
 					}
 					return HTML;
@@ -78,7 +78,7 @@ function build_UTCC() {
 			} else if(v.selected) {
 				$("#UTCC_AUgraphicNum").html(function() {
 					var HTML = "";
-					for(x = 1; x < 11; x++) {
+					for(var x = 1; x < 11; x++) {
 						HTML += "<option>" + x + "</option>";
 					}
 					return HTML;
@@ -125,13 +125,13 @@ function build_UTCC() {
 		switch(UTCC.weapons[i].tier) {
 			case 4:
 			case 1:
-				points = 100
+				points = 100;
 				break;
 			case 2:
-				points = 200
+				points = 200;
 				break;
 			case 3:
-				points = 400
+				points = 400;
 				break;
 		}
 		$("#UTCC_weaponInfo").html(function() {
@@ -272,7 +272,7 @@ function build_UTCC() {
 		$("#UTCC_AUlist").children().each(function(i, v) {
 			if(v.selected) {
 				if(confirm("Are you sure you want to delete template " + player.AUTemplates[i].name)) {
-					deleteTemplate = new make_AJAX()
+					deleteTemplate = new make_AJAX();
 					
 					deleteTemplate.callback = function() {
 						var success = deleteTemplate.responseText.split(";")[0];
@@ -301,13 +301,13 @@ function update_values() {
 		switch(v.tier) {
 			case 4:
 			case 1:
-				UTCC.unit.points += 100
+				UTCC.unit.points += 100;
 				break;
 			case 2:
-				UTCC.unit.points += 200
+				UTCC.unit.points += 200;
 				break;
 			case 3:
-				UTCC.unit.points += 400
+				UTCC.unit.points += 400;
 				break;
 		}
 	});
@@ -393,8 +393,8 @@ function update_values() {
 	$("#UTCC_RankPic").attr("src",rankPath);
 	
 	//update the unit description
-	var classType;
-	var classEff;
+	var classType="";
+	var classEff="";
 	switch(parseInt(rank.val())) {
 		case 1:
 			classType = "Destroyer Class";

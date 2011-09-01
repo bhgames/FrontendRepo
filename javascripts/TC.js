@@ -26,9 +26,9 @@ function TC_UI(bldgInfo) {
 			$(this).addClass("open");
 			var that = this;
 			$("#TC_window").fadeOut(100, function() {
+			$("#TC_window > div").css("display","none");
 				if($(that).is("#TC_Overview")) {
-					$("#TC_window").html(BUI.TC.OHTML);
-					
+					$("#TC_overview").css("display","block");
 					$("#TC_activeTrades .tradeList").html(function() {
 						var HTML = '';
 						if(!gettingTrades) {
@@ -49,16 +49,16 @@ function TC_UI(bldgInfo) {
 											if(v.tid2 == player.curtown.townID) HTML += "0/";
 											switch(j) {
 												case 0:
-													HTML += "<img src='AIFrames/icons/MetalIcon.png' alt='Metal' />"
+													HTML += "<img src='AIFrames/icons/MetalIcon.png' alt='Metal' />";
 													break;
 												case 1:
-													HTML += "<img src='AIFrames/icons/TimberIcon.png' alt='Timber' />"
+													HTML += "<img src='AIFrames/icons/TimberIcon.png' alt='Timber' />";
 													break;
 												case 2:
-													HTML += "<img src='AIFrames/icons/PlasticIcon.png' alt='Manufactured Materials' />"
+													HTML += "<img src='AIFrames/icons/PlasticIcon.png' alt='Manufactured Materials' />";
 													break;
 												case 3:
-													HTML += "<img src='AIFrames/icons/FoodIcon.png' alt='Food' />"
+													HTML += "<img src='AIFrames/icons/FoodIcon.png' alt='Food' />";
 													break;
 											}
 											
@@ -88,16 +88,16 @@ function TC_UI(bldgInfo) {
 										if(w != 0) {
 											switch(j) {
 												case 0:
-													HTML += "<img src='AIFrames/icons/MetalIcon.png' alt='Metal' />"
+													HTML += "<img src='AIFrames/icons/MetalIcon.png' alt='Metal' />";
 													break;
 												case 1:
-													HTML += "<img src='AIFrames/icons/TimberIcon.png' alt='Timber' />"
+													HTML += "<img src='AIFrames/icons/TimberIcon.png' alt='Timber' />";
 													break;
 												case 2:
-													HTML += "<img src='AIFrames/icons/PlasticIcon.png' alt='Manufactured Materials' />"
+													HTML += "<img src='AIFrames/icons/PlasticIcon.png' alt='Manufactured Materials' />";
 													break;
 												case 3:
-													HTML += "<img src='AIFrames/icons/FoodIcon.png' alt='Food' />"
+													HTML += "<img src='AIFrames/icons/FoodIcon.png' alt='Food' />";
 													break;
 											}
 											
@@ -111,16 +111,16 @@ function TC_UI(bldgInfo) {
 											if(w != 0) {
 												switch(j) {
 													case 0:
-														HTML += "<img src='AIFrames/icons/MetalIcon.png' alt='Metal' />"
+														HTML += "<img src='AIFrames/icons/MetalIcon.png' alt='Metal' />";
 														break;
 													case 1:
-														HTML += "<img src='AIFrames/icons/TimberIcon.png' alt='Timber' />"
+														HTML += "<img src='AIFrames/icons/TimberIcon.png' alt='Timber' />";
 														break;
 													case 2:
-														HTML += "<img src='AIFrames/icons/PlasticIcon.png' alt='Manufactured Materials' />"
+														HTML += "<img src='AIFrames/icons/PlasticIcon.png' alt='Manufactured Materials' />";
 														break;
 													case 3:
-														HTML += "<img src='AIFrames/icons/FoodIcon.png' alt='Food' />"
+														HTML += "<img src='AIFrames/icons/FoodIcon.png' alt='Food' />";
 														break;
 												}
 												
@@ -143,7 +143,6 @@ function TC_UI(bldgInfo) {
 				
 					$(".cancel").unbind('click').click(function() {
 						var i = $(this).index(".cancel");
-						var that = this;
 						
 						var cancelTrade = new make_AJAX();
 						 
@@ -164,7 +163,7 @@ function TC_UI(bldgInfo) {
 					$(".tradeList").jScrollPane({showArrows:true,hideFocus:true});
 					
 				} else if($(that).is("#TC_Trade")) {
-					$("#TC_window").html(BUI.TC.THTML);
+					$("#TC_sendTrade").css("display","block");
 					
 					$.each(player.towns, function(i,v) {
 						if(v.townID != player.curtown.townID) {
@@ -247,7 +246,7 @@ function TC_UI(bldgInfo) {
 					
 					$("#TC_dtSend").unbind('click').click(function() {
 						if(!$(this).hasClass("noTrade")) {
-							if(BUI.TC.DT.interval<player.gameClockFactor) {BUI.TC.DT.interval = player.gameClockFactor}
+							if(BUI.TC.DT.interval<player.gameClockFactor) {BUI.TC.DT.interval = player.gameClockFactor;}
 							var makeTrade = new make_AJAX();
 							var getPath = "/AIWars/GodGenerator?reqtype=command&command=" + player.command 
 											+ ".setUpTradeSchedule(" + player.curtown.townID + "," + BUI.TC.DT.x + ","
@@ -381,9 +380,11 @@ function TC_UI(bldgInfo) {
 					
 					$("#TC_window").fadeIn(100);
 					
+				} else if($(that).is("#TC_Caravan")) {
+					$("#TC_caravans").css("display","block");
+					
 				} else {
-					$("#TC_window").html(BUI.TC.MHTML);
-					$("#TC_trades").jScrollPane({showArrows:true,hideFocus:true});
+					$("#TC_marketplace").css("display","block");
 					$("#TC_refreshTrades").unbind("click").click(function() {
 						var getMarket = new make_AJAX();
 						getMarket.callback = function(response) {
@@ -399,16 +400,16 @@ function TC_UI(bldgInfo) {
 																	if(w != 0) {
 																		switch(j) {
 																			case 0:
-																				HTML += "<img src='AIFrames/icons/MetalIcon.png' alt='Metal' />"
+																				HTML += "<img src='AIFrames/icons/MetalIcon.png' alt='Metal' />";
 																				break;
 																			case 1:
-																				HTML += "<img src='AIFrames/icons/TimberIcon.png' alt='Timber' />"
+																				HTML += "<img src='AIFrames/icons/TimberIcon.png' alt='Timber' />";
 																				break;
 																			case 2:
-																				HTML += "<img src='AIFrames/icons/PlasticIcon.png' alt='Man. Mat.' />"
+																				HTML += "<img src='AIFrames/icons/PlasticIcon.png' alt='Man. Mat.' />";
 																				break;
 																			case 3:
-																				HTML += "<img src='AIFrames/icons/FoodIcon.png' alt='Food' />"
+																				HTML += "<img src='AIFrames/icons/FoodIcon.png' alt='Food' />";
 																				break;
 																		}
 																		
@@ -422,16 +423,16 @@ function TC_UI(bldgInfo) {
 																		if(w != 0) {
 																			switch(j) {
 																				case 0:
-																					HTML += "<img src='AIFrames/icons/MetalIcon.png' alt='Metal' />"
+																					HTML += "<img src='AIFrames/icons/MetalIcon.png' alt='Metal' />";
 																					break;
 																				case 1:
-																					HTML += "<img src='AIFrames/icons/TimberIcon.png' alt='Timber' />"
+																					HTML += "<img src='AIFrames/icons/TimberIcon.png' alt='Timber' />";
 																					break;
 																				case 2:
-																					HTML += "<img src='AIFrames/icons/PlasticIcon.png' alt='Man. Mat.' />"
+																					HTML += "<img src='AIFrames/icons/PlasticIcon.png' alt='Man. Mat.' />";
 																					break;
 																				case 3:
-																					HTML += "<img src='AIFrames/icons/FoodIcon.png' alt='Food' />"
+																					HTML += "<img src='AIFrames/icons/FoodIcon.png' alt='Food' />";
 																					break;
 																			}
 																			
@@ -456,6 +457,8 @@ function TC_UI(bldgInfo) {
 						getMarket.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".getOpenTwoWays("+player.curtown.townID+");");
 					}).click();
 					
+					$("#TC_trades").jScrollPane({showArrows:true,hideFocus:true});
+					
 					$(".marketTrade").die("click").live("click",function(){
 						$(".active").removeClass("active");
 						$(this).addClass("active");
@@ -469,16 +472,16 @@ function TC_UI(bldgInfo) {
 								var value = v;
 								switch(i) {
 									case 0:
-									value += "<img src='AIFrames/icons/MetalIcon.png' alt='Metal' />"
+									value += "<img src='AIFrames/icons/MetalIcon.png' alt='Metal' />";
 									break;
 								case 1:
-									value += "<img src='AIFrames/icons/TimberIcon.png' alt='Timber' />"
+									value += "<img src='AIFrames/icons/TimberIcon.png' alt='Timber' />";
 									break;
 								case 2:
-									value += "<img src='AIFrames/icons/PlasticIcon.png' alt='Man. Mat.' />"
+									value += "<img src='AIFrames/icons/PlasticIcon.png' alt='Man. Mat.' />";
 									break;
 								case 3:
-									value += "<img src='AIFrames/icons/FoodIcon.png' alt='Food' />"
+									value += "<img src='AIFrames/icons/FoodIcon.png' alt='Food' />";
 									break;
 								}
 								$("#TC_issueRes div").html(value);
@@ -490,16 +493,16 @@ function TC_UI(bldgInfo) {
 								var value = cost = v;
 								switch(i) {
 									case 0:
-									value += "<img src='AIFrames/icons/MetalIcon.png' alt='Metal' />"
+									value += "<img src='AIFrames/icons/MetalIcon.png' alt='Metal' />";
 									break;
 								case 1:
-									value += "<img src='AIFrames/icons/TimberIcon.png' alt='Timber' />"
+									value += "<img src='AIFrames/icons/TimberIcon.png' alt='Timber' />";
 									break;
 								case 2:
-									value += "<img src='AIFrames/icons/PlasticIcon.png' alt='Man. Mat.' />"
+									value += "<img src='AIFrames/icons/PlasticIcon.png' alt='Man. Mat.' />";
 									break;
 								case 3:
-									value += "<img src='AIFrames/icons/FoodIcon.png' alt='Food' />"
+									value += "<img src='AIFrames/icons/FoodIcon.png' alt='Food' />";
 									break;
 								}
 								$("#TC_issueCost div").html(value);
@@ -613,7 +616,7 @@ function TC_UI(bldgInfo) {
 			$.each(BUI.queue.cost, function(i,v){
 				player.curtown.res[i] -= v;
 			});
-			bldgInfo.numLeftToBuild += BUI.queue.numLeftToBuild
+			bldgInfo.numLeftToBuild += BUI.queue.numLeftToBuild;
 			bldgInfo.ticksPerPerson = BUI.queue.ticksPerPerson;
 			bldgInfo.pplTicker = inc_ppl_ticks(bldgInfo);
 			var bldPpl = new make_AJAX();
@@ -621,7 +624,7 @@ function TC_UI(bldgInfo) {
 				if(response.match(/^false/) == null) {
 					$("#BUI_numPpl").keyup();
 					display_output(false,"Build Successful!");
-					load_player(player.league, true, true);				
+					load_player(false, true, true);				
 				} else {
 					var error = response.split(":")[1];
 					display_output(true, error);
@@ -633,6 +636,8 @@ function TC_UI(bldgInfo) {
 						+ player.curtown.townID + ");");
 		}
 	});
+	
+	$("#BUI_bldgContent").fadeIn();
 	
 	if(BUI.TC.sendTrade) {
 		BUI.TC.sendTrade = false;

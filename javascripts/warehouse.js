@@ -1,33 +1,69 @@
 function warehouse_UI(bldgInfo) {
 	var i = 0;
 	switch(bldgInfo.type) {
-		case "Timber Warehouse":
+		case "Lumber Yard":
 			i = 1;
 			break;
-		case "Manufactured Materials Warehouse":
+		case "Crystal Repository":
 			i = 2;
 			break;
-		case "Food Warehouse":
+		case "Granary":
 			i = 3;
 			break;
 	}
-	$('#Ware_curRes').text(Math.floor(player.curtown.res[i]));
 	$('#Ware_resCap').text(player.curtown.resCaps[i]);
+			
+	$("body").bind("resUpdate", function() {
+			if(currUI !== draw_bldg_UI||BUI.active.name[0] != "Metal Warehouse") {
+				$("body").unbind("resUpdate",this);
+				return false;
+			}
+			
+			var data = $("#Ware_resTotals").clone();
+			
+			data.children('#Ware_curRes').text(Math.round(player.curtown.res[i]));
+			
+			var perc = data.children('#Ware_resPerc').text(Math.round((player.curtown.res[i]/player.curtown.resCaps[i]) * 100)/100).format({format:"###.00%", locale:"us"});
+			data.find('#Ware_resPercBar').css("width",perc.text());
+			
+			$("#Ware_resTotals").replaceWith(data);
+		}).trigger("resUpdate");
 	
-	$('#Ware_resPerc').text(Math.round((player.curtown.res[i]/player.curtown.resCaps[i]) * 100)/100).format({format:"###.00%", locale:"us"});
-	$('#Ware_resPercBar').css({"width":$('#Ware_resPerc').text(),"backgroundColor":"light green"});
+	$("#BUI_bldgContent").fadeIn();
+}
+
+////////////////////////////////////////////////////// Storage Yard UI //////////////////////////////////////////////////////
+function SY_UI() {
+	$(".resCap").each(function(i, el) {
+		$(el).text(player.curtown.resCaps[i]);
+	});
 	
-	BUI.active.resUpdate = function(ind) {
-			clearTimeout(BUI.active.timer);
-			BUI.active.timer = setTimeout(function(){				
-				$('#Ware_curRes').text(Math.round(player.curtown.res[ind]));
+	var time = Infinity;
+	$.each(player.curtown.resInc, function(i,v) {
+		if(v > 0) {
+			if(time > 1/v) time = (1/v).clamp(0.2);
+		}
+	});
+	
+	$("body").bind("resUpdate", function() {
+			if(currUI !== draw_bldg_UI||BUI.active.name[0] != "Storage Yard") {
+				$("body").unbind("resUpdate",this);
+				return false;
+			}
+			var data = $("#SY_resTotals").clone();
+			
+			$.each(player.curtown.res, function(i,x) {
+				if(i == 4) return false;
+				data.find('.curRes').eq(i).text(Math.round(x));
 				
-				$('#Ware_resPerc').text(Math.round((player.curtown.res[ind]/player.curtown.resCaps[ind]) * 100)/100).format({format:"###.00%", locale:"us"});
-				$('#Ware_resPercBar').css({"width":$('#Ware_resPerc').text()});
-				
-				BUI.active.resUpdate(ind);
-				},200);
-		};
+				var perc = data.find('.resPerc').eq(i).text(Math.round((x/player.curtown.resCaps[i]) * 100)/100).format({format:"###.00%", locale:"us"});
+				data.find('.resPercBar').eq(i).css({"width":perc.text()});
+			});
+			
+			$("#SY_resTotals").replaceWith(data);
+		}).trigger("resUpdate");
 	
-	BUI.active.resUpdate(i);
+	$("#SY_resTotals").fadeIn(100);
+	
+	$("#BUI_bldgContent").fadeIn();
 }

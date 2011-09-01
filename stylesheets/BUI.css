@@ -4,107 +4,147 @@
 #BUI_bldgContent,#BUI_deconButton {
 	position: absolute;
 	}
-#BUI_header, #BUI_bldgContent{
+#BUI_header,#BUI_winHeader, #BUI_bldgContent{
 	left: 0px;
-	width: 100%;
+	width: 760px;
 	color: #FFF;
 	}
 #BUI_bldgContent {
+	display: none;
 	height: 100%;
 	color: #000;
 	}
-#BUI_header {
+#BUI_header,#BUI_winHeader {
 	position: relative;
+	height: 120px;
+	padding: 10px 30px;
+	width: 700px;
+	color: #aaa699;
+	z-index: 2;
+	}
+#BUI_winHeader {
+	top: 3px;
+	left: -10px;
+	}
+#BUI_header {
+	top: -140px;
+	display: none;
+	background: url(../SPFrames/Buildings/UI/BUI-header.png) no-repeat center bottom;
+	font-family: "Trajan Pro",Trajan,serif;
+	text-shadow: 0 1px 1px rgba(0,0,0,0.8), 0 -1px 0 rgba(255,255,255,0.3);
 	}
 #BUI_bldgInfo{
 	padding-left: 5px;
-	border-bottom: 1px solid #888888;
+	margin-top: -15px;
 	font-size: 20px;
+	font-weight: bold;
+	}
+#BUI_tutorial {
+	position: relative;
+	top: 15px;
 	}
 #BUI_extras {
 	position: absolute;
-	top: 65px;
-	left: 10px;
+	top: 50px;
+	right: 40px;
 	}
 .BUI_up {
-	display: inline-block;
-	margin: 0px 0px 10px 5px;
-	font-size: 14px;
+	position: absolute;
+	left: 70px;
+	bottom: 70px;
+	font-size: 13px;
+	font-weight: bold;
 	}
-.upSteel, .upWood, .upManMade, .upFood, .upTime  {
-	width: 96px;
-	height: 26px;
-	padding-top: 5px;
-	background: no-repeat left top;
-	font-size: 14px;
+#BUI_upWood, #BUI_upSteel,#BUI_upCrystal,#BUI_upTime {
+	position: absolute;	
+	bottom: 35px;
+	font: 11px "Lucida Sans Unicode", LucidaSans, "Lucida Grande", sans-serif;
+	color: #A57862;
+	text-shadow: none;
 	}
-.upSteel {
-	padding-left: 15px;
-	background-image: url(../AIFrames/icons/MetalIcon.png);
+#BUI_upWood {
+	left: 95px;
 	}
-.upWood {
-	padding-left: 35px;
-	background-image: url(../AIFrames/icons/TimberIcon.png);
+#BUI_upCrystal {
+	left: 170px;
 	}
-.upManMade {
-	padding-left: 25px;
-	background-image: url(../AIFrames/icons/PlasticIcon.png)
+#BUI_upSteel {
+	left: 255px;
 	}
-.upFood {
-	padding-left: 15px;
-	background-image: url(../AIFrames/icons/FoodIcon.png);
-	}
-.upTime {
-	padding-left: 30px;
-	background-image: url(../AIFrames/icons/TimeIcon.png);
+#BUI_upTime {
+	left: 332px;
 	}
 #BUI_upButton {
 	position: absolute;
-	bottom: 0px;
-	right: 114px;
-	height: 32px;
-	width: 101px;
-	padding: 2px 0 0 13px;
-	background: url(../AIFrames/buttons/Upgrade-button.png) no-repeat 0 0;
+	bottom: 15px;
+	right: 204px;
+	height: 47px;
+	width: 164px;
+	background: url(../SPFrames/Buildings/UI/upgrade-button.png) no-repeat 0 0;
 	cursor: pointer;
-	color: #000000;
-	font-size: 20px;
 	}
-#BUI_upButton:active {
-	background-position: 0 -34px;
-	color: #FFFFFF;
+#BUI_upButton:hover {
+	background-position: -164px 0;
+	}
+#BUI_upButton:active, #BUI_upButton.noUp {
+	background-position: -328px 0;
+	}
+#BUI_deconButton {
+	bottom: 15px;
+	right: 40px;
+	height: 47px;
+	width: 164px;
+	background: url(../SPFrames/Buildings/UI/destruct-button.png) no-repeat 0 0;
+	cursor: pointer;
+	}
+#BUI_deconButton:hover {
+	background-position: -164px 0;
+	}
+#BUI_deconButton:active, #BUI_deconButton.noDe {
+	background-position: -328px 0;
 	}
 #BUI_upgrading {
 	display: inline;
 	margin-left: 10px;
 	}
 #BUI_fail {
-	color: red;
 	position: absolute;
 	top: 30px;
-	right: 5px;
+	right: 40px;
+	padding: 0 5px;
+	background-color: rgba(0, 0, 0, 0.5);
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	color: #F00;
 	}
 #BUI_bldgContent {
-	top: 95px;
+	top: 130px;
+	z-index: 3;
+	height: 397px;
+	width: 740px;
 	}
 #BUI_bFail {
 	position: absolute;
-	top: 405px;
-	left: 25px;
-	height: 30px;
-	width: 150px;
-	display: block;
-	color: red;
+	top: 345px;
+	left: 100px;
+	max-height: 40px;
+	max-width: 120px;
+	background-color: rgba(0, 0, 0, 0.5);
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	color: #F00;
 	z-index: 5;
 	}
 #BUI_bldPplBox {
 	position: absolute;
-	top: 330px;
-	left: -18px;
-	height: 120px;
-	width: 760px;
-	padding: 0px 28px;
-	background: url("../AIFrames/Content Frame Elements/CivvyBox.png") no-repeat 0 0;
+	bottom: -140px;
+	left: 20px;
+	height: 140px;
+	width: 721px;
+	background: url(../SPFrames/Buildings/UI/BUI-unit-build.png) no-repeat 0 0;
+	color: #aaa699;
+	font-family: "Trajan Pro",Trajan,serif;
+	text-shadow: 0 1px 1px rgba(0,0,0,0.8), 0 -1px 0 rgba(255,255,255,0.3);
 	}
 #BUI_bldPpl {
 	position: relative;
@@ -113,108 +153,72 @@
 	}
 #BUI_pplHelp {
 	position: absolute;
-	top: 0px;
-	left: 20px;
+	top: 15px;
+	left: 15px;
 	}
 .pplHelp, .info {
 	display: inline-block;
-	height: 25px;
-	width: 25px;
+	height: 37px;
+	width: 35px;
 	cursor: help;
-	background: url("../../images/client/Help-button.png") no-repeat 0 0;
+	background: url(../SPFrames/Buildings/UI/info-button.png) no-repeat 0 0;
+	font: 10pt "Lucida Sans Unicode", LucidaSans, Lucida, sans-serif;
 	}
-[for=BUI_numPpl] {
-	display: block;
-	font-size: 20px;
+.pplHelp:hover, .info:hover {
+	background-position: -35px 0;
+	}
+.pplHelp:active, .info:active {
+	background-position: -70px 0;
 	}
 #BUI_numPpl {
+	position: absolute;
+	top: 358px;
+	left: 59px;
 	height: 25px;
 	width: 70px;
-	border-color: #000000 !important;
-	color: #000000 !important;
+	background: transparent;
+	border: none;
+	outline: none;
+	color: #A57862;
+	font: 10pt "Lucida Sans Unicode", LucidaSans, "Lucida Grande", sans-serif;
+	text-align: center;
 	}
-#BUI_straightArrow {
+#BUI_bldPplCost {
 	position: absolute;
-	top: 30px;
-	left: 80px;
-	height: 8px;
-	width: 45px;
-	background: url("../AIFrames/Content Frame Elements/CivvyFrame-StraightArrow.png") no-repeat 0 0;
-	}
-#BUI_bentArrow {
-	position: absolute;
-	top: 10px;
-	right: 160px;
-	height: 28px;
-	width: 65px;
-	background: url("../AIFrames/Content Frame Elements/CivvyFrame-BentArrow.png") no-repeat 0 0;
+	top: 57px;
+	left: 221px;
+	height: 70px;
+	width: 220px;
+	color: #A57862;
+	font: 8pt "Lucida Sans Unicode", LucidaSans, "Lucida Grande", sans-serif;
+	text-shadow: none;
 	}
 .BUI_bldPpl {
-	height: 31px;
-	width: 125px;
+	height: 25px;
+	width: 70px;
 	margin: 3px 0 0 3px;
-	padding-top: 1px;
+	padding-top: 7px;
 	float: left;
 	}
-.BUI_bldPpl .upSteel {
-	padding-left: 36px;
-	background: url(../AIFrames/icons/MetalIcon-black.png) no-repeat 10px 0;
+.BUI_bldPpl div {
+	padding-left: 18px;
 	}
-.BUI_bldPpl .upWood {
-	padding-left: 36px;
-	background: url(../AIFrames/icons/TimberIcon-black.png) no-repeat 0 0;
-	}
-.BUI_bldPpl .upManMade {
-	padding-left: 36px;
-	background: url(../AIFrames/icons/PlasticIcon-black.png) no-repeat 6px 0;
-	}
-.BUI_bldPpl .upFood {
-	padding-left: 36px;
-	background: url(../AIFrames/icons/FoodIcon-black.png) no-repeat 11px 0;
-	}
-.BUI_bldPpl .upTime {
-	padding-left: 36px;
-	background: url(../AIFrames/icons/TimeIcon-black.png) no-repeat 4px 0;
-	}
-.totalCost {
-	font-size: 20px;
+#BUI_pplWood {
+	padding-left: 26px;
 	}
 #BUI_bldPplHeader {
-	margin-left: 20px;
-	border-bottom: 1px solid #000000;
-	font-size: 18px;
+	width: 650px;
+	margin: 20px 0 0 50px;
+	font-size: 17px;
 	}
 #BUI_numCivs {
 	float: right;
 	}
 #BUI_pplBldgInfo {
 	position: absolute;
-	bottom: -26px;
-	right: 30px;
-	font-size: 14px;
-	}
-#BUI_bldPplCost {
-	position: absolute;
-	top: 24px;
-	left: 190px;
-	height: 70px;
-	width: 387px;
-	background: url("../AIFrames/Content Frame Elements/CivvyFrame-InfoBox.png") no-repeat 0 0;
-	}
-#BUI_deconButton {
-	bottom: 0px;
-	right: 0px;
-	height: 32px;
-	width: 109px;
-	padding: 2px 0 0 5px;
-	background: url(../AIFrames/buttons/Destruct-button.png) no-repeat 0 -34px;
-	cursor: pointer;
-	color: #FFFFFF;
-	font-size: 20px;
-	}
-#BUI_deconButton:active {
-	background-position: 0 0;
-	color: #000000;
+	bottom: -45px;
+	right: 155px;
+	font-size: 11px;
 	}
 #BUI_bldgSwitch {
 	position: absolute;
@@ -236,41 +240,27 @@
 .bldButton:active {
 	background-position: 0 -82px;
 	}
-#BUI_bldPplButton {
+#BUI_bldPplButton, #BUI_dummyPplButton {
 	position: absolute;
-	top: 8px;
-	left: 610px;
-	font-size: 26px;
-	color: #FFFFFF;
-	text-align: center;
+	top: 353px;
+	right: 40px;
+	height: 48px;
+	width: 99px;
+	background: url(../SPFrames/Buildings/UI/build-button.png) no-repeat 0 0;
 	cursor: pointer;
 	}
-#BUI_bldPplButton .darkFrameBody {
-	height: 12px;
-	padding: 0 5px 5px;
+#BUI_dummyPplButton {
+	top: 91px;
+	right: 31px;
 	}
-#BUI_bldPplButton .darkFrameB {
-	margin: 0px;
+#BUI_bldPplButton:hover {
+	background-position: -99px 0;
 	}
-#BUI_bldPplButton[class=""]:active .darkFrameBody {
-	background: url("../AIFrames/Content Frame Elements/Light-body.png");
-	color: #000000;
-	}
-#BUI_bldPplButton[class=""]:active .darkFrameB {
-	background-image: url("../AIFrames/Content Frame Elements/Light-BottomTile.png");
+#BUI_bldPplButton:active, #BUI_bldPplButton.noBld, #BUI_dummyPplButton {
+	background-position: -199px 0;
 	}
 .noBld, .noUp, .noDe  {
-	filter:alpha(opacity=50);
-	opacity:0.5;
 	cursor: default !important;
-	}
-.noUp {
-	background-position: 0 0 !important;
-	color: #000000 !important;
-	}
-.noDe {
-	background-position: 0 -34px !important;
-	color: #FFFFFF !important;
 	}
 .useBP, .bpResearch {
 	position: relative;

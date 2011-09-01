@@ -3,97 +3,91 @@
 ************************************************************************************************************************************************/
 #resourcebar {
 	position: absolute;
-	top: 90px;
-	left: 175px;
+	top: 69px;
+	margin-left: 50px;
 	width: 822px;
-	height: 83px;
-	background: url(../AIFrames/AI-Frames-Res.png) no-repeat 0 0;
-	font-size: 14px;
+	height: 34px;
+	z-index: 4;
 	}
 #resourcebar li {
 	position: relative;
-	top: 21px;
+	top: 0px;
 	left: 43px;
 	float: left;
 	display: inline;
 	padding-top: 6px;
-	width: 130px;
-	height: 26px;
-	margin: 0 2px;
-	background:  no-repeat left top;
-	font-size: 14px;
-	}
-#steel {
-	padding-left: 20px;
-	background-image: url(../AIFrames/icons/MetalIcon.png) !important;
+	padding-right: 11px;
+	width: 89px;
+	height: 28px;
+	margin: 0 20px;
+	background-image: url(../SPFrames/resource-counters.png);
+	background-repeat: no-repeat;
+	color: #433420;
+	font: 14px "Trajan Pro","Trajan","Lucida Console",sans-serif;
+	letter-spacing: 4px;
+	text-shadow: 0 1px 0 rgba(255,255,255,0.3);
+	text-align: right;
 	}
 #wood {
-	padding-left: 40px;
-	background-image: url(../AIFrames/icons/TimberIcon.png) !important;
+	background-position: 0 0;
 	}
 #synth {
-	padding-left: 30px;
-	background-image: url(../AIFrames/icons/PlasticIcon.png) !important;
+	background-position: -100px 0;
+	}
+#steel {
+	background-position: -200px 0;
 	}
 #food {
-	padding-left: 20px;
-	background-image: url(../AIFrames/icons/FoodIcon.png) !important;
+	background-position: -300px 0;
 	}
 	
 #menu {
 	position: absolute;
-	top: 2px;
-	right: 2px;
-	padding-top: 20px;
-	height: 59px;
-	width: 152px;
-	background: url(../AIFrames/buttons/Menu-Button.png) no-repeat 0 0;
-	filter:opacity(50);
-	opacity: .5;
-	text-align: center;
-	font-size: 26px;
+	top: 55px;
+	right: 0px;
+	height: 47px;
+	width: 91px;
+	background: url(../SPFrames/menu-button.png) no-repeat 0 0;
 	cursor: pointer;
-	z-index: 100;
+	z-index: 5;
 	}
-#menu:hover {
-	filter:opacity(100);
-	opacity: 1;
-	}
-#menu:active, #menu.open {
-	background-position: 0 -79px;
+#menu:hover, #menu:active, #menu.open  {
+	top: 60px;
 	}
 #dropdown_menu {
 	position: absolute; 
-	top: 16px;
-	left: 15px;
+	top: 80px;
+	right: 0px;
 	display: none;
-	padding: 5px;
-	width: 782px;
-	height: 15px;
-	z-index: 105;
-	font-size: 16px;
-	}
-#dropdown_menu .darkFrameBody {
-	height: 8px;
-	}
-#dropdown_menu .darkFrameB {
-	margin-right: 0px;
+	padding-top: 43px;
+	width: 678px;
+	height: 39px;
+	background: url(../SPFrames/menu-bar.png) no-repeat left top;
+	font: 14px bold "Trajan Pro", Trajan, sans-serif;
+	color: #A9A098;
+	text-shadow: 0 1px rgba(0, 0, 0, 0.8), 0 -1px rgba(255, 255, 255, 0.3);
+	z-index: 4;
 	}
 #dropdown_menu li {
 	position: relative;
-	right: 15px;
-	margin-left: 10px;
+	right: 50px;
+	margin-left: 18px;
 	list-style: none;
 	float: right;
-	font-size: 16px;
+	cursor: pointer;
+	}
+#dropdown_menu li:active {
+	text-shadow: 0 -1px rgba(0, 0, 0, 0.8);
+	}
+#premium {
+	width: 93px;
+	text-align: center;
+	}
+#options {
+	width: 72px;
+	text-align: center;
 	}
 #dropdown_menu a {
 	text-decoration: none;
-	}
-#dropdown_menu a:hover {
-	text-decoration: underline;
-	}
-
-#dropdown_menu a:visited {
-	color: #FFFFFF;
+	color: #A9A098;
 	}

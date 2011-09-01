@@ -136,12 +136,12 @@ function draw_premium_UI() {
 							useBP.callback = function(response) {
 												if(response.match(/true/)) {
 													display_output(false,"Success!");
-													load_player(player.league,true,true);
+													load_player(false,true,true);
 												} else {
 													if(response.indexOf(":")>=0) response = response.split(":")[1];
 													display_output(true,response,true);
 												}
-											}
+											};
 							useBP.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".useBP("+which+");");
 						});
 	});
@@ -231,7 +231,7 @@ function set_premium_timers() {
 							var hours = Math.floor((time / 3600)%24);
 							var mins = Math.floor((time % 3600) / 60);
 							var secs = Math.floor((time % 3600) % 60);
-							$(v).html(((days)?days + " d ":"") + ((hours<10)?"0"+hours:hours) + ":" + ((mins<10)?"0"+mins:mins) + ":" + ((secs<10)?"0"+secs:secs))
+							$(v).html(((days)?days + " d ":"") + ((hours<10)?"0"+hours:hours) + ":" + ((mins<10)?"0"+mins:mins) + ":" + ((secs<10)?"0"+secs:secs));
 						} else $(v).parent().css("display","none");
 					});
 				},1000);

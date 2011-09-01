@@ -12,15 +12,21 @@
 	src: local("Bank Gothic"), local("BankGothic Lt BT"), local("BankGothicBTLight"), url(/BankGothic.ttf) format("truetype");
 	}
 body {
-	background: #000 url(../AIFrames/screen-tile.png) repeat-y 50% 0; 
-	min-height: 800px;
+	background: #000 url(../SPFrames/rusted-metal.jpg) repeat 50% 0; 
+	/*min-height: 800px;*/
 	color: #FFF;
 	margin: 0;
 	padding: 0;
-	font-family: BankGothic, Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-family: "Lucida Sans Unicode", LucidaSans, "Lucida Grande", sans-serif;
 	}
 a:link, a:visited  {
 	color: #FFFFFF;
+	}
+::-webkit-input-placeholder {
+	color: rgba(165, 120, 98, 0.5);
+	}
+:-moz-placeholder {
+	color: rgba(165, 120, 98, 0.5);
 	}
 ul, li {
 	margin: 0;
@@ -42,37 +48,23 @@ ul, li {
 #content {
 	position: absolute;
 	top: 1%;
-	min-width: 1024px;
+	min-width: 763px;
 	width: 100%;
-	padding-top: 100px;
-	background: url(../AIFrames/screen.png) no-repeat 50% 0;
 	z-index: 1;
-	}
-#client input[type="text"], #client input[type="email"], #client input[type="number"], #client select {
-	color: #FFFFFF;
-	background: transparent;
-	border: 1px solid #FFFFFF;
-	}
-#client select {
-	background: #000000;
-	}
-.lightFrameBody input {
-	color: #000000 !important;
-	border-color: #000000 !important;
 	}
 
 #client {
 	position: relative;
-	width: 1000px;
-	height: 700px;
+	width: 763px;
+	height: 715px;
+	background-color: #000;
+	border: 3px ridge #A8A495;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
 	margin: 0px auto;
 	font-size: 14px;
-	}
-#surveyLink {
-	position: absolute;
-	top: 100px;
-	left: 60%;
-	z-index: 100;
+	overflow: hidden;
 	}
 .fbButton {
 	height: 17px;
@@ -80,60 +72,40 @@ ul, li {
 	border-bottom: 1px solid #1A356E;
 	border-top: 1px solid #879AC0;
 	background: #5F78AB url(http://static.ak.fbcdn.net/rsrc.php/zDYYQ/hash/deh9tyqv.png) no-repeat 0% -188px;
+	color: #FFF;
 	font: bold 11px 'lucida grande', tahoma, verdana, arial, sans-serif;
 	text-align: right;
 	cursor: pointer;
-	}
-a#fdbk_tab, #chatbox_tab, #twitter_tab, #forum_tab, #blog_tab, #chat_box {
-	-webkit-transition: all 0.3s linear;
-    -moz-transition: all 0.3s linear;
-    -o-transition: all 0.3s linear;
-    transition: all 0.3s linear;
-	}
-a#fdbk_tab {
-	top: 150px !important;
-	}
-a#fdbk_tab:hover {
-	z-index:100002
 	}
 /************************************************************************************************************************************************
  * Client Viewer CSS
 ************************************************************************************************************************************************/
 #clientview {
 	position: absolute;
-	top: 132px;
-	left: 174px;
-	height: 569px;
-	width: 823px;
+	top: 28px;
+	height: 689px;
+	width: 763px;
 	overflow: hidden;
+	background: url(../SPFrames/client-box.png) no-repeat center center;
+	z-index: 3;
 	}
-.loading {
-	background: url(../AIFrames/loading.gif) no-repeat center center;
-	}
-.amber {
-	background: url(../AIFrames/AI-Frame-Amber.png) no-repeat center top;
-	}
-.blue {
-	background: url(../AIFrames/AI-Frame-Blue-80o.png) no-repeat center top;
-	}
-.rose {
-	background: url(../AIFrames/AI-Frame-Rose.png) no-repeat center top;
-	}
-.violet {
-	background: url(../AIFrames/AI-Frame-Violet.png) no-repeat center top;
+#viewerback {
+	position: absolute;
+	top: 118px;
+	left: 1px;
+	height: 529px;
+	width: 760px;
+	overflow: hidden;
+	background-position: right top;
 	}
 #window {
 	position: absolute;
-	top: 21px;
-	left: 21px;
+	top: 87px;
+	left: 11px;
 	display: none;
 	height: 527px;
-	width: 781px;
+	width: 744px;
 	color: #000;
-	}
-#window.amber, #window.blue, #window.rose, #window.violet {
-	overflow: visible !important;
-	background-position: center -21px !important;
 	}
 /*Tutorial Popup*/	
 .tutorial {
@@ -142,7 +114,7 @@ a#fdbk_tab:hover {
 	}
 #tutorial_box {
 	padding: 5px 80px 5px 5px;
-	background: url("../AIFrames/Content Frame Elements/Dark-body.png");
+	background: rgba(0,0,0,0.8);
 	border: 1px solid #FFF;
 	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
 	}
@@ -174,64 +146,80 @@ a#fdbk_tab:hover {
 .dirright {
 	background-position: -50px 0;
 	}
+.textTab {
+	height: 36px;
+	padding-top: 6px;
+	background: url(../SPFrames/tab-divider.png) no-repeat right center;
+	color: #282415;
+	font: 18px Bold "Trajan Pro", Trajan, serif;
+	text-shadow: 0 1px 1px rgba(240, 225, 163, 0.7);
+	text-align: center;
+	cursor: pointer;
+	}
+.textTab.last {
+	background: none;
+	}
+.textTab:hover, .textTab:active, .textTab.open {
+	background: url(../SPFrames/tab-divider.png) no-repeat right center, url(../SPFrames/open-tab.png) no-repeat center bottom;
+	}
+.textTab.last:hover, .textTab.last:active, .textTab.last.open {
+	background: url(../SPFrames/open-tab.png) no-repeat center bottom;
+	}
+.textTab:active, .textTab.open {
+	color: #d7ca9b;
+	text-shadow: 0 1px 1px rgba(0,0,0,0.8), 0 -1px rgba(255,255,255,0.3);
+	}
 /************************************************************************************************************************************************
  * Login & Register Popup CSS
 ************************************************************************************************************************************************/
-#regBox, #forgotPassBox, #tileSelectBox, #regWaitBox, #signInBox {
-	position: absolute;
-	top: 250px;
-	left: 50%;
-	display: none;
+#regBox, #signInBox, #forgotPassBox {
 	width: 350px;
-	margin-left: -175px;
+	padding: 5px;
+	background: #222 url(../SPFrames/rusted-metal.jpg);
+	border: 3px solid #A8A495;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+	-webkit-box-shadow: inset 0px 2px 10px rgba(0,0,0,0.8);
+	-moz-box-shadow: inset 0px 2px 10px rgba(0,0,0,0.8);
+	box-shadow: inset 0px 2px 10px rgba(0,0,0,0.8);
+	color: #A9A098;
+	font: 11pt "Trajan Pro", Trajan, serif;
+	text-shadow: 0 1px 1px rgba(0,0,0,0.8), 0 -1px 0 rgba(255,255,255,0.3);
+	}
+#regBox, #signInBox {
+	position: relative;
+	margin: 0 auto;
 	z-index: 1001;
 	}
-#signInBox {
-	padding-top: 5px;
-	color: #FFF;
-	}
-#signIn {
-	position: relative;
-	}
-#signIn_legacy {
-	position: absolute;
-	top: 25px;
-	display: none;
-	width: 320px;
-	}
-#signIn_error {
-	position: absolute;
-	top: 30px;
-	right: 35px;
-	width: 120px;
-	color: #F00;
-	}
-#signInBox input {
-	background: transparent;
-	border: 1px solid #FFF;
-	color: #FFF;
-	}
-#forgotPass {
-	position: absolute;
-	bottom: -10px;
-	left: 10px;
-	font-size: 12px;
-	color: #CCC;
-	cursor: help;
+#signIn_UN, #signIn_pass, #forgot_UN, #forgot_email, #reg_UN, #reg_pass, #reg_passConf, #reg_email, #reg_emailConf  {
+	color: #A57862;
+	height: 29px;
+	width: 195px;
+	padding-left: 5px;
+	border: none;
+	outline: none;
+	background: url(../../IndexFrames/text-window.png) no-repeat left top;
+	font: 9pt "Lucida Sans Unicode", LucidaSans, "Lucida Grande", sans-serif;
 	}
 #reg_error, #forgot_error {
-	height: 20px;
+	position: absolute;
+	top: 35px;
+	right: 5px;
+	max-height: 120px;
+	max-width: 135px;
+	padding: 0 5px;
 	color: #F00;
+	background-color: rgba(0, 0, 0, 0.5);
+	border: 0px solid transparent;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
 	}
 #reg {
-	height: 190px;
+	height: 130px;
 	}
 #reg_picktile, #reg_wait {
 	display: none;
-	}
-#reg input, #forgotPassBox input {
-	border: 1px solid #FFFFFF;
-	color: #FFFFFF;
 	}
 #reg label, #signIn label {
 	display: block;
@@ -250,41 +238,6 @@ a#fdbk_tab:hover {
 #reg_forumBox label {
 	display: inline;
 	}
-#tileSelect_skip {
-	position: absolute;
-	top: 22px;
-	right: 35px;
-	}
-#tileSelect_back, #tileSelect_skip {
-	width: 90px;
-	border: 1px solid #FFF;
-	text-align: center;
-	cursor: pointer;
-	}
-#tileSelect_back:hover, #tileSelect_skip:hover {
-	border-style: outset;
-	}
-#tileSelect_back:active, #tileSelect_skip:active {
-	border-style: inset;
-	}
-#tileSelect_playerTotal {
-	font-size: 20px;
-	}
-#tileSelect_info {
-	border: 1px solid #FFF;
-	}
-#tileSelect_info div {
-	margin-left: 20px;
-	}
-#tileSelect_submit {
-	position: relative;
-	bottom: 27px;
-	left: 1px;
-	}
-.noSubmit, .noUN, .noFB, div[class="mapTile"] {
-	filter:alpha(opacity=50);
-	opacity:0.5;
-	}
 /*Map Tile selection code*/
 #tileSelector {
 	position: relative;
@@ -294,9 +247,13 @@ a#fdbk_tab:hover {
 	margin: 0 auto;
 	}
 /************************************************************************************************************************************************
- * Console Output & Chatbox CSS
+ * Console Output & Chatbox CSS & Sidetab CSS
 ************************************************************************************************************************************************/
-#chatbox_tab, #twitter_tab, #forum_tab, #blog_tab {
+a#fdbk_tab, .sideButton {
+	-webkit-transition: all 0.3s linear;
+    -moz-transition: all 0.3s linear;
+    -o-transition: all 0.3s linear;
+    transition: all 0.3s linear;
 	position: fixed;
 	height: 86px;
 	width: 42px;
@@ -305,46 +262,60 @@ a#fdbk_tab:hover {
 	overflow: hidden;
 	z-index: 100001;
 	}
-#chatbox_tab:hover, #twitter_tab:hover, #forum_tab:hover, #blog_tab:hover {
-	margin-left: -4px;
-	}
 #chatbox_tab {
 	top:67px;
 	left: 0;
-	background: #222 url(../AIFrames/buttons/chatbox-sidetab.png) no-repeat top left;
+	background: #222 url(../SPFrames/chatbox-sidetab.png) no-repeat top left;
 	}
 #twitter_tab {
 	top:249px;
 	left: 0;
-	background: #222 url(../AIFrames/buttons/twitter-sidetab.png) no-repeat top left;
+	background: #222 url(../SPFrames/twitter-sidetab.png) no-repeat top left;
 	}
 #forum_tab {
 	top:332px;
 	left: 0;
-	background: #222 url(../AIFrames/buttons/forum-sidetab.png) no-repeat top left;
+	background: #222 url(../SPFrames/forum-sidetab.png) no-repeat top left;
 	}
 #blog_tab {
 	top:415px;
 	left: 0;
-	background: #222 url(../AIFrames/buttons/blog-sidetab.png) no-repeat top left;
+	background: #222 url(../SPFrames/blog-sidetab.png) no-repeat top left;
+	}
+a#fdbk_tab {
+	top: 150px !important;
+	}
+a#fdbk_tab:hover, .sideButton:hover {
+	z-index:100002
+	}
+.sideButton:hover {
+	margin-left: -4px;
 	}
 #console_box {
 	position: absolute;
 	right: 0px;
 	top: 182px;
 	display: none;
+	background: #222 url(../SPFrames/rusted-metal.jpg);
+	border: 3px solid #A8A495;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
 	z-index: 1000;
 	}
 #chat_box, #twitter_box, #forum_box, #blog_box {
 	position: fixed;
 	left: 0;
-	background: #222;
-	border: 3px solid #FFF;
+	background: #222 url(../SPFrames/rusted-metal.jpg);
+	border: 3px solid #A8A495;
+	-webkit-border-radius: 0 20px 20px 0;
+	-moz-border-radius: 0 20px 20px 0;
+	border-radius: 0 20px 20px 0;
 	z-index: 100003;
-	-webkit-transition-duration: 0.1s;
-    -moz-transition-duration: 0.1s;
-    -o-transition-duration: 0.1s;
-    transition-duration: 0.1s;
+	-webkit-transition-duration: 0.5s;
+    -moz-transition-duration: 0.5s;
+    -o-transition-duration: 0.5s;
+    transition-duration: 0.5s;
 	}
 #chat_box, #twitter_box {
 	top: 67px;
@@ -364,40 +335,56 @@ a#fdbk_tab:hover {
 	margin-left: 0;
 	}
 #forum_frame, #blog_frame {
-	width: 100%;
-	height: 100%;
-	}
-#console_box  {
-	font-size: 16px;
-	}
-#console_box .popFrameBody {
-	height: 210px;
+	position: relative;
+	top: 46px;
+	left: 10px;
+	width: 98%;
+	height: 91%;
 	}
 #console_titlebar, #chat_titlebar {
 	width: 100%;
-	height: 30px;
-	border-bottom: 1px groove #FFFFFF;
+	padding-top: 10px;
+	height: 40px;
+	background: url(/client/SPFrames/Buildings/UI/BCM/divider.png) no-repeat center bottom;
+	color: #A9A098;
+	font: 16pt bold "Trajan Pro", Trajan, serif;
+	text-shadow: 0 1px rgba(0,0,0,0.8);
+	text-align: center;
 	cursor: default;
-	font-size: 20px;
 	}
-#console_close, #chat_close, #twitter_close, #forum_close, #blog_close {
+#console_titlebar, #console_titlebar:active {
+	font-size: 13pt;
+	cursor: move;
+	}
+#console_titlebar span {
+	position: relative;
+	right: 20px;
+	}
+.closeButton {
 	position: absolute;
 	right: 0px;
-	top: 0px;
+	top: 3px;
 	display: block;
-	height: 33px;
-	width: 28px;
-	background: url("../AIFrames/Content Frame Elements/close.png") no-repeat 0 0;
+	height: 47px;
+	width: 43px;
+	background: url(../SPFrames/close-button.png) no-repeat 0 0;
+	cursor: pointer;
 	z-index: 10;
 	}
-#forum_close, #blog_close {
-	right: 15px;
+.closeButton:hover {
+	background-position: -43px 0;
+	}
+.closeButton:active {
+	background-position: -86px 0;
 	}
 #console_output {
 	color: #FFFFFF;
 	width: 200px;
 	height: 148px;
+	background-color: rgba(0,0,0,0.8);
+	border: 3px inset #A8A495;
 	margin: 5px;
+	font-size: 14px;
 	overflow: auto;
 	}
 .output {
@@ -422,15 +409,13 @@ a#fdbk_tab:hover {
 #output_clear:active{
 	background-position: -20px 0;
 	}
-#console_stopBox {
-	position: absolute;
-	bottom: 35px;
+#console_stopBox, #console_expandBox {
+	position: relative;
+	bottom: 0px;
 	left: 25px;
 	}
-#console_expandBox {
-	position: absolute;
-	bottom: 20px;
-	left: 25px;
+#console_stopBox {
+	bottom: 5px;
 	}
 /************************************************************************************************************************************************
  * Custom Popup CSS
@@ -505,20 +490,11 @@ a#fdbk_tab:hover {
 .textFramed {
 	padding: 5px 5px 1px;
 	border: 1px solid #FFF;
-	border-bottom: none;
-	margin-bottom: -1px;
 	}
 .textFrameB{
 	height: 16px;
-	/*background: url(../AIFrames/TextFrame/Bottom.png) repeat-x center bottom;*/
 	border-bottom: 1px solid #FFF;
 	margin: 0px 16px;
-	}
-.textFrameBL{
-	background: url(../AIFrames/TextFrame/LowLeftCorner.png) no-repeat left bottom;
-	}
-.textFrameBR{
-	background: url(../AIFrames/TextFrame/LowRightCorner.png) no-repeat right bottom;
 	}
 /*
  * Black Frame
@@ -526,20 +502,11 @@ a#fdbk_tab:hover {
 .blackFramed {
 	padding: 5px 5px 1px;
 	border: 1px solid #000;
-	border-bottom: none;
-	margin-bottom: -1px;
 	}
 .blackFrameB{
 	height: 16px;
-	/*background: url(../AIFrames/TextFrame/Bottom-black.png) repeat-x center bottom;*/
 	border-bottom: 1px solid #000;
 	margin: 0px 16px;
-	}
-.blackFrameBL{
-	background: url(../AIFrames/TextFrame/LowLeftCorner-black.png) no-repeat left bottom;
-	}
-.blackFrameBR{
-	background: url(../AIFrames/TextFrame/LowRightCorner-black.png) no-repeat right bottom;
 	}
 /************************************************************************************************************************************************
  * Light Frame CSS
@@ -555,7 +522,12 @@ a#fdbk_tab:hover {
 .lightFrameB {
 	height: 20px;
 	background: url("../AIFrames/Content Frame Elements/Light-BottomTile.png") repeat-x center bottom;
-	margin: 0px 13px;
+	}
+.lightFrameBL .lightFrameB {
+	margin-left: 13px;
+	}
+.lightFrameBR .lightFrameB {
+	margin-right: 13px;
 	}
 .lightFrameBL {
 	background: url("../AIFrames/Content Frame Elements/Light-Left-Lowcorner.png") no-repeat left bottom;
@@ -566,17 +538,17 @@ a#fdbk_tab:hover {
 .lightButton {
 	cursor: pointer;
 	}
-.lightButton:active  .lightFrameBody {
+.lightButton:active  .lightFrameBody, .lightButton.open  .lightFrameBody {
 	background: url("../../light/AIFrames/Content Frame Elements/Dark-body.png");
 	color: #FFF;
 	}
-.lightButton:active  .lightFrameB  {
+.lightButton:active  .lightFrameB, .lightButton.open  .lightFrameB  {
 	background-image: url("../../light/AIFrames/Content Frame Elements/Dark-BottomTile.png");
 	}
-.lightButton:active  .lightFrameBL  {
+.lightButton:active  .lightFrameBL, .lightButton.open  .lightFrameBL  {
 	background-image: url("../../light/AIFrames/Content Frame Elements/Dark-Left-Lowcorner.png");
 	}
-.lightButton:active  .lightFrameBR  {
+.lightButton:active  .lightFrameBR, .lightButton.open  .lightFrameBR  {
 	background-image: url("../../light/AIFrames/Content Frame Elements/Dark-Right-Lowcorner.png");
 	}
 /************************************************************************************************************************************************
@@ -594,6 +566,12 @@ a#fdbk_tab:hover {
 	height: 20px;
 	background: url("../AIFrames/Content Frame Elements/Dark-BottomTile.png") repeat-x center bottom;
 	margin: 0px 13px;
+	}
+.darkFrameBL .darkFrameB {
+	margin-left: 13px;
+	}
+.darkFrameBR .darkFrameB {
+	margin-right: 13px;
 	}
 .darkFrameBL {
 	background: url("../AIFrames/Content Frame Elements/Dark-Left-Lowcorner.png") no-repeat left bottom;
@@ -648,7 +626,6 @@ a#fdbk_tab:hover {
 	right: 0;
 	width: 16px;
 	height: 100%;
-	background: transparent;
 }
 .jspHorizontalBar {
 	position: absolute;
@@ -673,17 +650,19 @@ a#fdbk_tab:hover {
 	background: transparent;
 	position: relative;
 }
+.jspVerticalBar .jspTrack {
+	background: url(../SPFrames/vert-scrollbar-top.png) no-repeat center top, url(../SPFrames/vert-scrollbar-bottom.png) no-repeat center bottom, url(../SPFrames/vert-scrollbar-center.png) repeat-y center top;
+}
 .jspDrag {
-	background: transparent;
-	border: 1px solid #FFFFFF;
 	position: relative;
 	top: 0;
 	left: 0;
-	width: 9px;
 	cursor: pointer;
 }
 .jspVerticalBar .jspDrag {
+	width: 11px;
 	margin-left: 3px;
+	background: url(../SPFrames/vert-scroller.png) no-repeat center center;
 	}
 
 .jspHorizontalBar .jspTrack,
@@ -699,18 +678,6 @@ a#fdbk_tab:hover {
 	display: block;
 	cursor: pointer;
 }
-.jspArrowUp {
-	background: url(../AIFrames/TextFrame/UpScrollArrow.png) no-repeat center center;
-	}
-.jspArrowDown {
-	background: url(../AIFrames/TextFrame/DownScrollArrow.png) no-repeat center center;
-	}
-.jspArrowLeft {
-	background: url(../AIFrames/TextFrame/LeftScrollArrow.png) no-repeat center center;
-	}
-.jspArrowRight {
-	background: url(../AIFrames/TextFrame/RightScrollArrow.png) no-repeat center center;
-	}
 .jspArrow.jspDisabled{
 	cursor: default;
 }

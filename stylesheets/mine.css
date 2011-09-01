@@ -23,7 +23,7 @@
 	padding: 5px;
 	border: 1px solid #FFFFFF;
 	}
-#Mine_resEffect span, #Mine_taxRate div {
+#Mine_resEffect span, #Mine_taxRate div, #Mine_foodCon div {
 	display: block;
 	text-align: center;
 	font-size: 1.25em;
@@ -40,4 +40,11 @@
 	display: none;
 	padding: 5px;
 	border: 1px solid #FFFFFF;
+	}
+#Mine_foodCon {
+	position: absolute;
+	top: 120px;
+	left: 335px;
+	border: 1px solid white;
+	padding: 5px;
 	}

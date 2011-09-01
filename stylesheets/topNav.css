@@ -1,71 +1,129 @@
 /************************************************************************************************************************************************
  * CSS for top navigation links
 ************************************************************************************************************************************************/
+#rank_back {
+	position: absolute;
+	padding: 16px 0 0 19px;
+	height: 93px;
+	width: 87px;
+	background: url(../SPFrames/rank-base.png) no-repeat left top;
+	z-index: 7;
+	}
+#rankings {
+	height: 46px;
+	width: 45px;
+	background: url(../SPFrames/ranking-button.png) no-repeat 0 0;
+	cursor: pointer;
+	}
+#rankings:hover {
+	background-position: -45px 0;
+	}
+#rankings:active {
+	background-position: -90px 0;
+	}
+	
 #toplinks {
 	position: absolute;
-	top: 9px;
-	left: 175px;
-	width: 823px;
-	height: 105px;
-	background: url(../AIFrames/AI-Frames-Header.png) no-repeat 0 0;
+	top: 0px;
+	width: 763px;
+	height: 65px;
+	background: url(../SPFrames/top-bar.png) no-repeat 0 0;
 	font-size: 18px;
+	z-index: 6;
 	}
 #toplinks li {
 	position: absolute;
-	top: 21px;
+	top: 7px;
 	display: block;
-	padding-top: 15px;
-	height: 39px;
-	width: 180px;
-	text-align: center;
+	padding-top: 5px;
+	height: 41px;
+	width: 158px;
 	cursor: pointer;
+	background-image: url(../SPFrames/top-nav.png);
 	}
 .flicker {
 	position: absolute;
 	top: 0px;
-	display: none;
-	padding-top: 15px;
-	height: 39px;
-	width: 180px;
+	visibility: hidden;
+	height: 47px;
+	width: 156px;
 	text-align: center;	
 	}
 #citybox {
-	left: 21px;
+	left: 119px;
+	background-position: 0 0;
+	}
+#citybox:hover {
+	background-position: 0 -46px;
+	}
+#citybox:active, #citybox.open {
+	padding-top: 7px;
+	height: 39px;
+	background-position: 0 -90px;
 	}
 #cityname {
 	display: inline-block;
-	width: 100%;
+	margin-left: 12px;
+	width: 106px;
 	height: 100%;
+	color: #b5b1a2;
+	font: bold small-caps 14pt "Minion Pro", Minion, serif;
 	text-decoration: none;
-	color: #FFFFFF;
+	text-align: center;
+	text-shadow: 0 1px rgba(0,0,0,0.8);
 	}
 #citydropdown {
-	background: url(../AIFrames/city_dropdown_arrow.png) no-repeat 0 0px;
-	width: 19px;
-	height: 14px !important;
 	position: absolute;
-	top: 0px;
-	right: 10px;
+	top: 15px;
+	right: 24px;
+	display: none;
+	width: 11px;
+	height: 10px !important;
+	background: url(../SPFrames/open-tab.png) no-repeat left top;
 	z-index: 5;
 	}
-#citydropdown:hover {
-	background-position: 0 -14px;
-	}
-#citydropdown:active {
-	background-position: 0 -28px;
-	}
+	
 #wm {
-	left: 224px;
+	left: 281px;
+	background-position: -155px 0;
 	}
+#wm:hover {
+	background-position: -155px -46px;
+	}
+#wm:active, #wm.open {
+	background-position: -155px -90px;
+	}
+	
 #sr {
-	left: 419px;
+	left: 436px;
+	background-position: -309px 0;
+	}
+#sr:hover {
+	background-position: -309px -46px;
+	}
+#sr:active, #sr.open {
+	background-position: -309px -90px;
 	}
 #sr .flicker {
-	background: url(../AIFrames/buttons/statuspulse.png) no-repeat center center;
+	background: url(../SPFrames/new-SR.png) no-repeat center center;
 	}
+#sr:active .flicker {
+	display: none;
+	}
+	
 #mailbox {
-	left: 614px;
+	left: 596px;
+	background-position: -464px 0;
+	}
+#mailbox:hover {
+	background-position: -464px -46px;
+	}
+#mailbox:active, #mailbox.open {
+	background-position: -464px -90px;
 	}
 #mailbox .flicker {
-	background: url(../AIFrames/buttons/messagespulse.png) no-repeat center center;
+	background: url(../SPFrames/new-mail.png) no-repeat center center;
+	}
+#mailbox:active .flicker {
+	display: none;
 	}

@@ -2,26 +2,16 @@
 *********************************************** Messages CSS Code **********************************************
 \**************************************************************************************************************/
 #Mess_outerBox {
-	width: 770px;
+	width: 739px;
 	margin: 5px 0 0 5px;
-	}
-#Mess_outerBox .darkFrameBody {
-	height: 490px;
 	}
 #mess_newMess {
 	position: absolute;
 	top: 5px;
-	right: 35px;
+	left: 283px;
 	display: block;
 	width: 151px;
-	height: 41px;
-	background: url(../AIFrames/buttons/New-Mess.png) no-repeat 0 -41px;
-	}
-#mess_newMess:hover {
-	background-position: 0 0;
-	}
-#mess_newMess:active {
-	background-position: 0 -82px;
+	background: transparent;
 	}
 #mess_notepad {
 	position: absolute;
@@ -35,24 +25,23 @@
 #mess_inbox {
 	position: absolute;
 	top: 5px;
-	left: 5px;
+	left: 20px;
+	display: block;
+	width: 110px;
+	}
+#mess_groups {
+	position: absolute;
+	top: 5px;
+	left: 131px;
 	display: block;
 	width: 151px;
-	height: 41px;
-	background: url(../AIFrames/buttons/Inbox-Mess.png) no-repeat 0 -41px;
-	}
-#mess_inbox:hover {
-	background-position: 0 0;
-	}
-#mess_inbox:active {
-	background-position: 0 -82px;
 	}
 #mess_window {
 	position: absolute;
 	top: 45px;
 	left: 0px;
 	height: 447px;
-	width: 765px;
+	width: 729px;
 	padding: 5px;
 	overflow: auto;
 	color: #FFF;
@@ -64,7 +53,26 @@
 #mess_addNav{
 	position: absolute;
 	bottom: -25px;
-	right: 15px;
+	right: 0px;
+	color: #A9A098;
+	font: 10pt "Trajan Pro", Trajan, serif;
+	text-shadow: 0 1px rgba(0, 0, 0, 0.8);
+	}
+#mess_addNavBack {
+	position: absolute;
+	bottom: 30px;
+	right: 0px;
+	width: 156px;
+	height: 52px;
+	background: url(../SPFrames/rusted-metal.jpg);
+	border: 3px solid #A8A495;
+	-webkit-border-radius: 20px 0px 0px 20px;
+	-moz-border-radius: 20px 0px 0px 20px;
+	border-radius: 20px 0px 0px 20px;
+	-webkit-box-shadow: inset 0px 2px 10px rgba(0,0,0,0.8);
+	-moz-box-shadow: inset 0px 2px 10px rgba(0,0,0,0.8);
+	box-shadow: inset 0px 2px 10px rgba(0,0,0,0.8), 0px 2px 10px rgba(0,0,0,0.8);
+	border-right: none;
 	}
 #mess_addMessNav {
 	margin-top: 5px;
@@ -83,23 +91,11 @@
 	float: left !important;
 	background: url(../../images/client/menus/report-button.png) no-repeat 0 0;
 	}
-#mess_reportMess:hover {
-	background-position: -25px 0;
-	}
-#mess_reportMess:active {
-	background-position: -50px 0;
-	}
 #mess_replyMess {
 	display: inline-block;
 	height: 41px;
 	width: 151px;
 	background: url(../AIFrames/buttons/Reply-Mess.png) no-repeat 0 -41px;
-	}
-#mess_replyMess:hover {
-	background-position: 0 0;
-	}
-#mess_replyMess:active {
-	background-position: 0 -82px;
 	}
 #mess_deleteMess, .deleteMess, #mess_deleteConvo { /*need button*/
 	display: inline-block;
@@ -166,21 +162,6 @@
 #mess_replyTo {
 	margin: 10px;
 	margin-top: 30px;
-	}
-#mess_groups {
-	display: block;
-	width: 151px;
-	height: 41px;
-	position: absolute;
-	top: 5px;
-	left: 156px;
-	background: url(../AIFrames/buttons/Groups-Mess.png) no-repeat 0 -41px;
-	}
-#mess_groups:hover {
-	background-position: 0 0;
-	}
-#mess_groups:active {
-	background-position: 0 -82px;
 	}
 #mess_groupSelect {
 	min-width: 150px;
@@ -293,28 +274,28 @@
 .messGroup {
 	border: 1px solid #AAAAAA;
 	height: 25px;
+	background: rgba(0, 0, 0, 0.3);
+	border: 0px solid black;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
 	overflow: hidden;
 	}
 .messGroup.open {
 	height: auto;
 	}
-.messGroup > span {
+.messExpand {
 	position: relative;
 	top: -5px;
-	}
-.messExpand {
-	display: inline-block;
-	height: 21px;
-	width: 21px;
-	margin-left: 2px;
-	margin-top: 2px;
-	background: url(../../images/client/menus/More-less_messages.png) no-repeat 0 0;
-	}
-.open .messExpand {
-	background: url(../../images/client/menus/More-less_messages.png) no-repeat 0 -21px;
+	cursor: pointer;
 	}
 .groupSelect, .messSelect {
-	float: right;
+	float: left;
+	margin: 6px;
+	-webkit-appearance: radio;
+	-moz-appearance: radio;
+	-ms-appearance: radio;
+	-o-appearance: radio;
+	appearance: radio;
 	}
 .viewConvo, #mess_showConvo {
 	height: 20px;
@@ -328,7 +309,6 @@
 .messages li {
 	height: 19px;
 	list-style: none;
-	margin-left: 25px;
 	}
 .message {
 	display: inline-block;

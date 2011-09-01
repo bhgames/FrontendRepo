@@ -3,7 +3,7 @@ var RAI = {
 			//the new templates includes some text before this, but can't be written in until the player is loaded
 			template : "\n\nimport BattlehardFunctions.*;\nimport Revelations.RevelationsAI;\n\npublic class Revelations extends RevelationsAI {\n\n\t// place static and instance variables here:\n\n\tpublic Revelations(BattlehardFunctions bf) {\n\n\t\tsuper(bf);\n\t\t// your constructor code goes here:\n\t\t\n\t}\n\n\tpublic void run() {\n\t\t\n\t}\n\n}",
 			template2 : "\n\nimport BattlehardFunctions.*;\nimport Revelations.RevelationsAI2;\n\npublic class Revelations extends RevelationsAI2 {\n\n\t// place static and instance variables here:\n\n\tpublic Revelations(BattlehardFunctions bf) {\n\n\t\tsuper(bf);\n\t\t// your constructor code goes here:\n\n\t}\n\n\tpublic void onIncomingRaidDetected(UserRaid r) {\n\t\t\n\t}\n\n\tpublic void onOutgoingRaidReturning(UserRaid r) {\n\t\t\n\t}\n\n\tpublic void daily() {\n\t\t\n\t}\n\n\tpublic void hourly() {\n\t\t\n\t}\n\n\n}"
-		}
+		};
 function build_RAI_interface() {
 	currUI = build_RAI_interface;
 	

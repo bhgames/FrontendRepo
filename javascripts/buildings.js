@@ -1,32 +1,36 @@
 function build_bldg_UIs() { //set up everything the various UIs will need
-	BUI.CY.bldgServer = $.grep(player.curtown.bldg, function(v, i) {
+	BUI.CC.bldgServer = $.grep(player.curtown.bldg, function(v, i) {
 						return (v.deconstruct || v.lvlUps != 0);
 					});
 	
 	 BUI.active.timer = update_time_displays(BUI.active);
 }
+
 function draw_bldg_UI() {
 	currUI = draw_bldg_UI;
 	$("#window").contents().unbind();
+	$("#viewerback").css({"background-image":"url(SPFrames/Buildings/UI/menu-back.jpg)","background-color":""}).html("").fadeIn("normal");
 	display_output(false,"Connecting to Building Network...");
 	BUI.queue = {};
 	BUI.bldgQueue = {};
 	var bldgInfo = $.grep(player.curtown.bldg, get_bldg)[0];
 	
-	//do update checks for this building
-	if(bldgInfo.update) load_player(player.league,true,true); //if an update is queued, update the player object, and reload the current UI
-	else {
-		$.each(bldgInfo.Queue, function(i,v) {
-			if(v.update) load_player(player.league,true,true);
-		});
+	if(websock.nosock) {
+		//do update checks for this building
+		if(bldgInfo.update) load_player(false,true,true); //if an update is queued, update the player object, and reload the current UI
+		else {
+			$.each(bldgInfo.Queue, function(i,v) {
+				if(v.update) load_player(false,true,true);
+			});
+		}
 	}
 	
 	display_output(false,"Connected!");
 	display_output(false,"Collecting Building data...");
-	$("#window").html(BUI.head);
+	$("#window").html(BUI.window).fadeIn();
+	$("#viewerback").html(BUI.head);
 	$("#BUI_tutorial").unbind();
 	
-	$("#BUI_bldgContent").html(BUI.active.HTML);
 	$("#BUI_bldgName").html(bldgInfo.type);
 	$("#BUI_bldgLvl").html(" - Level " + bldgInfo.lvl);
 	
@@ -38,7 +42,7 @@ function draw_bldg_UI() {
 		else $("#BUI_upgrading").html("<img src='AIFrames/buildings/upgrade.png' alt='Upgrading'/> +" + bldgInfo.lvlUps).css("color", "lime");
 	}
 	
-	$("#BUI_bldgSwitch").html(function() {
+	/*$("#BUI_bldgSwitch").html(function() {
 		var HTML = '';
 		$.each(player.towns, function(a, x) {
 			HTML += "<optgroup label='" + x.townName + "'>";
@@ -72,9 +76,8 @@ function draw_bldg_UI() {
 			$("#cityname").html(function() { 
 				if(player.curtown.townID == player.capitaltid) {
 					return "&#171;" + player.curtown.townName + "&#187;";
-				} else {
-					return player.curtown.townName;
 				}
+				return player.curtown.townName;
 			});
 		}
 		BUI.build();
@@ -83,7 +86,7 @@ function draw_bldg_UI() {
 		build_raid_list();
 		BUI.set(bldg, lot);
 		do_fade(draw_bldg_UI);
-	});
+	});*/
 	
 	var getUpInfo = new make_AJAX();
 	getUpInfo.callback = function(response) {
@@ -101,13 +104,12 @@ function draw_bldg_UI() {
 		//this rounds all the numbers up and reformats them for easier viewing
 		$("#BUI_upSteel").html(Math.ceil(cost[0])).format({format:"###,###,###", locale:"us"});
 		$("#BUI_upWood").html(Math.ceil(cost[1])).format({format:"###,###,###", locale:"us"});
-		$("#BUI_upManMade").html(Math.ceil(cost[2])).format({format:"###,###,###", locale:"us"});
-		$("#BUI_upFood").html(Math.ceil(cost[3])).format({format:"###,###,###", locale:"us"});
+		$("#BUI_upCrystal").html(Math.ceil(cost[2])).format({format:"###,###,###", locale:"us"});
 		
 		if(!info[2].match(/^false/)) {		//if canUpgrade is true
 			$("#BUI_upSteel").removeClass('noRes');
 			$("#BUI_upWood").removeClass('noRes');
-			$("#BUI_upManMade").removeClass('noRes');
+			$("#BUI_upCrystal").removeClass('noRes');
 			$("#BUI_upFood").removeClass('noRes');
 			$("#BUI_upButton").removeClass('noUp');
 		} else { 									//if canUpgrade returns false
@@ -115,8 +117,12 @@ function draw_bldg_UI() {
 		}
 		
 		display_output(false,"Building Loaded!");
-		//fade in the window contents after we're done loading the most important bits of data
-		$("#window").fadeIn("fast");
+		//show the upgrade header once it's been populated
+		$("#BUI_header").css("display","block").animate({"top":"0px"}, "normal",function() {
+			$("#BUI_upButton").appendTo("#BUI_winHeader");
+			$("#BUI_deconButton").appendTo("#BUI_winHeader");
+		});
+		
 	};
 	getUpInfo.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".returnPrice(" 
 						+ bldgInfo.lotNum + "," + player.curtown.townID + ");"+player.command+".getTicksForLeveling("
@@ -145,7 +151,7 @@ function draw_bldg_UI() {
 									+ bldgInfo.lotNum + "," + player.curtown.townID + ");");
 									
 					display_output(false,"Success!");
-					load_player(player.league, player.curtown.townID, false);  //update the player object
+					load_player(false, player.curtown.townID, false);  //update the player object
 				} else {
 					var error=response.split(":")[1]; //we want what's after false:
 					display_output(true,error);
@@ -183,7 +189,17 @@ function draw_bldg_UI() {
 	});
 	
 	if(bldgInfo.lvl>0) {
-		BUI.active.build(bldgInfo);
+		if(BUI.active.HTML) {
+			$("#BUI_bldgContent").html(BUI.active.HTML);
+			BUI.active.build(bldgInfo);
+		} else {
+			$.get("menus/"+BUI.active.abbr+".html",
+				function(response) {
+					BUI.active.HTML = response;
+					$("#BUI_bldgContent").html(BUI.active.HTML);
+					BUI.active.build(bldgInfo);
+				});
+		}
 	} else {
 		$("#BUI_bldgContent").html("");
 		$("#BUI_deconButton").unbind("click").css("opacity",".5");
@@ -195,19 +211,23 @@ function get_bldg(v) {
 }
 
 function set_active(name, lotNum) {
-	clearInterval(BUI.active.timer);
-	BUI.active = new Object();
-	$.each(BUI, function(i,v) {
-		if(typeof(v.name) != "undefined") {
-			$.each(v.name, function(j, w) {
-				if(name == w) {
-					BUI.active = v;
-				}
-			});
-		}
-	});
-	BUI.active.lotNum = lotNum;
-	BUI.active.timer = update_time_displays(BUI.active);
+	if(name && !isNaN(lotNum)) {
+		clearInterval(BUI.active.timer);
+		BUI.active = new Object();
+		$.each(BUI, function(i,v) {
+			if(typeof(v.name) != "undefined") {
+				$.each(v.name, function(j, w) {
+					if(name == w) {
+						BUI.active = v;
+					}
+				});
+			}
+		});
+		BUI.active.lotNum = lotNum;
+		BUI.active.timer = update_time_displays(BUI.active);
+	} else {
+		log("name or lotNum not given", {"name":name,"lotNum":lotNum});
+	}
 }
 
 function update_time_displays(menu) {		//this function is fairly complicated since there's a lot going on
@@ -216,7 +236,7 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 		try { //this is to prevent the script from breaking if an error gets thrown.
 			var bldgInfo = $.grep(player.curtown.bldg, get_bldg)[0];
 			if(bldgInfo.update||player.curtown.update) {
-				load_player(player.league,true,true);
+				load_player(false,true,true);
 			} else {
 				switch(bldgInfo.type) {		//first, we have to determine if we even have updating displays
 					/*case "Construction Yard":
@@ -273,23 +293,23 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 					case "Arms Factory":
 						var time = 0;
 						$(".time").each(function(i, el) {
-							
+							var days, hours, mins, secs;
 							if(i > 0) { //if we're on anything after the extra .time for the first element 
 											//we have to subtract one from i to get the right queue item
 								time += (bldgInfo.Queue[i-1].ticksPerUnit * bldgInfo.Queue[i-1].AUNumber);
-								var days = Math.floor((time / 3600)/24);
-								var hours = Math.floor((time / 3600)%24);
-								var mins = Math.floor((time % 3600) / 60);
-								var secs = Math.floor((time % 3600) % 60);
+								days = Math.floor((time / 3600)/24);
+								hours = Math.floor((time / 3600)%24);
+								mins = Math.floor((time % 3600) / 60);
+								secs = Math.floor((time % 3600) % 60);
 							} else {
 								var currTicks = Math.max(0,bldgInfo.Queue[i].ticksPerUnit-(bldgInfo.Queue[i].currTicks+player.time.timeFromNow(1000)));
 								if(currTicks<1) {
 									bldgInfo.update = true;
 								}
-								var days = Math.floor((currTicks / 3600)/24);
-								var hours = Math.floor((currTicks / 3600)%24);
-								var mins = Math.floor((currTicks % 3600) / 60);
-								var secs = Math.floor((currTicks % 3600) % 60);
+								days = Math.floor((currTicks / 3600)/24);
+								hours = Math.floor((currTicks / 3600)%24);
+								mins = Math.floor((currTicks % 3600) / 60);
+								secs = Math.floor((currTicks % 3600) % 60);
 								time -= (bldgInfo.Queue[i].currTicks+player.time.timeFromNow(1000)); //this is so that time displays correctly for the first element
 							}
 							
@@ -321,9 +341,9 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 								SMoffset++;
 							}
 							
-							var ticks = Math.max(0,player.curtown.tradeSchedules[i + SMoffset].currTicks-player.time.timeFromNow(1000));
+							var ticks = (player.curtown.tradeSchedules[i + SMoffset].currTicks-player.time.timeFromNow(1000)).min(0);
 							
-							if(isNaN(ticks)||time<1) {
+							if(isNaN(ticks)||ticks<1) {
 								$(el).html("updating");
 								get_all_trades();
 							} else {
@@ -486,7 +506,7 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 				}
 			}
 			if(bldgInfo.update) {
-				load_player(player.league,true,true);
+				load_player(false,true,true);
 			}
 		} catch(e) {
 			//display_output(true,"Minor Error [update_time_displays()]:<br/>"+e);
