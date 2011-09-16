@@ -1,14 +1,26 @@
 var RAI = {
-			HTML : "<div id='RAI_options'><div id='RAI_active'></div><div id='RAI_autosave' title='Automatically saves every 5 minutes.'></div><div id='RAI_autostart' title='Automatically restart script on server restart'></div></div><pre id='RAI_scriptDisplay'></pre><a href='javascript:;' id='RAI_new2'>Rev 2.0 Template</a><a href='javascript:;' id='RAI_new'></a><a href='javascript:;' id='RAI_run'></a><a href='javascript:;' id='RAI_save'></a><a href='javascript:;' id='RAI_stop'></a>",
+			HTML : "<div id='RAI_options'>\
+						<div id='RAI_active'></div>\
+						<div id='RAI_autosave' title='Automatically saves every 5 minutes.'>Autosave</div>\
+						<div id='RAI_autostart' title='Automatically restart script on server restart'>Autostart</div>\
+					</div>\
+					<pre id='RAI_scriptDisplay'></pre>\
+					<div id='RAI_controls'>\
+						<div id='RAI_new'>New Template</div>\
+						<div id='RAI_run'>Run Program</div>\
+						<div id='RAI_save'>Save Program</div>\
+						<div id='RAI_stop'>Stop Program</div>\
+					</div>",
 			//the new templates includes some text before this, but can't be written in until the player is loaded
-			template : "\n\nimport BattlehardFunctions.*;\nimport Revelations.RevelationsAI;\n\npublic class Revelations extends RevelationsAI {\n\n\t// place static and instance variables here:\n\n\tpublic Revelations(BattlehardFunctions bf) {\n\n\t\tsuper(bf);\n\t\t// your constructor code goes here:\n\t\t\n\t}\n\n\tpublic void run() {\n\t\t\n\t}\n\n}",
-			template2 : "\n\nimport BattlehardFunctions.*;\nimport Revelations.RevelationsAI2;\n\npublic class Revelations extends RevelationsAI2 {\n\n\t// place static and instance variables here:\n\n\tpublic Revelations(BattlehardFunctions bf) {\n\n\t\tsuper(bf);\n\t\t// your constructor code goes here:\n\n\t}\n\n\tpublic void onIncomingRaidDetected(UserRaid r) {\n\t\t\n\t}\n\n\tpublic void onOutgoingRaidReturning(UserRaid r) {\n\t\t\n\t}\n\n\tpublic void daily() {\n\t\t\n\t}\n\n\tpublic void hourly() {\n\t\t\n\t}\n\n\n}"
+			template : "\n\nimport BattlehardFunctions.*;\nimport Revelations.RevelationsAI2;\n\npublic class Revelations extends RevelationsAI2 {\n\n\t// place static and instance variables here:\n\n\tpublic Revelations(BattlehardFunctions bf) {\n\n\t\tsuper(bf);\n\t\t// your constructor code goes here:\n\n\t}\n\n\tpublic void daily()  { \n\t\t//runs every 24 hours from the time of script execution\n\t}\n\n\tpublic void hourly() { \n\t\t//runs every hour from the time of script execution\n\t}\n\n\tpublic void onIncomingRaidDetected(UserRaid r) {\n\t\t//fires whenever an incoming raid is detected.  Does not false positive on your own raids.\n\t\t//r is a reference to the incoming raid\n\t}\n\n\tpublic void onOutgoingRaidLanding(UserRaid r) {\n\t\t//fires directly before one of your raids lands\n\t\t//r is a reference to the raid that is about to land\n\t}\n\n\tpublic void onOutgoingRaidReturning(UserRaid r) {\n\t\t//fires directly after one of your raids lands.\n\t\t//r is a reference to the returning raid\n\t}\n\n\tpublic void onMessageReceived(UserMessage m) {\n\t\t//fires whenever a new message is received.\n\t\t//m is a reference to the message\n\t}\n\n\tpublic void onBuildingFinished(UserBuilding b) {\n\t\t//fires whenever a building finishes upgrading\n\t\t//b is a reference to the building\n\t}\n\n\tpublic void onAttackUnitQueueEmpty(UserBuilding b) {\n\t\t//fires whenever the last attack unit in a queue finishes\n\t\t//b is a reference to the Arms Factory with the now empty queue\n\t}\n\n\tpublic void onEnemyTownInvaded(UserTown t) {\n\t\t//fires whenever you successfully invade a town\n\t\t//t is a reference to the invaded town\n\t}\n\t\t\n\tpublic void onOutgoingTradeLanding(UserTrade t) {\n\t\t//fires directly before a trade reaches its destination\n\t\t//t is a reference to the trade that just landed\n\t}\n\n\tpublic void onOutgoingTradeReturning(UserTrade t) {\n\t\t//fires directly after a trade reaches its destination\n\t\t//t is a reference to this trade\n\t\t   \n\t}\n}"
 		};
 function build_RAI_interface() {
 	currUI = build_RAI_interface;
+	var win = $("#window");
+	win.contents().unbind();
+	win.html(RAI.HTML);
 	
-	$("#window").contents().unbind();
-	$("#window").html(RAI.HTML);
+	$("#viewerback").html("").css("background-image","url(SPFrames/rusted-metal.jpg)").fadeIn();
 	
 	var getScript = new make_AJAX();
 	getScript.callback = function(response) {
@@ -36,10 +48,10 @@ function build_RAI_interface() {
 		}
 		$("#RAI_scriptDisplay").text(RAI.script);
 		show_output_window();
-		display_output(false,"Welcome to the Revelations AI Programming Interface!<br/><br/>For assistance beyond the quests, please stop by the Data Core on the <a href='http://battlehardalpha.xtreemhost.com' target='_forum'>Battlehard Forums</a>.");
+		display_output(false,"Welcome to the Revelations AI Programming Interface!<br/><br/>For assistance beyond the quests, please stop by the Data Core on the <a href='http://forum.aiwars.org' target='_forum'>Battlehard Forums</a>.");
 		$("#console_expand").attr("checked","checked").click().attr("checked","checked");
 		
-		$("#window").fadeIn("fast");
+		win.fadeIn("fast");
 		//Ace Editor code ---------------------------------------------------------------------------------------------------------
 		RAI.editor = ace.edit("RAI_scriptDisplay");
 		RAI.editor.setTheme("ace/theme/aiwars");
@@ -53,7 +65,7 @@ function build_RAI_interface() {
 		});
 
 	};
-	getScript.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".isAlive();"+player.command+".getAutoRun();"+player.command+".editProgram();");
+	getScript.get("/AIWars/GodGenerator?reqtype=command&command=bf.isAlive();bf.getAutoRun();bf.editProgram();");
 	
 	
 	$("#RAI_autosave").unbind("click").click(function(){
@@ -92,9 +104,6 @@ function build_RAI_interface() {
 	
 	$("#RAI_new").unbind('click').click(function() {
 		RAI.editor.getSession().setValue("// New Script Template\npackage Revelations."+player.username.toLowerCase().replace(/\s/g,"_")+";"+RAI.template);
-	});
-	$("#RAI_new2").unbind('click').click(function() {
-		RAI.editor.getSession().setValue("// New Script Template\npackage Revelations."+player.username.toLowerCase().replace(/\s/g,"_")+";"+RAI.template2);
 	});
 	$("#RAI_save").unbind('click').click(function() {
 		display_output(false, "Saving Program...");

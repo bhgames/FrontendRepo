@@ -47,6 +47,64 @@ function CC_UI(bldgInfo) {
 								</div>\
 							</div>");
 	
+	
+	
+	if(player.curtown.zeppelin) {$("#CC_control").css("display","block");}
+	
+	$("#BUI_extras").text(BUI.CC.numRaidsOut + " of " + bldgInfo.lvl + " mission slots used.");
+	$("#CS").addClass("open");
+	
+	$("#BUI_bldgContent").fadeIn();
+	
+	$("#CC_tabBar > div").unbind('click').click(function() {
+		if(!$(this).hasClass("open")) {
+			$("#CC_tabBar > div.open, #CC_window > div.open").removeClass("open");
+			$(this).addClass("open");
+			var that = this;
+			$("#BUI_bldPplButton").css("display","none");
+			$("#BUI_numPpl").css("display","none");
+			$("#BUI_dummyPplButton").css("display","block");
+			$("#BUI_bldPplBox").animate({"bottom":"-140px"}, "normal");
+			$("#CC_window").fadeOut(100,function() {
+				/////////////////////////////////////////////////////////////////////Construct Tab//////////////////////////////////////////////////////////////////////
+				if($(that).is("#CC_construct")) {
+					$("#CC_EngTab").addClass("open");
+					$("#BUI_bldPplBox").animate({"bottom":"0px"}, "normal",function() {
+						$("#BUI_bldPplButton").css("display","block");
+						$("#BUI_numPpl").css("display","block");
+						$("#BUI_dummyPplButton").css("display","none");
+					});
+					$(this).fadeIn(100);					
+				} //////////////////////////////////////////////////////////////////Send Mission Tab////////////////////////////////////////////////////////////////////
+				else if ($(that).is("#CC_sendMission")) {
+					$("#CC_sendTab").addClass("open");
+					
+					$(this).fadeIn(100, function() {
+						$("#CC_AUinput").data('jsp').reinitialise();
+						$("#CC_supportAU").data('jsp').reinitialise();
+						$("#CC_missionDesc").data('jsp').reinitialise();
+					});
+					
+				}//////////////////////////////////////////////////////////////////Airship Control Tab//////////////////////////////////////////////////////////////////
+				else if($(that).is("#CC_control")) {
+					$("#CC_airshipControlTab").addClass("open");
+				
+					$(this).fadeIn(100);
+				}/////////////////////////////////////////////////////////////////Military Overview Tab/////////////////////////////////////////////////////////////////
+				else if($(that).is("#CC_overview")) {
+					$("#CC_milOverTab").addClass("open");
+					
+					$(this).fadeIn(100, function() {
+						$("#CC_scrollBox").data('jsp').reinitialise();
+					});
+				}
+			});
+		}
+	});
+	
+	//------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	// Engineering Tab -------------------------------------------------------------------------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	var enTotal = 0;
 	var enTotalCap = 0;
 	$.each(player.curtown.bldg, function(i, v) {
@@ -80,61 +138,6 @@ function CC_UI(bldgInfo) {
 	} else {
 		$("#CC_ticksTillNext").html(bldgInfo.ticksPerPerson - bldgInfo.ticksLeft);
 	}
-	
-	if(player.curtown.zeppelin) {$("#CC_control").css("display","block");}
-	
-	$("#BUI_extras").text(BUI.CC.numRaidsOut + " of " + bldgInfo.lvl + " mission slots used.");
-	$("#CS").addClass("open");
-	
-	$("#BUI_bldgContent").fadeIn();
-	
-	$("#CC_tabBar > div").unbind('click').click(function() {
-		if(!$(this).hasClass("open")) {
-			$(".open").removeClass("open");
-			$(this).addClass("open");
-			var that = this;
-			$("#BUI_bldPplButton").css("display","none");
-			$("#BUI_numPpl").css("display","none");
-			$("#BUI_dummyPplButton").css("display","block");
-			$("#BUI_bldPplBox").animate({"bottom":"-140px"}, "normal");
-			$("#CC_window").fadeOut(100,function() {
-				/////////////////////////////////////////////////////////////////////Construct Tab//////////////////////////////////////////////////////////////////////
-				if($(that).is("#CC_construct")) {
-					$("#CC_EngTab").addClass("open");
-					$("#BUI_bldPplBox").animate({"bottom":"0px"}, "normal",function() {
-						$("#BUI_bldPplButton").css("display","block");
-						$("#BUI_numPpl").css("display","block");
-						$("#BUI_dummyPplButton").css("display","none");
-					});
-					$(this).fadeIn(100);					
-				} //////////////////////////////////////////////////////////////////Send Mission Tab////////////////////////////////////////////////////////////////////
-				else if ($(that).is("#CC_sendMission")) {
-					$("#CC_sendTab").addClass("open");
-					
-					$(this).fadeIn(100);
-					
-					$("#CC_supportAU").data('jsp').reinitialise();
-					$("#CC_missionDesc").data('jsp').reinitialise();
-				}//////////////////////////////////////////////////////////////////Airship Control Tab//////////////////////////////////////////////////////////////////
-				else if($(that).is("#CC_control")) {
-					$("#CC_airshipControlTab").addClass("open");
-				
-					$(this).fadeIn(100);
-				}/////////////////////////////////////////////////////////////////Military Overview Tab/////////////////////////////////////////////////////////////////
-				else if($(that).is("#CC_overview")) {
-					$("#CC_milOverTab").addClass("open");
-					
-					$(this).fadeIn(100, function() {
-						$("#CC_scrollBox").data('jsp').reinitialise();
-					});
-				}
-			});
-		}
-	});
-	
-	//------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	// Engineering Tab -------------------------------------------------------------------------------------------------------------------------------------------------
-	//------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	
 	$("#CC_civNumber").unbind("click").click(function() {
 		if(BUI.CC.selectedIndex != 8) {
@@ -262,7 +265,7 @@ function CC_UI(bldgInfo) {
 	//------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	
 	$.each(player.AU, function(i, v) {
-		$("#CC_AUinput").append("<div class='CC_AU'>\
+		$("#CC_AUwrapper").append("<div class='CC_AU'>\
 									<div class='CC_AUname'>"+v.name+"</div>\
 									<img class='CC_AUpic' src='SPFrames/Units/"+v.name+".png'/>\
 									<a href='javascript:;' class='CC_AUnumber'>"+player.curtown.au[i]+"</a>\
@@ -280,6 +283,8 @@ function CC_UI(bldgInfo) {
 									input.keyup();
 								});
 	});
+	$("#CC_AUwrapper").css("width",141*player.AU.length+"px");
+	$("#CC_AUinput").jScrollPane();
 	$.each(player.curtown.supportAU, function(i, v) {	
 		if(v.support == 2) {
 			var classes = "supportAU";
@@ -312,7 +317,7 @@ function CC_UI(bldgInfo) {
 	$('#CC_targetX').val(BUI.CC.x);
 	$('#CC_targetY').val(BUI.CC.y);
 	BUI.CC.selectedIndex = 0;
-	$("#CC_missionDesc").html(BUI.CC.missionDesc[0]).jScrollPane({showArrows:true,hideFocus:true});
+	$("#CC_missionDesc").html(BUI.CC.missionDesc[1]).jScrollPane({showArrows:true,hideFocus:true});
 	
 	// Send Tab Event Handlers -----------------------------------------------------------------------------------------------------------------------------------------
 	
@@ -351,9 +356,12 @@ function CC_UI(bldgInfo) {
 					}
 			});
 			$("#CC_civNumber").text(numCivs);
+		} else if(BUI.CC.selectedIndex == 10) {
+			$("#CC_supportAUbox").fadeOut().find(".CC_AUinput").val(0);
+			$("#CC_civilianAUbox").fadeOut(); $("#CC_civInput").val(0);
 		} else {
 			$("#CC_supportAUbox").fadeIn();
-			$("#CC_civilianAUbox").fadeOut();
+			$("#CC_civilianAUbox").fadeOut(); $("#CC_civInput").val(0);
 		}
 		
 		if(BUI.CC.selectedIndex == 6) $("#CC_supportType").fadeIn();
@@ -366,12 +374,12 @@ function CC_UI(bldgInfo) {
 		canSendAttack();
 	});
 	var typeCheck = 0;
-	$(".AUinput, #CC_civInput").unbind('keyup').keyup(function() {
+	$(".CC_AUinput, #CC_civInput").unbind('keyup').keyup(function() {
 		clearTimeout(typeCheck);
 		typeCheck = setTimeout(function(){canSendAttack();get_attack_ETA();},250);
 		
 		var coverSize = 0;
-		$(".AUinput").each(function(i, v) {
+		$(".CC_AUinput").each(function(i, v) {
 			var value = parseInt($(v).val());
 			value = (isNaN(value))?0:value;
 			var j = i-player.AU.length;
@@ -796,8 +804,12 @@ function CC_UI(bldgInfo) {
 			$("#CC_control").click();
 			BUI.CC.startTab = "";
 			break;
+		case "overview":
+			$("#CC_overview").click();
+			BUI.CC.startTab = "";
+			break;
 		default:
-		$("#CC_construct").click();
+			$("#CC_construct").click();
 	}
 }
 
@@ -849,6 +861,8 @@ function canSendAttack() {
 		case 9:
 			BUI.CC.attackType = "dig";
 			break;
+		case 10:
+			BUI.CC.attackType = "blockade";
 		case 0:
 		default:
 			BUI.CC.attackType = "attack";

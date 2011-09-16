@@ -1,7 +1,7 @@
 function IN_UI(bldgInfo) {
 	
 	$("#viewerback").append("<div id='BUI_bldPplBox'>\
-								<div id='BUI_bldPplHeader'>Build Engineers<div id='BUI_pplHelp' class='pplHelp'></div><span id='BUI_numCivs'></span></div>\
+								<div id='BUI_bldPplHeader'>Build Scholars<div id='BUI_pplHelp' class='pplHelp'></div><span id='BUI_numCivs'></span></div>\
 								<div id='BUI_bldPpl'>\
 									<div id='BUI_pplBldgInfo'>\
 										<div id='BUI_pplBldg'>Number Building: <span id='BUI_numPplBldg'>0</span></div>\
@@ -51,8 +51,8 @@ function IN_UI(bldgInfo) {
 							
 	$("#BUI_tutorial").unbind("click").click(IN_tut);
 	
-	$("#IN_numKnowledge span").text(Math.floor(player.research.knowledge));
-	$("#IN_ppd span").text(Math.floor(86400/player.research.scholTicksTotal));
+	$("#BUI_extras").append("<div id='IN_numKnowledge'>Knowledge Points: <span>"+Math.floor(player.research.knowledge)+"</span></div>\
+							<div id='IN_ppd'>Points Per Day: <span>"+Math.floor(86400/player.research.scholTicksTotal)+"</span></div>");
 	
 	$("#BUI_bldgContent").fadeIn();
 	
@@ -136,7 +136,8 @@ function IN_UI(bldgInfo) {
 		});
 	});
 	
-	$(".info").unbind("click").click(help_re);
+	$(".reshelp").unbind("click").click(help_re);
+	
 	$("#BUI_pplHelp").unbind("click").click(function() {
 		display_message("Scholars","Scholars each contribute to your empire's scientific advancement.  The more scholars you have, the more knowledge points you'll gain in a day.");
 	});
@@ -241,9 +242,9 @@ function help_re(e) { //which is the type of research to display the description
 						<div style='float:left;width: 150px;'>\
 							<img src='AIFrames/units/soldierrenderSMALL.png' style='float: left;' alt='Soldier'/>\
 							<div class='helpStat firstcol'>HP: 50</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 25</div><div class='helpStat'>Physical</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/armor-white.png' title='Armor' alt='Armor' /> 15</div><div class='helpStat'><img src='AIFrames/icons/stealth-white.png' title='Concealment' alt='Concealment' /> Light</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/speed-white.png' title='Speed' alt='Speed' /> 60</div><div class='helpStat'><img src='AIFrames/icons/cargo-white.png' title='Cargo' alt='Cargo' /> 100</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 25 Physical</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> 15 Light</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/speed-white.png' title='Speed' alt='Speed' /> 60</div><div class='helpStat'>Cargo 100</div>\
 							\
 						</div>Unit Specialty: Resource Reallocation<br/><br/>\
 						Pillagers, with their light armor, are weak to opponents that deal explosive damage and strong against opponents that deal electrical damage.  Using standard issue sidearms, the Pillager does normal damage to all armor types.  Pillagers make up for their lack of combat specialty with the highest speed, armor, and carrying capacity of any soldier type.</p>";
@@ -253,9 +254,9 @@ function help_re(e) { //which is the type of research to display the description
 						<div style='float:left;width: 150px;'>\
 							<img src='AIFrames/units/soldierrenderSMALL.png' style='float: left;' alt='Soldier'/>\
 							<div class='helpStat firstcol'>HP: 75</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 20</div><div class='helpStat'>Electrical</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/armor-white.png' title='Armor' alt='Armor' /> 10</div><div class='helpStat'><img src='AIFrames/icons/stealth-white.png' title='Concealment' alt='Concealment' /> Light</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/speed-white.png' title='Speed' alt='Speed' /> 50</div><div class='helpStat'><img src='AIFrames/icons/cargo-white.png' title='Cargo' alt='Cargo' /> 20</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 20 Electrical</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> 10 Light</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/speed-white.png' title='Speed' alt='Speed' /> 50</div><div class='helpStat'>Cargo 20</div>\
 							\
 						</div>Unit Specialty: Construct Combat<br/><br/>\
 						Panzerfaust, with their light armor, are weak to opponents that deal explosive damage and strong against opponents that deal electrical damage.  Equipped with state of the art man-portable EMP and directed energy weapons, Panzerfaust deal extra damage to heavily armored constructs, but significantly less damage to lightly armored infantry.</p>";
@@ -265,9 +266,9 @@ function help_re(e) { //which is the type of research to display the description
 						<div style='float:left;width: 150px;'>\
 							<img src='AIFrames/units/soldierrenderSMALL.png' style='float: left;' alt='Soldier'/>\
 							<div class='helpStat firstcol'>HP: 50</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 20</div><div class='helpStat'>Explosive</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/armor-white.png' title='Armor' alt='Armor' /> 10</div><div class='helpStat'><img src='AIFrames/icons/stealth-white.png' title='Concealment' alt='Concealment' /> Light</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/speed-white.png' title='Speed' alt='Speed' /> 20</div><div class='helpStat'><img src='AIFrames/icons/cargo-white.png' title='Cargo' alt='Cargo' /> 50</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 20 Explosive</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> 10 Light</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/speed-white.png' title='Speed' alt='Speed' /> 20</div><div class='helpStat'>Cargo 50</div>\
 							\
 						</div>Unit Specialty: Infantry Combat<br/><br/>\
 						Vanguards, with their light armor, are weak to opponents that deal explosive damage and strong against opponents that deal electrical damage.  Equipped with the latest in anti-infantry ordinace, Vanguards deal extra damage to lightly armored infantry, but the heavy armor of constructs absorbes most of the lethal explosions.</p>";
@@ -277,9 +278,9 @@ function help_re(e) { //which is the type of research to display the description
 						<div style='float:left;width: 150px;'>\
 							<img src='AIFrames/units/tankrenderSMALL.png' style='float: left;' alt='Tank'/>\
 							<div class='helpStat firstcol'>HP: 150</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 390</div><div class='helpStat'>Physical</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/armor-white.png' title='Armor' alt='Armor' /> 100</div><div class='helpStat'><img src='AIFrames/icons/stealth-white.png' title='Concealment' alt='Concealment' /> Heavy</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/speed-white.png' title='Speed' alt='Speed' /> 200</div><div class='helpStat'><img src='AIFrames/icons/cargo-white.png' title='Cargo' alt='Cargo' /> 400</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 390 Physical</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> 100 Heavy</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/speed-white.png' title='Speed' alt='Speed' /> 200</div><div class='helpStat'>Cargo 400</div>\
 							\
 						</div>Unit Specialty: Resource Reallocation/Advance Attack Construct<br/><br/>\
 						Seekers, like all constructs, are plated with heavy duty alloy armor.  This armor makes them incredibly resiliant to explosives, but the high electrical conductivity means they're at a disadvantage against electrical attacks.  Equipped with a 30mm cannon, the Seeker deals average damage to all armor types.  In exchange for smaller armaments, the Seeker is equipped with state of the art propulsion systems and can quickly navigate the battlefield.</p>";
@@ -289,9 +290,9 @@ function help_re(e) { //which is the type of research to display the description
 						<div style='float:left;width: 150px;'>\
 							<img src='AIFrames/units/tankrenderSMALL.png' style='float: left;' alt='Tank'/>\
 							<div class='helpStat firstcol'>HP: 150</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 390</div><div class='helpStat'>Electrical</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/armor-white.png' title='Armor' alt='Armor' /> 100</div><div class='helpStat'><img src='AIFrames/icons/stealth-white.png' title='Concealment' alt='Concealment' /> Heavy</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/speed-white.png' title='Speed' alt='Speed' /> 150</div><div class='helpStat'><img src='AIFrames/icons/cargo-white.png' title='Cargo' alt='Cargo' /> 250</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 390 Electrical</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> 100 Heavy</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/speed-white.png' title='Speed' alt='Speed' /> 150</div><div class='helpStat'>Cargo 250</div>\
 							\
 						</div>Unit Specialty: Construct Combat<br/><br/>\
 						Damascus, like all constructs, are plated with heavy duty alloy armor.  This armor makes them incredibly resiliant to explosives, but the high electrical conductivity means they're at a disadvantage against electrical attacks.  Equipped with advanced directed energy weapons, the Damascus is a fearsome anti-construct weapon, dealing extra damage to Heavily armored constructs.  However, the low electrical conductivity of light infantry armor means they perform poorly against infantry.</p>";
@@ -301,9 +302,9 @@ function help_re(e) { //which is the type of research to display the description
 						<div style='float:left;width: 150px;'>\
 							<img src='AIFrames/units/tankrenderSMALL.png' style='float: left;' alt='Combat Walker'/>\
 							<div class='helpStat firstcol'>HP: 200</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 390</div><div class='helpStat'>Explosive</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/armor-white.png' title='Armor' alt='Armor' /> 100</div><div class='helpStat'><img src='AIFrames/icons/stealth-white.png' title='Concealment' alt='Concealment' /> Heavy</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/speed-white.png' title='Speed' alt='Speed' /> 100</div><div class='helpStat'><img src='AIFrames/icons/cargo-white.png' title='Cargo' alt='Cargo' /> 100</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 390 Explosive</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> 100 Heavy</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/speed-white.png' title='Speed' alt='Speed' /> 100</div><div class='helpStat'>Cargo 100</div>\
 							\
 						</div>Unit Specialty: Infantry Combat<br/><br/>\
 						Wolverines, like all constructs, are plated with heavy duty alloy armor.  This armor makes them incredibly resiliant to explosives, but the high electrical conductivity means they're at a disadvantage against electrical attacks.  Equipped with high grade incindiary ordinance, this combat walker strikes fear into any infantryman.  However, the relatively low thermal conductivity of heavier construct armor makes them a poor counter to other constructs.</p>";
@@ -313,9 +314,9 @@ function help_re(e) { //which is the type of research to display the description
 						<div style='float:left;width: 150px;'>\
 							<img src='AIFrames/units/juggerrenderSMALL.png' style='float: left;' alt='Golem'/>\
 							<div class='helpStat firstcol'>HP: 700</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 1430</div><div class='helpStat'>Physical</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/armor-white.png' title='Armor' alt='Armor' /> 300</div><div class='helpStat'><img src='AIFrames/icons/stealth-white.png' title='Concealment' alt='Concealment' /> Heavy</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/speed-white.png' title='Speed' alt='Speed' /> 500</div><div class='helpStat'><img src='AIFrames/icons/cargo-white.png' title='Cargo' alt='Cargo' /> 1000</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 1430 Physical</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> 300 Heavy</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/speed-white.png' title='Speed' alt='Speed' /> 500</div><div class='helpStat'>Cargo 1000</div>\
 							\
 						</div>Unit Specialty: Resource Reallocation/Advance Attack Golem<br/><br/>\
 						Punishers, like other Golems, are massive, heavily armored battlefield behemoths.  Their thick armor is highly resistant to explosive damage, but the high electrical conductivity of their alloy armors makes them especially vulnerable to electrical attacks.  Equipped with frightening melee weapons and rapid-fire machine guns, Punishers are truely punishing on their opponents, but have no particular combat strengths.</p>";
@@ -325,9 +326,9 @@ function help_re(e) { //which is the type of research to display the description
 						<div style='float:left;width: 150px;'>\
 							<img src='AIFrames/units/juggerrenderSMALL.png' style='float: left;' alt='Golem'/>\
 							<div class='helpStat firstcol'>HP: 700</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 1430</div><div class='helpStat'>Electrical</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/armor-white.png' title='Armor' alt='Armor' /> 300</div><div class='helpStat'><img src='AIFrames/icons/stealth-white.png' title='Concealment' alt='Concealment' /> Heavy</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/speed-white.png' title='Speed' alt='Speed' /> 300</div><div class='helpStat'><img src='AIFrames/icons/cargo-white.png' title='Cargo' alt='Cargo' /> 600</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 1430 Electrical</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> 300 Heavy</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/speed-white.png' title='Speed' alt='Speed' /> 300</div><div class='helpStat'>Cargo 600</div>\
 							\
 						</div>Unit Specialty: Resource Reallocation/Advance Attack Golem<br/><br/>\
 						Dreadnoughts, like other Golems, are massive, heavily armored battlefield behemoths.  Their thick armor is highly resistant to explosive damage, but the high electrical conductivity of their alloy armors makes them especially vulnerable to electrical attacks.  Equipped with deadly directed energy and plasma weapons, Dreadnoughts chew through other construct's heavy armor with ease and the massive power output means they're still deadly to lightly armored infantry.</p>";
@@ -337,9 +338,9 @@ function help_re(e) { //which is the type of research to display the description
 						<div style='float:left;width: 150px;'>\
 							<img src='AIFrames/units/juggerrenderSMALL.png' style='float: left;' alt='Golem'/>\
 							<div class='helpStat firstcol'>HP: 900</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 1430</div><div class='helpStat'>Explosive</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/armor-white.png' title='Armor' alt='Armor' /> 200</div><div class='helpStat'><img src='AIFrames/icons/stealth-white.png' title='Concealment' alt='Concealment' /> Heavy</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/speed-white.png' title='Speed' alt='Speed' /> 250</div><div class='helpStat'><img src='AIFrames/icons/cargo-white.png' title='Cargo' alt='Cargo' /> 400</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 1430 Explosive</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> 200 Heavy</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/speed-white.png' title='Speed' alt='Speed' /> 250</div><div class='helpStat'>Cargo 400</div>\
 							\
 						</div>Unit Specialty: Resource Reallocation/Advance Attack Golem<br/><br/>\
 						Colossi, like other Golems, are massive, heavily armored battlefield behemoths.  Their thick armor is highly resistant to explosive damage, but the high electrical conductivity of their alloy armors makes them especially vulnerable to electrical attacks.  Equipped with a frightening array of explosive, incindiary, and concussive ordinance, Colossi devistate the ranks of lightly armored infantry and their sheer firepower makes them effective against lesser constructs.</p>";
@@ -349,9 +350,9 @@ function help_re(e) { //which is the type of research to display the description
 						<div style='float:left;width: 150px;'>\
 							<img src='AIFrames/units/bomberrenderSMALL.png' style='float: left;' alt='Light Aircraft'/>\
 							<div class='helpStat firstcol'>HP: 50</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 75</div><div class='helpStat'>Physical</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/armor-white.png' title='Armor' alt='Armor' /> 10</div><div class='helpStat'><img src='AIFrames/icons/stealth-white.png' title='Concealment' alt='Concealment' /> Light</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/speed-white.png' title='Speed' alt='Speed' /> 500</div><div class='helpStat'><img src='AIFrames/icons/cargo-white.png' title='Cargo' alt='Cargo' /> 0</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 75 Physical</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> 10 Light</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/speed-white.png' title='Speed' alt='Speed' /> 500</div><div class='helpStat'>Cargo 0</div>\
 							\
 						</div>Light Aircraft, like the LA-513, are equipped with light armors making them highly resistant to electrical attacks, but vulnerable to explosive ordinace.  The 'Gunship' is armed with two, wing mounted, small calibur machine guns and two 15mm cannons mouned on the fuselage giving it a fairly average damage output.</p>";
 				break;
@@ -360,9 +361,9 @@ function help_re(e) { //which is the type of research to display the description
 						<div style='float:left;width: 150px;'>\
 							<img src='AIFrames/units/bomberrenderSMALL.png' style='float: left;' alt='Light Aircraft'/>\
 							<div class='helpStat firstcol'>HP: 50</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 75</div><div class='helpStat'>Electrical</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/armor-white.png' title='Armor' alt='Armor' /> 10</div><div class='helpStat'><img src='AIFrames/icons/stealth-white.png' title='Concealment' alt='Concealment' /> Light</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/speed-white.png' title='Speed' alt='Speed' /> 500</div><div class='helpStat'><img src='AIFrames/icons/cargo-white.png' title='Cargo' alt='Cargo' /> 0</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 75 Electrical</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> 10 Light</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/speed-white.png' title='Speed' alt='Speed' /> 500</div><div class='helpStat'>Cargo 0</div>\
 							\
 						</div>Light Aircraft, like the LA-616, are equipped with light armors making them highly resistant to electrical attacks, but vulnerable to explosive ordinace.  The 'Thunderbolt' is armed with two, wing mounted, Electrical Discharge Cannons.  This 'lighting in a can' is highly effective against Heavy Aircraft, but has a lesser effect on other Light Aircraft.</p>";
 				break;
@@ -371,9 +372,9 @@ function help_re(e) { //which is the type of research to display the description
 						<div style='float:left;width: 150px;'>\
 							<img src='AIFrames/units/bomberrenderSMALL.png' style='float: left;' alt='Light Aircraft'/>\
 							<div class='helpStat firstcol'>HP: 50</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 75</div><div class='helpStat'>Explosive</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/armor-white.png' title='Armor' alt='Armor' /> 10</div><div class='helpStat'><img src='AIFrames/icons/stealth-white.png' title='Concealment' alt='Concealment' /> Light</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/speed-white.png' title='Speed' alt='Speed' /> 500</div><div class='helpStat'><img src='AIFrames/icons/cargo-white.png' title='Cargo' alt='Cargo' /> 0</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 75 Explosive</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> 10 Light</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/speed-white.png' title='Speed' alt='Speed' /> 500</div><div class='helpStat'>Cargo 0</div>\
 							\
 						</div>Light Aircraft, like the LA-293, are equipped with light armors making them highly resistant to electrical attacks, but vulnerable to explosive ordinace.  The 'Blastmaster' is armed with numerous air-to-air and air-to-ground missiles.  The light armor of other Light Aircraft is devistated by the LA-293's missiles, but the heavy plating of Heavy Aircraft is much more resiliant.</p>";
 				break;
@@ -382,9 +383,9 @@ function help_re(e) { //which is the type of research to display the description
 						<div style='float:left;width: 150px;'>\
 							<img src='AIFrames/units/bomberrenderSMALL.png' style='float: left;' alt='Light Aircraft'/>\
 							<div class='helpStat firstcol'>HP: 75</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 50</div><div class='helpStat'>Explosive</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/armor-white.png' title='Armor' alt='Armor' /> 25</div><div class='helpStat'><img src='AIFrames/icons/stealth-white.png' title='Concealment' alt='Concealment' /> Heavy</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/speed-white.png' title='Speed' alt='Speed' /> 300</div><div class='helpStat'><img src='AIFrames/icons/cargo-white.png' title='Cargo' alt='Cargo' /> 0</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 50 Explosive</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> 25 Heavy</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/speed-white.png' title='Speed' alt='Speed' /> 300</div><div class='helpStat'>Cargo 0</div>\
 							\
 						</div>Like other Heavy Aircraft, the HA-44 is armored with thick alloy plates.  The additional weight makes them much slower and resiliant then their light counterparts, but the alloy plating is much more vulnerable to electrical attacks.  The 'Monolith' is equipped with a large number of small calibur cannons and does moderate damage.</p>";
 				break;
@@ -393,9 +394,9 @@ function help_re(e) { //which is the type of research to display the description
 						<div style='float:left;width: 150px;'>\
 							<img src='AIFrames/units/bomberrenderSMALL.png' style='float: left;' alt='Light Aircraft'/>\
 							<div class='helpStat firstcol'>HP: 75</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 50</div><div class='helpStat'>Explosive</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/armor-white.png' title='Armor' alt='Armor' /> 25</div><div class='helpStat'><img src='AIFrames/icons/stealth-white.png' title='Concealment' alt='Concealment' /> Heavy</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/speed-white.png' title='Speed' alt='Speed' /> 300</div><div class='helpStat'><img src='AIFrames/icons/cargo-white.png' title='Cargo' alt='Cargo' /> 0</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 50 Explosive</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> 25 Heavy</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/speed-white.png' title='Speed' alt='Speed' /> 300</div><div class='helpStat'>Cargo 0</div>\
 							\
 						</div>Like other Heavy Aircraft, the HA-18 is armored with thick alloy plates.  The additional weight makes them much slower and resiliant then their light counterparts, but the alloy plating is much more vulnerable to electrical attacks.  The 'Halcyon' is equipped with a state-of-the-art Static Discharge Array and a number of smaller EMP cannons.  It's highly effective against the heavy armor of other Heavy Aircraft, but has a significantly reduced effect on Light Aircraft.</p>";
 				break;
@@ -404,9 +405,9 @@ function help_re(e) { //which is the type of research to display the description
 						<div style='float:left;width: 150px;'>\
 							<img src='AIFrames/units/bomberrenderSMALL.png' style='float: left;' alt='Light Aircraft'/>\
 							<div class='helpStat firstcol'>HP: 75</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 50</div><div class='helpStat'>Explosive</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/armor-white.png' title='Armor' alt='Armor' /> 25</div><div class='helpStat'><img src='AIFrames/icons/stealth-white.png' title='Concealment' alt='Concealment' /> Heavy</div>\
-							<div class='helpStat firstcol'><img src='AIFrames/icons/speed-white.png' title='Speed' alt='Speed' /> 300</div><div class='helpStat'><img src='AIFrames/icons/cargo-white.png' title='Cargo' alt='Cargo' /> 0</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 50 Explosive</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> 25 Heavy</div>\
+							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/speed-white.png' title='Speed' alt='Speed' /> 300</div><div class='helpStat'>Cargo 0</div>\
 							\
 						</div>Like other Heavy Aircraft, the HA-39 is armored with thick alloy plates.  The additional weight makes them much slower and resiliant then their light counterparts, but the alloy plating is much more vulnerable to electrical attacks.  The 'Hades' is equipped with numerous flak cannons and is even able to carry a number of bombs capable of doing significant infrastructure damage.</p>";
 				break;
@@ -478,12 +479,12 @@ function update_research() {
 									}
 									return w.type == 2;
 								}).length;
-					if(player.towns<2) {unlockable = false;}
+					if(player.towns.length<2) {unlockable = false;}
 					break;
 					
 				case "Punisher":
 				case "Dreadnaught":
-				case "Collossus":
+				case "Colossus":
 					cost = 450;
 					lvl = $.grep(player.AU,function(w) {
 									if(w.name==name) {
@@ -491,7 +492,7 @@ function update_research() {
 									}
 									return w.type == 3;
 								}).length;
-					if(player.towns<3) {unlockable = false;}
+					if(player.towns.length<3) {unlockable = false;}
 					break;
 					
 				case "Gunship":
@@ -505,7 +506,7 @@ function update_research() {
 									}
 									return w.type == 4 && n.match(/Gunship|Thunderbolt|Blastmaster/);
 								}).length;
-					if(player.towns<4) {unlockable = false;}
+					if(player.towns.length<4) {unlockable = false;}
 					break;
 					
 				case "Monolith":
@@ -519,11 +520,11 @@ function update_research() {
 									}
 									return w.type == 4 && n.match(/Monolith|Halcyon|Hades/);
 								}).length;
-					if(player.towns<4) {unlockable = false;}
+					if(player.towns.length<4) {unlockable = false;}
 					break;
 			}
 			if(unlocked) {
-				$(v).siblings(".level").text("[Unlocked]").siblings(":not(.fullName, .info)").css("display","none");
+				$(v).siblings(".level").text("[Unlocked]").siblings(":not(.fullName, .reshelp)").css("display","none");
 			} else {
 				cost *= Math.pow(2,lvl);
 				if(!unlockable) {

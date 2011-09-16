@@ -35,12 +35,7 @@
 		insertScript("mine","css");
 		insertScript("MS","css");
 		insertScript("messages","css");
-		echo "<![if !IE]>";
 		insertScript("prog","css");
-		echo "<![endif]>";
-		echo "<!--[if true]>";
-		insertScript("prog-IE","css");
-		echo "<![endif]-->";
 		insertScript("premium","css");
 		insertScript("quest", "css");
 		insertScript("raidList","css");
@@ -58,10 +53,18 @@
 </head>
 <?php flush(); ?>
 <body>
-	<div id='quest_box'></div>
+	<div id='quest_box' class='metalFrame'>
+		<div id='quest_titlebar'>
+			<div id='quest_status'></div>
+			<span>Quest Dialog</span>
+			<div id='quest_close' class='closeButton'></div>
+		</div>
+		<div id='quest_text'></div>
+		<div id='quest_leave' class='bigButton'>Leave Quest</div>
+	</div>
 	<div id='console_box'>
 		<div id='console_titlebar'>
-			<a href='javascript:;' class='closeButton' id='console_close'></a>
+			<div class='closeButton' id='console_close'></div>
 			<span>Output Window</span>
 		</div>
 		<div id='console_output'>
@@ -74,21 +77,21 @@
 		<div id='console_stopBox'>
 			<input type='checkbox' id='console_stop' /><label for='console_stop'> Freeze Output</label>
 		</div>
-		<a href='javascript:;' id='output_clear'></a>
+		<div id='output_clear'></div>
 	</div>
 	<!-- Chatbox -->
-	<a id="chatbox_tab" class='sideButton' href="#">CHATBOX</a>
+	<div id="chatbox_tab" class='sideButton'>CHATBOX</div>
 	<div id='chat_box'>
 		<div id='chat_titlebar'>
-			<a href='#' class='closeButton' id='chat_close'></a>
+			<div class='closeButton' id='chat_close'></div>
 			<span>Chatbox</span>
 		</div>
 		<div id='chat_innerbox'></div>
 	</div>
 	<!-- Twitter -->
-	<a id="twitter_tab" class='sideButton' href="#">TWITTER</a>
+	<div id="twitter_tab" class='sideButton'>TWITTER</div>
 	<div id='twitter_box'>
-		<a href='#' class='closeButton' id='twitter_close'></a>
+		<div class='closeButton' id='twitter_close'></div>
 		<script src="http://widgets.twimg.com/j/2/widget.js"></script>
 		<script>
 			new TWTR.Widget({
@@ -130,7 +133,6 @@
 	<!-- Client -->
 	<div id="content">
 		<div id="client">
-			<a id="#"></a> <!-- this is to prevent the view from going to the top when a sidetab is clicked -->
 			<ul id="toplinks">
 				<li id="citybox"><a href="javascript:;" id="cityname"></a><a href="javascript:;" id="citydropdown"></a></li>
 				<li id="wm"></li>
@@ -207,7 +209,7 @@
 		</div>
 	</div>
 	<div id="preload"></div>
-	<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
 	<?php
 		flush();
 		//page function JS
@@ -241,12 +243,6 @@
 		insertScript("league","js");
 		insertScript("menus","js");
 		insertScript("messages","js");
-		echo "<![if !IE]>";
-		insertScript("prog","js");
-		echo "<![endif]>";
-		echo "<!--[if true]>";
-		insertScript("prog-IE","js");
-		echo "<![endif]-->";
 		insertScript("premium","js");
 		insertScript("quest", "js");
 		insertScript("rank","js");
@@ -258,12 +254,10 @@
 		insertScript("login","js");
 		insertScript("utilities","js");
 		insertScript("raids","js");
-		//script editor
-		echo "<![if !IE]>";
+		insertScript("prog","js");
 		insertScript("ace/ace","js");
-		insertScript("ace/theme-aiwars","js");
-		insertScript("ace/mode-AIWjava","js");
-		echo "<![endif]>";
+		insertScript("ace/mode-java","js");
+		insertScript("ace/theme-all","js");
 
 		flush();
 	?>

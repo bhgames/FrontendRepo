@@ -99,97 +99,87 @@
 	<!-- Send Mission HTML-->
 	<div id='CC_sendTab'>
 		<div id='CC_AUinput'>
-			<div class='darkFrameBody'>
-			</div>
+			<div id='CC_AUwrapper'></div>
 		</div>
 		<div id='CC_supportAUbox'>
-			<div class='darkFrameBody'>
-				<span>Support:</span>
-				<div id='CC_supportAU'>
-				</div>
+			<span>Support:</span>
+			<div id='CC_supportAU'>
 			</div>
 		</div>
 		<div id='CC_civilianAUbox'>
-			<div class='darkFrameBody'>
-				<span>Civilian:</span>
-				<div id='CC_civilianAU'>
-					<div id='CC_civAU' class='troop'>
-						<div id='CC_civName'></div>
-						<a href='javascript:;' id='CC_civNumber'></a>
-						<input type='text' id='CC_civInput' />
-					</div>
+			<span>Civilian:</span>
+			<div id='CC_civilianAU'>
+				<div id='CC_civAU' class='troop'>
+					<div id='CC_civName'></div>
+					<a href='javascript:;' id='CC_civNumber'></a>
+					<input type='text' id='CC_civInput' />
 				</div>
 			</div>
 		</div>
-		<div id='CC_SAS'>
-			<div id='CC_armySize' class='textFramed'>
-				<div>Selected Army Size:</div>
-				<span>0</span>
-			</div>
+		<div id='CC_armySize' class='textFramed'>
+			<div>Selected Army Size:</div>
+			<span>0</span>
 		</div>
 		<div id='CC_missionSelectList'>
-			<div class='lightFrameBody'>
-				<div>Mission Select:</div>
-				<div class='missionSelect'>
-					<input type='radio' id='CC_mission1' name='missionRadio' checked='checked'/><label for='CC_mission1'>Attack</label>
-				</div>
-				<div class='missionSelect'>
-					<input type='radio' id='CC_mission2' name='missionRadio' /><label for='CC_mission2'>Siege</label>
-				</div>
-				<div class='missionSelect'>
-					<input type='radio' id='CC_mission3' name='missionRadio' /><label for='CC_mission3'>Strafe</label>
-				</div>
-				<div class='missionSelect'>
-					<input type='radio' id='CC_mission4' name='missionRadio' /><label for='CC_mission4'>Glass</label>
-				</div>
-				<div class='missionSelect'>
-					<input type='radio' id='CC_mission7' name='missionRadio' /><label for='CC_mission7'>Scout</label>
-				</div>
-				<div class='missionSelect'>
-					<input type='radio' id='CC_mission8' name='missionRadio' /><label for='CC_mission8'>Invasion</label>
-				</div>
-				<div class='missionSelect'>
-					<input type='radio' id='CC_mission5' name='missionRadio' /><label for='CC_mission5'>Support</label>
-				</div>
-				<div class='missionSelect'>
-					<input type='radio' id='CC_mission6' name='missionRadio' /><label for='CC_mission6'>Debris</label>
-				</div>
-				<div class='missionSelect'>
-					<input type='radio' id='CC_mission9' name='missionRadio' /><label for='CC_mission9'><abbr title='Archaeological'>Arch.</abbr> Dig</label>
-				</div>
-				<div class='missionSelect'>
-					<input type='radio' id='CC_mission10' name='missionRadio'/><label for='CC_mission10'>Harvest</label>
-				</div>
-				<div class='missionSelect'>
-					<input type='radio' id='CC_mission11' name='missionRadio'/><label for='CC_mission11'>Blockade</label>
-				</div>
-				<select id='CC_supportType'>
-					<option>Defensive</option>
-					<option>Offensive</option>
-				</select>
-				<select id='CC_bombingTarget'>
-					<option>All Buildings</option>
-					<option>Airstrips</option>
-					<option>Arms Factories</option>
-					<option>Command Center</option>
-					<option>Crystal Refineries</option>
-					<option>Fortifications</option>
-					<option>Foundries</option>
-					<option>Institutes</option>
-					<option>Manufacturing Plants</option>
-					<option>ReCCcling Yards</option>
-					<option>Resource Caches</option>
-					<option>Sawmills</option>
-					<option>Storage Yards</option>
-					<option>Trade Centers</option>
-					<option>Warehouses</option>
-				</select>
+			<div>Mission Select:</div>
+			<div class='missionSelect'>
+				<input type='radio' id='CC_mission1' name='missionRadio' checked='checked'/><label for='CC_mission1'>Attack</label>
 			</div>
+			<div class='missionSelect'>
+				<input type='radio' id='CC_mission2' name='missionRadio' /><label for='CC_mission2'>Siege</label>
+			</div>
+			<div class='missionSelect'>
+				<input type='radio' id='CC_mission3' name='missionRadio' /><label for='CC_mission3'>Strafe</label>
+			</div>
+			<div class='missionSelect'>
+				<input type='radio' id='CC_mission4' name='missionRadio' /><label for='CC_mission4'>Glass</label>
+			</div>
+			<div class='missionSelect'>
+				<input type='radio' id='CC_mission7' name='missionRadio' /><label for='CC_mission7'>Scout</label>
+			</div>
+			<div class='missionSelect'>
+				<input type='radio' id='CC_mission8' name='missionRadio' /><label for='CC_mission8'>Invasion</label>
+			</div>
+			<div class='missionSelect'>
+				<input type='radio' id='CC_mission5' name='missionRadio' /><label for='CC_mission5'>Support</label>
+			</div>
+			<div class='missionSelect'>
+				<input type='radio' id='CC_mission6' name='missionRadio' /><label for='CC_mission6'>Debris</label>
+			</div>
+			<div class='missionSelect'>
+				<input type='radio' id='CC_mission9' name='missionRadio' /><label for='CC_mission9'><abbr title='Archaeological'>Arch.</abbr> Dig</label>
+			</div>
+			<div class='missionSelect'>
+				<input type='radio' id='CC_mission10' name='missionRadio'/><label for='CC_mission10'>Harvest</label>
+			</div>
+			<div class='missionSelect'>
+				<input type='radio' id='CC_mission11' name='missionRadio'/><label for='CC_mission11'>Blockade</label>
+			</div>
+			<select id='CC_supportType'>
+				<option>Defensive</option>
+				<option>Offensive</option>
+			</select>
+			<select id='CC_bombingTarget' multiple size='2' title='Press CTRL to select multiple'>
+				<option>All Buildings</option>
+				<option>Airstrips</option>
+				<option>Arms Factories</option>
+				<option>Command Center</option>
+				<option>Crystal Refineries</option>
+				<option>Fortifications</option>
+				<option>Foundries</option>
+				<option>Institutes</option>
+				<option>Manufacturing Plants</option>
+				<option>Recycling Yards</option>
+				<option>Resource Caches</option>
+				<option>Sawmills</option>
+				<option>Storage Yards</option>
+				<option>Trade Centers</option>
+				<option>Warehouses</option>
+			</select>
 		</div>
-		<div id='CC_missionDescBox'>
-			<div class='textFramed'>Mission Description:
-				<div id='CC_missionDesc'></div>
-			</div>
+		<div id='CC_missionDescBox' class='textFramed'>
+			Mission Description:
+			<div id='CC_missionDesc'></div>
 		</div>
 		<div id='CC_targetSelect'>
 			<div>Target Coordinates:</div>

@@ -6,12 +6,14 @@
 	top: 50px;
 	left: 150px;
 	padding: 5px;
-	border: 1px solid #FFFFFF;
+	border: 1px solid #000;
 	}
 #Mine_production {
-	font-size: 36px;
-	border-left: 1px solid #FFFFFF;
+	border-left: 1px solid #000;
 	padding-left: 5px;
+	color: #282415;
+	font: bold 36px "Trajan Pro", Trajan, serif;
+	text-shadow: 0 1px 1px rgba(240, 225, 163, 0.7);
 	}
 #Mine_production span {
 	font-size: 18px;
@@ -21,7 +23,10 @@
 	top: 120px;
 	left: 150px;
 	padding: 5px;
-	border: 1px solid #FFFFFF;
+	border: 1px solid #000;
+	color: #282415;
+	font: bold 1em "Trajan Pro", Trajan, serif;
+	text-shadow: 0 1px 1px rgba(240, 225, 163, 0.7);
 	}
 #Mine_resEffect span, #Mine_taxRate div, #Mine_foodCon div {
 	display: block;
@@ -39,7 +44,10 @@
 	left: 330px;
 	display: none;
 	padding: 5px;
-	border: 1px solid #FFFFFF;
+	border: 1px solid #000;
+	color: #282415;
+	font: bold 1em "Trajan Pro", Trajan, serif;
+	text-shadow: 0 1px 1px rgba(240, 225, 163, 0.7);
 	}
 #Mine_foodCon {
 	position: absolute;
@@ -47,4 +55,7 @@
 	left: 335px;
 	border: 1px solid white;
 	padding: 5px;
+	color: #282415;
+	font: bold 1em "Trajan Pro", Trajan, serif;
+	text-shadow: 0 1px 1px rgba(240, 225, 163, 0.7);
 	}

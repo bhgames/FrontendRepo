@@ -1,84 +1,60 @@
 #RAI_scriptDisplay  {
 	position: absolute;
-	top: 42px;
-	left: 12px;
+	top: 50px;
+	left: 0px;
 	height: 420px;
-	width: 754px;
-	background: #000;
-	border: 2px inset #F44;
+	width: 740px;
+	background: rgba(0,0,0,0.3);
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
 	margin: 0px;	
 	overflow: hidden;
 	z-index: 1;
-	cursor: text;
 	}
 #RAI_options {
 	position: absolute;
-	top: 0px;
+	top: 7px;
 	left: 12px;
 	}
 #RAI_options *  {
 	float: left;
 	}
-#RAI_active, #RAI_syntaxHighlight, #RAI_autosave, #RAI_autostart {
-	display: inline-block;
-	height: 41px;
-	width: 151px;
-	margin-left: 74px;
-	background: no-repeat 0 0;
-	}
-#RAI_active {
-	background-image:url(../AIFrames/buttons/Active-eve.png);
-	opacity: 0.5;
-	}
-#RAI_active.active {
-	background-position: 0 -82px;
-	filter:opacity(100);
-	opacity: 1;
-	}
-#RAI_autosave {
-	background-image:url(../AIFrames/buttons/autosave.png);
-	}
-#RAI_autostart {
-	background-image:url(../AIFrames/buttons/autostart.png);
-	}
-#RAI_autosave:hover, #RAI_autostart:hover {
-	background-position: 0 -41px;
-	}
-#RAI_autosave:active, #RAI_autosave.active, #RAI_autostart:active, #RAI_autostart.active {
-	background-position: 0 -82px;
-	}
-#RAI_new2 {
+#RAI_controls {
 	position: absolute;
-	top: 470px;
-	left: 54px;
+	bottom: 0px;
+	left: 0px;
 	}
-#RAI_new, #RAI_run, #RAI_save, #RAI_stop {
-	position: relative;
-	top: 485px;
-	left: 12px;
+#RAI_options div, #RAI_controls div {
 	display: inline-block;
-	height: 41px;
-	width: 151px;
-	margin-left: 30px;
-	background-repeat: no-repeat;
-	background-position:0 -41px;
-	
+	height: 37px;
+	width: 164px;
+	padding-top: 10px;
+	margin-left: 74px;
+	background: url(../SPFrames/button-template.png) no-repeat 0 0;
+	color: #A9A098;
+	font: bold 1em "Trajan Pro", Trajan, serif;
+	font-weight:;
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.8), 0 -1px 0 rgba(255, 255, 255, 0.3);
+	text-align: center;
+	cursor: default;
 	}
-#RAI_new {
-	background-image: url(../AIFrames/buttons/New-eve.png);
+#RAI_controls div {
+	margin-left: 10px;
 	}
-#RAI_run {
-	background-image: url(../AIFrames/buttons/Run-eve.png);
+#RAI_controls div:hover, #RAI_options div:hover {
+	background-position: -164px 0;
 	}
-#RAI_save {
-	background-image: url(../AIFrames/buttons/Save-eve.png);
+#RAI_controls div:active, #RAI_options div:active, #RAI_options div.active {
+	background-position: -327px 0;
+	height: 35px;
+	padding-top: 12px;
 	}
-#RAI_stop {
-	background-image: url(../AIFrames/buttons/Stop-eve.png);
+/*Have to be very specific here to override the other settings*/
+div#RAI_active, div#RAI_active:hover, div#RAI_active:active {
+	height: 40px;
+	width: 157px;
+	background: url(../SPFrames/EVE/active-button.png) no-repeat 0 0;
 	}
-#RAI_new:hover, #RAI_run:hover, #RAI_save:hover, #RAI_stop:hover {
-	background-position: 0 0;
-	}
-#RAI_new:active, #RAI_run:active, #RAI_save:active, #RAI_stop:active {
-	background-position: 0 -82px;
+div#RAI_active.active {
+	background-position: -157px 0;
 	}

@@ -38,6 +38,9 @@ a:active#Bnkr_assign {
 ***********************************************************************/
 #ResC_protectedAmnts {
 	margin: 40px 160px;
+	color: #282415;
+	font: bold 18px "Trajan Pro", Trajan, serif;
+	text-shadow: 0 1px 1px rgba(240, 225, 163, 0.7);
 	}
 #ResC_protectedAmnts > div {
 	border: 1px solid white;

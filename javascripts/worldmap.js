@@ -50,23 +50,26 @@ function get_map(data) {
 			if(map.territories.length < 1) throw "No Territories";
 			if(map.tiles.length < 1) throw "No Tiles";
 			
+			var numAss = 0;
 			$.each(map.towns,function(i,x) {
 				//hack tile type into player towns
 				if(x.owner == player.username && !x.tileAssigned) {
 					$.each(player.towns,function(j,v) {
 						if(v.townName == x.townName) {
 							var mapTile = $.grep(map.tiles, function(k,w) {
-												return Math.abs(k.centerx+v.x) < 5 && Math.abs(k.centery+v.y) < 5;
+												return Math.abs(k.centerx-v.x) < 5 && Math.abs(k.centery-v.y) < 5;
 											})[0];
 							v.tile = mapTile.mapName;
 							x.tileAssigned = true;
+							numAss++;
 							return false;
 						}
 					});
+					return numAss < player.towns.length;
 				}
 			});
 			
-			$("body").trigger("tileReady.showTown");
+			$("body").trigger("tileReady");
 			
 			var maxX = 0, maxY = 0;
 			$.each(map.tiles, function(i, v) {
@@ -364,16 +367,14 @@ function city_select(city, box) {
 			cityRight = parseInt(city.css("right"));
 		
 		if(cityBottom > 300) {
-			box.css({"top":(cityBottom + 20) + "px"});
+			box.css({"top":(470-cityBottom + 20) + "px","bottom":""});
 		} else {
-			box.css({"bottom":(cityBottom + 20) + "px"});
+			box.css({"top":"","bottom":(cityBottom + 20) + "px"});
 		}
 		if(cityRight < 350) {
-			box.css({"right":(cityRight+22) + "px","left":""});
-			$("#townMenu_content").css({"right":"0px","left":""});
+			box.css({"right":(cityRight) + "px","left":""});
 		} else {
 			box.css({"left":(750-cityRight) + "px","right":""});
-			$("#townMenu_content").css({"right":"","left":"0px"});
 		}
 		
 		box.css("display","block").animate({"height":"195px"},250);
@@ -395,8 +396,8 @@ function city_select(city, box) {
 				$.each(player.curtown.bldg, function(i, x) {
 					if(x.type == "Command Center") {
 						BUI.set(x.type, x.lotNum);
-						do_fade(draw_bldg_UI);
 						BUI.CC.startTab = $(that).is("#moveTo")?"control":"send";
+						do_fade(draw_bldg_UI);
 						return false;
 					}
 				});

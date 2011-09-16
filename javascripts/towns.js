@@ -5,23 +5,25 @@ function show_town() {
 		var vb = $("#viewerback");
 		window.contents().unbind();
 		vb.html("");
-		//do update check
-		$.each(player.curtown.bldg, function(i,v) {
-			if(v.update) {
-				load_player(false,true,true);
-				return false;
-			}
-			var noUpdate = true;
-			$.each(v.Queue, function(j,w) {
-				if(w.update) {
+		if(websock.nosock) {
+			//do update check
+			$.each(player.curtown.bldg, function(i,v) {
+				if(v.update) {
 					load_player(false,true,true);
-					noUpdate = false;
 					return false;
 				}
+				var noUpdate = true;
+				$.each(v.Queue, function(j,w) {
+					if(w.update) {
+						load_player(false,true,true);
+						noUpdate = false;
+						return false;
+					}
+				});
+				return noUpdate;
 			});
-			return noUpdate;
-		});
-		$("#cityname").html(function() { 
+		}
+		$("#cityname").html(function() {
 									if(player.curtown.townID == player.capitaltid) {
 										return "&#171;" + player.curtown.townName + "&#187;";
 									}
@@ -31,8 +33,10 @@ function show_town() {
 		if(!player.curtown.tile) { //if the tile hasn't been assigned we need to wait until it is
 			$("body").bind("tileReady.showTown", function() {
 				$("body").unbind(".showTown");
+				display_output(false,"Map data received!");
 				show_town();
 			});
+			display_output(false,"Waiting for Map data...",true);
 			return false;
 		}
 								
@@ -52,7 +56,7 @@ function show_town() {
 						<div id='town_infobarOpen'></div>\
 						<div id='townview'"+(player.curtown.zeppelin ? " class='zeppelin'" : "")+">\
 							<div id='town_bldgBldgsPopup'>\
-								<div id='town_bldgBldgsBar'>Building Server</div>\
+								<div id='town_bldgBldgsBar'></div>\
 								<div id='town_bldgBldgsList'></div>\
 							</div>";
 		var numLotsOpen = player.research.infrastructureTech+1, townNum;
@@ -105,26 +109,31 @@ function show_town() {
 				list.animate(	{"height":"toggle"},
 								{
 									step : 	function(now, fx) {
-												$("#town_bldgBldgsBar").css("bottom",$(this).outerHeight()+"px");
+												$("#town_bldgBldgsBar").css("bottom",($(this).outerHeight()-2)+"px");
 											},
+									complete : function() {
+													if($(this).css("display") == "none") {
+														$("#town_bldgBldgsBar").css("bottom","").removeClass("open");
+													} else {
+														$("#town_bldgBldgsBar").addClass("open");
+													}
+												},
 									duration : "fast"
 								});
 			});
-			var list = "<ul>";
+			var listHTML = "<ul>";
 			$.each(BUI.CC.bldgServer, function(i,x) {
 				var ticksTotal = 0;
 				$.each(x.ticksToFinishTotal,function(j,y) {
 					ticksTotal += y;
-					list += "<li><div class='cancelButton noCancel'></div><div class='bldgName'>"
+					listHTML += "<li><div class='cancelButton noCancel'></div><div class='bldgName'>"
 								+ x.type + "</div><div class='bldgListID'>"
 								+ x.lotNum + "</div><div class='bldgTicksToFinish'>"
 								+ (ticksTotal - x.ticksToFinish) + "</div></li>";
 				});
 			});
-			$("#town_bldgBldgsList").html(list+"</ul>")
-									.css({"display":"block","visibility":"hidden"})
-									.css("margin-left",(-list.outerWidth()/2)+"px")
-									.css({"display":"","visibility":""});
+			$("#town_bldgBldgsList").html(listHTML+"</ul>");
+				
 			if(Modernizr.flexbox) {
 				var list = $("#town_bldgBldgsList li");
 				if(list.length>1) {
@@ -168,6 +177,20 @@ function show_town() {
 		
 		window.fadeIn("fast");			//fade in the town now that everything is set up
 		vb.fadeIn("fast");
+		
+		var list = $("#town_bldgBldgsList");
+		list.css("margin-left",Math.round(list.outerWidth()/-2)+"px")
+			.css({"display":"none","bottom":"-3px"});
+	
+		$("#town_infobarOpen").unbind("click").click(function() {
+			if($(this).hasClass("open")) {
+				$("#town_infobar").slideUp(100);
+				$(this).removeClass("open");
+			} else {
+				$("#town_infobar").slideDown(100);
+				$(this).addClass("open");
+			}
+		});
 		
 		$("#town_unlocked").unbind("click").click(function() {
 			if(!$(this).hasClass("open")) {
@@ -364,7 +387,7 @@ function update_bldg_timers() {
 			$(".bldgListID").each(function(i,v){
 				$.each(BUI.CC.bldgServer, function(ind, x) {
 					//do update check
-					if(x.update) load_player(false, true,true);
+					if(x.update && websock.nosock) load_player(false, true,true);
 					
 					if($(v).text() == x.lotNum) { 	//we found the building in bldgServer
 						var ticks;

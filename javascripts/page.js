@@ -27,7 +27,9 @@ $(document).ready(function() {
 	
 	//set jScrollPane global defaults
 	
-	$.extend($.fn.jScrollPane.defaults,{verticalDragMinHeight:24,verticalDragMaxHeight:24,showArrows:false,hideFocus:true});
+	$.extend($.fn.jScrollPane.defaults,{verticalDragMinHeight:24,verticalDragMaxHeight:24,horizontalDragMinWidth:23,horizontalDragMaxWidth:23,showArrows:false,hideFocus:true});
+	
+	$("#quest_text").jScrollPane();
 	
 	get_session();
 	
@@ -42,16 +44,6 @@ $(document).ready(function() {
 			info.find(".rph").eq(i).text(Math.ceil(player.curtown.actualInc[i]*3600) + " per hour");
 		});
 		$("#town_warehouseMenu").replaceWith(info);
-	});
-	
-	$("#town_infobarOpen").unbind("click").click(function() {
-		if($(this).hasClass("open")) {
-			$("#town_infobar").slideUp(100);
-			$(this).removeClass("open");
-		} else {
-			$("#town_infobar").slideDown(100);
-			$(this).addClass("open");
-		}
 	});
 	
 	$("#menu").unbind("click").click(function() {

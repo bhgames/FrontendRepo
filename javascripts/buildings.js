@@ -9,7 +9,7 @@ function build_bldg_UIs() { //set up everything the various UIs will need
 function draw_bldg_UI() {
 	currUI = draw_bldg_UI;
 	$("#window").contents().unbind();
-	$("#viewerback").css({"background-image":"url(SPFrames/Buildings/UI/menu-back.jpg)","background-color":""}).html("").fadeIn("normal");
+	$("#viewerback").css("background-image","url(SPFrames/Buildings/UI/menu-back.jpg)").html("").fadeIn("normal");
 	display_output(false,"Connecting to Building Network...");
 	BUI.queue = {};
 	BUI.bldgQueue = {};
@@ -36,57 +36,11 @@ function draw_bldg_UI() {
 	
 	if(bldgInfo.deconstruct) {
 		bldgInfo.lvlUps = 1;
-		$("#BUI_upgrading").html("<img src='AIFrames/buildings/destruct.png' alt='Deconstructing'/> -" + bldgInfo.lvl).css("color", "red");
+		$("#BUI_upgrading").html("Deconstructing -" + bldgInfo.lvl).css("color", "red");
 	} else if(bldgInfo.lvlUps > 0) {
-		if(bldgInfo.lvl == 0) $("#BUI_upgrading").html("<img src='AIFrames/buildings/construct.png' alt='Under Construction'/> +" + bldgInfo.lvlUps).css("color", "yellow");
-		else $("#BUI_upgrading").html("<img src='AIFrames/buildings/upgrade.png' alt='Upgrading'/> +" + bldgInfo.lvlUps).css("color", "lime");
+		if(bldgInfo.lvl == 0) $("#BUI_upgrading").html("Under Construction +" + bldgInfo.lvlUps).css("color", "yellow");
+		else $("#BUI_upgrading").html("Upgrading +" + bldgInfo.lvlUps).css("color", "lime");
 	}
-	
-	/*$("#BUI_bldgSwitch").html(function() {
-		var HTML = '';
-		$.each(player.towns, function(a, x) {
-			HTML += "<optgroup label='" + x.townName + "'>";
-			$.each(x.bldg, function(b, y) {
-				if(y.type == bldgInfo.type) {
-					HTML += "<option value='" + y.lotNum + ":" + y.type + "'";
-					if(y.lotNum == bldgInfo.lotNum && x.townID == player.curtown.townID) {
-						HTML += " selected='selected' disabled='disabled'";
-					}
-					HTML += ">[Level " + y.lvl + "] " + y.type + "</option>";
-				}
-			});
-			if(x.townID == player.curtown.townID) {
-				$.each(x.bldg, function(b, y) {
-					if(y.type != bldgInfo.type) HTML += "<option value='" + y.lotNum + ":" + y.type + "'>[Level " + y.lvl + "] " + y.type + "</option>";
-				});
-			}
-			HTML += "</optgroup>";
-		});
-		return HTML;
-	}).unbind('change').change(function() {
-		var info = $("#BUI_bldgSwitch option:selected").val().split(":");
-		var bldg = info[1];
-		var lot = info[0];
-		var town = $("#BUI_bldgSwitch option:selected").parent("optgroup").attr("label");
-		
-		if(town != player.curtown.townName) {
-			player.curtown = $.grep(player.towns, function(v) { //set curtown to the selected town
-				return (town == v.townName);
-			})[0];
-			$("#cityname").html(function() { 
-				if(player.curtown.townID == player.capitaltid) {
-					return "&#171;" + player.curtown.townName + "&#187;";
-				}
-				return player.curtown.townName;
-			});
-		}
-		BUI.build();
-		get_buildable();
-		display_res();
-		build_raid_list();
-		BUI.set(bldg, lot);
-		do_fade(draw_bldg_UI);
-	});*/
 	
 	var getUpInfo = new make_AJAX();
 	getUpInfo.callback = function(response) {
@@ -118,9 +72,8 @@ function draw_bldg_UI() {
 		
 		display_output(false,"Building Loaded!");
 		//show the upgrade header once it's been populated
-		$("#BUI_header").css("display","block").animate({"top":"0px"}, "normal",function() {
-			$("#BUI_upButton").appendTo("#BUI_winHeader");
-			$("#BUI_deconButton").appendTo("#BUI_winHeader");
+		$("#BUI_header").css("display","block").animate({"top":"-18px"}, "normal",function() {
+			$("#BUI_upButton, #BUI_deconButton, #BUI_tutorial").appendTo("#BUI_winHeader");
 		});
 		
 	};
@@ -136,7 +89,6 @@ function draw_bldg_UI() {
 			bldgInfo.lvlUps++;
 			bldgInfo.ticksToFinish = (bldgInfo.ticksToFinish == -1)?0:bldgInfo.ticksToFinish;
 			bldgInfo.ticksToFinishTotal.push(BUI.bldgQueue.ticks);
-			bldgInfo.bldgTicker = inc_bldg_ticks(bldgInfo);
 			$.each(BUI.bldgQueue.cost, function(i,v){
 				player.curtown.res[i] -= v;
 			});
@@ -202,7 +154,7 @@ function draw_bldg_UI() {
 		}
 	} else {
 		$("#BUI_bldgContent").html("");
-		$("#BUI_deconButton").unbind("click").css("opacity",".5");
+		$("#BUI_deconButton").addClass("noDe");
 	}
 }
 
@@ -226,7 +178,7 @@ function set_active(name, lotNum) {
 		BUI.active.lotNum = lotNum;
 		BUI.active.timer = update_time_displays(BUI.active);
 	} else {
-		log("name or lotNum not given", {"name":name,"lotNum":lotNum});
+		log("name or lotNum not given to set", {"name":name,"lotNum":lotNum});
 	}
 }
 
@@ -468,10 +420,10 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 			if(bldgInfo.lvlUps == 0) {
 				$("#BUI_upgrading").text("");
 			} else if(bldgInfo.deconstruct) {
-				$("#BUI_upgrading").html("<img src='AIFrames/buildings/destruct.png' alt='Deconstructing'/> -" + bldgInfo.lvl).css("color", "red");
+				$("#BUI_upgrading").html("Deconstructing -" + bldgInfo.lvl).css("color", "red");
 			} else if(bldgInfo.lvlUps > 0) {
-				if(bldgInfo.lvl == 0) $("#BUI_upgrading").html("<img src='AIFrames/buildings/construct.png' alt='Under Construction'/> +" + bldgInfo.lvlUps).css("color", "yellow");
-				else $("#BUI_upgrading").html("<img src='AIFrames/buildings/upgrade.png' alt='Upgrading'/> +" + bldgInfo.lvlUps).css("color", "lime");
+				if(bldgInfo.lvl == 0) $("#BUI_upgrading").html("Under Construction +" + bldgInfo.lvlUps).css("color", "yellow");
+				else $("#BUI_upgrading").html("Upgrading +" + bldgInfo.lvlUps).css("color", "lime");
 			}
 			
 			$(".pplBldg").text(bldgInfo.peopleInside);

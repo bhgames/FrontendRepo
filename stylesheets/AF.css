@@ -5,53 +5,55 @@
 	position: absolute;
 	left: 20px;
 	top: 20px;
+	padding: 10px;
+	background: rgba(0,0,0,0.3);
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
 	}
-#AF_AUbar > a{
-	position: absolute;
-	top: 0px;
-	display: block;
-	height: 48px;
-	width: 48px;
-	border-width: 2px;
-	border-color: #AAAAAA;
-	background-position: center center;
-	background-repeat: no-repeat;
-	background-color: #000000;
+#AF_AUbar  div{
+	display: inline-block;
+	height: 50px;
+	width: 50px;
 	color: #FFFFFF;
-	text-decoration: none;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	cursor: pointer;
+	}
+#AF_AUbar  img {
+	position: absolute;
+	height: 50px;
+	width: 50px;	
 	}
 .activeAU {
-	border-style: inset;
-	}
-.inactiveAU{
-	border-style: outset;
+	-webkit-box-shadow: 0 0 10px 3px rgba(255,255,255,0.7);
+	box-shadow: 0 0 10px 3px rgba(255,255,255,0.7);
+	cursor: default;
 	}
 #AF_activeAU {
 	position: absolute;
 	top: 100px;
 	left: 80px;
-	color: #000000;
+	padding: 5px;
+	background: #222 url(../SPFrames/rusted-metal.jpg);
+	border: 3px solid #A8A495;
+	-webkit-border-radius: 20px;
+	border-radius: 20px;
+	-webkit-box-shadow: inset 0px 2px 10px rgba(0,0,0,0.8), 0px 2px 10px rgba(0,0,0,0.8);
+	box-shadow: inset 0px 2px 10px rgba(0,0,0,0.8), 0px 2px 10px rgba(0,0,0,0.8);
+	color: #A9A098;
+	font: bold 11pt "Trajan Pro", Trajan, serif;
+	text-shadow: 0 1px 1px rgba(0,0,0,0.8), 0 -1px 0 rgba(255,255,255,0.3);
 	}
-#AF_AUname, #AF_AUrank {
+#AF_AUname {
 	position: absolute;
-	font-size: 14px;
-	}
-#AF_AUrank {
-	top: 20px;
+	font-size: 18px;
 	}
 #AF_AUpic {
 	position: relative;
 	display: block;
 	height: 100px;
 	width: 100px;
-	margin: 0px 50px 0px 150px;
-	}
-#AF_rankPic {
-	position: absolute;
-	top: 5px;
-	right: 10px;
-	height: 50px;
-	width: 50px;
+	margin-left: 150px;
 	}
 #AF_AUweapons {
 	position: relative;
@@ -60,45 +62,33 @@
 	margin: 0 auto;
 	}
 #AF_AUweapStats div {
-	display: table-cell;
+	display: inline-block;
 	border: 1px solid #000000;
 	height: 25px;
 	padding: 0px 3px;
 	}
-#AF_AUstats div div {
-	display: table-cell;
-	border: 1px solid #000000;
+#AF_AUstats {
+	padding-left: 5px;
+	margin-bottom: -5px;
+	}
+#AF_AUstats > div {
+	display: inline-block;
+	border: 2px ridge #A8A495;
 	min-width: 60px;
-	padding: 3px 3px;
+	padding: 3px;
+	margin-bottom: 5px;
+	-webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.8), 0px 1px 1px rgba(0,0,0,0.8);
+	box-shadow: inset 0px 1px 1px rgba(0,0,0,0.8), 0px 1px 1px rgba(0,0,0,0.8);
+	vertical-align: top;
 	}
 #AF_AUstats img {
-	margin: 1px;
+	margin: 1px 5px 1px 0px;
 	float: left;
 	}
 #AF_assignAU {
 	position: absolute;
 	top: 0px;
 	left: 335px;
-	}
-#AF_AUassignButton a {
-	display: inline-block;
-	height: 49px;
-	width: 93px;
-	background: url(../AIFrames/buttons/Assign-UTCC.png) no-repeat 0 -49px;
-	}
-#AF_AUassignButton a.clear {
-	background-image: url(../AIFrames/buttons/Clear-UTCC.png);	
-	}
-#AF_AUassignButton  a:hover {
-	background-position: 0 0;
-	}
-#AF_AUassignButton  a:active {
-	background-position: 0 -98px;
-	}
-a.noAss {
-	background-position: 0 -98px;
-	filter:opacity(50);
-	opacity:.5;
 	}
 #AF_queue {
 	position: absolute;
@@ -118,7 +108,7 @@ a.noAss {
 	right: 15px;
 	}
 #AF_queueList {
-	height: 285px;
+	height: 270px;
 	overflow: auto;
 	}
 .AFtimes {
@@ -133,7 +123,7 @@ a.noAss {
 #AF_capNeeded {
 	position: absolute;
 	bottom: -14px;
-	right: 10px;
+	left: -110px;
 	width: 150px;
 	font-size: 14px;
 	}

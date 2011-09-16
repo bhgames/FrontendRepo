@@ -42,7 +42,7 @@ function get_session() {
 								check_all_for_updates();
 							}
 						};
-						login.post("/AIWars/GodGenerator","reqtype=login&fuid="+response.id);
+						login.post("","reqtype=login&fuid="+response.id);
 					});
 				} else if(inFB) {
 					FB_login_window();
@@ -53,7 +53,7 @@ function get_session() {
 		}
 	};
 
-	seshget.get("/AIWars/GodGenerator?reqtype=session");
+	seshget.get("reqtype=session");
 }
 
 function FB_login_window() {
@@ -244,7 +244,7 @@ function load_player(forceReload, reloadTown, reloadUI) {
 			if(!response.match(/invalid/i)) { //if the user entered a valid UN and Pass
 				display_output(false,"Session validated!");
 				try {
-					if(!forceReload) {
+					if(!forceReload && websock.nosock) {
 						//update checks
 						try {
 							if(player.raids.update && !SR.update) {
@@ -394,6 +394,7 @@ function load_player(forceReload, reloadTown, reloadUI) {
 								});
 								
 								$("#refresh").unbind('click').click(function() {
+									$("body").unbind("tileReady");
 									load_player(true, true, true);
 									$("#menu").click();
 								});
@@ -456,7 +457,7 @@ function load_player(forceReload, reloadTown, reloadUI) {
 			}
 		};
 		
-		playerget.get("/AIWars/GodGenerator?reqtype=player");
+		playerget.get("reqtype=player");
 	}
 }
 
@@ -534,6 +535,20 @@ function parse_player(data, reloadForced) {
 	
 		//normalize town values to seconds from ticks and sort support
 	$.each(player.towns,function(i,x) {
+		if(map.tiles) {
+			var mapTile;
+			$.each(map.tiles, function(j,y) {
+				$.each(y, function(k,z) {
+					if(Math.abs(z.centerx-x.x) < 5 && Math.abs(z.centery-x.y) < 5) {
+						mapTile = z;
+						return false;
+					}
+				});
+				return !mapTile;
+			});
+			x.tile = mapTile.mapName;
+		}
+		
 		x.activeTrades = player.activeTrades[i] || {};
 		x.tradeSchedules = player.tradeSchedules[i] || {};
 		x.supportAbroad = player.supportAbroad[i] || {};
@@ -558,7 +573,7 @@ function parse_player(data, reloadForced) {
 							}
 						});
 					}
-					x.acutalInc[j] = (y*(1-tax))-(i==4 ? x.foodConsumption/3600 : 0);
+					x.actualInc[j] = Math.round((y*(1-tax))-(i==4 ? x.foodConsumption/3600 : 0));
 				});
 			});
 		}

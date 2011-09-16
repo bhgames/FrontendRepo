@@ -297,19 +297,19 @@ img.lvlImage  {
 	background-position: 0 -47px;
 	}
 #town_unlocked:hover {
-	background-position: -164px -47px;
+	background-position: -163px -47px;
 	}
 #town_unlocked:active, #town_unlocked.open {
-	background-position: -328px -47px;
+	background-position: -327px -47px;
 	}
 #town_locked {
 	background-position: 0 0;
 	}
 #town_locked:hover {
-	background-position: -164px 0;
+	background-position: -163px 0;
 	}
 #town_locked:active, #town_locked.open {
-	background-position: -328px 0;
+	background-position: -327px 0;
 	}
 .bldgPic {
 	float: left;
@@ -440,15 +440,15 @@ img.lvlImage  {
 	}
 #town_bldgBldgsList {
 	position: absolute;
-	bottom: -3px;
+	bottom: -99999999999999999999px;
 	left: 50%;
-	width: 200px;
-	padding-bottom: 15px;
+	padding: 5px;
 	background: #222 url(../SPFrames/rusted-metal.jpg);
 	border: 3px solid #A8A495;
 	-webkit-border-radius: 20px 20px 0 0;
-	-moz-border-radius: 20px 20px 0 0;
 	border-radius: 20px 20px 0 0;
+	-webkit-box-shadow: inset 0px 2px 10px rgba(0,0,0,0.8);
+	box-shadow: inset 0px 2px 10px rgba(0,0,0,0.8);
 	}
 .flexbox #town_bldgBldgsList ul {
 	display: -webkit-box;
@@ -470,13 +470,21 @@ img.lvlImage  {
 	padding-bottom: 5px;
 	}
 #town_bldgBldgsList li {
-	width: 100%;
+	position: relative;
 	margin: 2px 0;
 	list-style: none;
 	}
+.bldgTicksToFinish, .bldgName, .cancelButton {
+	margin: 0px 5px;
+	}
+.bldgID, .bldgListID {
+	display: none;
+	}
 .bldgName {
+	padding-top: 5px;
+	margin-bottom: -3px;
 	color: #9f9b8a;
-	font: 11pt bold "Minion Pro", Minion, sans-serif;
+	font: small-caps 12pt "Minion Pro", Minion, sans-serif;
 	text-align: center;
 	text-shadow: 0 1px 1px rgba(0,0,0,0.8), 0 -1px 0 rgba(255,255,255,0.3);
 	}
@@ -486,14 +494,41 @@ img.lvlImage  {
 	color: #a57862;
 	font-size: 9pt;
 	text-align: center;
-	vertical-align: middle;
+	background: url(../SPFrames/text-window.png) no-repeat 0 0;
+	padding-top: 5px;
+	position: relative;
+	top: 10px;
+	float: right;
+	}
+.cancelButton {
+	position: relative;
+	top: 5px;
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	background: url(../SPFrames/Buildings/UI/cancel-button.png) no-repeat 0 0;
+	}
+.cancelButton:hover{
+	background-position: -31px 0;
+	}
+.cancelButton:active{
+	background-position: -60px 0;
+	}
+.cancelButton.noCancel {
+	background: transparent !important;
+	cursor: default;
+	}
+#town_bldgBldgsList .cancelButton {
+	position: absolute;
+	top: 0px;
+	left: -5px;
 	}
 /************************************************************************************************************************************************
  * Infobar CSS Code
 ************************************************************************************************************************************************/
 #town_infobarOpen {
 	position: absolute;
-	top: 0px;
+	top: 3px;
 	left: 341px;
 	height: 38px;
 	width: 49px;

@@ -19,12 +19,49 @@
 */
 
 function AF_UI(bldgInfo) {
-	//do update check
-	$.each(bldgInfo.Queue, function(i,v) {
-		if(v.update) {
-			load_player(false,true,true);
-			return false;
-		}
+	if(websock.nosock) {
+		//do update check
+		$.each(bldgInfo.Queue, function(i,v) {
+			if(v.update) {
+				load_player(false,true,true);
+				return false;
+			}
+		});
+	}
+	
+	$("#viewerback").append("<div id='BUI_bldPplBox'>\
+								<div id='BUI_bldPplHeader'>Build Units</div>\
+								<div id='BUI_bldPpl'>\
+									<div id='BUI_pplBldgInfo'>\
+										<div id='AF_capNeeded'>Slots needed: <span></span></div>\
+									</div>\
+								</div>\
+								<div id='BUI_dummyPplButton' class='noBld'></div>\
+								<div id='BUI_bldPplCost'>\
+									<div class='BUI_bldPpl totalCost'>\
+									</div>\
+									<div class='BUI_bldPpl'>\
+										<div id='BUI_pplSteel' class='noRes upSteel'>???</div>\
+									</div>\
+									<div class='BUI_bldPpl'>\
+										<div id='BUI_pplWood' class='noRes upWood'>???</div>\
+									</div>\
+									<div class='BUI_bldPpl'>\
+										<div id='BUI_pplTime' class='noRes upTime'>??:??:??</div>\
+									</div>\
+									<div class='BUI_bldPpl'>\
+										<div id='BUI_pplManMade' class='noRes upManMade'>???</div>\
+									</div>\
+									<div class='BUI_bldPpl'>\
+										<div id='BUI_pplFood' class='noRes upFood'>???</div>\
+									</div>\
+								</div>\
+							</div>");
+	
+	$("#BUI_bldPplBox").animate({"bottom":"0px"}, "normal",function() {
+		$("#BUI_bldPplButton").css("display","block");
+		$("#BUI_numPpl").css("display","block");
+		$("#BUI_dummyPplButton").css("display","none");
 	});
 	
 	var list = "<ul>Build Queue:"; //begin constructing the build queue
@@ -37,7 +74,7 @@ function AF_UI(bldgInfo) {
 			list += " (Next unit in: <span class='time'>" + (x.ticksPerUnit - x.currTicks) + "</span>)<hr/>";
 			time -= x.currTicks;
 		}
-		list += "<li><div class='cancelButton'><a href='javascript:;'></a></div>" 
+		list += "<li><div class='cancelButton'></div>" 
 				+ x.AUNumber + " " + player.AU[x.AUtoBuild].name + "<div class='AFtimes'><span class='time'>" + time + "</span></div></li>";
 	});
 	
@@ -46,18 +83,17 @@ function AF_UI(bldgInfo) {
 	
 	$.each(player.AU, function(i, x){	//set up display of AU bar
 		if(x.rank = "soldier") {
-			var el = $("#AF_AUbar").append("<a href='javascript:;' slot='"+i+"' class='inactiveAU'>???</a>").children(":last-child");
-			$(el).text(player.curtown.au[i]);
+			var el = $("#AF_AUbar").append("<div class='inactiveAU'><img slot='"+i+"' src='SPFrames/Units/"+x.name+".png' /></div>").children(":last-child");
+			$(el).append(player.curtown.au[i]);
 			
-			$(el).css({"background-image": "url(AIFrames/units/"+x.rank+"renderTHUMB.png","left": (55 * i) + "px"});
 			$(el).attr("title", x.name); //this sets the tooltip to the name of the AU
 		
 			//code for displaying AUs
 			$(el).unbind('click').click(function(){
 				//swap the classes so that only this element has activeAU, the others have inactiveAU
-				$(this).removeClass('inactiveAU').addClass('activeAU').siblings('a').addClass('inactiveAU').removeClass('activeAU');
+				$(this).removeClass('inactiveAU').addClass('activeAU').siblings('img').addClass('inactiveAU').removeClass('activeAU');
 				
-				$("#AF_AUpic").attr("src","AIFrames/units/"+x.rank+"renderSMALL.png");
+				$("#AF_AUpic").attr("src","SPFrames/Units/"+x.name+".png");
 				
 				//display unit information
 				$("#AF_AUname").html(x.name);
@@ -71,10 +107,10 @@ function AF_UI(bldgInfo) {
 				 //update build info
 				$("#BUI_numPpl").keyup();
 			});
-			
-			if(i == 0) {$(el).click();} //select the first AU
 		}
 	});
+	
+	$("#AF_AUbar :first-child").click();
 	
 	$("#BUI_bldgContent").fadeIn();
 	
@@ -189,7 +225,6 @@ function AF_UI(bldgInfo) {
 			
 			BUI.queue.currTicks = 0;
 			var i = bldgInfo.Queue.push(BUI.queue);
-			bldgInfo.Queue[i-1].queueTicker = inc_queue_ticks(bldgInfo.Queue[i-1]);
 			var HTML = '';
 			var time = 0;
 			if(i == 1) {

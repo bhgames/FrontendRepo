@@ -16,7 +16,7 @@ function build_ASM() {
 			if(v.townID == player.capitaltid) hasCC = true;
 		});
 		$.each(player.towns, function(i, v) {
-			$("#ASM_townList").append("<div class='townInfo'><input type='text' class='townNameInput' maxlength='20' value='" 
+			$("#ASM_townList").append("<div class='townInfo'><input type='text' class='townNameInput' maxlength='10' value='" 
 										+ v.townName + "'/><span class='addInfo'>(" + v.x + ", " + v.y
 										+ ") | <input type='checkbox' class='CC'" + ((player.capitaltid == v.townID)?"checked='checked' ":"")
 										+ ((hasCC)?" disabled='disabled'":"") + " /></div>");
@@ -77,7 +77,7 @@ function build_ASM() {
 											}
 											return player.curtown.townName;
 										});
-					getPath += player.command + ".renameTown(" + player.towns[i].townID + "," + $(v).val() + ");";
+					getPath += "bf.renameTown(" + player.towns[i].townID + "," + $(v).val() + ");";
 				}
 			});
 			if(!hasCC && $(".CC:checked").length > 0) {

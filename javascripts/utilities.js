@@ -74,7 +74,12 @@ function make_AJAX() {
 													break;
 													
 												case "quests":
-													get_quests(false,message.data);
+													get_quests(message.data);
+													break;
+													
+												case "flick":
+													player.research.flick = message.data;
+													do_flick();
 													break;
 												
 												case "achievements":
@@ -145,7 +150,7 @@ function make_AJAX() {
 		
 		this.success = 	function(response, status, xhr) {
 							that.clear();
-							//try {
+							try {
 								display_output(false,"Response received!");
 								$("body").css("cursor","auto");
 								display_output(false,"Processing...");
@@ -156,9 +161,9 @@ function make_AJAX() {
 										//check for invalid commands 
 								if(!response.match(/invalidcmd/)) that.callback(response);
 								else display_output(true,"Invalid Command",true);
-							//} catch(e) {
-							//	display_output(true,e,true);
-							//}
+							} catch(e) {
+								display_output(true,e,true);
+							}
 						};
 						
 		this.error = 	function(xhr, status, error) {
@@ -308,10 +313,9 @@ function do_fade(nextUI, SBB) {
 	if(SBB) { 
 		SBB.addClass("open");
 	}
-	$("#window").fadeOut("fast",function(){
+	$("#window, #viewerback").fadeOut("fast").promise().done(function(){
 		nextUI();
 	});
-	$("#viewerback").fadeOut("fast");
 }
 
 function display_res() {
@@ -500,7 +504,7 @@ function get_all_trades() {
 
 function parse_trades(trades) {
 	if(!gettingTrades) {
-		
+		log(trades, "in parse_trades() in utilities.js:502");
 	}
 }
 
@@ -638,9 +642,9 @@ function clear_all_timers() {
 }
 
 function set_bottom_links() {
-	$("#League").unbind("click").click(function(){
-		do_fade(build_league_UI,$(this));
-	});
+	// $("#League").unbind("click").click(function(){
+		// do_fade(build_league_UI,$(this));
+	// });
 	$("#IO").unbind('click').click(function() {
 		if(SR.update) {
 			get_raids(true);
@@ -650,8 +654,9 @@ function set_bottom_links() {
 	});
 	$("#CS").unbind('click').click(function() {
 		$.each(player.curtown.bldg, function(i, x) {
-			if(x.type == "Headquarters") {
+			if(x.type == "Command Center") {
 				BUI.set(x.type, x.lotNum);
+				BUI.CC.startTab = "overview";
 				do_fade(draw_bldg_UI, $("#CS"));
 				return false;
 			}

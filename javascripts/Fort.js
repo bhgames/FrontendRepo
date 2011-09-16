@@ -26,7 +26,7 @@ function Fort_UI(bldgInfo) {
 													</div>");
 			var AUnode = $(".Fort_AU").eq(i);
 			AUnode.children(".Fort_AUname").text(v.name);
-			AUnode.children(".Fort_AUpic").attr("src",'AIFrames/units/'+v.rank+'renderTHUMB.png');
+			AUnode.children(".Fort_AUpic").attr("src",'SPFrames/Units/'+v.name+'.png');
 			AUnode.children(".Fort_AUnumber").text(player.curtown.au[i])
 			.unbind('click').click(function(){
 										var $this = $(this);
@@ -50,7 +50,7 @@ function Fort_UI(bldgInfo) {
 					});
 	});
 	
-	$("#Fort_protectAU").unblind("click").click(function() {
+	$("#Fort_protectAU").unbind("click").click(function() {
 		var auArray = [];
 		$.each(player.AU, function(i,v) {
 			auArray[i] = 0;
@@ -75,6 +75,6 @@ function Fort_UI(bldgInfo) {
 	
 	$("#BUI_bldgContent").fadeIn();
 	
-	$("#Fort_protAUList").jScrollPane({showArrows:true,hideFocus:true});
-	$("#Fort_AUlist .darkFrameBody").jScrollPane({showArrows:true,hideFocus:true});
+	$("#Fort_protAUList").jScrollPane();
+	$("#Fort_AUlist .darkFrameBody").jScrollPane();
 }

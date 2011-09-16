@@ -2,56 +2,62 @@
  * CSS code for quest menu and quest popup
 ************************************************************************************************************************************************/
 #quest_outerBox {
-	height: 100%;
-	padding: 0 5px;
-	color: #FFFFFF;
-	}
-#quest_outerBox .darkFrameBody {	
-	height: 490px;
+	height: 500px;
+	padding: 10px;
+	color: #282415;
+	text-shadow: 0 1px 1px rgba(240, 225, 163, 0.7);
 	}
 #quest_listNoStart, #quest_listStarted, #quest_listFinished {
 	display: inline-block;
 	height: 100%;
 	width: 32%;
-	padding-left: 5px;
-	border-right: 1px solid #FFFFFF;
+	background: rgba(0, 0, 0, 0.3);
+	padding-left: 9px;
+	border-right: 1px solid #000;
+	color: white;
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
 	float: left;
+	}
+#quest_listNoStart {
+	-webkit-border-radius: 10px 0px 0px 10px;
+	border-radius: 10px 0px 0px 10px;
 	}
 #quest_listFinished {
 	border-right: none;
+	-webkit-border-radius: 0px 10px 10px 0px;
+	border-radius: 0px 10px 10px 0px;
+	}
+.header {
+	font-size: 18px;
 	}
 .quest {
 	margin-left: 20px;
-	text-decoration: underline;
 	cursor: pointer;
 	}
-.quest:active {
-	color: #AAAAAA;
+.quest:hover {
+	text-decoration: underline;
 	}
 #quest_box  {
 	position: absolute;
-	top: 125px;
+	top: 25px;
 	left: 50%;
 	display: none;
 	margin-left: -300px;
 	z-index: 50;
 	}
-#quest_box .popFrameBody {
-	overflow: hidden;
-	}
 #quest_leave {
 	position: absolute;
-	bottom: 25px;
-	right: 25px;
-	display: block;
+	bottom: 0px;
+	right: 0px;
 	}
 #quest_text {
-	max-height: 500px;
-	width: 600px;
-	margin-bottom: 10px;
+	height: 490px;
+	width: 590px;
+	padding: 5px;
+	margin-bottom: 50px;
 	border: 1px groove #AAAAAA;
+	font: 14px "Lucida Sans Unicode", LucidaSans, "Lucida Grande", sans-serif;
 	overflow: auto;
-	font-family:Verdana, Geneva, Arial, Helvetica, sans-serif;
 	}
 #quest_text ul {
 	padding-left: 40px;
@@ -66,22 +72,15 @@
 	overflow: auto;
 	}
 #quest_titlebar {
+	height: 35px;
+	padding-top: 5px;
 	cursor: move;
 	}
 #quest_titlebar span {
 	position: absolute;
-	top: 5px;
+	top: 10px;
 	left: 200px;
 	font-size:1.25em;
-	}
-#quest_close {
-	position: absolute;
-	right: 0px;
-	top: 0px;
-	display: block;
-	height: 33px;
-	width: 28px;
-	background: url("../AIFrames/Content Frame Elements/close.png") no-repeat 0 0;
 	}
 #quest_status {
 	color: lime;
@@ -90,14 +89,7 @@
 	text-align: center;
 	border: 3px solid lime;
 	}
-.borderradius #quest_status {
-	border-radius: 5px 5px 5px 5px;
-   -moz-border-radius-topleft: 5px;
-   -moz-border-radius-topright: 5px;
-   -moz-border-radius-bottomleft: 5px;
-   -moz-border-radius-bottomright: 5px;
-   -webkit-border-top-left-radius: 5px;
-   -webkit-border-top-right-radius: 5px;
-   -webkit-border-bottom-left-radius: 5px;
-   -webkit-border-bottom-right-radius: 5px;
+#quest_status {
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
 }

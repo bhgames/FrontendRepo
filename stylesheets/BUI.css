@@ -1,17 +1,21 @@
 /************************************************************************************************************************************************
  * CSS code for Building Interfaces
 ************************************************************************************************************************************************/
-#BUI_bldgContent,#BUI_deconButton {
+#BUI_bldgContent, #BUI_deconButton, #BUI_upButton,
+#BUI_extras, #BUI_fail, #BUI_bFail, #BUI_bldPplBox,
+#BUI_pplHelp, #BUI_numPpl, #BUI_bldPplCost,
+#BUI_pplBldgInfo, #BUI_bldgSwitch, #BUI_tutorial,
+.bldButton, .BUI_up {
 	position: absolute;
 	}
-#BUI_header,#BUI_winHeader, #BUI_bldgContent{
-	left: 0px;
-	width: 760px;
-	color: #FFF;
+#BUI_bldPpl, .useBP {
+	position: relative;
 	}
 #BUI_bldgContent {
+	left: 0px;
 	display: none;
 	height: 100%;
+	width: 760px;
 	color: #000;
 	}
 #BUI_header,#BUI_winHeader {
@@ -23,42 +27,40 @@
 	z-index: 2;
 	}
 #BUI_winHeader {
-	top: 3px;
+	top: -15px;
 	left: -10px;
 	}
 #BUI_header {
-	top: -140px;
+	top: -140px; /*Pull down to -18px to show*/
 	display: none;
 	background: url(../SPFrames/Buildings/UI/BUI-header.png) no-repeat center bottom;
 	font-family: "Trajan Pro",Trajan,serif;
 	text-shadow: 0 1px 1px rgba(0,0,0,0.8), 0 -1px 0 rgba(255,255,255,0.3);
 	}
 #BUI_bldgInfo{
-	padding-left: 5px;
-	margin-top: -15px;
-	font-size: 20px;
+	padding-left: 40px;
+	margin-top: 17px;
+	font-size: 15px;
 	font-weight: bold;
 	}
 #BUI_tutorial {
-	position: relative;
-	top: 15px;
+	top: 20px;
+	left: 33px;
 	}
 #BUI_extras {
-	position: absolute;
 	top: 50px;
 	right: 40px;
 	}
 .BUI_up {
-	position: absolute;
 	left: 70px;
 	bottom: 70px;
-	font-size: 13px;
+	font-size: 10px;
 	font-weight: bold;
 	}
 #BUI_upWood, #BUI_upSteel,#BUI_upCrystal,#BUI_upTime {
 	position: absolute;	
 	bottom: 35px;
-	font: 11px "Lucida Sans Unicode", LucidaSans, "Lucida Grande", sans-serif;
+	font: 10px "Lucida Sans Unicode", LucidaSans, "Lucida Grande", sans-serif;
 	color: #A57862;
 	text-shadow: none;
 	}
@@ -75,7 +77,6 @@
 	left: 332px;
 	}
 #BUI_upButton {
-	position: absolute;
 	bottom: 15px;
 	right: 204px;
 	height: 47px;
@@ -108,7 +109,6 @@
 	margin-left: 10px;
 	}
 #BUI_fail {
-	position: absolute;
 	top: 30px;
 	right: 40px;
 	padding: 0 5px;
@@ -118,13 +118,12 @@
 	color: #F00;
 	}
 #BUI_bldgContent {
-	top: 130px;
+	top: 115px;
 	z-index: 3;
 	height: 397px;
 	width: 740px;
 	}
 #BUI_bFail {
-	position: absolute;
 	top: 345px;
 	left: 100px;
 	max-height: 40px;
@@ -136,7 +135,6 @@
 	z-index: 5;
 	}
 #BUI_bldPplBox {
-	position: absolute;
 	bottom: -140px;
 	left: 20px;
 	height: 140px;
@@ -144,15 +142,14 @@
 	background: url(../SPFrames/Buildings/UI/BUI-unit-build.png) no-repeat 0 0;
 	color: #aaa699;
 	font-family: "Trajan Pro",Trajan,serif;
+	font-weight: bold;
 	text-shadow: 0 1px 1px rgba(0,0,0,0.8), 0 -1px 0 rgba(255,255,255,0.3);
 	}
 #BUI_bldPpl {
-	position: relative;
 	top: -2px;
 	left: 20px;
 	}
 #BUI_pplHelp {
-	position: absolute;
 	top: 15px;
 	left: 15px;
 	}
@@ -171,8 +168,7 @@
 	background-position: -70px 0;
 	}
 #BUI_numPpl {
-	position: absolute;
-	top: 358px;
+	top: 373px;
 	left: 59px;
 	height: 25px;
 	width: 70px;
@@ -184,7 +180,6 @@
 	text-align: center;
 	}
 #BUI_bldPplCost {
-	position: absolute;
 	top: 57px;
 	left: 221px;
 	height: 70px;
@@ -215,19 +210,16 @@
 	float: right;
 	}
 #BUI_pplBldgInfo {
-	position: absolute;
 	bottom: -45px;
 	right: 155px;
 	font-size: 11px;
 	}
 #BUI_bldgSwitch {
-	position: absolute;
 	top: 2px;
 	right: 2px;
 	display: none;
 	}
 .bldButton {
-	position: absolute;
 	display: inline-block;
 	height: 41px;
 	width: 120px;
@@ -242,7 +234,7 @@
 	}
 #BUI_bldPplButton, #BUI_dummyPplButton {
 	position: absolute;
-	top: 353px;
+	top: 368px;
 	right: 40px;
 	height: 48px;
 	width: 99px;
@@ -263,11 +255,7 @@
 	cursor: default !important;
 	}
 .useBP, .bpResearch {
-	position: relative;
 	display: inline-block;
-	height: 20px;
-	width: 32px;
-	background: url(../AIFrames/buttons/BP.png) no-repeat 0 0;
 	cursor: pointer;
 	}
 .notBH .useBP, .notBH .bpResearch {

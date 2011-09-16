@@ -1,20 +1,17 @@
 var ranks = {
 				HTML : "<div id='Rank_outerbox'>\
-							<div class='darkFrameBody'>\
-								<div id='Rank_tabBar'>\
-									<div id='Rank_playerTab'></div>\
-									<div id='Rank_leagueTab'></div>\
-									<div id='Rank_BHMTab'></div>\
-								</div>\
-								<div id='Rank_ranks'>\
-									<ol></ol>\
-									<div id='Rank_searchBox'>\
-									</div>\
-								</div>\
+							<div id='Rank_tabBar'>\
+								<div id='Rank_playerTab'></div>\
+								<div id='Rank_leagueTab'></div>\
+								<div id='Rank_BHMTab'></div>\
 							</div>\
-							<div class='darkFrameBL-BR-B'>\
-								<div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>\
+							<div id='Rank_ranks'>\
+								<ol></ol>\
 							</div>\
+							<form id='Rank_searchBox'>\
+								<input type='text' id='Rank_searchInput' />\
+								<input type='submit' id='Rank_searchSubmit' class='bigButton' value='Search' />\
+							</form>\
 						</div>"
 			};
 function get_ranks(async,player, league, BHM) {
@@ -79,26 +76,24 @@ function draw_rank_UI() {
 			var HTML = "<div id='Rank_key'><span class='pRankKey'>Rank</span><span class='pNameKey'>Username</span><span class='pCSLKey'>Total CSL</span></div>";
 			$.each(ranks.player,function(i,v){
 				if(v.username == player.username) playerIndex = 0;
-				HTML += "<div class='pRank"+((v.username == player.username)?" player":"")+((i==0)?" topBor":"")+"'>"+(i+1)+".<span class='pName'><span class='"+((v.battlehardMode)?"BHM":"noBHM")+"'></span>"+v.username+"</span><span class='pCSL'>"+v.averageCSL+"</span></div>";
+				HTML += "<div class='pRank"+((v.username == player.username)?" player":"")+((i==0)?" topBor":"")+"'>"+(i+1)+".<span class='pName "+v.username+"'><span class='"+((v.battlehardMode)?"BHM":"noBHM")+"'></span>"+v.username+"</span><span class='pCSL'>"+v.averageCSL+"</span></div>";
 			});
 			return HTML;
 		});
-		var playerLoc = (playerIndex*22);
-		if(playerLoc>225) playerLoc-=225;
-		else playerLoc = 0;
 		ranks.api.reinitialise();
-		ranks.api.scrollTo(playerLoc,false);
+		ranks.api.scrollToElement(".player",true, false);
 	}).click();
 	
 	$("#Rank_leagueTab").unbind("click").click(function(){
 		ranks.api.getContentPane().html(function(){
 			var HTML = "<div id='Rank_key'><span class='lRankKey'>Rank</span><span class='lNameKey'>League Name</span><span class='lTagKey'>Tag</span><span class='lCSLKey'>total CSL</span></div>";
 			$.each(ranks.league,function(i,v){
-				HTML += "<div class='lRank"+((player.league)?((v.leagueLetters == player.username)?" player":""):((v.leagueLetters == player.TPR.league)?" player":""))+((i==0)?" topBor":"")+"'>"+(i+1)+".<span class='lName'><span class='"+((v.battlehardMode)?"BHM":"noBHM")+"'></span>"+v.leagueName+"</span><span class='lTag'>"+v.leagueLetters+"</span><span class='lCSL'>"+v.averageCSL+"</span></div>";
+				HTML += "<div class='lRank"+((player.league)?((v.leagueLetters == player.username)?" player":""):((v.leagueLetters == player.TPR.league)?" player":""))+((i==0)?" topBor":"")+"'>"+(i+1)+".<span class='lName "+v.leagueName+"'><span class='"+((v.battlehardMode)?"BHM":"noBHM")+"'></span>"+v.leagueName+"</span><span class='lTag'>"+v.leagueLetters+"</span><span class='lCSL'>"+v.averageCSL+"</span></div>";
 			});
 			return HTML;
 		});
 		ranks.api.reinitialise();
+		ranks.api.scrollToElement(".player",true, false);
 	});
 	
 	$("#Rank_BHMTab").unbind("click").click(function(){
@@ -107,7 +102,7 @@ function draw_rank_UI() {
 			var HTML = "<div id='Rank_key'><span class='bRankKey'>Rank</span><span class='bNameKey'>Username</span><span class='bBPKey'>Total BP Earned</span></div>";
 			$.each(ranks.BHM,function(i,v){
 				if(v.username == player.username) playerIndex = 0;
-				HTML += "<div class='bRank"+((v.username == player.username)?" player":"")+((i==0)?" topBor":"")+"'>"+(i+1)+".<span class='bName'>"+((v.battlehardMode)?"<span class='BHM'></span>":"")+v.username+"</span><span class='bBP'>"+v.BP+"</span></div>";
+				HTML += "<div class='bRank"+((v.username == player.username)?" player":"")+((i==0)?" topBor":"")+"'>"+(i+1)+".<span class='bName "+v.username+"'>"+((v.battlehardMode)?"<span class='BHM'></span>":"")+v.username+"</span><span class='bBP'>"+v.BP+"</span></div>";
 			});
 			return HTML;
 		});
@@ -115,6 +110,11 @@ function draw_rank_UI() {
 		if(playerLoc>225) playerLoc-=225;
 		else playerLoc = 0;
 		ranks.api.reinitialise();
-		ranks.api.scrollTo(playerLoc,false);
+		ranks.api.scrollToElement(".player",true, false);
+	});
+	
+	$("#Rank_searchBox").unbind("submit").submit(function(e) {
+		e.preventDefault();
+		ranks.api.scrollToElement("."+$("#Rank_searchInput").val(),true, true);
 	});
 }

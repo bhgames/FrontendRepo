@@ -3,7 +3,9 @@
 ************************************************************************************************************************************************/
 #Rank_outerbox {
 	padding: 5px;
-	color: #FFF;
+	color: #282415;
+	font: bold 16px "Trajan Pro", Trajan, serif;
+	text-shadow: 0 1px 1px rgba(240, 225, 163, 0.7);
 	}
 #Rank_tabBar div {
 	display: inline-block;
@@ -21,14 +23,13 @@
 	}
 #Rank_ranks ol {
 	height: 450px;
-	width: 750px; 
+	width: 700px;
 	padding-left: 10px;
 	overflow: auto;
 	}
 #Rank_key {
 	position: relative;
 	left: -10px;
-	font-size: 14px;
 	}
 .pNameKey, .lNameKey, .bNameKey {
 	margin-left: 15px;
@@ -47,7 +48,7 @@
 	}
 .player {
 	background: rgba(255,255,255,0.1);
-	font-weight: bold;
+	text-shadow: 0 1px 1px rgba(240, 225, 163, 0.6);
 	}
 .pName, .lName, .bName {
 	position: absolute;

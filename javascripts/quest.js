@@ -1,10 +1,8 @@
-function get_quests(async, quests) {
+function get_quests(quests) {
 	try {
-		if(async) {
+		if(!quests) {
 			var getQuests = new make_AJAX();
-			getQuests.callback = function(response) {
-									get_quests(false, response);
-								};
+			getQuests.callback = get_quests;
 			getQuests.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".getQuests();");
 		} else {
 			player.quests = $.parseJSON(quests);
@@ -56,7 +54,11 @@ function do_flick(async) {
 
 function show_quests() {
 	currUI = show_quests;
-	$("#window").contents().unbind();
+	
+	var win = $("#window");
+	
+	$("#viewerback").css("background-image","url(SPFrames/Buildings/UI/menu-back.jpg)").html("").fadeIn("normal");
+	win.contents().unbind();
 	var questHTML = ["","",""];
 	$.each(player.quests, function(i, v) {
 		var classes = 'quest'+(v.name.match(/AQ\d/)?" noShow":"");
@@ -66,10 +68,10 @@ function show_quests() {
 		} else questHTML[0] +="<li class='"+classes+"' title='Join Quest'>" + (v.name.match(/BQ|RQ/)?v.name:v.info) + "</li>";
 	});
 	
-	var HTML = "<div id='quest_outerBox'><div class='darkFrameBody'><div>Click on a quest to view its description or join it, if you haven't already.</div><ul id='quest_listNoStart'>Not Started" + questHTML[0]
-				+ "</ul><ul id='quest_listStarted'>In Progress"+questHTML[1]+"</ul><ul id='quest_listFinished'>Finished"+questHTML[2]
-				+"</ul></div><div class='darkFrameBL-BR-B'><div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div></div></div>";
-	$("#window").html(HTML).fadeIn("fast");
+	var HTML = "<div id='quest_outerBox'><div>Click on a quest to view its description or join it, if you haven't already.</div><ul id='quest_listNoStart'><span class='header'>Not Started</span>"
+				+ questHTML[0] + "</ul><ul id='quest_listStarted'><span class='header'>In Progress</span>"+questHTML[1]+"</ul><ul id='quest_listFinished'><span class='header'>Finished</span>"
+				+ questHTML[2] +"</ul></div>";
+	win.html(HTML).fadeIn("fast");
 	
 	$(".quest").unbind("click").click(function(){
 		var that = this;
@@ -121,17 +123,62 @@ function show_quests() {
 }
 
 function display_quest(quest) {
-	$("#quest_box").html("Loading...");
-	display_output(false,"Getting Quest Info...");
-	var getQuestInfo = new make_AJAX();
-	getQuestInfo.callback = function(response) {
-		var questText = $.parseJSON(response);
-		$("#quest_box").html("<div class='popFrame'><div class='popFrameTop'><div class='popFrameLeft'><div class='popFrameRight'><div class='popFrameBody'><div id='quest_titlebar'><div id='quest_status'>" + ((quest.status==1)?"In Progress":"Completed")+"</div><span>Quest Dialog</span><a href='javascript:;' id='quest_close'></a></div><div id='quest_text'><div id='quest_video'>"+(questText[2]?"<div id='video_title'>Instruction Video</div>"+questText[2]:"")+"</div>"+ questText[0] + "</div><a href='javascript:;' id='quest_leave'>Leave Quest</a></div></div></div></div></div><div class='popFrameBL-BR-B'><div class='popFrameBL'><div class='popFrameBR'><div class='popFrameB'></div></div></div></div>")
-			.attr("style","").fadeIn();
-		$("#quest_text").jScrollPane({showArrows:true,hideFocus:true});
+	var api = $("#quest_text").data('jsp');
+	if(!quest.text) {
+		display_output(false,"Getting Quest Info...");
+		var getQuestInfo = new make_AJAX();
+		getQuestInfo.callback = function(response) {
+			quest.text = $.parseJSON(response);
+			$("#quest_status").text((quest.status==1)?"In Progress":"Completed");
+			api.getContentPane().html(quest.text[0]);
+			$("[style*='font-family:BankGothic']").css("font-family","")
+												  .find("img").each(function(i,v) {
+													switch(i) {
+														case 0:
+															$(this).attr("src","SPFrames/Buildings/UI/metal-icon.png");
+															break;
+														case 1:
+															$(this).attr("src","SPFrames/Buildings/UI/wood-icon.png");
+															break;
+														case 2:
+															$(this).attr("src","SPFrames/Buildings/UI/crystal-icon.png");
+															break;
+														case 3:
+															$(this).attr("src","SPFrames/Buildings/UI/food-icon.png");
+															break;
+															
+													}
+												  });
+			$("#quest_box").attr("style","").fadeIn();
+			api.reinitialise();
+			display_output(false,"Quest Info Loaded!");
+		};
+		getQuestInfo.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".getQuestLog("+quest.qid+");");
+	} else {
+		$("#quest_status").text((quest.status==1)?"In Progress":"Completed");
+		api.getContentPane().html(quest.text[0]);
+		$("[style*='font-family:BankGothic']").css("font-family","")
+											  .find("img").each(function(i,v) {
+												switch(i) {
+													case 0:
+														$(this).attr("src","SPFrames/Buildings/UI/metal-icon.png");
+														break;
+													case 1:
+														$(this).attr("src","SPFrames/Buildings/UI/wood-icon.png");
+														break;
+													case 2:
+														$(this).attr("src","SPFrames/Buildings/UI/crystal-icon.png");
+														break;
+													case 3:
+														$(this).attr("src","SPFrames/Buildings/UI/food-icon.png");
+														break;
+														
+												}
+											  });
+		$("#quest_box").attr("style","").fadeIn();
+		api.reinitialise();
 		display_output(false,"Quest Info Loaded!");
-	};
-	getQuestInfo.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".getQuestLog("+quest.qid+");");
+	}
 	
 	$("#quest_close").die("click").live("click",function() {
 		$("#quest_box").fadeOut("fast");

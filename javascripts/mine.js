@@ -7,21 +7,21 @@ function mine_UI(bldgInfo) {
 	switch(bldgInfo.type) {
 		case "Metal Mine":
 			bpType = "metal";
-			path = "AIFrames/icons/MetalIcon.png";
+			path = "SPFrames/Buildings/UI/metal-icon-black.png";
 			break;
 		case "Timber Field":
 			bpType = "timber";
-			path = "AIFrames/icons/TimberIcon.png";
+			path = "SPFrames/Buildings/UI/wood-icon-black.png";
 			i = 1;
 			break;
 		case "Crystal Mine":
 			bpType = "crystal";
-			path = "AIFrames/icons/PlasticIcon.png";
+			path = "SPFrames/Buildings/UI/crystal-icon-black.png";
 			i = 2;
 			break;
 		case "Farm":
 			bpType = "food";
-			path = "AIFrames/icons/FoodIcon.png";
+			path = "SPFrames/Buildings/UI/food-icon-black.png";
 			i = 3;
 			break;
 	}

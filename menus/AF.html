@@ -1,62 +1,30 @@
 <div id='AF_activeAU'>
-	<div class='lightFrameBody'>
-		<span id='AF_AUname'></span>
-		<span id='AF_AUrank'></span>
-		<img src='images/trans.gif' id='AF_AUpic' />
-		<div id='AF_AUstats'>
-			<div>
-				<div id='AF_AUAttackPower'><img src='AIFrames/icons/firepower.png' title='Unit Firepower' alt='Unit Firepower' /> <span class='stat'>???</span></div>
-				<div id='AF_AUAattackType'> <span class='stat'>???</span></div>
-			</div><div>
-				<div id='AF_AUarmor'><img src='AIFrames/icons/armor.png' title='Armor' alt='Armor' /> <span class='stat'>???</span></div>
-				<div id='AF_AUarmorType'><img src='AIFrames/icons/stealth.png' title='Concealment' alt='Concealment' /> <span class='stat'>???</span></div>
-				<div id='AF_AUspeed'><img src='AIFrames/icons/speed.png' title='Speed' alt='Speed' /> <span class='stat'>???</span></div>
-			</div><div><div id='AF_AUcargo'><img src='AIFrames/icons/cargo.png' title='Cargo Capacity' alt='Cargo Capacity' /><span class='stat'>???</span></div></div>
+	<span id='AF_AUname'></span>
+	<img src='images/trans.gif' id='AF_AUpic' />
+	<div id='AF_AUstats'>
+		<div>
+			<span id='AF_AUAttackPower'><img src='SPFrames/Units/icons/firepower-white.png' title='Unit Firepower' alt='Unit Firepower' /> <span class='stat'>???</span></span>
+			<span id='AF_AUAattackType'> <span class='stat'>???</span></span>
 		</div>
-	</div>
-	<div class='lightFrameBL-BR-B'>
-		<div class='lightFrameBL'><div class='lightFrameBR'><div class='lightFrameB'></div></div></div>
+		<div>
+			<span id='AF_AUspeed'><img src='SPFrames/Units/icons/speed-white.png' title='Speed' alt='Speed' /> <span class='stat'>???</span></span>
+		</div>
+		<div>
+			<span id='AF_AUarmor'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> <span class='stat'>???</span></span>
+			<span id='AF_AUarmorType'> <span class='stat'>???</span></span>
+		</div>
+		<div>
+			<span id='AF_AUcargo'>Cargo <span class='stat'>???</span></span>
+		</div>
 	</div>
 </div>
 <div id='AF_AUbar'>
-</div>
-<div id='BUI_bFail'></div>
-<div id='BUI_bldPplBox'>
-	<div id='BUI_bldPplHeader'>Build Units<div id='BUI_pplHelp' class='pplHelp'></div><span id='BUI_numCivs'></span></div>
-	<div id='BUI_bldPpl'>
-		<label for='BUI_numPpl'>Units:</label><input type='text' id='BUI_numPpl' autofocus='autofocus' maxlength='4' />
-		<div id='BUI_straightArrow'></div>
-		<div id='BUI_bentArrow'></div>
-		<div id='BUI_bldPplButton' class='noBld'>
-			<div class='darkFrameBody'>Build</div>
-			<div class='darkFrameB'></div>
-		</div>
-		<div id='AF_capNeeded'>Slots needed: <span></span></div>
-	</div>
-	<div id='BUI_bldPplCost'>
-		<div class='BUI_bldPpl totalCost'>
-			Total Cost
-		</div>
-		<div class='BUI_bldPpl'>
-			<div id='BUI_pplSteel' class='noRes upSteel'>???</div>
-		</div>
-		<div class='BUI_bldPpl'>
-			<div id='BUI_pplWood' class='noRes upWood'>???</div>
-		</div>
-		<div class='BUI_bldPpl'>
-			<div id='BUI_pplTime' class='noRes upTime'>??:??:??</div>
-		</div>
-		<div class='BUI_bldPpl'>
-			<div id='BUI_pplManMade' class='noRes upManMade'>???</div>
-		</div>
-		<div class='BUI_bldPpl'>
-			<div id='BUI_pplFood' class='noRes upFood'>???</div>
-		</div>
-	</div>
 </div>
 <div id='AF_queue'>
 	<div class='textFramed'>
 		<div id='AF_queueList'></div>
 	</div>
-	<div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div>
 </div>
+<div id='BUI_bFail'></div>
+<input type='text' id='BUI_numPpl' autofocus='autofocus' maxlength='4' />
+<div id='BUI_bldPplButton' class='noBld'></div>

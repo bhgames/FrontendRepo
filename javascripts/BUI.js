@@ -5,8 +5,8 @@ var BUI = { //the Building Universal Interface object will hold everything our v
 	build : build_bldg_UIs,
 	head : "<div id='BUI_header'>\
 				<div id='BUI_bldgInfoButton'></div>\
+				<div id='BUI_tutorial' class='pplHelp'></div>\
 				<div id='BUI_bldgInfo'>\
-					<div id='BUI_tutorial' class='pplHelp'></div>\
 					<span id='BUI_bldgName'></span><span id='BUI_bldgLvl'></span>\
 					<div id='BUI_upgrading'></div>\
 				</div>\
@@ -47,7 +47,8 @@ var BUI = { //the Building Universal Interface object will hold everything our v
 								"Support an ally with units that can only help defend his town.  Sending your own troops to support one of your own cities will Station those troops there.",
 								"Send your troops to collect the debris left over from a previous battle.",
 								"Send your Scholars on an Archeological Dig.  Sending troops with your scholars will prevent unescored scholars from taking over the dig site.  Digs take 24 hours; after which, a prize is unlocked.  If you choose not to take the prize, you can resend the dig for a potentially better prize!",
-								"Send your Engineers to mine a Resource Outcropping.  Sending troops with your engineers will prevent unescorted engineers from taking over the outcropping."],
+								"Send your Engineers to mine a Resource Outcropping.  Sending troops with your engineers will prevent unescorted engineers from taking over the outcropping.",
+								"Send your troops to surround the target town.  Any mission leaving from or arriving to the town will first have to fight through the blockades around it."],
 				numRaidsOut : 0,
 				x : 0,
 				y : 0,
