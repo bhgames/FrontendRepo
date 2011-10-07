@@ -8,15 +8,19 @@ var ASM = 	{
 							   Functions for the Account Settings Menu
 \***********************************************************************************************************/
 function build_ASM() {
+	$("#viewerback").css("background-image","url(SPFrames/rusted-metal.jpg)").fadeIn();
 	if(ASM.HTML) {
-	
+		display_output(false,"Building Options Menu...");
+		currUI = build_ASM;
+		var win = $("#window");
+		win.html(ASM.HTML);
 		$("#ASM_playerName").text(player.username);
 		var hasCC = false;
 		$.each(player.towns, function(i, v) {
 			if(v.townID == player.capitaltid) hasCC = true;
 		});
 		$.each(player.towns, function(i, v) {
-			$("#ASM_townList").append("<div class='townInfo'><input type='text' class='townNameInput' maxlength='10' value='" 
+			$("#ASM_townList").append("<div class='townInfo'><input type='text' class='townNameInput textInput' maxlength='10' value='" 
 										+ v.townName + "'/><span class='addInfo'>(" + v.x + ", " + v.y
 										+ ") | <input type='checkbox' class='CC'" + ((player.capitaltid == v.townID)?"checked='checked' ":"")
 										+ ((hasCC)?" disabled='disabled'":"") + " /></div>");
@@ -24,7 +28,7 @@ function build_ASM() {
 		$("#ASM_achievements").html(function() {
 			var HTML = '';
 			$.each(player.achievements, function(i,v){
-				HTML+="<div class='achievement"+(!v.achieved?" noBld":"")+"'><img src='AIFrames/icons/achievements/"+v.agraphic+".png' alt='"+v.aname+"'/></div>";
+				HTML+="<div class='achievement"+(!v.achieved?" noBld":"")+"'><img src='SPFrames/achievements/"+v.agraphic+".png' alt='"+v.aname+"'/></div>";
 			});
 			return HTML;
 		});
@@ -63,41 +67,42 @@ function build_ASM() {
 		$(".achievement img").unbind("click").click(function() {
 			var index = $(this).parent().index(".achievement");
 			var achieve = player.achievements[index];
-			display_message(achieve.aname,"<img src='AIFrames/icons/achievements/"+achieve.agraphic+".png' alt='"+achieve.aname+"' style='float:left'/>"+achieve.adesc);
+			display_message(achieve.aname,"<img src='SPFrames/achievements/"+achieve.agraphic+".png' alt='"+achieve.aname+"' style='float:left'/>"+achieve.adesc);
 		});
 		
 		$("#ASM_save").unbind('click').click(function() {
-			var getPath = "/AIWars/GodGenerator?reqtype=command&command=";
+			var getPath = "reqtype=command&command=";
 			$(".townNameInput").each(function(i,v) {
-				if($(v).val() != player.towns[i].townName) {
-					player.towns[i].townName = $(v).val();
+				var val = $(v).val();
+				if(val != player.towns[i].townName) {
+					player.towns[i].townName = val;
 					$("#cityname").html(function() { 
 											if(player.curtown.townID == player.capitaltid) {
 												return "&#171;" + player.curtown.townName + "&#187;";
 											}
 											return player.curtown.townName;
 										});
-					getPath += "bf.renameTown(" + player.towns[i].townID + "," + $(v).val() + ");";
+					getPath += "bf.renameTown(" + player.towns[i].townID + "," + val + ");";
 				}
 			});
 			if(!hasCC && $(".CC:checked").length > 0) {
-				getPath += player.command + ".setCapitalCity(" + player.towns[$(".CC:checked").index(".CC")].townID + ");";
+				getPath += "bf.setCapitalCity(" + player.towns[$(".CC:checked").index(".CC")].townID + ");";
 			}
 			
-			if(getPath != "/AIWars/GodGenerator?reqtype=command&command=") {		
+			if(getPath != "reqtype=command&command=") {	
 				var save = new make_AJAX();
 				
 				save.callback = function(response) {
 					var lockCC = !hasCC;
 					if(response.match(/false/i)) {
-						var error = response.split(";");
+						var error = response.split(";"), mess = "";
 						$.each(error, function(i, v) {
 							if(v.match(/false/i)) {
 								if(lockCC && $(".CC:checked").length > 0 && i==error.length-1) lockCC=false;
-								error += v.split(":")[1]+"<br/>";
+								mess += v.split(":")[1]+"<br/>";
 							}
 						});
-						display_message("Account Settings", error);
+						display_message("Account Settings", mess);
 					}
 					if(lockCC) {
 						$(".CC").each(function(i,v) {
@@ -117,21 +122,17 @@ function build_ASM() {
 			$("#ASM_fbConnect").unbind("click").click(function() {FB.login(fb_connect);});
 		}
 		
-		$("#ASM_close").unbind('click').click(function() {
-			$("#accountPreferences").children().unbind();
-			$("#accountPreferences").fadeOut();
-		});
-		
-		$("#accountPreferences").fadeIn();
-		$("#ASM_achievements").jScrollPane({showArrows:true,hideFocus:true});
-		$("#ASM_townScroll").jScrollPane({showArrows:true,hideFocus:true});
+		win.fadeIn();
+		$("#ASM_achievements").jScrollPane();
+		$("#ASM_townScroll").jScrollPane();
 	} else {
-		var getASM = new make_AJAX();
-		getASM.callback = function(response) {
-							ASM.HTML = response;
-							build_ASM();
-						};
-		getASM.get("/light/menus/ASM.html");
+		display_output(false,"Getting menu data...",true);
+		$.get("menus/ASM.html",
+			function(response) {
+				display_output(false,"Menu data received!");
+				ASM.HTML = response;
+				build_ASM();
+			});
 	}
 	
 }

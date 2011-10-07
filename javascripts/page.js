@@ -22,7 +22,7 @@ Modernizr.addTest('pointerEvents', function () {
 
 $(document).ready(function() {
 
-	FB.init({appId: '164101923624047', status: true, cookie: false, xfbml: true});
+	FB.init({appId: '164327976933647', status: true, cookie: false, xfbml: true});
 	FB.Canvas.setSize();
 	
 	//set jScrollPane global defaults
@@ -33,7 +33,7 @@ $(document).ready(function() {
 	
 	get_session();
 	
-	$("body").bind("resUpdate", display_res);
+	$("body").bind("resUpdate.mainTicker", display_res);
 	
 	$("body").bind("resUpdate.warehouseMenu", function() {
 		var info = $("#town_warehouseMenu").clone();
@@ -48,6 +48,7 @@ $(document).ready(function() {
 	
 	$("#menu").unbind("click").click(function() {
 		$("#dropdown_menu").animate({"opacity":"toggle"},"fast");
+		$(this).toggleClass("open");
 	});
 	$("#dropdown_menu a").click(function() {$("#menu").click();});
 	

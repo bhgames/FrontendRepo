@@ -21,35 +21,33 @@ function get_session() {
 			load_player(); //if the user entered a valid UN and Pass
 			check_all_for_updates();
 		} else {
-			var inFB = FB._inCanvas;
-			FB.getLoginStatus(function(response) {
-				log(response, "login,js:25");
-				if(response.session) {
-					FB.api("/me",function(response) {
-						log(response, "login,js:28");
-						userInfo = response;
-						var login = new make_AJAX();
-						login.callback = function(response) {
-							log(response, "login,js:32");
-							if(response.match(/invalid/)) {
-								if(inFB) {
+			log("Checking Facebook for login","login.js:24");
+			if(FB._inCanvas) {
+				FB.getLoginStatus(function(response) {
+					log(response, "login,js:25");
+					if(response.session) {
+						FB.api("/me",function(response) {
+							log(response, "login,js:28");
+							userInfo = response;
+							var login = new make_AJAX();
+							login.callback = function(response) {
+								log(response, "login,js:32");
+								if(response.match(/invalid/)) {
 									FB_login_window();
-								} else {
-									window.location.assign("/");
+								} else { 
+									load_player();
+									check_all_for_updates();
 								}
-							} else { 
-								load_player();
-								check_all_for_updates();
-							}
-						};
-						login.post("","reqtype=login&fuid="+response.id);
-					});
-				} else if(inFB) {
-					FB_login_window();
-				} else {
-					window.location.assign("/");
-				}
-			});
+							};
+							login.post("","reqtype=login&fuid="+response.id);
+						});
+					} else {
+						FB_login_window();
+					}
+				});
+			} else {
+				window.location.assign("/");
+			}
 		}
 	};
 
@@ -236,7 +234,7 @@ function FB_login_window() {
 function load_player(forceReload, reloadTown, reloadUI) {
 	if(!player.getting) {
 		player.getting = true;
-		forceReload = forceReload || !player.loggedIn;
+		forceReload = forceReload || !player.loggedIn || true; //this true really shouldn't be here, but I'm hoping it'll solve the crashing issues for now
 		display_output(false,"Loading Player Data");
 		var playerget = new make_AJAX();
 		playerget.callback = function(response) {
@@ -275,7 +273,7 @@ function load_player(forceReload, reloadTown, reloadUI) {
 					parse_player(response, forceReload);
 					
 					//get chatbox
-					if(!player.chatboxLoaded) { //chatbox only has to load once
+					if(!player.chatboxLoaded&&false) { //chatbox only has to load once
 						player.chatboxLoaded = true;
 						display_output(false,"Loading Chatbox...");
 						$("#chat_innerbox").load("/PHP/chatBox.php","UN="+player.username, 
@@ -384,7 +382,7 @@ function load_player(forceReload, reloadTown, reloadUI) {
 								});
 								
 								$("#options").unbind('click').click(function() {
-									build_ASM();
+									do_fade(build_ASM);
 									$("#menu").click();
 								});
 								

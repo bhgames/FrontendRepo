@@ -327,7 +327,7 @@
 	font: 10px "Trajan Pro", Trajan, serif;
 	color: #000;
 	text-shadow: 0px 1px 0px #C5C5D3;
-	z-index: 1;
+	z-index: 2;
 	}
 #coordsY div {
 	position: relative;
@@ -350,6 +350,7 @@
 	font: 10px "Trajan Pro", Trajan, serif;
 	color: black;
 	text-shadow: 0px 1px 0px #C5C5D3;
+	z-index: 1;
 	}
 #coordsX div {
 	position: relative;
@@ -361,7 +362,7 @@
 	}
 #map_territories, .territoryBox, .territory {
 	position: absolute;
-	z-index: 1;
+	z-index: 0;
 	}
 .territory.vert {
 	border-right: 2px solid #FFF;

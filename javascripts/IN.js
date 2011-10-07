@@ -207,7 +207,6 @@ function IN_UI(bldgInfo) {
 			});
 			bldgInfo.numLeftToBuild += BUI.queue.numLeftToBuild;
 			bldgInfo.ticksPerPerson = BUI.queue.ticksPerPerson;
-			bldgInfo.pplTicker = inc_ppl_ticks(bldgInfo);
 			var bldPpl = new make_AJAX();
 			bldPpl.callback = function(response) {
 				if(response.match(/true/)) {
@@ -230,17 +229,19 @@ function IN_UI(bldgInfo) {
 }
 
 function help_re(e) { //which is the type of research to display the description of
-	var el = e.target;
-	var which = $(el).siblings(".name").text();
-	var desc = '';
-	if(BUI.IN.research[which]) {
-		desc = "<h4>"+$(el).siblings(".fullName").text()+"</h4>Code: "+which+"<p>"+BUI.IN.research[which].desc+"</p>";
+	var el = e.target,
+		which = $(el).siblings(".name").text(),
+		desc = '',
+		research = BUI.IN.research[which];
+	if(research) {
+		desc = "<h4>"+$(el).siblings(".fullName").text()+"</h4><span style='float:right'>Max Level: "+(research.max? research.max : 20)+"</span>Code: "+which+""+"<p>"+research.desc+"</p>";
 	} else {
+		desc = "<h4>"+which+" Blueprint</h4>Code: "+which+"<p>\
+						<div style='float:left;width: 160px;'>\
+							<img src='SPFrames/Units/"+which+".png' style='float: left;'"
 		switch(which) {
 			case "Pillager":
-				desc="<h4>Pillager Blueprint</h4>Code: Pillager<p>\
-						<div style='float:left;width: 150px;'>\
-							<img src='AIFrames/units/soldierrenderSMALL.png' style='float: left;' alt='Soldier'/>\
+				desc+=" alt='Soldier'/>\
 							<div class='helpStat firstcol'>HP: 50</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 25 Physical</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> 15 Light</div>\
@@ -250,9 +251,7 @@ function help_re(e) { //which is the type of research to display the description
 						Pillagers, with their light armor, are weak to opponents that deal explosive damage and strong against opponents that deal electrical damage.  Using standard issue sidearms, the Pillager does normal damage to all armor types.  Pillagers make up for their lack of combat specialty with the highest speed, armor, and carrying capacity of any soldier type.</p>";
 				break;
 			case "Panzerfaust":
-				desc="<h4>Panzerfaust Blueprint</h4>Code: Panzerfaust<p>\
-						<div style='float:left;width: 150px;'>\
-							<img src='AIFrames/units/soldierrenderSMALL.png' style='float: left;' alt='Soldier'/>\
+				desc+=" alt='Soldier'/>\
 							<div class='helpStat firstcol'>HP: 75</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 20 Electrical</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> 10 Light</div>\
@@ -262,9 +261,7 @@ function help_re(e) { //which is the type of research to display the description
 						Panzerfaust, with their light armor, are weak to opponents that deal explosive damage and strong against opponents that deal electrical damage.  Equipped with state of the art man-portable EMP and directed energy weapons, Panzerfaust deal extra damage to heavily armored constructs, but significantly less damage to lightly armored infantry.</p>";
 				break;
 			case "Vanguard":
-				desc="<h4>Vanguard Blueprint</h4>Code: Vanguard<p>\
-						<div style='float:left;width: 150px;'>\
-							<img src='AIFrames/units/soldierrenderSMALL.png' style='float: left;' alt='Soldier'/>\
+				desc+=" alt='Soldier'/>\
 							<div class='helpStat firstcol'>HP: 50</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 20 Explosive</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> 10 Light</div>\
@@ -274,9 +271,7 @@ function help_re(e) { //which is the type of research to display the description
 						Vanguards, with their light armor, are weak to opponents that deal explosive damage and strong against opponents that deal electrical damage.  Equipped with the latest in anti-infantry ordinace, Vanguards deal extra damage to lightly armored infantry, but the heavy armor of constructs absorbes most of the lethal explosions.</p>";
 				break;
 			case "Seeker":
-				desc="<h4>Seeker Blueprint</h4>Code: Seeker<p>\
-						<div style='float:left;width: 150px;'>\
-							<img src='AIFrames/units/tankrenderSMALL.png' style='float: left;' alt='Tank'/>\
+				desc+=" alt='Tank'/>\
 							<div class='helpStat firstcol'>HP: 150</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 390 Physical</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> 100 Heavy</div>\
@@ -286,9 +281,7 @@ function help_re(e) { //which is the type of research to display the description
 						Seekers, like all constructs, are plated with heavy duty alloy armor.  This armor makes them incredibly resiliant to explosives, but the high electrical conductivity means they're at a disadvantage against electrical attacks.  Equipped with a 30mm cannon, the Seeker deals average damage to all armor types.  In exchange for smaller armaments, the Seeker is equipped with state of the art propulsion systems and can quickly navigate the battlefield.</p>";
 				break;
 			case "Damascus":
-				desc="<h4>Damascus Blueprint</h4>Code: Damascus<p>\
-						<div style='float:left;width: 150px;'>\
-							<img src='AIFrames/units/tankrenderSMALL.png' style='float: left;' alt='Tank'/>\
+				desc+=" alt='Tank'/>\
 							<div class='helpStat firstcol'>HP: 150</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 390 Electrical</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> 100 Heavy</div>\
@@ -298,21 +291,17 @@ function help_re(e) { //which is the type of research to display the description
 						Damascus, like all constructs, are plated with heavy duty alloy armor.  This armor makes them incredibly resiliant to explosives, but the high electrical conductivity means they're at a disadvantage against electrical attacks.  Equipped with advanced directed energy weapons, the Damascus is a fearsome anti-construct weapon, dealing extra damage to Heavily armored constructs.  However, the low electrical conductivity of light infantry armor means they perform poorly against infantry.</p>";
 				break;
 			case "Wolverine":
-				desc="<h4>Wolverine Blueprint</h4>Code: Wolverine<p>\
-						<div style='float:left;width: 150px;'>\
-							<img src='AIFrames/units/tankrenderSMALL.png' style='float: left;' alt='Combat Walker'/>\
+				desc+=" alt='Tank'/>\
 							<div class='helpStat firstcol'>HP: 200</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 390 Explosive</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> 100 Heavy</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/speed-white.png' title='Speed' alt='Speed' /> 100</div><div class='helpStat'>Cargo 100</div>\
 							\
 						</div>Unit Specialty: Infantry Combat<br/><br/>\
-						Wolverines, like all constructs, are plated with heavy duty alloy armor.  This armor makes them incredibly resiliant to explosives, but the high electrical conductivity means they're at a disadvantage against electrical attacks.  Equipped with high grade incindiary ordinance, this combat walker strikes fear into any infantryman.  However, the relatively low thermal conductivity of heavier construct armor makes them a poor counter to other constructs.</p>";
+						Wolverines, like all constructs, are plated with heavy duty alloy armor.  This armor makes them incredibly resiliant to explosives, but the high electrical conductivity means they're at a disadvantage against electrical attacks.  Equipped with high grade incindiary ordinance, the Wolverine strikes fear into any infantryman.  However, the relatively low thermal conductivity of heavier construct armor makes them a poor counter to other constructs.</p>";
 				break;
 			case "Punisher":
-				desc="<h4>Punisher Blueprint</h4>Code: Punisher<p>\
-						<div style='float:left;width: 150px;'>\
-							<img src='AIFrames/units/juggerrenderSMALL.png' style='float: left;' alt='Golem'/>\
+				desc+=" alt='Golem'/>\
 							<div class='helpStat firstcol'>HP: 700</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 1430 Physical</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> 300 Heavy</div>\
@@ -321,22 +310,18 @@ function help_re(e) { //which is the type of research to display the description
 						</div>Unit Specialty: Resource Reallocation/Advance Attack Golem<br/><br/>\
 						Punishers, like other Golems, are massive, heavily armored battlefield behemoths.  Their thick armor is highly resistant to explosive damage, but the high electrical conductivity of their alloy armors makes them especially vulnerable to electrical attacks.  Equipped with frightening melee weapons and rapid-fire machine guns, Punishers are truely punishing on their opponents, but have no particular combat strengths.</p>";
 				break;
-			case "Dreadnought":
-				desc="<h4>Dreadnought Blueprint</h4>Code: Dreadnought<p>\
-						<div style='float:left;width: 150px;'>\
-							<img src='AIFrames/units/juggerrenderSMALL.png' style='float: left;' alt='Golem'/>\
+			case "Dreadnaught":
+				desc+=" alt='Golem'/>\
 							<div class='helpStat firstcol'>HP: 700</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 1430 Electrical</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> 300 Heavy</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/speed-white.png' title='Speed' alt='Speed' /> 300</div><div class='helpStat'>Cargo 600</div>\
 							\
 						</div>Unit Specialty: Resource Reallocation/Advance Attack Golem<br/><br/>\
-						Dreadnoughts, like other Golems, are massive, heavily armored battlefield behemoths.  Their thick armor is highly resistant to explosive damage, but the high electrical conductivity of their alloy armors makes them especially vulnerable to electrical attacks.  Equipped with deadly directed energy and plasma weapons, Dreadnoughts chew through other construct's heavy armor with ease and the massive power output means they're still deadly to lightly armored infantry.</p>";
+						Dreadnaught, like other Golems, are massive, heavily armored battlefield behemoths.  Their thick armor is highly resistant to explosive damage, but the high electrical conductivity of their alloy armors makes them especially vulnerable to electrical attacks.  Equipped with deadly directed energy and plasma weapons, Dreadnoughts chew through other construct's heavy armor with ease and the massive power output means they're still deadly to lightly armored infantry.</p>";
 				break;
 			case "Colossus":
-				desc="<h4>Colossus Blueprint</h4>Code: Colossus<p>\
-						<div style='float:left;width: 150px;'>\
-							<img src='AIFrames/units/juggerrenderSMALL.png' style='float: left;' alt='Golem'/>\
+				desc+=" alt='Golem'/>\
 							<div class='helpStat firstcol'>HP: 900</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 1430 Explosive</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> 200 Heavy</div>\
@@ -346,9 +331,9 @@ function help_re(e) { //which is the type of research to display the description
 						Colossi, like other Golems, are massive, heavily armored battlefield behemoths.  Their thick armor is highly resistant to explosive damage, but the high electrical conductivity of their alloy armors makes them especially vulnerable to electrical attacks.  Equipped with a frightening array of explosive, incindiary, and concussive ordinance, Colossi devistate the ranks of lightly armored infantry and their sheer firepower makes them effective against lesser constructs.</p>";
 				break;
 			case "Gunship":
-				desc="<h4>LA-513 'Gunship' Blueprint</h4>Code: Gunship<p>\
+				desc="<h4>LA-513 'Gunship' Blueprint</h4>Code: "+which+"<p>\
 						<div style='float:left;width: 150px;'>\
-							<img src='AIFrames/units/bomberrenderSMALL.png' style='float: left;' alt='Light Aircraft'/>\
+							<img src='SPFrames/Units/"+which+".png' style='float: left;' alt='Light Aircraft'/>\
 							<div class='helpStat firstcol'>HP: 50</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 75 Physical</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> 10 Light</div>\
@@ -357,9 +342,9 @@ function help_re(e) { //which is the type of research to display the description
 						</div>Light Aircraft, like the LA-513, are equipped with light armors making them highly resistant to electrical attacks, but vulnerable to explosive ordinace.  The 'Gunship' is armed with two, wing mounted, small calibur machine guns and two 15mm cannons mouned on the fuselage giving it a fairly average damage output.</p>";
 				break;
 			case "Thunderbolt":
-				desc="<h4>LA-616 'Thunderbolt' Blueprint</h4>Code: Thunderbolt<p>\
+				desc="<h4>LA-616 'Thunderbolt' Blueprint</h4>Code: "+which+"<p>\
 						<div style='float:left;width: 150px;'>\
-							<img src='AIFrames/units/bomberrenderSMALL.png' style='float: left;' alt='Light Aircraft'/>\
+							<img src='SPFrames/Units/"+which+".png' style='float: left;' alt='Light Aircraft'/>\
 							<div class='helpStat firstcol'>HP: 50</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 75 Electrical</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> 10 Light</div>\
@@ -368,9 +353,9 @@ function help_re(e) { //which is the type of research to display the description
 						</div>Light Aircraft, like the LA-616, are equipped with light armors making them highly resistant to electrical attacks, but vulnerable to explosive ordinace.  The 'Thunderbolt' is armed with two, wing mounted, Electrical Discharge Cannons.  This 'lighting in a can' is highly effective against Heavy Aircraft, but has a lesser effect on other Light Aircraft.</p>";
 				break;
 			case "Blastmaster":
-				desc="<h4>LA-293 'Blastmaster' Blueprint</h4>Code: Blastmaster<p>\
+				desc="<h4>LA-293 'Blastmaster' Blueprint</h4>Code: "+which+"<p>\
 						<div style='float:left;width: 150px;'>\
-							<img src='AIFrames/units/bomberrenderSMALL.png' style='float: left;' alt='Light Aircraft'/>\
+							<img src='SPFrames/Units/"+which+".png' style='float: left;' alt='Light Aircraft'/>\
 							<div class='helpStat firstcol'>HP: 50</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 75 Explosive</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> 10 Light</div>\
@@ -379,9 +364,9 @@ function help_re(e) { //which is the type of research to display the description
 						</div>Light Aircraft, like the LA-293, are equipped with light armors making them highly resistant to electrical attacks, but vulnerable to explosive ordinace.  The 'Blastmaster' is armed with numerous air-to-air and air-to-ground missiles.  The light armor of other Light Aircraft is devistated by the LA-293's missiles, but the heavy plating of Heavy Aircraft is much more resiliant.</p>";
 				break;
 			case "Monolith":
-				desc="<h4>HA-44 'Monolith' Blueprint</h4>Code: Monolith<p>\
+				desc="<h4>HA-44 'Monolith' Blueprint</h4>Code: "+which+"<p>\
 						<div style='float:left;width: 150px;'>\
-							<img src='AIFrames/units/bomberrenderSMALL.png' style='float: left;' alt='Light Aircraft'/>\
+							<img src='SPFrames/Units/"+which+".png' style='float: left;' alt='Light Aircraft'/>\
 							<div class='helpStat firstcol'>HP: 75</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 50 Explosive</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> 25 Heavy</div>\
@@ -390,9 +375,9 @@ function help_re(e) { //which is the type of research to display the description
 						</div>Like other Heavy Aircraft, the HA-44 is armored with thick alloy plates.  The additional weight makes them much slower and resiliant then their light counterparts, but the alloy plating is much more vulnerable to electrical attacks.  The 'Monolith' is equipped with a large number of small calibur cannons and does moderate damage.</p>";
 				break;
 			case "Halcyon":
-				desc="<h4>HA-18 'Halcyon' Blueprint</h4>Code: Halcyon<p>\
+				desc="<h4>HA-18 'Halcyon' Blueprint</h4>Code: "+which+"<p>\
 						<div style='float:left;width: 150px;'>\
-							<img src='AIFrames/units/bomberrenderSMALL.png' style='float: left;' alt='Light Aircraft'/>\
+							<img src='SPFrames/Units/"+which+".png' style='float: left;' alt='Light Aircraft'/>\
 							<div class='helpStat firstcol'>HP: 75</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 50 Explosive</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> 25 Heavy</div>\
@@ -401,9 +386,9 @@ function help_re(e) { //which is the type of research to display the description
 						</div>Like other Heavy Aircraft, the HA-18 is armored with thick alloy plates.  The additional weight makes them much slower and resiliant then their light counterparts, but the alloy plating is much more vulnerable to electrical attacks.  The 'Halcyon' is equipped with a state-of-the-art Static Discharge Array and a number of smaller EMP cannons.  It's highly effective against the heavy armor of other Heavy Aircraft, but has a significantly reduced effect on Light Aircraft.</p>";
 				break;
 			case "Hades":
-				desc="<h4>HA-69 'Hades' Blueprint</h4>Code: Hades<p>\
+				desc="<h4>HA-69 'Hades' Blueprint</h4>Code: "+which+"<p>\
 						<div style='float:left;width: 150px;'>\
-							<img src='AIFrames/units/bomberrenderSMALL.png' style='float: left;' alt='Light Aircraft'/>\
+							<img src='SPFrames/Units/"+which+".png' style='float: left;' alt='Light Aircraft'/>\
 							<div class='helpStat firstcol'>HP: 75</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/firepower-white.png' title='Firepower' alt='Firepower' /> 50 Explosive</div>\
 							<div class='helpStat firstcol'><img src='SPFrames/Units/icons/armor-white.png' title='Armor' alt='Armor' /> 25 Heavy</div>\
@@ -528,7 +513,7 @@ function update_research() {
 			} else {
 				cost *= Math.pow(2,lvl);
 				if(!unlockable) {
-					$(v).text("[Locked]");
+					$(v).siblings(".level").text("[Locked]");
 				} else {
 					if(KP>=cost) {
 						$(v).siblings(".research").text("Purchase").removeClass("noBuy");

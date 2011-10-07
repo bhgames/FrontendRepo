@@ -119,7 +119,7 @@ function CC_UI(bldgInfo) {
 	
 	$("#CC_townID span").text(player.curtown.townID);
 	
-	var lots = player.research.infrastructureTech + (player.curtown.townID == player.capitaltid ? 5 : 1);
+	var lots = player.research.infrastructureTech + (player.curtown.townID == player.capitaltid ? 4 : 0);
 	$(".buildingInfo").each(function(i,v) {
 		if(i<=lots) {
 			$(v).find(".buildingName").text("Empty");
@@ -454,11 +454,14 @@ function CC_UI(bldgInfo) {
 					$("#CC_isValid").text(error);
 				}
 			};
+			var bombingTargets = [];
+			$("#CC_bombingTarget option:selected").each(function() {
+				bombingTargets.push($(this).val());
+			});
 			
 			sendAttack.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command + ".attack(" 
 							+ player.curtown.townID + "," + BUI.CC.x + "," + BUI.CC.y + ",[" + AUarray.join(",")
-							+ "]," + BUI.CC.attackType + "," + $("#CC_bombingTarget option:selected").index("#CC_bombingTarget option")
-							+ ");");
+							+ "]," + BUI.CC.attackType + ",[" + bombingTargets.join() + "],);");
 		}
 	});
 	
@@ -559,19 +562,19 @@ function CC_UI(bldgInfo) {
 		var HTML = '<h3>Incoming Missions</h3>';
 		$.each(player.curtown.incomingRaids, function(i, v) {
 			if(v.raidOver) {
-				HTML += "<div class='incoming friendly mission'>\
+				HTML += "<div class='incoming friendly mission darkFrame'>\
 							<div class='raidInfo'>\
 								<span class='raidTitle'>Return from " + v.defendingTown;
 			} else {
 				var type = (v.raidType.match(/^off/i))? "offensive support":v.raidType;
 				if(v.name!="noname") type+= ' "'+v.name+'"';
-				HTML += "<div class='incoming"+(type.match(/support/)?"friendly":"hostile")+" mission' style='height:"+(Math.ceil(v.auNames.length/6)*70)+">\
+				HTML += "<div class='incoming"+(type.match(/support/)?"friendly":"hostile")+" mission darkFrame'>\
 							<div class='raidInfo'>\
 								<span class='raidTitle'>" + type + " from " + v.attackingTown;
 			}
 			HTML += "</span> - <span class='raidETA'>" + v.eta + "</span>\
 							</div>\
-							<div id='incomingTroops' style='height:"+(Math.ceil(v.auNames.length/6)*70)+"px'>";
+							<div id='incomingTroops' style='height:"+(Math.ceil(v.auNames.length/6)*120)+"px'>";
 						
 			$.each(v.auNames, function(j,w) {
 				HTML+="<div class='troop"+(j%6==0?" firstcol":"")+"'><div class='auName'>"+w+"</div><img class='auPic' src='SPFrames/Units/"+w
@@ -611,15 +614,14 @@ function CC_UI(bldgInfo) {
 			var type = (v.raidType.match(/^off/i))? "offensive support":v.raidType;
 			if(v.name!="noname") type+= ' "'+v.name+'"';
 			var to = (type.match(/(support|debris)/i))? " to ":((type.match(/inva/i))? " of ":" on ");
-			HTML += "<div class='outgoing mission'>\
-						<div class='recallRaid'>Recall</div>\
+			HTML += "<div class='outgoing mission darkFrame'>\
+						<div class='recallRaid' rID='" + v.id + "'>Recall</div>\
 						<div class='raidInfo'>\
 							<span class='raidTitle'>" + type + to + v.defendingTown + "</span> - <span class='raidETA'>" + v.eta + "</span>\
-							<span class='raidID'>" + v.rid + "</span>\
 						</div>\
-						<div class='outgoingTroops' style='height:"+((v.auNames.length/6)*70)+"px'>";
+						<div class='outgoingTroops' style='height:"+(Math.ceil(v.auNames.length/6)*120)+"px'>";
 			$.each(v.auNames, function(j,w) {
-				HTML+="<div class='troop"+(j%6==0?" firstcol":"")+"'><div class='auName'>"+w+"</div><img class='auPic' src='SPFrames/Units/"+w.name
+				HTML+="<div class='troop"+(j%6==0?" firstcol":"")+"'><div class='auName'>"+w+"</div><img class='auPic' src='SPFrames/Units/"+w
 						+".png' alt='"+w+"'/><div class='auAmnt'>"+v.auAmts[j]+"</div></div>";
 			});
 			HTML +=		"</div></div><div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div>";
@@ -632,7 +634,7 @@ function CC_UI(bldgInfo) {
 		if(player.curtown.supportAbroad) {
 			if(player.curtown.supportAbroad.length > 0) {
 				$.each(player.curtown.supportAbroad, function(i, v) {
-					HTML += "	<div class='aSupportRow'><span class='supportPlayer'>Support at "
+					HTML += "	<div class='aSupportRow darkFrame'><span class='supportPlayer'>Support at "
 						+ v.townName + "</span><a href='javascript:;' class='callHome'>Recall</a><div class='supportAUbox'>";
 					$.each(v.supportAU, function(j, w) {
 						HTML += "<div class='supportAU troop'><div class='supportAUname'>" + w.name 
@@ -649,7 +651,7 @@ function CC_UI(bldgInfo) {
 	});
 	
 	$(".recallRaid").unbind('click').click(function() {
-		var rid = $(this).siblings(".raidInfo").find(".raidID").text();
+		var rid = $(this).attr("rID");
 		recall = new make_AJAX();
 		recall.callback = function(response) {
 			if(response.match(/true/)) {
@@ -661,7 +663,7 @@ function CC_UI(bldgInfo) {
 				display_output(true,error,true);
 			}
 		};
-		recall.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command + ".recall(" + rid + ");");
+		recall.get("reqtype=command&command=bf.recall(" + rid + ");");
 	});
 	
 	$(".supportAUnumber").die('click').live('click',function() {
@@ -700,8 +702,7 @@ function CC_UI(bldgInfo) {
 				setTimeout(function() {$("body").css("cursor","auto");currUI();},1000);
 			}
 		};
-		recall.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command 
-						+ ".recall([" + AUtoRecall.join(",") + "]," 
+		recall.get("reqtype=command&command=bf.recall([" + AUtoRecall.join(",") + "]," 
 						+ player.curtown.supportAbroad[index].townID + "," 
 						+ player.curtown.supportAbroad[index].pid + ","
 						+ player.curtown.townID + ");");
@@ -883,11 +884,14 @@ function canSendAttack() {
 		AUarray.push((($(v).val() == "")?0:$(v).val()));
 	});
 
-	canAttack.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command 
-					+ ".canSendAttack(" + player.curtown.townID + "," + BUI.CC.x 
+	var bombingTargets = [];
+	$("#CC_bombingTarget option:selected").each(function() {
+		bombingTargets.push($(this).val());
+	});
+	
+	canAttack.get("reqtype=command&command=bf.canSendAttack(" + player.curtown.townID + "," + BUI.CC.x 
 					+ "," + BUI.CC.y + ",[" + AUarray.join(",") + "]," + BUI.CC.attackType 
-					+ "," + $("#CC_bombingTarget option:selected").index("#CC_bombingTarget option")
-					+ ");");
+					+ "," + bombingTargets + ",);");
 }
 
 function get_attack_ETA() {
@@ -908,5 +912,5 @@ function get_attack_ETA() {
 	$(".AUinput").each(function(i, v) {
 		AUarray.push((($(v).val() == "")?0:$(v).val()));
 	});
-	getETA.get("/AIWars/GodGenerator?reqtype=command&command=bf.getAttackETA("+player.curtown.townID+","+BUI.CC.x+","+BUI.CC.y+",["+AUarray.join(",")+"]);");
+	getETA.get("reqtype=command&command=bf.getAttackETA("+player.curtown.townID+","+BUI.CC.x+","+BUI.CC.y+",["+AUarray.join(",")+"]);");
 }

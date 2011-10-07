@@ -133,8 +133,8 @@ function build_SR_menu() {
 								(that.is("#SR_sGlassTab") && v.lvlArray.length != 0 && v.genocide && !v.archived) ||
 								(that.is("#SR_archiveTab") && v.archived)) {
 									SR.dispReports.push(v);
-									HTML += "<li><a href='javascript:;' class='"
-									+ ((v.read)?"":"unread ") + "report'>" + v.Subject + "</a><input type='checkbox' class='reportSelect' />\
+									HTML += "<li class='" + ((v.read)?"read":"unread") + "'><a href='javascript:;' class='report'>" 
+											+ v.Subject + "</a><input type='checkbox' class='reportSelect' />\
 									<span class='timeStamp'>[ ";
 									//fix date strings so IE doesn't freak out
 									var createdAt = v.createdAt.replace(/-/g,"/").split(".")[0];

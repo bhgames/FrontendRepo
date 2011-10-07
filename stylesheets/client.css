@@ -74,6 +74,7 @@ ul, li {
 	color: #FFF;
 	font: bold 11px 'lucida grande', tahoma, verdana, arial, sans-serif;
 	text-align: right;
+	text-shadow: none;
 	cursor: pointer;
 	}
 /************************************************************************************************************************************************
@@ -103,7 +104,7 @@ ul, li {
 	left: 11px;
 	display: none;
 	height: 527px;
-	width: 744px;
+	width: 742px;
 	color: #000;
 	}
 /*Tutorial Popup*/	
@@ -134,7 +135,7 @@ ul, li {
 .dirup, .dirleft, .dirdown, .dirright {
 	height: 50px;
 	width: 50px;
-	background: url("../AIFrames/Content Frame Elements/arrowSheet.png") no-repeat 0 0;
+	background: url(../SPFrames/arrowSheet.png) no-repeat 0 0;
 	}
 .dirleft {
 	background-position: -150px 0;
@@ -145,17 +146,25 @@ ul, li {
 .dirright {
 	background-position: -50px 0;
 	}
-.metalFrame {
-	padding: 5px;
-	background: #222 url(../SPFrames/rusted-metal.jpg);
-	border: 3px solid #A8A495;
-	-webkit-border-radius: 20px;
-	border-radius: 20px;
-	-webkit-box-shadow: inset 0px 2px 10px rgba(0,0,0,0.8);
-	box-shadow: inset 0px 2px 10px rgba(0,0,0,0.8);
-	color: #A9A098;
-	font: 1em "Trajan Pro", Trajan, serif;
-	text-shadow: 0 1px 1px rgba(0,0,0,0.8), 0 -1px 0 rgba(255,255,255,0.3);
+.longTextInput {
+	color: #A57862;
+	height: 29px;
+	width: 195px;
+	padding-left: 5px;
+	border: none;
+	outline: none;
+	background: url(../../IndexFrames/text-window.png) no-repeat left top;
+	font: 9pt "Lucida Sans Unicode", LucidaSans, "Lucida Grande", sans-serif;
+	}
+.textInput {
+	color: #A57862;
+	height: 29px;
+	width: 101px;
+	padding-left: 5px;
+	border: none;
+	outline: none;
+	background: url(../SPFrames/text-window.png) no-repeat left top;
+	font: 9pt "Lucida Sans Unicode", LucidaSans, "Lucida Grande", sans-serif;
 	}
 .textTab {
 	height: 36px;
@@ -194,13 +203,32 @@ ul, li {
 .bigButton:hover {
 	background-position: -164px 0;
 	}
-.bigButton:active, .bigButton.disabled {
+.bigButton:active, .bigButton.disabled, .bigButton.noTrade, .bigButton.noTraders {
 	background-position: -327px 0;
 	height: 35px;
 	padding-top: 12px;
 	}
-.bigButton.disabled {
+.bigButton.disabled, .bigButton.noTrade, .bigButton.noTraders {
 	cursor: default;
+	}
+.smallButton {
+	height: 38px;
+	width: 99px;
+	padding-top: 10px;
+	background: url(../SPFrames/medium-button-template.png) no-repeat 0 0;
+	color: #A9A098;
+	font: bold 1em "Trajan Pro", Trajan, serif;
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.8), 0 -1px 0 rgba(255, 255, 255, 0.3);
+	text-align: center;
+	cursor: pointer;
+	}
+.smallButton:hover {
+	background-position: -98px 0;
+	}
+.smallButton:active {
+	height: 36px;
+	padding-top: 12px;
+	background-position: -196px 0;
 	}
 /************************************************************************************************************************************************
  * Login & Register Popup CSS
@@ -477,17 +505,16 @@ a#fdbk_tab:hover, .sideButton:hover {
 	display:none;
 	max-width: 500px;
 	margin: -75px -200px;
+	-webkit-box-shadow: inset 0px 2px 10px rgba(0,0,0,0.8), 0px 2px 10px rgba(0,0,0,0.8);
+	box-shadow: inset 0px 2px 10px rgba(0,0,0,0.8), 0px 2px 10px rgba(0,0,0,0.8);
 	z-index: 1000006;
 	}
-#AIW_alert .popFrameBody {
-	padding-bottom: 20px;
-	}
 #AIW_alertTitlebar {
-	font-size: 1.25em;
 	margin-left: 5px;
-	border-bottom: 1px groove #FFFFFF;
+	border-bottom: 2px groove #A8A495;
 	cursor: move;
 	font-size: 24px;
+	font-weight: bold;
 	}
 #AIW_alertMess {
 	min-height: 75px;
@@ -495,23 +522,9 @@ a#fdbk_tab:hover, .sideButton:hover {
 	margin: 0 0 5px;
 	padding: 5px;
 	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-	} 
+	}
 .alertButton {
 	float: right;
-	height: 25px; 
-	width: 59px;
-	padding-top: 5px;
-	border: 1px solid #FFFFFF;
-	margin-right: 15px;
-	text-align: center;
-	cursor: pointer;
-	font-size: 18px;
-	}
-.alertButton:hover {
-	border-style: outset;
-	}
-.alertButton:active {
-	border-style: inset;
 	}
 /************************************************************************************************************************************************
  * Text Frame CSS
@@ -523,11 +536,6 @@ a#fdbk_tab:hover, .sideButton:hover {
 	padding: 5px 5px 1px;
 	border: 1px solid #FFF;
 	}
-.textFrameB{
-	height: 16px;
-	border-bottom: 1px solid #FFF;
-	margin: 0px 16px;
-	}
 /*
  * Black Frame
  */
@@ -535,112 +543,25 @@ a#fdbk_tab:hover, .sideButton:hover {
 	padding: 5px 5px 1px;
 	border: 1px solid #000;
 	}
-.blackFrameB{
-	height: 16px;
-	border-bottom: 1px solid #000;
-	margin: 0px 16px;
+	
+.metalFrame {
+	padding: 5px;
+	background: #222 url(../SPFrames/rusted-metal.jpg);
+	border: 3px solid #A8A495;
+	-webkit-border-radius: 20px;
+	border-radius: 20px;
+	-webkit-box-shadow: inset 0px 2px 10px rgba(0,0,0,0.8),  0px 2px 10px rgba(0,0,0,0.8);
+	box-shadow: inset 0px 2px 10px rgba(0,0,0,0.8),  0px 2px 10px rgba(0,0,0,0.8);
+	color: #A9A098;
+	font: 1em "Trajan Pro", Trajan, serif;
+	text-shadow: 0 1px 1px rgba(0,0,0,0.8), 0 -1px 0 rgba(255,255,255,0.3);
 	}
-/************************************************************************************************************************************************
- * Light Frame CSS
-************************************************************************************************************************************************/
-.lightFrameBody {
-	padding: 5px 5px 0;
-	background: url("../AIFrames/Content Frame Elements/Light-body.png") repeat center center;
-	color: #000;
-	}
-.rgba .lightFrameBody {
-	background: rgba(255, 255, 255, 0.8);
-	}
-.lightFrameB {
-	height: 20px;
-	background: url("../AIFrames/Content Frame Elements/Light-BottomTile.png") repeat-x center bottom;
-	}
-.lightFrameBL .lightFrameB {
-	margin-left: 13px;
-	}
-.lightFrameBR .lightFrameB {
-	margin-right: 13px;
-	}
-.lightFrameBL {
-	background: url("../AIFrames/Content Frame Elements/Light-Left-Lowcorner.png") no-repeat left bottom;
-	}
-.lightFrameBR {
-	background: url("../AIFrames/Content Frame Elements/Light-Right-Lowcorner.png") no-repeat right bottom;
-	}
-.lightButton {
-	cursor: pointer;
-	}
-.lightButton:active  .lightFrameBody, .lightButton.open  .lightFrameBody {
-	background: url("../../light/AIFrames/Content Frame Elements/Dark-body.png");
-	color: #FFF;
-	}
-.lightButton:active  .lightFrameB, .lightButton.open  .lightFrameB  {
-	background-image: url("../../light/AIFrames/Content Frame Elements/Dark-BottomTile.png");
-	}
-.lightButton:active  .lightFrameBL, .lightButton.open  .lightFrameBL  {
-	background-image: url("../../light/AIFrames/Content Frame Elements/Dark-Left-Lowcorner.png");
-	}
-.lightButton:active  .lightFrameBR, .lightButton.open  .lightFrameBR  {
-	background-image: url("../../light/AIFrames/Content Frame Elements/Dark-Right-Lowcorner.png");
-	}
-/************************************************************************************************************************************************
- * Dark Frame CSS
-************************************************************************************************************************************************/
-.darkFrameBody {
-	padding: 5px 5px 0;
-	background: url("../AIFrames/Content Frame Elements/Dark-body.png") repeat center center;
-	color: #FFF;
-	}
-.rgba .darkFrameBody {
-	background: rgba(0, 0, 0, 0.8);
-	}
-.darkFrameB {
-	height: 20px;
-	background: url("../AIFrames/Content Frame Elements/Dark-BottomTile.png") repeat-x center bottom;
-	margin: 0px 13px;
-	}
-.darkFrameBL .darkFrameB {
-	margin-left: 13px;
-	}
-.darkFrameBR .darkFrameB {
-	margin-right: 13px;
-	}
-.darkFrameBL {
-	background: url("../AIFrames/Content Frame Elements/Dark-Left-Lowcorner.png") no-repeat left bottom;
-	}
-.darkFrameBR {
-	background: url("../AIFrames/Content Frame Elements/Dark-Right-Lowcorner.png") no-repeat right bottom;
-	}
-/************************************************************************************************************************************************
- * Popup Frame CSS
-************************************************************************************************************************************************/
-.popFrameBody {
-	padding: 22px 5px 0px;
-	background: url("../AIFrames/Content Frame Elements/Dark-body.png") repeat center center;
-	margin: 0px 10px;
-	}
-.rgba .popFrameBody {
-	background: rgba(0, 0, 0, 0.8);
-	}
-.popFrameTop {
-	background: url("../AIFrames/Content Frame Elements/toptile.png") repeat-x left top;
-	}
-.popFrameLeft {
-	background: url("../AIFrames/Content Frame Elements/sidetile.png") repeat-y left top;
-	}
-.popFrameRight {
-	background: url("../AIFrames/Content Frame Elements/sidetile.png") repeat-y right top;
-	}
-.popFrameB {
-	height: 35px;
-	background: url("../AIFrames/Content Frame Elements/bottomtile.png") repeat-x center bottom;
-	margin: 0px 28px;
-	}
-.popFrameBL {
-	background: url("../AIFrames/Content Frame Elements/bottomleftcorner.png") no-repeat left bottom;
-	}
-.popFrameBR {
-	background: url("../AIFrames/Content Frame Elements/bottomrightcorner.png") no-repeat right bottom;
+
+.darkFrame {
+	padding: 10px;
+	background: rgba(0, 0, 0, 0.3);
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
 	}
 /************************************************************************************************************************************************
  * jScrollPane CSS

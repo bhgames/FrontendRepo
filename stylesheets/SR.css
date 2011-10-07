@@ -25,9 +25,6 @@
 	float: right;
 	color: #AAAAAA !important;
 	}
-.unread {
-	color: #FFFFFF !important;
-	}
 #SR_window #SR_reportList {
 	padding-left: 20px;
 	margin-bottom: 25px;
@@ -163,10 +160,10 @@
 	-moz-border-radius: 10px;
 	border-radius: 10px;
 	}
-#SR_reportList li:nth-child(even) {
+#SR_reportList li.unread {
 	background: rgba(0, 0, 0, 0.5);
 	}
-#SR_reportList li:nth-child(odd) {
+#SR_reportList li.read {
 	background: rgba(0, 0, 0, 0.3);
 	}
 #SR_reportBody {

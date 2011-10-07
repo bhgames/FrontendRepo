@@ -22,7 +22,8 @@
 #AF_AUbar  img {
 	position: absolute;
 	height: 50px;
-	width: 50px;	
+	width: 50px;
+	z-index: -1;
 	}
 .activeAU {
 	-webkit-box-shadow: 0 0 10px 3px rgba(255,255,255,0.7);

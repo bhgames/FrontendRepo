@@ -17,14 +17,15 @@
 	width: 162px;
 	cursor: pointer;
 	background-image: url(../SPFrames/bottom-nav.png);
+	vertical-align: top;
 	}
-	/*Note: Add additional top padding to IO on active/open.  See #citybox:active in topNav*/
 li#IO {
-	height: 52px;
+	height: 36px;
 	width: 44px;
+	padding-top: 16px;
 	background: url(../SPFrames/IO-button.png) no-repeat 0 0;
 	color: #a9a098;
-	font: 14px "Trajan Pro",Trajan,serif;
+	font: bold 10px "Trajan Pro",Trajan,serif;
 	text-align: center;
 	text-shadow: 0 1px rgba(0,0,0,0.8);
 	}
@@ -32,6 +33,8 @@ li#IO:hover {
 	background-position: -44px 0;
 	}
 li#IO:active, li#IO.open {
+	height: 34px;
+	padding-top: 18px;
 	background-position: -88px 0;
 	}
 	

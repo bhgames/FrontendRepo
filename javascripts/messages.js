@@ -16,7 +16,7 @@ function get_messages(async,mess,UG) {
 									response = response.split(";");
 									get_messages(false,response[0],response[1]);
 								};
-			getMess.get("reqtype=command&command="+player.command+".getMessages();" + player.command + ".getUserGroups();");
+			getMess.get("reqtype=command&command=bf.getMessages();bf.getUserGroups();");
 		} else {
 			if(messages.curr) {
 				var temp = messages.curr; 
@@ -330,6 +330,7 @@ function build_message_UI() {
 				+ messages.curr.subject.replace(/<u44>/ig,",") + "' /></div><div class='messBodyBox'><div class='messBodyGrad'><div class='messBodyTop'><div class='messBodyBottom'><div class='messBody quickReply'><textarea id='mess_bodyText'></textarea></div></div></div></div></div></div><a href='javascript:;' id='mess_sendMess' class='quickReply'></a><a href='javascript:;' id='mess_deleteConvo' title='Delete Conversation'></a></div>";
 				
 		$("#mess_window").fadeOut('fast',function() {
+			$("#mess_inbox").removeClass("open");
 			messages.api.getContentPane().html(HTML);
 			$(this).fadeIn('fast');
 			messages.api.reinitialise();
@@ -371,6 +372,7 @@ function build_message_UI() {
 		HTML += "</div></div></div></div></div><div id='mess_addMessNav'><a href='javascript:;' id='mess_reportMess'></a><a href='javascript:;' id='mess_deleteMess'></a>  <a href='javascript:;' id='mess_replyMess'></a></div>";
 					
 		$("#mess_window").fadeOut('fast', function() {
+			$("#mess_inbox").removeClass("open");
 			$("#viewerback").html("");
 			messages.api.getContentPane().html(HTML);
 			$(this).fadeIn('fast');
@@ -382,7 +384,7 @@ function build_message_UI() {
 					display_output(false,"Message Marked Read!");
 					check_for_unread();
 				};
-				markRead.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command + ".markReadMessage(" + messages.curr.id + ");");
+				markRead.get("reqtype=command&command=bf.markReadMessage(" + messages.curr.id + ");");
 				messages.curr.read = true;
 			}
 		});

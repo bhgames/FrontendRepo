@@ -52,8 +52,8 @@
 #Mine_foodCon {
 	position: absolute;
 	top: 120px;
-	left: 335px;
-	border: 1px solid white;
+	left: 355px;
+	border: 1px solid #000;
 	padding: 5px;
 	color: #282415;
 	font: bold 1em "Trajan Pro", Trajan, serif;

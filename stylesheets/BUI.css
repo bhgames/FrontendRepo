@@ -124,11 +124,12 @@
 	width: 740px;
 	}
 #BUI_bFail {
-	top: 345px;
-	left: 100px;
+	top: 330px;
+	left: 95px;
 	max-height: 40px;
 	max-width: 120px;
 	background-color: rgba(0, 0, 0, 0.5);
+	padding: 0 5px;
 	-webkit-border-radius: 10px;
 	border-radius: 10px;
 	color: #F00;
@@ -153,18 +154,21 @@
 	top: 15px;
 	left: 15px;
 	}
-.pplHelp, .info {
+.helpButton, .pplHelp, .info {
 	display: inline-block;
 	height: 37px;
 	width: 35px;
 	cursor: help;
 	background: url(../SPFrames/Buildings/UI/info-button.png) no-repeat 0 0;
-	font: 10pt "Lucida Sans Unicode", LucidaSans, Lucida, sans-serif;
+	/*font: 10pt "Lucida Sans Unicode", LucidaSans, Lucida, sans-serif;*/
 	}
-.pplHelp:hover, .info:hover {
+.helpButton {
+	background-image: url(../SPFrames/Buildings/UI/help-button.png);
+	}
+.helpButton, .pplHelp:hover, .info:hover {
 	background-position: -35px 0;
 	}
-.pplHelp:active, .info:active {
+.helpButton, .pplHelp:active, .info:active {
 	background-position: -70px 0;
 	}
 #BUI_numPpl {

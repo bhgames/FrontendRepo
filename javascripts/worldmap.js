@@ -33,7 +33,7 @@ var map = {
 						</div>\
 						<div id='mapbox'></div>",
 			box : {},
-			territoryHTML : $(document.createElement('div')).attr("id","map_territories"),
+			territoryCanvas : $("<canvas></canvas>",{"id":"map_territories"})[0],
 			tilesWide : 0,
 			rightX : 0,
 			bottomY : 0,
@@ -172,8 +172,8 @@ function build_map() {
 		else return false;
 	});
 	rebuild(tile);
-	$("#window").fadeIn("fast");
 	$("#mapTileDisplay").html(tileHTML+"</div>");
+	$("#window").fadeIn("fast");
 	
 	city_hover($(".playerTown"),$("#towninfo"));
 	
@@ -257,10 +257,13 @@ function build_map() {
 	
 function city_hover(city, box) {
 	var display = setTimeout( function() {
-		var town = map.towns[city.attr("index")];
+		var town = map.towns[city.attr("index")],
+			townName = town.townName;
+		
+		townName = (townName.match(/outcropping/i) ? townName.split("-")[0] : townName);
 		
 		box.html(function() {
-			var HTML = "<span id='WM_owner'>" + town.owner + "</span><span id='WM_townName'>" +(town.capital?"&#171;" + town.townName + "&#187;":town.townName)
+			var HTML = "<span id='WM_owner'>" + town.owner + "</span><span id='WM_townName'>" +(town.capital?"&#171;" + townName + "&#187;": townName)
 							+ "</span><span id='WM_AIActive'>" +(town.aiActive?"Active":"Inactive")
 							+ "</span><span id='WM_coords'>" + town.x + ", " + town.y
 							+ "</span><span id='WM_SSL'>" + town.SSL
@@ -488,18 +491,19 @@ function rebuild(tile) {
 			});
 			
 			var bottom = Math.round((x.y-(map.y-4.25))*HEIGHT) /*+ (x.zeppelin?141:156)*/;
-			var right = (((map.x+4.8)-x.x)*WIDTH) /*+ (x.zeppelin?223:257)*/;
+			var right = (((map.x+4.85)-x.x)*WIDTH) /*+ (x.zeppelin?223:257)*/;
 			map.HTML +="' index='"+i+"' style='bottom:" + bottom + "px; right:" + right + "px;'><div class='inc'></div></div>";
 			
 		});
 		
 		vb.css({"background-image":"url(SPFrames/WM/"+mapTile.mapName+"-"+Math.floor((Math.abs(mapTile.centery==0 ? mapTile.centerx : mapTile.centerx/mapTile.centery)%3)+1)+(mapTile.irradiated?"-irradiated":"")
-				+".jpg)","background-color":""}).append(map.territoryHTML.clone()).fadeIn();
-			
+				+".jpg)","background-color":""}).append(map.territoryCanvas).fadeIn();
+		
 		map.box.id.html(map.HTML).fadeIn();
 										
-		$("#map_territories").css({"bottom":Math.round((map.bottomY-(map.y-4.4))*HEIGHT)+"px","right":(((map.x+5.35)-map.rightX)*WIDTH)+"px"});
+		$("#map_territories").css({"bottom":Math.round((map.bottomY-(map.y-4.4))*HEIGHT)+"px","right":(((map.x+5.41)-map.rightX)*WIDTH)+"px"});
 		$(".airship").each(float_airship);
+		$("body").trigger("menuFire.WM",mapTile);
 	});
 }
 
@@ -510,48 +514,98 @@ function float_airship(i,airship) {
 }
 
 function build_territories() {
+	var canvas = map.territoryCanvas, ctx = canvas.getContext("2d");
+		WIDTH = 65, HEIGHT = 55; //width and height of a town
 	
+	canvas.width = Math.abs(map.rightX*2)*WIDTH;
+	canvas.height = Math.abs(map.bottomY*2)*HEIGHT;
+	
+	ctx.lineJoin = 'round';
+	ctx.lineWidth = 2;
 	if(Modernizr.webworkers) {
 		if(!map.territoryBldr) {
-			map.territoryBldr = new Worker('/client/javascripts/territoryWorker.js');
-			
+			map.territoryBldr = new Worker('/client/javascripts/territoryWorker.js?_=25'); //increment number if the worker is updated to get around caching
+																							//don't forget to update the fallback script below too!!!
 			map.territoryBldr.onmessage = 	function(e) {
 												var mess = e.data;
-												if(!mess.error) {
-													map.territoryHTML.html(mess.data);
-												} else {
-													log(mess.data);
+												switch(mess.type) {
+													case "status":
+														//log(mess.data);
+														break;
+													case "setStyle":
+														ctx.strokeStyle = mess.data[0];
+														ctx.fillStyle = mess.data[1];
+														break;
+													case "beginPath":
+														ctx.beginPath();
+														ctx.moveTo(mess.data[0],mess.data[1]);
+														//log("moving start point to "+mess.data[0]+","+mess.data[1]);
+														break;
+													case "lineTo":
+														ctx.lineTo(mess.data[0],mess.data[1]);
+														break;
+													case "endPath":
+														ctx.stroke();
+														ctx.fill();
+														break;
 												}
 											};
+			map.territoryBldr.onerror =	function(e) {
+											log(e,"web worker error: territoryBuilder");
+										}
 		}
 		
 		map.territoryBldr.postMessage({"territories":map.territories, "rightX":map.rightX, "bottomY":map.bottomY});
 		
 	} else {
-		var i = 0,
-			WIDTH = 65, HEIGHT = 55; //width and height of a town
+		var i = 0;
+		
 		map.territoryBldr = setInterval(function() {
 			if(i == map.territories.length) {
 				clearInterval(map.territoryBldr);
 				return false;
 			}
 			
-			var territory = map.territories[i++], bottom = 0, right = 0;
-			var HTML = "<div class='territoryBox' index='"+i+"' style='bottom:"+((territory.start[1]-map.bottomY)*HEIGHT)+"px; right:"
-						+((map.rightX-territory.start[0])*WIDTH)+"px;'>";
-			
-			$.each(territory.sides, function(j,v) {
-				HTML += "<div class='territory ";
-				if(j%2) { //y shift
-					bottom += (HEIGHT*v);
-					HTML += "vert' style='height: "+(HEIGHT*Math.abs(v))+"px; width: "+WIDTH+"px; bottom: "+(v>0?bottom-(HEIGHT*v):bottom)+ "px; right: "+right+"px;";
-				} else { //x shift
-					right -= (WIDTH*v);
-					HTML += "horz' style='height: "+HEIGHT+"px; width: "+(WIDTH*Math.abs(v))+"px; bottom: "+bottom+"px; right: "+(v<0?right+(WIDTH*v):right)+"px;";
+			var terr = map.territories[i++],
+				curY = (-map.bottomY-terr.start[1])*HEIGHT, curX = (terr.start[0]+map.rightX)*WIDTH,
+				borderColor = "", lastColor = "f", colorParts = terr.owner.match(/([0-9]|[a-f]){1}/ig) || "";
+				
+			$.each(colorParts, function(j,v) {
+				borderColor += lastColor = v;
+				
+				if(borderColor.length>6) {
+					return false;
 				}
-				HTML += "'></div>";
 			});
-			map.territoryHTML.append(HTML + "</div>");
+			while(borderColor.length<3||(borderColor.length>3&&borderColor.length<6)) {
+				borderColor += lastColor;
+			}
+			//convert Hex values to RGB values
+			if(borderColor.length == 3) {
+				borderColor = borderColor.split("");
+				borderColor[0] += borderColor[0];
+				borderColor[1] += borderColor[1];
+				borderColor[2] += borderColor[2];
+			} else {
+				borderColor = borderColor.match(/.{2}/ig);
+			}
+			var RGB = [parseInt(borderColor[0],16),parseInt(borderColor[1],16),parseInt(borderColor[2],16)];
+			
+			ctx.strokeStyle = "#"+borderColor.join("");
+			ctx.fillStyle = "rgba("+RGB[0]+","+RGB[1]+","+RGB[2]+",0.2)";
+			
+			ctx.beginPath();
+			ctx.moveTo(curX,curY);
+			$.each(terr.sides, function(j,side) {
+				if(j%2) { //y shift
+					curY += side*-HEIGHT;
+				} else { //x shift
+					curX += side*WIDTH;
+				}
+				ctx.lineTo(curX,curY);
+			});
+			ctx.stroke();
+			ctx.fill();
 		}, 100);
 	}
 }

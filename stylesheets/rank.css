@@ -7,6 +7,24 @@
 	font: bold 16px "Trajan Pro", Trajan, serif;
 	text-shadow: 0 1px 1px rgba(240, 225, 163, 0.7);
 	}
+#Rank_searchBox {
+	position: absolute;
+	bottom: 10px;
+	left: 10px;
+	}
+#Rank_searchInput {
+	background: url(../SPFrames/text-window.png) no-repeat 0 0;
+	width: 101px;
+	height: 24px;
+	padding-top: 5px;
+	border: none;
+	outline: none;
+	}
+#Rank_searchSubmit {
+	border: none;
+	height: 47px;
+	padding-bottom: 15px;
+	}
 #Rank_tabBar div {
 	display: inline-block;
 	height: 25px;
@@ -22,7 +40,7 @@
 	background: url(../AIFrames/buttons/battlehardrank.png) no-repeat center center;
 	}
 #Rank_ranks ol {
-	height: 450px;
+	height: 400px;
 	width: 700px;
 	padding-left: 10px;
 	overflow: auto;

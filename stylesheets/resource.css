@@ -23,7 +23,7 @@
 	background-image: url(../SPFrames/resource-counters.png);
 	background-repeat: no-repeat;
 	color: #433420;
-	font: 14px "Trajan Pro","Trajan","Lucida Console",sans-serif;
+	font: bold 14px "Trajan Pro","Trajan","Lucida Console",sans-serif;
 	letter-spacing: 4px;
 	text-shadow: 0 1px 0 rgba(255,255,255,0.3);
 	text-align: right;
@@ -71,7 +71,7 @@
 #dropdown_menu li {
 	position: relative;
 	right: 50px;
-	margin-left: 18px;
+	margin-left: 16px;
 	list-style: none;
 	float: right;
 	cursor: pointer;

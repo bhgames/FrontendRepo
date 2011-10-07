@@ -12,29 +12,30 @@
 #townback, #townview {
 	position: absolute;
 	top: 0;
-	left: 0;
+	right: 0;
 	}
 .bldg {
 	position: absolute;
 	}
 .bldg img {
-	position: absolute;
-	right: 0px;
-	bottom: 0px;
 	display: block;
 	min-height: 27px;
-	min-width: 45px;
+	min-width: 80px;
 	cursor: pointer;
 	}
 img.lvlImage  {
 	bottom: -4px;
 	right: -5px;
+	display: none;
 	z-index: -1;
 	}
 .emptylot, .buildlot {
 	background: no-repeat left bottom;
 	}
 .emptylot img {
+	position: absolute;
+	bottom: 10px;
+	right: 0px;
 	background: url(../SPFrames/Buildings/empty-lot.png) no-repeat left bottom;
 	} 
 .locked, .locked img  {
@@ -57,133 +58,137 @@ img.lvlImage  {
 #pos0, #pos1, #pos2, #pos3 {
 	z-index: 4;
 	}
-#pos0 img:hover, #pos1 img:hover, #pos2 img:hover, #pos3 img:hover {
-	}
 #pos0 {
-	top: 174px;
-	left: 95px;
-	background: transparent !important;
+	bottom: 337px;
+	right: 637px;
 	z-index: 1;
 	}
 #pos1 {
-	top: 504px;
-	left: 180px;
-	background: transparent !important;
+	bottom: 12px;
+	right: 567px;
 	z-index: 1;
 	}
 #pos2 {
-	top: 104px;
-	left: 725px;
-	background: transparent !important;
+	bottom: 427px;
+	right: 17px;
 	z-index: 1;
 	}
 #pos3 {
-	top: 514px;
-	left: 595px;
-	background: transparent !important;
+	bottom: 7px;
+	right: 157px;
 	z-index: 1;
 	}
 .zeppelin #pos0,.zeppelin #pos1,.zeppelin #pos2,.zeppelin #pos3 {
 	display: none;
 	}
 #pos4{
-	top: 347px;
-	left: 480px;
+	bottom: 180px;
+	right: 262px;
 	z-index: 2;
 	}
+#pos4_building {
+	background: none;
+	} 
 .zeppelin #pos4 {
-	top: 195px;
-	left: 321px;
+	bottom: 322px;
+	right: 421px;
 	visibility: hidden;
 	}
 #pos5{
-	top: 379px;
-	left: 379px;
+	bottom: 144px;
+	right: 372px;
 	z-index: 3;
 	}
 .zeppelin #pos5 {
-	top: 203px;
-	left: 326px;
+	bottom: 314px;
+	right: 416px;
 	}
 #pos6{
-	top: 299px;
-	left: 520px;
+	bottom: 217px;
+	right: 212px;
 	z-index: 3;
 	}
 .zeppelin #pos6 {
-	top: 299px;
-	left: 377px;
+	bottom: 228px;
+	right: 365px;
 	}
 #pos7{
-	top: 136px;
-	left: 495px;
+	bottom: 384px;
+	right: 242px;
 	z-index: 2;
 	}
 .zeppelin #pos7 {
-	top: 237px;
-	left: 377px;
+	bottom: 290px;
+	right: 365px;
 	}
 #pos8{
-	top: 147px;
-	left: 625px;
+	bottom: 378px;
+	right: 117px;
 	z-index: 1;
 	}
 .zeppelin #pos8 {
-	top: 269px;
-	left: 425px;
+	bottom: 258px;
+	right: 317px;
 	}
 #pos9{
-	top: 204px;
-	left: 175px;
+	bottom: 325px;
+	right: 564px;
 	z-index: 1;
 	}
+.emptylot #pos9_building {
+	right: 1px;
+	bottom: 6px;
+	}
 .zeppelin #pos9 {
-	top: 324px;
-	left: 468px;
+	bottom: 193px;
+	right: 274px;
 	}
 #pos10{
-	top: 114px;
-	left: 405px;
+	bottom: 416px;
+	right: 347px;
 	z-index: 1;
 	}
 #pos11{
-	top: 259px;
-	left: 330px;
+	bottom: 272px;
+	right: 407px;
 	z-index: 1;
 	}
 #pos12{
-	top: 189px;
-	left: 690px;
+	bottom: 339px;
+	right: 50px;
 	z-index: 3;
 	}
+.emptylot #pos12_building {
+	bottom: 5px;
+	}
 #pos13{
-	top: 437px;
-	left: 495px;
+	bottom: 89px;
+	right: 248px;
 	z-index: 2;
 	}
 #pos14{
-	top: 347px;
-	left: 272px;
+	bottom: 170px;
+	right: 462px;
 	z-index: 2;
 	}
 #pos15{
-	top: 308px;
-	left: 693px;
+	bottom: 209px;
+	right: 41px;
 	z-index: 2;
 	}
 #pos16{
-	top: 283px;
-	left: 85px;
+	bottom: 234px;
+	right: 640px;
 	z-index: 2;
 	}
 #pos17{
-	top: 410px;
-	left: 274px;
+	bottom: 107px;
+	right: 490px;
 	z-index: 3;
 	}
 #pos18{
-	top: 444px;
-	left: 303px;
+	bottom: 73px;
+	right: 431px;
 	z-index: 4;
 	}
 /*******************************************************************
@@ -191,40 +196,44 @@ img.lvlImage  {
 *******************************************************************/
 .blocker {
 	position: absolute;
-	z-index: 3;
+	z-index: 4;
 	pointer-events: none;
 	}
 #town_t3-wall-segment {
-	top: 360px;
-	left: 281px;
+	top: 344px;
+	right: 391px;
 	}
 #town_t4-wall-segment {
 	top: 360px;
-	left: 281px;
+	right: 391px;
 	}
 #town_gate-roof {
 	top: 277px;
-	left: 591px;
+	right: 151px;
 	}
 #town_house-wall {
 	top: 80px;
-	left: 580px;
+	right: 126px;
 	}
-#town_left-lantern {
+#town_left-lantern-1 {
 	top: 179px;
-	left: 159px;
+	right: 575px;
+	}
+#town_left-lantern-2 {
+	top: 184px;
+	right: 636px;
 	}
 #town_right-lantern-1 {
-	top: 162px;
-	left: 615px;
+	top: 163px;
+	right: 119px;
 	}
 #town_right-lantern-2 {
 	top: 168px;
-	left: 676px;
+	right: 58px;
 	}
 #town_elevator-top {
 	top: 84px;
-	left: 342px;
+	right: 373px;
 	}
 /*******************************************************************
  ** Building Construction Menu CSS
@@ -232,7 +241,7 @@ img.lvlImage  {
 #town_buildBldgMenuBack {
 	position: absolute;
 	top: -3px;
-	left: 802px;
+	right: 802px;
 	height: 100%;
 	width: 800px;
 	background: url(../SPFrames/rusted-metal.jpg) repeat left top;
@@ -245,7 +254,7 @@ img.lvlImage  {
 #town_buildBldgMenu {
 	position: absolute;
 	top: 0px;
-	left: 802px;
+	right: 802px;
 	color: #FFF;
 	z-index: 100;
 	}
@@ -428,6 +437,7 @@ img.lvlImage  {
 	font-size: 20px;
 	text-align: center;
 	cursor: pointer;
+	z-index: 10;
 	}
 #town_bldgBldgsBar:active {
 	background-position: -46px 0;
@@ -449,6 +459,7 @@ img.lvlImage  {
 	border-radius: 20px 20px 0 0;
 	-webkit-box-shadow: inset 0px 2px 10px rgba(0,0,0,0.8);
 	box-shadow: inset 0px 2px 10px rgba(0,0,0,0.8);
+	z-index: 10;
 	}
 .flexbox #town_bldgBldgsList ul {
 	display: -webkit-box;
@@ -481,7 +492,8 @@ img.lvlImage  {
 	display: none;
 	}
 .bldgName {
-	padding-top: 5px;
+	width: 101px;
+	padding: 5px 0 0 25px;
 	margin-bottom: -3px;
 	color: #9f9b8a;
 	font: small-caps 12pt "Minion Pro", Minion, sans-serif;
@@ -489,16 +501,16 @@ img.lvlImage  {
 	text-shadow: 0 1px 1px rgba(0,0,0,0.8), 0 -1px 0 rgba(255,255,255,0.3);
 	}
 .bldgTicksToFinish {
+	position: relative;
+	top: 10px;
 	height: 29px;
 	width: 101px;
+	padding-top: 5px;
+	margin: 0 auto;
 	color: #a57862;
 	font-size: 9pt;
 	text-align: center;
 	background: url(../SPFrames/text-window.png) no-repeat 0 0;
-	padding-top: 5px;
-	position: relative;
-	top: 10px;
-	float: right;
 	}
 .cancelButton {
 	position: relative;
@@ -553,7 +565,7 @@ img.lvlImage  {
 	height: 110px;
 	width: 581px;
 	background: url(../SPFrames/resource-production.png) no-repeat center bottom;
-	z-index: 4;
+	z-index: 5;
 	}
 #town_warehouseMenu {
 	position: absolute;

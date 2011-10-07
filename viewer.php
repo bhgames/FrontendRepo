@@ -2,9 +2,9 @@
 	function insertScript($name, $type) {
 		$file = $name. "." .$type;
 		if($type == "js") {
-			echo '<script type="text/javascript" src="javascripts/'.$file.'"></script>';
+			echo '<script src="javascripts/'.$file.'"></script>';
 		} else if($type == "css") {
-			echo '<link href="stylesheets/'.$file.'" rel="stylesheet" type="text/css" />';
+			echo '<link href="stylesheets/'.$file.'" rel="stylesheet" />';
 		}
 	}
 ?>
@@ -160,8 +160,7 @@
 			</div>
 			<div id='viewerback'></div>
 			<div id="clientview">
-				<div id='accountPreferences'></div>
-				<div id="attacklist" style='display: none;'>
+				<div id="attacklist" class='metalFrame' style='display: none;'>
 					<div id='incomming_attacks'>
 						Incoming:
 						<ul>
@@ -221,7 +220,7 @@
 		insertScript("page","js");
 		//game globals
 		insertScript("globals","js");
-		insertScript("global_UTCC","js");
+		//insertScript("global_UTCC","js");
 		//building files
 		insertScript("buildings","js");
 		insertScript("AF","js");

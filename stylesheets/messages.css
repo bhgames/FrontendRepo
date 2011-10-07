@@ -285,7 +285,7 @@
 	}
 .messExpand {
 	position: relative;
-	top: -5px;
+	top: 4px;
 	cursor: pointer;
 	}
 .groupSelect, .messSelect {
@@ -306,13 +306,17 @@
 .viewConvo:hover, #mess_showConvo:hover {
 	background: url(../../images/client/menus/View_Convo-button.png) no-repeat 0 -20px;
 	}
+.messages {
+	padding-top: 5px;
+	}
 .messages li {
 	height: 19px;
 	list-style: none;
 	}
 .message {
 	display: inline-block;
-	width: 500px;
+	width: 450px;
+	padding-top: 3px;
 	border-right: 1px groove #AAAAAA;
 	color: #FFFFFF;
 	}

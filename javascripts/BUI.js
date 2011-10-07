@@ -25,8 +25,8 @@ var BUI = { //the Building Universal Interface object will hold everything our v
 			<div id='BUI_bldgContent'></div>",
 	set : set_active, //this way, we just call BUI.set() to set the active element dynamically, makes everything clearer
 	active : {},
-	AF : 	{//Arms Factory
-				name : ["Arms Factory"],
+	AF : 	{//Arms Factory & Manufacturing Plant
+				name : ["Arms Factory","Manufacturing Plant"],
 				build : AF_UI,
 				abbr : "AF"
 			},
@@ -152,7 +152,7 @@ var BUI = { //the Building Universal Interface object will hold everything our v
 								townTech :	{
 														cost : 200,
 														lvld : true,
-														max : 999,
+														max : Infinity,
 														desc : "Each level increases the number of town slots by 1."
 													},
 								constructionResearch :	{
@@ -177,11 +177,6 @@ var BUI = { //the Building Universal Interface object will hold everything our v
 				name : ["Metal Mine", "Crystal Mine", "Timber Field", "Farm"],
 				build : mine_UI,
 				abbr : "mine"
-			},
-	MP : 	{
-				name : ["Manufacturing Plant"],
-				build : function() {},
-				abbr : "MP"
 			},
 	MS : 	{
 				name : ["Missile Silo"],

@@ -64,9 +64,13 @@ function AF_UI(bldgInfo) {
 		$("#BUI_dummyPplButton").css("display","none");
 	});
 	
-	var list = "<ul>Build Queue:"; //begin constructing the build queue
-	var time = 0;		//we have to add up the time as we go so the displays are correct
-	var slotsUsed = 0;
+	if(bldgInfo.type == "Manufacturing Plant") {
+		$("#BUI_extras").text("Unit build times reduced " + (bldgInfo.lvl*1.5) + "% by this plant");
+	}
+	
+	var list = "<ul>Build Queue:", //begin constructing the build queue
+		time = 0,		//we have to add up the time as we go so the displays are correct
+		slotsUsed = 0;
 	$.each(bldgInfo.Queue, function(i, x) {
 		slotsUsed += x.AUNumber;
 		time += x.ticksPerUnit * x.AUNumber;
@@ -78,12 +82,15 @@ function AF_UI(bldgInfo) {
 				+ x.AUNumber + " " + player.AU[x.AUtoBuild].name + "<div class='AFtimes'><span class='time'>" + time + "</span></div></li>";
 	});
 	
-	list += "</ul><div id='AF_queueCap'>Available Slots: <span>" + (bldgInfo.cap-slotsUsed) + "</span></div>";
+	list += "</ul><div id='AF_queueCap'>Available Slots: <span>" + ((bldgInfo.lvl*2)-slotsUsed) + "</span></div>";
 	$("#AF_queueList").html(list); //display the list
 	
 	$.each(player.AU, function(i, x){	//set up display of AU bar
-		if(x.rank = "soldier") {
-			var el = $("#AF_AUbar").append("<div class='inactiveAU'><img slot='"+i+"' src='SPFrames/Units/"+x.name+".png' /></div>").children(":last-child");
+		if((bldgInfo.type == "Arms Factory" && x.rank == "soldier")||
+		   (bldgInfo.type == "Manufacturing Plant" && (x.rank == "tank" || x.rank == "golem"))||
+		   (bldgInfo.type == "Airstrip" && x.rank == "bomber")) {
+		   
+			var el = $("#AF_AUbar").append("<div class='inactiveAU' slot='"+i+"'><img src='SPFrames/Units/"+x.name+".png' /></div>").children(":last-child");
 			$(el).append(player.curtown.au[i]);
 			
 			$(el).attr("title", x.name); //this sets the tooltip to the name of the AU
@@ -138,7 +145,7 @@ function AF_UI(bldgInfo) {
 		typeCheck = setTimeout(function() {
 			$("#BUI_bFail").html("");
 			var slot=0;
-			$("#AF_AUbar > a").each(function(i, el) {
+			$("#AF_AUbar > div").each(function(i, el) {
 							if($(el).hasClass('activeAU')) slot = BUI.queue.AUtoBuild = parseInt($(el).attr("slot"));
 						});
 						
@@ -183,7 +190,7 @@ function AF_UI(bldgInfo) {
 					$("#AF_capNeeded span").text(numPpl);
 												
 					var canBuild = pplInfo[2];
-					if(!canBuild.match(/^false/) && numPpl+currentCap <= bldgInfo.cap) {
+					if(!canBuild.match(/^false/) && numPpl+currentCap <= (bldgInfo.lvl*2)) {
 						$('#BUI_pplSteel').removeClass("noRes");
 						$('#BUI_pplWood').removeClass("noRes");
 						$('#BUI_pplManMade').removeClass("noRes");
@@ -193,11 +200,9 @@ function AF_UI(bldgInfo) {
 						$("#BUI_bldPplButton").addClass('noBld');
 					}
 				};
-				getPplInfo.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command 
-								+ ".returnPrice(" + player.AU[slot].name + "," + numPpl + "," 
-								+ player.curtown.townID + ");" + player.command + ".getTicksPerAttackUnit(" 
-								+ player.AU[slot].type + "," + player.curtown.townID + ");" + player.command + ".canBuy(" 
-								+ player.AU[slot].name + "," + numPpl + "," + bldgInfo.lotNum + "," 
+				getPplInfo.get("reqtype=command&command=bf.returnPrice(" + player.AU[slot].name + "," + numPpl + "," + player.curtown.townID 
+								+ ");bf.getTicksPerAttackUnit(" + player.AU[slot].type + "," + player.curtown.townID 
+								+ ");bf.canBuy(" + player.AU[slot].name + "," + numPpl + "," + bldgInfo.lotNum + "," 
 								+ player.curtown.townID + ");");
 								
 			} else { //if the user entered 0 or nothing, or if he's selected an empty AU slot, display ??? for values
@@ -231,7 +236,7 @@ function AF_UI(bldgInfo) {
 				HTML += "(Next unit in: <span class='time'>" + (bldgInfo.Queue[i-1].ticksPerUnit - bldgInfo.Queue[i-1].currTicks) + "</span>)<hr/>";
 				time -=bldgInfo.Queue[i-1].currTicks;
 			}
-			$.each(bldgInfo.Queue, function(i,x) {
+			$.each(bldgInfo.Queue, function(j,x) {
 				time += x.ticksPerUnit;
 			});
 			HTML += "<li><div class='cancelButton'><a href='javascript:;'></a></div>" 

@@ -59,9 +59,9 @@ function show_town() {
 								<div id='town_bldgBldgsBar'></div>\
 								<div id='town_bldgBldgsList'></div>\
 							</div>";
-		var numLotsOpen = player.research.infrastructureTech+1, townNum;
+		var numLotsOpen = player.research.infrastructureTech, townNum;
 		if(player.capitaltid == player.curtown.townID)  numLotsOpen += 4;
-		townNum = Math.floor((numLotsOpen-6)/2).max(6);
+		townNum = Math.floor((numLotsOpen-5)/2).max(6);
 		vb.css({"background-image":"url(SPFrames/Town-tiles/Town-"+townNum+"-"+player.curtown.tile+".jpg)","background-color":""});
 		for(var i = 0; i <= 18; i++) {
 			if(i==4) {
@@ -91,10 +91,11 @@ function show_town() {
 						 <img id='town_right-lantern-2' class='blocker' src='SPFrames/blocking/right-bottom-lantern.png' />\
 						 <img id='town_elevator-top' class='blocker' src='SPFrames/blocking/elevator.png' />";
 			case 2:
-				HTML += "<img id='town_left-lantern' class='blocker' src='SPFrames/blocking/left-lantern.png' />";
+				HTML += "<img id='town_left-lantern-1' class='blocker' src='SPFrames/blocking/left-lantern.png' />\
+						 <img id='town_left-lantern-2' class='blocker' src='SPFrames/blocking/left-lantern.png' />";
 			case 1:
 				HTML += "<img id='town_house-wall' class='blocker' src='SPFrames/blocking/house-wall.png' />" 
-						+ (townNum<3?"<img id='town_t3-wall-segment' class='blocker' src='SPFrames/blocking/town3-wall-segment.png' />":"");
+						+ (townNum<4?"<img id='town_t3-wall-segment' class='blocker' src='SPFrames/blocking/town3-wall-segment.png' />":"");
 		}
 		
 		window.html(HTML+"</div>");
@@ -177,6 +178,7 @@ function show_town() {
 		
 		window.fadeIn("fast");			//fade in the town now that everything is set up
 		vb.fadeIn("fast");
+		$("body").trigger("menuFire.TV");
 		
 		var list = $("#town_bldgBldgsList");
 		list.css("margin-left",Math.round(list.outerWidth()/-2)+"px")
@@ -288,8 +290,8 @@ function show_town() {
 						$('#town_notBuildableList').html(HTML+"</ul>");
 					}
 					
-					bldgMenu.css("display","").animate({"left":"0px"}, "normal");
-					$("#town_buildBldgMenuBack").animate({"left":"0px"}, "normal");
+					bldgMenu.css("display","").animate({"right":"0px"}, "normal");
+					$("#town_buildBldgMenuBack").animate({"right":"0px"}, "normal");
 					$("#townview").animate({"width":"0px"}, "normal");
 					
 					$(".bldgDesc").each(function(i,v) {
@@ -299,8 +301,8 @@ function show_town() {
 					$("#town_unlocked").click();
 						
 					$("#town_closeBldgList").unbind('click').click(function() {
-						bldgMenu.animate({"left":"802px"},"normal");
-						$("#town_buildBldgMenuBack").animate({"left":"802px"},"normal");
+						bldgMenu.animate({"right":"802px"},"normal");
+						$("#town_buildBldgMenuBack").animate({"right":"802px"},"normal");
 						$("#townview").animate({"width":"100%"}, "normal");
 					});
 					
@@ -311,9 +313,11 @@ function show_town() {
 								
 								buildBldg.callback = function(response) {
 									if(response.match(/^false/) == null) {
-										bldgMenu.animate({"left":"-802px"},"normal",function() {
+										bldgMenu.animate({"right":"802px"},"normal",function() {
 											load_player(false, true, true);
 										});
+										$("#town_buildBldgMenuBack").animate({"right":"802px"},"normal");
+										$("#townview").animate({"width":"100%"}, "normal");
 									} else {
 										$("#town_bldError").html(response.split(":")[1]);
 									}
@@ -347,9 +351,8 @@ function show_town() {
 								display_output(true,"Building Cancel Failed!",true); 
 							}
 						};
-						cancelQueue.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command 
-										+ ".cancelQueueItem(" + x.lotNum + "," 
-										+ player.curtown.townID + ");");
+						cancelQueue.get("/AIWars/GodGenerator?reqtype=command&command=bf.cancelQueueItem(" 
+										+ x.lotNum + "," + player.curtown.townID + ");");
 						return false;
 					}
 				});

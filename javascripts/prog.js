@@ -65,7 +65,7 @@ function build_RAI_interface() {
 		});
 
 	};
-	getScript.get("/AIWars/GodGenerator?reqtype=command&command=bf.isAlive();bf.getAutoRun();bf.editProgram();");
+	getScript.post("reqtype=command&command=bf.isAlive();bf.getAutoRun();bf.editProgram();");
 	
 	
 	$("#RAI_autosave").unbind("click").click(function(){
@@ -99,7 +99,7 @@ function build_RAI_interface() {
 				RAI.autorun = false;
 			}
 		};
-		setAutoStart.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".setAutoRun("+auto+");");
+		setAutoStart.get("reqtype=command&command=bf.setAutoRun("+auto+");");
 	});
 	
 	$("#RAI_new").unbind('click').click(function() {
@@ -112,7 +112,8 @@ function build_RAI_interface() {
 			if(response.match(/^true/i)) {
 				display_output(false, "Program Saved Sucessfully");
 			} else {
-				display_output(true, response.split(":")[1]);
+				var error = response.split(":")[1] || response;
+				display_output(true, error);
 			}
 		};
 		save.post("/AIWars/GodGenerator","reqtype=saveProgram&program="+encodeURIComponent(RAI.script.replace(/\u0027/igm,"\\'"))+"&league="+player.league);
@@ -134,7 +135,7 @@ function build_RAI_interface() {
 				display_output(false,"Please report this to the developers via the feedback button on the left.");
 			}
 		};
-		run.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command + ".runProgram();");
+		run.get("reqtype=command&command=bf.runProgram();");
 	});
 	$("#RAI_stop").unbind('click').click(function() {
 		display_output(false, "Stopping Program...");
@@ -147,6 +148,6 @@ function build_RAI_interface() {
 				display_output(true, response.split(":")[1]);
 			}
 		};
-		stop.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command + ".stopProgram();");
+		stop.get("reqtype=command&command=bf.stopProgram();");
 	});
 }

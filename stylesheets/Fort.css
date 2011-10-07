@@ -1,22 +1,42 @@
 #Fort_AUlist, #Fort_protectedAU {
 	position: absolute;
-	height: 500px;
+	top: 10px;
+	height: 380px;
 	width: 300px;
-	padding: 5px;
-	background: #222 url(../SPFrames/rusted-metal.jpg);
-	border: 3px solid #A8A495;
-	-webkit-border-radius: 20px;
-	border-radius: 20px;
-	-webkit-box-shadow: inset 0px 2px 10px rgba(0,0,0,0.8);
-	box-shadow: inset 0px 2px 10px rgba(0,0,0,0.8);
-	color: #A9A098;
-	font: 11pt "Trajan Pro", Trajan, serif;
-	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.8), 0 -1px 0 rgba(255, 255, 255, 0.3);
 	}
-}
-
+#Fort_AUlist {
+	left: 10px;
+	}
+#Fort_protectedAU {
+	right: 10px;
+	padding: 5px 10px;
+	color: #FFF;
+	text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+	}
 #Fort_protectAU {
-	position: aboslute;
+	position: absolute;
 	bottom: 0px;
 	right: 0px;
-}
+	}
+#Fort_availableSlots {
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
+	}
+.Fort_AU {
+	display: inline-block;
+	width: 50%;
+	height: 110px;
+	text-align: center;
+	}
+.Fort_AUpic {
+	float: left;
+	}
+.Fort_AUinput {
+	width: 40px;
+	background: rgba(0, 0, 0, 0.3);
+	border: 1px solid white;
+	outline: none;
+	color: white;
+	text-align: center;
+	}

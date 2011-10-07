@@ -1,7 +1,7 @@
 /* *********************************************************************
  * Trade Center CSS
 ***********************************************************************/
-#TC_tabBar, #TC_tradeListBox {
+#TC_tabBar {
 	display: -webkit-box;
 	-webkit-box-orient: horizontal;
 	-webkit-box-pack: start;
@@ -22,15 +22,17 @@
 	top: -5px;
 	left: 13px;
 	}
-.no-flexbox #TC_tabBar {
-	height: 40px;
+.no-flexbox .TCtab {
+	display: inline-block;
+	vertical-align: top;
 	}
 .TCtab {
-	font-size: 20px;
-	cursor: pointer;
+	padding: 6px 10px 0;
+	margin-top: 5px;
 	}
-.no-flexbox .TCtab {
-	float: left;
+#TC_window {
+	color: #282415;
+	text-shadow: 0 1px 1px rgba(240, 225, 163, 0.7);
 	}
 #TC_scrollBox {
 	height: 100%;
@@ -40,8 +42,14 @@
 #TC_innerBox {
 	padding: 0 15px;
 	}
+#TC_overview {
+	margin: 0 5px;
+	}
 #TC_activeTrades, #TC_tradeSchedules {
 	position:relative;
+	}
+#TC_tradeSchedules {
+	border-top: 1px solid #FFF;
 	}
 #TC_trades > span {
 	display: block;
@@ -51,63 +59,91 @@
 	}
 #TC_directTrade, #TC_createTrade {
 	position: relative;
-	margin: 0 38px;
-	color: #FFF;
+	margin: 0 34px;
+	font-weight: bold;
 	float: left;
 	}
-#TC_sendTrade .darkFrameBody, #TC_createTrade .darkFrameBody {
-	height: 240px;
-	padding: 5px 15px 0;
+#TC_directTrade, #TC_createTrade, #TC_createCaravan {
+	-webkit-box-shadow: inset 0px 2px 10px rgba(0,0,0,0.8), 0px 2px 10px rgba(0,0,0,0.8);
+	box-shadow: inset 0px 2px 10px rgba(0,0,0,0.8), 0px 2px 10px rgba(0,0,0,0.8);
+	}
+#TC_createTrade {
+	top: 30px;
+	padding-bottom: 50px;
+	}
+#TC_directTrade h2, #TC_createTrade h2 {
+	margin: 0;
+	border-bottom: 2px ridge #A8A495;
+	}
+#TC_sendTrade label, #TC_createTrade label {
+	display: inline-block;
+	width: 85px;
+	padding-right: 5px;
 	}
 #TC_sendTrade input, #TC_createTrade input {
 	width: 100px;
 	}
-#TC_sendTrade label, #TC_createTrade label {
-	display: inline-block;
-	width: 80px;
-	padding-right: 5px;
+#TC_sendTrade input, #TC_createTrade input, #TC_createCaravan input, #TC_sendTrade select, #TC_createTrade select, #TC_createCaravan select {
+	background: rgba(0, 0, 0, 0.3);
+	border: 1px solid white;
+	color: white;
+	text-align: center;
 	}
-#TC_ltTradersNeeded,#TC_dtTradersNeeded,#TC_dtETA {
+#TC_sendTrade select:disabled, #TC_createTrade select:disabled, #TC_createCaravan select:disabled {
+	opacity: 0.5;
+	}
+#TC_ltTradersNeeded, #TC_dtTradersNeeded, #TC_dtETA, #TC_ccETA {
 	height: 14px;
 	}
 #TC_dtETA {
 	text-align: right;
 	}
-#TC_dtTradeTo {
-	margin: 10px 0;
+#TC_dtTradeTo, #TC_ccTradeTo {
+	width: 160px;
+	margin: 10px 10px 0;
 	text-align: center;
 	}
-#TC_dtTradeTo label, #TC_dtTradeTo label {
+#TC_dtTradeTo label, #TC_dtTradeTo label, #TC_ccTradeTo label {
 	width: 20px;
 	}
-#TC_dtX, #TC_dtY {
+#TC_dtX, #TC_dtY, #TC_ccX, #TC_ccY {
 	width: 50px !important;
 	}
-#TC_dtSend, #TC_ltSend {
+#TC_dtSend, #TC_ltSend, #TC_ccSend {
 	position: absolute;
-	bottom: 0px;
+	right: 0px;
 	font-size: 16px;
-	color: #000;
-	cursor: pointer;
 	}
 #TC_dtSend {
-	left: 0px;
+	bottom: 20px;
 	}
-#TC_ltSend {
-	right: 0px;
+#TC_ltSend, #TC_ccSend {
+	bottom: 0px;
 	}
-.noTrade {
-	filter: alpha(opacity=50);
-	opacity: 0.5;
-	cursor: default;
+#TC_caravanList {
+	margin: 5px;
+	}
+#TC_createCaravan {
+	position: absolute;
+	width: 270px;
+	left: 10px;
+	bottom: 115px;
+	}
+#TC_tradeListBox {
+	width: 540px;
 	}
 .tradeList {
-	height: 115px;
-	width: 720px;
+	height: 95px;
+	width: 715px;
 	}
 .tradeRow {
 	position: relative;
-	height: 25x;
+	height: 25px;
+	padding-left: 5px;
+	background-color: rgba(0, 0, 0, 0.3);
+	border-radius: 10px;
+	color: white;
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
 	}
 .tradeRow > div {
 	display: table-cell;
@@ -122,6 +158,9 @@
 	top: 8px;
 	margin-top: -14px;
 	}
+.keys {
+	padding-left: 5px;
+	}
 .keys span {
 	display: table-cell;
 	border-right: 1px solid black;
@@ -132,9 +171,6 @@
 	}
 .destinationKey {
 	width: 175px;
-	}
-#TC_tradeSchedules .destinationKey {
-	padding-left: 20px;
 	}
 .originKey {
 	width: 175px;
@@ -149,9 +185,12 @@
 	border: none !important;
 	width: 80px;
 	}
+.valueKey {
+	width: 70px;
+	}
 .etaKey {
 	border: none !important;
-	width: 100px;
+	width: 80px;
 	}
 .traders {
 	width: 65px;
@@ -160,7 +199,8 @@
 	width: 175px;
 	}
 #TC_tradeSchedules .destTown {
-	padding-left: 20px !important;
+	padding-left: 20px;
+	width: 155px;
 	}
 .origin {
 	width: 175px;
@@ -170,7 +210,7 @@
 	}
 .ETA {
 	border: none !important;
-	width: 100px;
+	width: 80px;
 	}
 .timeTillNext {
 	width: 80px;
@@ -204,28 +244,27 @@
 	padding: 0 0 5px 5px;
 	border-bottom: 1px solid #FFF;
 	margin-left: -5px;
-	filter:alpha(opacity=50);
 	opacity: 0.5;
 	}
 #TC_filterBar div {
 	display: inline;
 	}
 #TC_trades {
-	height: 215px;
+	height: 275px;
 	width: 550px;
 	}
 #TC_tradeInfo {
-	position: relative;
-	height: 275px;
-	width: 190px;
-	padding-left: 5px;
-	border-left: 1px solid #FFF;
-	margin: -5px 0 -15px;
+	position: absolute;
+	bottom: 40px;
+	right: 2px;
+	height: 300px;
+	width: 160px;
+	padding: 0 0 5px 5px;
+	margin: -5px 0;
+	-webkit-box-shadow: inset 0px 2px 10px rgba(0,0,0,0.8), 0px 2px 10px rgba(0,0,0,0.8);
+	box-shadow: inset 0px 2px 10px rgba(0,0,0,0.8), 0px 2px 10px rgba(0,0,0,0.8);
 	}
-#TC_infoHeader {
-	margin: 0 0 5px;
-	}
-#TC_tradeInfo h2 {
+#TC_tradeInfo h3 {
 	margin: 5px 0 0;
 	}
 #TC_isssuePlayer div,#TC_issueTown div,#TC_issueRes div,#TC_issueCost div,#TC_issueDist div {
@@ -235,24 +274,7 @@
 	position: absolute;
 	bottom: 0px;
 	right: 0px;
-	font-size: 20px
-	}
-#TC_purchaseTrade .lightFrameBody {
-	height: 15px;
-	cursor: pointer;
-	}
-#TC_dtSend[class=""]:active .lightFrameBody, #TC_ltSend[class=""]:active .lightFrameBody, #TC_purchaseTrade[class=""]:active .lightFrameBody {
-	background: url("../AIFrames/Content Frame Elements/Dark-body.png");
-	color: #FFFFFF;
-	}
-#TC_dtSend[class=""]:active .lightFrameB, #TC_ltSend[class=""]:active .lightFrameB, #TC_purchaseTrade[class=""]:active .lightFrameB {
-	background-image: url("../AIFrames/Content Frame Elements/Dark-BottomTile.png");
-	}
-#TC_dtSend[class=""]:active .lightFrameBL, #TC_ltSend[class=""]:active .lightFrameBL, #TC_purchaseTrade[class=""]:active .lightFrameBL {
-	background-image: url("../AIFrames/Content Frame Elements/Dark-Left-Lowcorner.png");
-	}
-#TC_dtSend[class=""]:active .lightFrameBR, #TC_ltSend[class=""]:active .lightFrameBR, #TC_purchaseTrade[class=""]:active .lightFrameBR {
-	background-image: url("../AIFrames/Content Frame Elements/Dark-Right-Lowcorner.png");
+	font-size: 20px;
 	}
 .marketTrade {
 	cursor: pointer;

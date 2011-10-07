@@ -2,9 +2,11 @@
 var websock = false;
 function make_AJAX() {
 	var that = this; //this is so I always have a reference to the calling object
-	if(Modernizr.websockets && !websock.nosock) {
+	if(Modernizr.websockets && !websock.nosock && false) {
 		if(!websock||websock.readyState>1) {
 			try {
+				display_output(false,"Attempting websocket connection...");
+				display_output(false,"This may take a moment.");
 				try {
 					websock = new WebSocket("ws://"+location.hostname+":8079/AIWars/GodGenerator/");
 				} catch(e) {
@@ -15,6 +17,7 @@ function make_AJAX() {
 				websock.log = websock.log || [];
 				websock.checksock = websock.checksock || [];
 				websock.onopen = 	function() {
+										display_output(false,"Websocket connected!");
 										websock.connected = true;
 										player.password = undefined;
 										while(websock.checksock.length>0) {
@@ -243,8 +246,8 @@ function make_AJAX() {
 		this.clear = function() {
 				clearTimeout(that.requestTimer);
 			};
-	}
 }
+	}
 
 function show_output_window() { //packaged to allow easy calling
 	$("#console_box").fadeIn("fast");
@@ -263,9 +266,9 @@ function display_output(error, message, show) { //error is a boolean denoting if
 function display_message(title, message, callback) { //callback is a function  and, if set, converts the message from an alert to a confirm
 	var popup = "<div id='AIW_alertTitlebar'>" + title + "</div>\
 				<div id='AIW_alertMess'>" + message + "</div>"
-				+((callback)?"<div id='AIW_alertNo' class='alertButton' style=''>No</div><div id='AIW_alertYes' class='alertButton' style=''>Yes</div>":"<div id='AIW_alertButton' class='alertButton' style=''>Okay</div>")
+				+((callback)?"<div id='AIW_alertNo' class='alertButton smallButton'>No</div><div id='AIW_alertYes' class='alertButton smallButton'>Yes</div>":"<div id='AIW_alertButton' class='alertButton smallButton'>Okay</div>")
 				+"</div>";
-	if($("#AIW_alert").length < 1) $("body").append("<div id='AIW_alertBox'><div id='AIW_alertMod'></div><div id='AIW_alert'>"+popup+"</div></div>");
+	if($("#AIW_alert").length < 1) $("body").append("<div id='AIW_alertBox'><div id='AIW_alertMod'></div><div id='AIW_alert' class='metalFrame'>"+popup+"</div></div>");
 	else $("#AIW_alert").html(popup);
 	
 	$("#AIW_alert").css({"margin-left":(-1*($("#AIW_alert").width()/2))+"px","margin-top":(-1*($("#AIW_alert").height()/2))+"px"});
@@ -335,6 +338,7 @@ function display_res() {
  *	@return a string in one of the following formats:  "####" or "###c"  Where "#" is a number and "c" is a character denoting denomination (such as "M" for million).  If the number is greater than 999,999,999,999,999 (999 trillion), this function returns "OOB" or "Out Of Bounds".
  */
 function format_number(number) {
+	number = Math.round(number);
 	if(number > 9999) {
 		var index = 0;
 		var denom = ["","K","M","B","T"];
@@ -470,17 +474,15 @@ function get_all_trades() {
 					v.tradeSchedules = $.parseJSON(trades[i + h]);
 					if(v.activeTrades.length > 0) {
 						$.each(v.activeTrades,function(j,w) {
-								w.currTicks *= player.gameClockFactor;
-								w.currTicks -= player.time.timeFromNow(1000)+player.gameClockFactor;
-								w.intervaltime *= player.gameClockFactor;
+								w.ticksToHit *= player.gameClockFactor;
+								w.ticksToHit += player.time.timeFromNow(1000)+player.gameClockFactor;
 							
 						});
 					}
 					if(v.tradeSchedules.length > 0) {
 						$.each(v.tradeSchedules,function(j,w) {
 								w.currTicks *= player.gameClockFactor;
-								w.currTicks -= player.time.timeFromNow(1000)+player.gameClockFactor;
-								w.intervaltime *= player.gameClockFactor;
+								w.currTicks += player.time.timeFromNow(1000)+player.gameClockFactor;
 							
 						});
 					}
@@ -650,7 +652,7 @@ function set_bottom_links() {
 			get_raids(true);
 			get_SRs();
 		}
-		$("#attacklist").animate({"opacity":"toggle","height":"toggle"},"fast");
+		$("#attacklist").slideToggle("fast");
 	});
 	$("#CS").unbind('click').click(function() {
 		$.each(player.curtown.bldg, function(i, x) {

@@ -15,6 +15,8 @@ function draw_bldg_UI() {
 	BUI.bldgQueue = {};
 	var bldgInfo = $.grep(player.curtown.bldg, get_bldg)[0];
 	
+	$("body").trigger("menuFire.bldg",bldgInfo);
+	
 	if(websock.nosock) {
 		//do update checks for this building
 		if(bldgInfo.update) load_player(false,true,true); //if an update is queued, update the player object, and reload the current UI
@@ -46,12 +48,11 @@ function draw_bldg_UI() {
 	getUpInfo.callback = function(response) {
 		var info = response.split(";");
 		var ticks = BUI.bldgQueue.ticks = info[1] * player.gameClockFactor;
-		var days = Math.floor((ticks / 3600)/24);
-		var hours = Math.floor((ticks / 3600)%24);
+		var hours = Math.floor((ticks / 3600));
 		var mins = Math.floor((ticks % 3600) / 60);
 		var secs = Math.floor((ticks % 3600) % 60);
 		
-		$("#BUI_upTime").html(((days)?days + " d ":"") + hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime()).removeClass("noRes");
+		$("#BUI_upTime").html(hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime()).removeClass("noRes");
 
 		var cost = BUI.bldgQueue.cost = $.parseJSON(info[0]);
 		$(".BUI_up span").text(bldgInfo.lvl+bldgInfo.lvlUps+1);
@@ -127,7 +128,6 @@ function draw_bldg_UI() {
 							bldgInfo.deconstruct = true;
 							bldgInfo.ticksToFinish = 0;
 							bldgInfo.ticksToFinishTotal = [BUI.bldgQueue.ticks];
-							bldgInfo.bldgTicker = inc_bldg_ticks(bldgInfo);
 							BUI.build();
 						} else {
 							var error=response.split(":")[1];
@@ -190,58 +190,7 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 			if(bldgInfo.update||player.curtown.update) {
 				load_player(false,true,true);
 			} else {
-				switch(bldgInfo.type) {		//first, we have to determine if we even have updating displays
-					/*case "Construction Yard":
-						var iter = 0;
-						var ticksTotal = 0;
-						$(".bldgID").each(function(i,v){
-							$.each(menu.bldgServer, function(ind, x) {
-								if($(v).text() == x.lotNum) { //we found the building in bldgServer
-									var ticks;
-									if(x.lvlUps > 1) {	//if we have multiple level ups, we have to determine which one is last
-										if(i != 0) {	//if we're on the first .bldgName it has to be the first in the list, less checks
-															//if the last entry and this entry are the same building, or we're on the last index
-											if($(v).parent().prev().children(".bldgID").text() == $(v).text()) {
-												if(iter + 1 != x.lvlUps) { 	//check to see if we're on the last of a list of upgrading buildings
-													$(v).siblings(".cancelButton").addClass('noCancel');	//if not, add noCancel
-												} else {
-													$(v).siblings(".cancelButton").removeClass('noCancel');//otherwise, make sure the button is there.				
-												}
-												ticksTotal += x.ticksToFinishTotal[iter]; 	//increase total ticks
-												iter++;
-											} else {								//otherwise
-												$(v).siblings(".cancelButton").addClass('noCancel'); 	//have to cancel the last one first
-												iter = 1;							//set this to our first iteration
-												ticksTotal = x.ticksToFinishTotal[0]; 	//set total ticks as same as current building
-											}
-										} else {						//if we're on the first element, it must also be the first in the list
-											$(v).siblings(".cancelButton").addClass('noCancel'); 	//have to cancel the last one first
-											ticksTotal = x.ticksToFinishTotal[iter]; 	//set total ticks as same as current building
-											iter++;
-										}
-										ticks = ticksTotal - x.ticksToFinish;
-									} else {		//if we only have one level up, things are a lot simpler
-										ticks = x.ticksToFinishTotal[0] - x.ticksToFinish;
-										$(v).siblings(".cancelButton").removeClass('noCancel');
-									}
-									//format the times
-									var days = Math.floor((ticks / 3600)/24);
-									var hours = Math.floor((ticks / 3600)%24);
-									var mins = Math.floor((ticks % 3600) / 60);
-									var secs = Math.floor((ticks % 3600) % 60);
-									//and display them in a nice format
-									if(isNaN(hours)) { //if the time is NaN, it usually means the building is done, so we should display "updating"
-										$(v).siblings(".bldgTicksToFinish").html("updating");
-									} else {
-										$(v).siblings(".bldgTicksToFinish").html(((days)?days + " d ":"") + ((hours<10)?"0"+hours:hours) + ":" + ((mins<10)?"0"+mins:mins) + ":" + ((secs<10)?"0"+secs:secs));
-									}
-									return false;	//pops us out of the loop
-									
-								//if we didn't find any matches (building has finished)
-								} else if(ind == menu.bldgServer.length - 1) $(v).parent().remove();	//remove the line completely
-							});
-						});
-						break;*/
+				switch(bldgInfo.type) {
 					case "Arms Factory":
 						var time = 0;
 						$(".time").each(function(i, el) {
@@ -289,7 +238,7 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 						var SMoffset = 0;
 						$(".timeTillNext").each(function(i, el) {
 							
-							if(player.curtown.tradeSchedules[i + SMoffset].stockMarketTrade) {
+							while(player.curtown.tradeSchedules[i + SMoffset].stockMarketTrade) {
 								SMoffset++;
 							}
 							
@@ -313,10 +262,10 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 						//check to see if the number of knowledge points has increased
 						$("#IN_numKnowledge span").text(Math.floor(player.research.knowledge));
 						break;
-					case "Headquarters":
+					case "Command Center":
 						if(player.curtown.zeppelin) {
 							if(player.curtown.x != player.cirtown.destX || player.curtown.y != player.curtown.destY) {
-								$("#HQ_airshipETA span").text(function() {
+								$("#CC_airshipETA span").text(function() {
 									var time = player.curtown.movementTicks;
 									var hours = Math.floor(time / 3600);
 									var mins = Math.floor((time % 3600) / 60);
@@ -324,9 +273,9 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 									return hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime();
 								});
 							}
-							$("#HQ_currPos span").text(player.curtown.x+", "+player.curtown.y);
+							$("#CC_currPos span").text(player.curtown.x+", "+player.curtown.y);
 						}
-						$('#HQ_outgoingMissions .raidETA').each(function(i, v) {
+						$('#CC_outgoingMissions .raidETA').each(function(i, v) {
 							var time = Math.max(0,player.curtown.outgoingRaids[i].eta-player.time.timeFromNow(1000));
 							if(time>0) {
 								$(this).html(function() {
@@ -339,7 +288,7 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 								$(this).html("updating");
 							}
 						});
-						$('#HQ_incomingMissions .raidETA').each(function(i, v) {
+						$('#CC_incomingMissions .raidETA').each(function(i, v) {
 							//if(parseInt($(this).siblings(".raidID").text()) != player.curtown.incomingRaids[i].rid) $(this).parent().remove();
 							var time = Math.max(0,player.curtown.incomingRaids[i].eta-player.time.timeFromNow(1000));
 							if(time>1) {
@@ -352,6 +301,13 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 							} else {
 								$(this).html("updating");
 							}
+						});
+						
+						$("#CC_AUwrapper .CC_AUnumber").each(function(i,v) {
+							$(v).text(player.curtown.au[i]);
+						});
+						$("#CC_troops .auAmnt").each(function(i,v) {
+							$(v).text(player.curtown.au[i]);
 						});
 						break;
 					case "Airship Platform":
@@ -456,9 +412,6 @@ function update_time_displays(menu) {		//this function is fairly complicated sin
 					$("#BUI_numPplBldg").html("0");
 					$("#BUI_ticksTillNext").html("??:??:??");
 				}
-			}
-			if(bldgInfo.update) {
-				load_player(false,true,true);
 			}
 		} catch(e) {
 			//display_output(true,"Minor Error [update_time_displays()]:<br/>"+e);

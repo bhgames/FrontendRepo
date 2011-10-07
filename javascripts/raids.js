@@ -12,10 +12,10 @@ function get_raids(async, raids) {
 				getRaids.callback = function(response){
 					get_raids(false,response);
 				};
-				getRaids.get('/AIWars/GodGenerator?reqtype=command&command=' + player.command+ '.getUserRaids();');
+				getRaids.get('reqtype=command&command=bf.getUserRaids();');
 			}
 		} else {
-			if(typeof(raids) == "String") {
+			if(typeof(raids) == "string") {
 				player.raids = $.parseJSON(raids);
 			} else {
 				player.raids = raids;
@@ -75,6 +75,8 @@ function build_raid_list() {
 										return a.eta - b.eta;
 									});
 									
+	$("#IO").text(player.curtown.incomingRaids.length+"/"+player.curtown.outgoingRaids.length);
+	
 	//this is here just to make sure that numRaidsOut is always correct.
 	if(player.curtown.supportAbroad) {
 		$.each(player.curtown.supportAbroad, function() {
@@ -88,12 +90,12 @@ function build_raid_list() {
 			if(v.raidOver) {
 				HTML += "<li><span class='raidTitle'>Return from " + v.defendingTown
 						+ "</span> - <span class='raidETA'>" + v.eta + "</span>\
-					<span class='raidID'>" + v.rid + "</span></li>";
+					<span class='raidID'>" + v.id + "</span></li>";
 			} else {
 				var type = (v.raidType.match(/^off/i))? "offensive support":v.raidType;
 				HTML += "<li><span class='raidTitle'>" + type + " from " + v.attackingTown
 						+ "</span> - <span class='raidETA'>" + v.eta + "</span>\
-					<span class='raidID'>" + v.rid + "</span></li>";
+					<span class='raidID'>" + v.id + "</span></li>";
 			}
 		});
 		return HTML;
@@ -103,9 +105,9 @@ function build_raid_list() {
 		$.each(player.curtown.outgoingRaids, function(i, v) {
 			var type = (v.raidType.match(/^off/i))? "offensive support":v.raidType;
 			var to = (type.match(/(support|debris)/i))? " to ":((type.match(/inva/i))? " of ":" on ");
-			HTML += "<li><a href='javascript:;' class='recall'></a><span class='raidTitle'>" + type + to + v.defendingTown
+			HTML += "<li><div class='recall'></div><span class='raidTitle'>" + type + to + v.defendingTown
 					+ "</span> - <span class='raidETA'>" + v.eta + "</span>\
-					<span class='raidID'>" + v.rid + "</span></li>";
+					<span class='raidID'>" + v.id + "</span></li>";
 		});
 		return HTML;
 	});
@@ -122,7 +124,7 @@ function build_raid_list() {
 				display_output(true,error,true);
 			}
 		};
-		recall.get("/AIWars/GodGenerator?reqtype=command&command=" + player.command + ".recall(" + rid + ");");
+		recall.get("reqtype=command&command=bf.recall(" + rid + ");");
 	});
 
 	update_raid_display();
@@ -137,7 +139,7 @@ function update_raid_display() {
 				if(player.curtown.outgoingRaids.length > 0) {
 					$('#outgoing_attacks .raidETA').each(function(i, v) {
 					
-						if($(this).siblings(".raidID").text() != player.curtown.outgoingRaids[i].rid) {build_raid_list();}
+						if($(this).siblings(".raidID").text() != player.curtown.outgoingRaids[i].id) {build_raid_list();}
 						var time = player.curtown.outgoingRaids[i].eta-player.time.timeFromNow(1000);
 						if(time>0) {
 							$(this).html(function() {
@@ -162,10 +164,10 @@ function update_raid_display() {
 			} catch(e) {
 				log(e);
 			}
-			try {	
+			try {
 				if(player.curtown.incomingRaids.length > 0) {
 					$('#incomming_attacks .raidETA').each(function(i, v) {
-						if($(this).siblings(".raidID").text() != player.curtown.incomingRaids[i].rid) {build_raid_list();}
+						if($(this).siblings(".raidID").text() != player.curtown.incomingRaids[i].id) {build_raid_list();}
 						var time = player.curtown.incomingRaids[i].eta-player.time.timeFromNow(1000);
 						if(time>0) {
 							$(this).html(function() {

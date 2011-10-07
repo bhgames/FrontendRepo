@@ -1,29 +1,56 @@
 /* *********************************************************************
  * Account Settings Menu CSS
 ***********************************************************************/
-#accountPreferences {
-	position: absolute;
-	top: 10px;
-	left: 17px;
-	display: none;
-	z-index: 1000;
-	}
-#accountPreferences .popFrameBody {
-	height: 485px;
-	width: 760px;
+#ASM_outerBox {
+	color: #A9A098;
+	font: bold 1em "Trajan Pro", Trajan, serif;
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.8), 0 -1px 0 rgba(255, 255, 255, 0.3);
 	}
 #ASM_title {
 	height: 25px;
-	font-size: 1.5em;
-	text-align: center;
-	border-bottom: 1px solid #FFFFFF;
+	padding-top: 5px;
+	border-bottom: 2px ridge #A9A098;
 	font-size: 20px;
+	font-weight: bold;
+	text-align: center;
 	}
 #ASM_tabBar {
-	height: 50px;
+	display: -webkit-box;
+	-webkit-box-orient: horizontal;
+	-webkit-box-pack: center;
+	-webkit-box-align: start;
+
+	display: -moz-box;
+	-moz-box-orient: horizontal;
+	-moz-box-pack: center;
+	-moz-box-align: start;
+	
+	display: box;
+	box-orient: horizontal;
+	box-pack: center;
+	box-align: start;
+
+	height: 45px;
+	padding-top: 5px;
+	border-bottom: 2px ridge #A9A098;
+	}
+.no-flexbox #ASM_tabBar > div {
+	display: inline-block;
 	}
 #ASM_error {
-	height: 20px;
+	position: absolute;
+	top: 35px;
+	left: 8px;
+	display: none;
+	height: 30px;
+	width: 190px;
+	padding: 5px;
+	background: rgba(0, 0, 0, 0.3);
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	}
+#ASM_options {
+	display: none;
 	}
 #ASM_window {
 	position: relative;
@@ -32,10 +59,19 @@
 #ASM_playerName {
 	height: 30px;
 	font-size: 18px;
+	font-weight: bold;
+	}
+#ASM_playerBio, #ASM_playerStats, #ASM_townDisplay {
+	padding: 5px;
+	border: 3px solid #A8A495;
+	-webkit-border-radius: 20px;
+	border-radius: 20px;
+	-webkit-box-shadow: inset 0px 2px 10px rgba(0,0,0,0.8), 0px 2px 10px rgba(0,0,0,0.8);
+	box-shadow: inset 0px 2px 10px rgba(0,0,0,0.8), 0px 2px 10px rgba(0,0,0,0.8);
 	}
 #ASM_playerBio {
 	position: absolute;
-	top: -15px;
+	top: 0px;
 	right: 5px;
 	font-size: 14px;
 	}
@@ -58,68 +94,42 @@
 	}
 #ASM_playerStats {
 	position: absolute;
-	top: 30px;
+	top: 40px;
 	left: 5px;
-	}
-#ASM_playerStats .lightFrameBody {
-	height: 180px;
-	width: 208px;
-	color: #000000;
+	width: 200px;
+	height: 190px;
 	}
 #ASM_townDisplay {
 	position: absolute;
-	top: 245px;
+	top: 261px;
 	left: 5px;
 	}
 #ASM_TDheader {
 	padding-left: 40px;
 	}
 #ASM_townScroll {
-	height: 100px;
-	width: 320px;
+	height: 150px;
+	width: 240px;
 	margin-bottom: -10px;
-	overflow: auto;
-	}
-#ASM_townList {
-	min-height: 101px;
+	overflow-y: scroll;
+	overflow-x: hidden;
 	}
 #ASM_save {
 	position: absolute;
-	bottom: -15px;
-	right: 0px;
-	height: 41px;
-	width: 151px;
-	background: url(../AIFrames/buttons/Save-eve.png) no-repeat 0 0;
-	}
-#ASM_save:hover {
-	background-position: 0 -41px;
-	}
-#ASM_save:active {
-	background-position: 0 -82px;
-	}
-#ASM_close {
-	position: absolute;
-	top: 0px;
-	right: 0px;
-	display: block;
-	width: 28px;
-	height: 33px;
-	background: url("../AIFrames/Content Frame Elements/close.png") no-repeat 0 0;
+	bottom: -80px;
+	right: 10px;
 	}
 .addInfo, #ASM_TDheader span {
 	float: right;
 	}
 .townInfo {
-	width: 300px;
-	}
-.townNameInput {
-	width: 160px;
+	width: 220px;
 	}
 #ASM_TDheader span {
 	margin-right: 18px;
 	}
 #ASM_fbConnect {
 	position: absolute;
-	bottom: 30px;
-	right: 0px;
+	bottom: -30px;
+	right: 10px;
 	}

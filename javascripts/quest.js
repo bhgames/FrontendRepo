@@ -35,7 +35,7 @@ function do_flick(async) {
 		
 		getFlick.get("/AIWars/GodGenerator?reqtype=flickStatus&league="+player.league);
 	} else {
-		if(!player.research.flicker.match(/noFlick|BQ1|NQ1/)) {
+		if(!player.research.flicker.match(/noFlick|BQ1/)) { //|BQ1|NQ1
 			$.each(player.quests, function(i,v) {
 				if(v.name == player.research.flicker) {
 					display_quest(v);
@@ -44,7 +44,7 @@ function do_flick(async) {
 					return false;
 				}
 			});
-		} else if(player.research.flicker.match(/BQ1|NQ1/)&&!tutorialRunning) {
+		 }  else if(player.research.flicker=="BQ1"&&!tutorialRunning) {
 			run_tutorial();
 			duration = 900000; //15 minutes
 		}
@@ -122,93 +122,76 @@ function show_quests() {
 	});
 }
 
+/**
+ *	Displays the full quest text, rewards, and goals.
+ */
 function display_quest(quest) {
 	var api = $("#quest_text").data('jsp');
 	if(!quest.text) {
 		display_output(false,"Getting Quest Info...");
 		var getQuestInfo = new make_AJAX();
 		getQuestInfo.callback = function(response) {
-			quest.text = $.parseJSON(response);
-			$("#quest_status").text((quest.status==1)?"In Progress":"Completed");
-			api.getContentPane().html(quest.text[0]);
-			$("[style*='font-family:BankGothic']").css("font-family","")
-												  .find("img").each(function(i,v) {
-													switch(i) {
-														case 0:
-															$(this).attr("src","SPFrames/Buildings/UI/metal-icon.png");
-															break;
-														case 1:
-															$(this).attr("src","SPFrames/Buildings/UI/wood-icon.png");
-															break;
-														case 2:
-															$(this).attr("src","SPFrames/Buildings/UI/crystal-icon.png");
-															break;
-														case 3:
-															$(this).attr("src","SPFrames/Buildings/UI/food-icon.png");
-															break;
-															
-													}
-												  });
-			$("#quest_box").attr("style","").fadeIn();
-			api.reinitialise();
-			display_output(false,"Quest Info Loaded!");
+			var temp = $.parseJSON(response);
+			quest.text = temp[0];
+			quest.script = temp[1];
+			display_quest(quest);
 		};
-		getQuestInfo.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".getQuestLog("+quest.qid+");");
+		getQuestInfo.get("/AIWars/GodGenerator?reqtype=command&command=bf.getQuestLog("+quest.qid+");");
 	} else {
 		$("#quest_status").text((quest.status==1)?"In Progress":"Completed");
-		api.getContentPane().html(quest.text[0]);
-		$("[style*='font-family:BankGothic']").css("font-family","")
-											  .find("img").each(function(i,v) {
-												switch(i) {
-													case 0:
-														$(this).attr("src","SPFrames/Buildings/UI/metal-icon.png");
-														break;
-													case 1:
-														$(this).attr("src","SPFrames/Buildings/UI/wood-icon.png");
-														break;
-													case 2:
-														$(this).attr("src","SPFrames/Buildings/UI/crystal-icon.png");
-														break;
-													case 3:
-														$(this).attr("src","SPFrames/Buildings/UI/food-icon.png");
-														break;
-														
-												}
-											  });
+		api.getContentPane().html(quest.text);
 		$("#quest_box").attr("style","").fadeIn();
 		api.reinitialise();
 		display_output(false,"Quest Info Loaded!");
-	}
-	
-	$("#quest_close").die("click").live("click",function() {
-		$("#quest_box").fadeOut("fast");
-	});
-	$("#quest_titlebar").die("mousedown").live("mousedown",function(e) {
-		if(e.which == 1) {
-			var cLeft = $("#quest_box").css("left");
-			var cTop = parseInt($("#quest_box").css("top"));
-			cLeft = cLeft.match(/%/)? $("#quest_box").position().left : parseInt(cLeft);
-			var mLeft = e.pageX;
-			var mTop = e.pageY;
-			$("body").unbind("mousemove").mousemove(function(e) {
-				$("#quest_box").css("left", (cLeft-mLeft+e.pageX) + "px");
-				$("#quest_box").css("top", (cTop-mTop+e.pageY) + "px");
-			});
-			$("body").unbind("mouseup").mouseup(function() {
-				$(this).unbind("mousemove").unbind("mouseup");
-			});
-		}
-	});
-	$("#quest_leave").die("click").live("click",function(){
-		var leaveQuest = new make_AJAX();
-		leaveQuest.callback = function(){
-			$("#quest_close").click();
-			quest.status = 0;
-			if(currUI === show_quests){ 
-				show_quests();
+
+		$("#quest_close").die("click").live("click",function() {
+			$("#quest_box").fadeOut("fast");
+		});
+		$("#quest_titlebar").die("mousedown").live("mousedown",function(e) {
+			if(e.which == 1) {
+				var cLeft = $("#quest_box").css("left");
+				var cTop = parseInt($("#quest_box").css("top"));
+				cLeft = cLeft.match(/%/)? $("#quest_box").position().left : parseInt(cLeft);
+				var mLeft = e.pageX;
+				var mTop = e.pageY;
+				$("body").unbind("mousemove").mousemove(function(e) {
+					$("#quest_box").css("left", (cLeft-mLeft+e.pageX) + "px");
+					$("#quest_box").css("top", (cTop-mTop+e.pageY) + "px");
+				});
+				$("body").unbind("mouseup").mouseup(function() {
+					$(this).unbind("mousemove").unbind("mouseup");
+				});
 			}
-			
+		});
+		$("#quest_leave").die("click").live("click",function(){
+			var leaveQuest = new make_AJAX();
+			leaveQuest.callback = function(){
+				$("#quest_close").click();
+				quest.status = 0;
+				if(currUI === show_quests){ 
+					show_quests();
+				}
+				
+			};
+			leaveQuest.get("/AIWars/GodGenerator?reqtype=command&command=bf.leaveQuest("+quest.qid+");bf.pingQuest("+quest.qid+");");
+		});
+	}
+}
+/**
+ *	Runs the quest's tutorial.
+ */
+function play_quest(quest) {
+	if(quest.script) {
+		$.globalEval(quest.script);
+	} else {
+		display_output(false,"Getting Quest Info...");
+		var getQuestInfo = new make_AJAX();
+		getQuestInfo.callback = function(response) {
+			var temp = $.parseJSON(response);
+			quest.text = temp[0];
+			quest.script = temp[1];
+			play_quest(quest);
 		};
-		leaveQuest.get("/AIWars/GodGenerator?reqtype=command&command="+player.command+".leaveQuest("+quest.qid+");"+player.command+".pingQuest("+quest.qid+");");
-	});
+		getQuestInfo.get("/AIWars/GodGenerator?reqtype=command&command=bf.getQuestLog("+quest.qid+");");
+	}
 }

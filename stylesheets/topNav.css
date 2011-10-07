@@ -43,8 +43,9 @@
 	}
 .flicker {
 	position: absolute;
-	top: 0px;
-	visibility: hidden;
+	top: -6px;
+	left: 1px;
+	display: none;
 	height: 47px;
 	width: 156px;
 	text-align: center;	
@@ -107,8 +108,8 @@
 #sr .flicker {
 	background: url(../SPFrames/new-SR.png) no-repeat center center;
 	}
-#sr:active .flicker {
-	display: none;
+#sr:active .flicker, #sr.open .flicker {
+	visibility: hidden;
 	}
 	
 #mailbox {
@@ -124,6 +125,6 @@
 #mailbox .flicker {
 	background: url(../SPFrames/new-mail.png) no-repeat center center;
 	}
-#mailbox:active .flicker {
-	display: none;
+#mailbox:active .flicker, #mailbox.open .flicker {
+	visibility: hidden;
 	}

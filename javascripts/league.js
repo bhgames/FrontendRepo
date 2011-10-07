@@ -1,11 +1,11 @@
 function build_league_UI() {
 	currUI = build_league_UI;
 	
-	var HTML = "<div id='League_outerbox'><div class='darkFrameBody'>";
+	var HTML = "<div id='League_outerbox'>";
 	if(player.TPR == false) { //if the player isn't in a league, display the create league interface
-		HTML += "<h3>Create League</h3><div id='CC_createLeagueBox'><div class='textFrameT-L-R'><div class='textFrameT'><div class='textFrameL'><div class='textFrameR'><div class='textFramed'>";
+		HTML += "<h3>Create League</h3><div id='CC_createLeagueBox' class='textFramed'>";
 		if(player.towns.length < 2) {
-			HTML += "<div id='CC_noCreate'><div id='CC_noCreateBlock'><div class='darkFrameBody'></div><div class='darkFrameBL-BR-B'><div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div></div></div><span id='CC_noCreateText'>You must have more then one town to start a league.</span></div>";
+			HTML += "<div id='CC_noCreate'><div id='CC_noCreateBlock'></div><span id='CC_noCreateText'>You must have more then one town to start a league.</span></div>";
 		}
 		HTML += "<input type='text' id='CC_createLeagueName' value='League Name' /><input type='text' id='CC_createLeagueInitials' maxlength='5' value='Tag'/><textarea id='CC_createLeagueDesc'>Description of Your League</textarea><input type='url' id='CC_createLeagueSite' value='http://' /><select id='CC_createLeagueTown'><option disabled='disabled'>Select Town</option><option disabled='disabled'>-----------</option>";
 		$.each(player.towns, function(i, v) {
@@ -13,10 +13,10 @@ function build_league_UI() {
 				HTML += "<option>" + v.townName + "</option>";
 			}
 		});
-		HTML += "</select><a href='javascript:;' id='CC_createLeagueButton'></a></div></div></div></div></div><div class='textFrameB-BL-BR'><div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div></div></div></div><div class='darkFrameBL-BR-B'><div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div></div></div>";
+		HTML += "</select><a href='javascript:;' id='CC_createLeagueButton'></a></div></div>";
 		$("#window").html(HTML).fadeIn();
 	} else {
-		HTML += "<div id='CC_leagueRoster'><div class='textFrameT-L-R'><div class='textFrameT'><div class='textFrameL'><div class='textFrameR'><div class='textFramed'><div style='border-bottom: 1px solid #AAAAAA;'>League Roster:</div><dl>";
+		HTML += "<div id='CC_leagueRoster' class='textFramed'><div style='border-bottom: 1px solid #AAAAAA;'>League Roster:</div><dl>";
 		player.TPR.sort(function(a,b){
 			return b.type - a.type;
 		});
@@ -26,7 +26,7 @@ function build_league_UI() {
 			}
 		});
 		var UN = player.league ? player.origUN : player.username;
-		HTML += "</dl></div></div></div></div></div><div class='textFrameB-BL-BR'><div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div></div></div><div id='CC_info'><a href='javascript:;' id='CC_leagueAdmin'></a><div id='CC_leagueInfo'></div><div id='CC_playerInfo'><div class='textFrameT-L-R'><div class='textFrameT'><div class='textFrameL'><div class='textFrameR'><div class='textFramed'>Player Info:<h3>"
+		HTML += "</dl></div></div><div id='CC_info'><a href='javascript:;' id='CC_leagueAdmin'></a><div id='CC_leagueInfo'></div><div id='CC_playerInfo' class='textFramed'>Player Info:<h3>"
 				+ UN + "</h3><span id='CC_playerRank'>Rank: ";
 		$.each(player.TPR,function(i,v){
 			if(v.player == UN) {
@@ -34,21 +34,21 @@ function build_league_UI() {
 				return false;
 			}
 		});
-		HTML += "</span></div></div></div></div></div><div class='textFrameB-BL-BR'><div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div></div></div></div></div><div class='darkFrameBL-BR-B'><div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div></div></div>";
+		HTML += "</span></div></div></div>";
 		$("#window").html(HTML);
 		var getLeagueInfo = new make_AJAX();
 		getLeagueInfo.callback = function(response) {
 			var info = $.parseJSON(response.replace(/</g,"&#60;").replace(/>/g,"&#62;"));
-			var leagueHTML = "<h2>"+info[0]+"</h2><span id='CC_leagueInfoTag'>Tag: " + info[1]+"</span><div id='CC_leagueDesc'><div class='textFrameT-L-R'><div class='textFrameT'><div class='textFrameL'><div class='textFrameR'><div class='textFramed'>"+info[3]+"</div></div></div></div></div><div class='textFrameB-BL-BR'><div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div></div></div>Site:<br/><a href='"+info[2]+"' target='_league'>"+info[2]+"</a>";
+			var leagueHTML = "<h2>"+info[0]+"</h2><span id='CC_leagueInfoTag'>Tag: " + info[1]+"</span><div id='CC_leagueDesc' class='textFramed'>"+info[3]+"</div>Site:<br/><a href='"+info[2]+"' target='_league'>"+info[2]+"</a>";
 			$("#CC_leagueInfo").html(leagueHTML);
 			$("#window").fadeIn();
 		};
-		getLeagueInfo.get("/AIWars/GodGenerator?reqtype=command&command=bf.getLeagueInfo();");
+		getLeagueInfo.get("reqtype=command&command=bf.getLeagueInfo();");
 	}
 	
 	$("#CC_leagueAdmin").die("click").live("click",function(){
 		$("#window").fadeOut(function() {
-			var HTML = "<div id='League_outerbox'><div class='darkFrameBody'>";
+			var HTML = "<div id='League_outerbox'>";
 			if(player.league) {
 				var isAdmin = false;
 				$.each(player.TPR,function(i,v){
@@ -59,7 +59,7 @@ function build_league_UI() {
 				});
 				HTML += "<a href='javascript:;' id='CC_leaveLeague'></a><a href='javascript:;' id='CC_switchPlayer'></a>";
 				if(!isAdmin) HTML += "<div id='CC_adminBlocker'></div>";
-				HTML += "<div id='CC_memberAdmin'><div class='textFrameT-L-R'><div class='textFrameT'><div class='textFrameL'><div class='textFrameR'><div class='textFramed'><h3>Member Managment</h3><select id='CC_TPRList'><option disabled='disabled'>Choose Player:</option><option disabled='disabled'>--------------</option>";
+				HTML += "<div id='CC_memberAdmin' class='textFramed'><h3>Member Managment</h3><select id='CC_TPRList'><option disabled='disabled'>Choose Player:</option><option disabled='disabled'>--------------</option>";
 				$.each(player.TPR,function(i,v){
 					if(v.type > -1) {
 						HTML += "<option>"+v.player+"</option>";
@@ -84,7 +84,7 @@ function build_league_UI() {
 				$.each(player.towns, function(i,v) {
 					HTML += "<option value='"+v.townID+"'>"+v.townName+"</option>";
 				});
-				HTML +="</select></span><br/><a href='javascript:;' id='CC_kickMember'></a><a href='javascript:;' id='CC_saveInfo'></a></div></div></div></div></div><div class='textFrameB-BL-BR'><div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div></div></div><div id='CC_invitePlayer'><div class='textFrameT-L-R'><div class='textFrameT'><div class='textFrameL'><div class='textFrameR'><div class='textFramed'><h3>Invite Player</h3><label for='CC_playerName'>Player:</label><input type='text' id='CC_playerName' /><hr/>Invite Message:<br/><textarea id='CC_inviteMessage'>Please click the link below to join our league.</textarea><a href='javascript:;' id='CC_sendInvite'></a></div></div></div></div></div><div class='textFrameB-BL-BR'><div class='textFrameBL'><div class='textFrameBR'><div class='textFrameB'></div></div></div></div></div><div id='CC_inviteList'><div class='textFramed'><ul id='CC_invitees'>";
+				HTML +="</select></span><br/><a href='javascript:;' id='CC_kickMember'></a><a href='javascript:;' id='CC_saveInfo'></a></div><div id='CC_invitePlayer' class='textFramed'><h3>Invite Player</h3><label for='CC_playerName'>Player:</label><input type='text' id='CC_playerName' /><hr/>Invite Message:<br/><textarea id='CC_inviteMessage'>Please click the link below to join our league.</textarea><a href='javascript:;' id='CC_sendInvite'></a></div><div id='CC_inviteList' class='textFramed'><ul id='CC_invitees'>";
 				$.each(player.TPR,function(i,v){
 					if(v.type < 0) {
 						HTML += "<li>"+v.player+" <input type='checkbox'></li>";
@@ -94,7 +94,7 @@ function build_league_UI() {
 				HTML += "<a href='javascript:;' id='CC_leaveLeague'></a>";
 				if(player.TPR.type >0) HTML +="<a href='javascript:;' id='CC_switchLeague'></a>";
 			}
-			$("#window").html(HTML+"</div><div class='darkFrameBL-BR-B'><div class='darkFrameBL'><div class='darkFrameBR'><div class='darkFrameB'></div></div></div></div></div>").fadeIn();				
+			$("#window").html(HTML+"</div>").fadeIn();				
 		});
 	});
 
@@ -141,7 +141,7 @@ function build_league_UI() {
 					display_output(true,error);
 				}
 			};
-			kickPlayer.get("/AIWars/GodGenerator?reqtype=command&command=bf.getLeague().deleteTPR("+player.TPR[index].pid+");");
+			kickPlayer.get("reqtype=command&command=bf.getLeague().deleteTPR("+player.TPR[index].pid+");");
 			
 			$("#CC_TPRList :selected").remove();
 			$("#CC_TPRList option")[0].selected = true;
@@ -167,7 +167,7 @@ function build_league_UI() {
 				display_output(true,error);
 			}
 		};
-		saveTPR.get("/AIWars/GodGenerator?reqtype=command&command=bf.getLeague().createTPR("+($("#CC_TRPRate").val()/100)+","+player.TPR[index].pid+","
+		saveTPR.get("reqtype=command&command=bf.getLeague().createTPR("+($("#CC_TRPRate").val()/100)+","+player.TPR[index].pid+","
 					+$("#CC_memberRankName").val()+","+($("#CC_memberRankLvl :selected").index("#CC_memberRankLvl option")-2)+",["+$("#CC_memberTownAdmin").val()+"]);");
 	});
 	
@@ -183,7 +183,7 @@ function build_league_UI() {
 				display_output(true,"Error: " + success);
 			}
 		};
-		sendMessage.get("/AIWars/GodGenerator?reqtype=command&command=bf.getLeague().sendLeagueMessage(["+$("#CC_playerName").val().split(";")+"],"+$("#CC_inviteMessage").val().replace(/,/g, "<u44>")
+		sendMessage.get("reqtype=command&command=bf.getLeague().sendLeagueMessage(["+$("#CC_playerName").val().split(";")+"],"+$("#CC_inviteMessage").val().replace(/,/g, "<u44>")
 						+",Invitation to "+player.username+",3,"+player.pid+",0);");
 						
 		$("#CC_playerName").val("");
@@ -203,7 +203,7 @@ function build_league_UI() {
 					display_output(false,"Please try again in a moment.");
 				}
 			};
-			leaveLeague.get("/AIWars/GodGenerator?reqtype=command&command=bf.leaveLeague();");
+			leaveLeague.get("reqtype=command&command=bf.leaveLeague();");
 		});
 	});
 	
@@ -218,7 +218,7 @@ function build_league_UI() {
 				display_output(false,"Please try again.");
 			}
 		};
-		createLeague.get("/AIWars/GodGenerator?reqtype=command&command=bf.createLeague("+player.towns[$("#CC_createLeagueTown :selected").index("#CC_createLeagueTown option")-2].townID
+		createLeague.get("reqtype=command&command=bf.createLeague("+player.towns[$("#CC_createLeagueTown :selected").index("#CC_createLeagueTown option")-2].townID
 							+","+$("#CC_createLeagueName").val()+","+$("#CC_createLeagueDesc").val()+","+$("#CC_createLeagueSite").val()+","
 							+$("#CC_createLeagueInitials").val()+");");
 	});

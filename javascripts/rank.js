@@ -8,7 +8,7 @@ var ranks = {
 							<div id='Rank_ranks'>\
 								<ol></ol>\
 							</div>\
-							<form id='Rank_searchBox'>\
+							<form id='Rank_searchBox' class='metalFrame'>\
 								<input type='text' id='Rank_searchInput' />\
 								<input type='submit' id='Rank_searchSubmit' class='bigButton' value='Search' />\
 							</form>\

@@ -3,20 +3,23 @@
  ************************************************************************************************************************************************/
 #attacklist {
 	position: absolute;
-	top: 21px;
-	left: 21px;
+	bottom: 72px;
+	left: 49px;
+	max-height: 350px;
+	border-radius: 20px 20px 0px 0px;
+	font-weight: bold;
 	z-index: 20;
-	}
-#attacklist .popFrameBody {
-	max-height: 450px;
 	}
 #incomming_attacks, #outgoing_attacks {
 	display: table-cell;
 	padding: 5px;
-	border: 1px solid #FFFFFF;
+	}
+#incomming_attacks {
+	border-right: 2px ridge #A8A495;
 	}
 #attacklist li {
 	width: 100%;
+	font-weight: normal;
 	list-style: none;
 	}
 .raidID {
@@ -28,12 +31,8 @@
 .recall {
 	position: relative;
 	top: 5px;
-	display: inline-block;
+	display: none;
 	width: 20px;
 	height: 20px;
 	margin-right: 5px;
-	background: url("../../images/client/buildings/Cancel-button.png") no-repeat 0 0;
-	}
-:active.recall {
-	background: url("../../images/client/buildings/Cancel-button.png") no-repeat 0 -20px;;
 	}
