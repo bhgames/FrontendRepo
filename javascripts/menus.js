@@ -152,7 +152,7 @@ function fb_connect(response) {
 						}
 					};
 			
-			regFB.post("/AIWars/GodGenerator","reqtype=linkFB&fuid="+response.id);
+			regFB.post("reqtype=linkFB&fuid="+response.id);
 		});
 	}
 }

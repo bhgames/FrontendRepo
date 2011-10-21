@@ -141,7 +141,7 @@ function make_AJAX() {
 																					websock.checksock.shift();
 																					var AJAX = new make_AJAX();
 																					AJAX.callback = temp.callback;
-																					AJAX.post("/AIWars/GodGenerator",temp.data);
+																					AJAX.post(temp.data);
 																				}
 																			},5000));
 									}
@@ -206,10 +206,11 @@ function make_AJAX() {
 										display_output(false,"Fetching...");
 									} catch(e) {
 										display_output(true,e,true);
+												log(e,"get error");
 										that.clear();
 									}
 								};
-		this.post = function(URL, data, sync) {
+		this.post = function(data, sync) {
 											try {
 												var val = data.split("&command=");
 												if(val.length == 2) { 
@@ -232,6 +233,7 @@ function make_AJAX() {
 												display_output(false,"Fetching...");
 											} catch(e) {
 												display_output(true,e,true);
+												log(e,"post error");
 												that.clear();
 											}
 										};
@@ -460,7 +462,7 @@ function get_all_trades() {
 			player.activeTrades = [];
 			player.tradeSchedules = [];
 			var getTrades = new make_AJAX();
-			var getPath = "/AIWars/GodGenerator?reqtype=command&command=";
+			var getPath = "reqtype=command&command=";
 			$.each(player.towns, function(i, v) {
 				getPath += player.command + ".getUserTrades(" + v.townID + ");" + player.command + ".getUserTradeSchedules(" + v.townID + ");";
 			});

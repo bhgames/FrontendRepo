@@ -859,8 +859,10 @@ function canSendAttack() {
 			BUI.CC.attackType = "debris";
 			break;
 		case 8:
-		case 9:
 			BUI.CC.attackType = "dig";
+			break;
+		case 9:
+			BUI.CC.attackType = "excavation";
 			break;
 		case 10:
 			BUI.CC.attackType = "blockade";
@@ -891,7 +893,7 @@ function canSendAttack() {
 	
 	canAttack.get("reqtype=command&command=bf.canSendAttack(" + player.curtown.townID + "," + BUI.CC.x 
 					+ "," + BUI.CC.y + ",[" + AUarray.join(",") + "]," + BUI.CC.attackType 
-					+ "," + bombingTargets + ",);");
+					+ ",[" + bombingTargets + "],);");
 }
 
 function get_attack_ETA() {
@@ -899,11 +901,10 @@ function get_attack_ETA() {
 	getETA.callback = function(response) {
 							if(response.match(/\d/)) {
 								var time = response*player.gameClockFactor;
-								var days = Math.floor((time / 3600)/24);
-								var hours = Math.floor((time / 3600)%24);
+								var hours = Math.floor((time / 3600));
 								var mins = Math.floor((time % 3600) / 60);
 								var secs = Math.floor((time % 3600) % 60);
-								$("#CC_ETA").html("ETA: "+((days)?days + " d ":"") + hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime());
+								$("#CC_ETA").html("ETA: "+ hours.toTime() + ":" + mins.toTime() + ":" + secs.toTime());
 							} else {
 								$("#CC_ETA").html("?!:?!:?!");
 							}

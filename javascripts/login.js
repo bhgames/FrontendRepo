@@ -39,7 +39,7 @@ function get_session() {
 									check_all_for_updates();
 								}
 							};
-							login.post("","reqtype=login&fuid="+response.id);
+							login.post("reqtype=login&fuid="+response.id);
 						});
 					} else {
 						FB_login_window();
@@ -703,7 +703,7 @@ function register(form) {
 			$("#reg_error").html(response.split(":")[1]);
 		}
 	};
-	sendReg.post("/AIWars/GodGenerator","reqtype=createNewPlayer&UN=" + form.UN + "&fuid=" + userInfo.id+"&email="+userInfo.email+"&skipMe="+form.skipMe+"&chosenTileX="+form.centerx+"&chosenTileY="+form.centery);
+	sendReg.post("reqtype=createNewPlayer&UN=" + form.UN + "&fuid=" + userInfo.id+"&email="+userInfo.email+"&skipMe="+form.skipMe+"&chosenTileX="+form.centerx+"&chosenTileY="+form.centery);
 }
 
 function login(form) {
@@ -719,7 +719,7 @@ function login(form) {
 			load_player();
 		}
 	};
-	loginget.post("/AIWars/GodGenerator","reqtype=login&fuid="+userInfo.id);
+	loginget.post("reqtype=login&fuid="+userInfo.id);
 }
 
 function logout() {

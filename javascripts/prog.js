@@ -27,8 +27,7 @@ function build_RAI_interface() {
 		var info = response.split(";");
 		var isAlive = info[0];
 		var autoRun = info[1];
-		var script = info.slice(2,info.length);
-		script = script.join(";");
+		var script = info.slice(2,info.length).join(";");
 		if(isAlive.match(/true/)) {
 			$("#RAI_active").addClass("active");
 		}
@@ -116,7 +115,7 @@ function build_RAI_interface() {
 				display_output(true, error);
 			}
 		};
-		save.post("/AIWars/GodGenerator","reqtype=saveProgram&program="+encodeURIComponent(RAI.script.replace(/\u0027/igm,"\\'"))+"&league="+player.league);
+		save.post("reqtype=saveProgram&program="+encodeURIComponent(RAI.script.replace(/\u0027/igm,"\\'"))+"&league="+player.league);
 	});
 	$("#RAI_run").unbind('click').click(function() {
 		display_output(false, "Running Program...");
